@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+input {
+  border: #b3b3b3 1px solid;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+input:focus {
+  box-shadow: 0 0 0 0.2rem white, 0 0 5px 0.25rem red;
+  outline: none;
+  border: white 1px solid;
+}
+
+select {
+  appearance: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.cmb {
+  display: inline-block;
+  border: #b3b3b3 1px solid;
+  border-radius: 5px;
+  padding: 3px 3em 3px 5px;
+  line-height: 1.5em;
+  background-color: rgb(255, 255, 255);
+  margin: 2px;
+  justify-content: space-between;
+  align-items: center;
+  background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position: calc(100% - 15px) calc(1em - 2px),
+    calc(100% - 10px) calc(1em - 2px), calc(100% - 2em) 0.2em;
+  background-size: 5px 5px, 5px 5px, 1px 1.5em;
+  background-repeat: no-repeat;
+  min-width: fit-content;
+}
+
+.cmb:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem white, 0 0 5px 0.25rem red;
+  border: white 1px solid;
+  margin: 2px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: red;
+  border: red 1px solid;
+  padding: 3px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.btn-primary:active {
+  background-color: red;
+}
+
+.btn-primary:hover {
+  background: white;
+  border: red 1px solid;
+  color: red;
+}
+
+.btn-green {
+  color: #fff;
+  background-color: rgb(22 163 74);
+  border: rgb(22 163 74) 1px solid;
+  padding: 3px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.btn-green:active {
+  background-color: rgb(22 163 74);
+}
+
+.btn-green:hover {
+  background: white;
+  border: rgb(22 163 74) 1px solid;
+  color: rgb(22 163 74);
+}
+
+.btn-yellow {
+  color: rgb(71, 71, 71);
+  background-color: rgb(255, 230, 0);
+  border: rgb(255, 230, 0) 1px solid;
+  padding: 3px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.btn-yellow:active {
+  background-color: rgb(255, 230, 0);
+}
+
+.btn-yellow:hover {
+  background: white;
+  border: rgb(233, 211, 14) 1px solid;
+  color: rgb(233, 211, 14);
+}
+
+.btn-gray {
+  color: white;
+  background-color: rgb(150, 150, 150);
+  border: rgb(150, 150, 150) 1px solid;
+  padding: 3px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.btn-gray:active {
+  background-color: rgb(150, 150, 150);
+}
+
+.btn-gray:hover {
+  background: white;
+  border: rgb(150, 150, 150) 1px solid;
+  color: rgb(150, 150, 150);
+}
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Prompt", sans-serif;
+  }
+}

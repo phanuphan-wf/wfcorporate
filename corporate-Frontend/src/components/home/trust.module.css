@@ -1,0 +1,58 @@
+.trust {
+  padding: 3rem 0;
+}
+
+.trust .counting {
+  text-align: center;
+}
+
+.trust .countnum {
+  font-size: 4rem;
+  color: rgb(255, 0, 0);
+  font-weight: 600;
+}
+
+.trust .counttxt {
+  padding: 0 1.5rem 1rem;
+}
+
+.trust .slobox {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.trust .slo {
+  background: rgba(217, 217, 217, 1);
+  padding: 1rem 3rem;
+  text-align: center;
+  width: 30%;
+}
+
+.trust .sloheader {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 991px) {
+  .trust .countnum {
+    font-size: 3.5rem;
+  }
+
+  .trust .counttxt {
+    padding: 0 1rem 1rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .trust .slobox {
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+  }
+  .trust .slo {
+    margin-top: 1.5rem;
+    width: 80%;
+  }
+}

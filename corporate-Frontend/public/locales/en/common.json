@@ -1,0 +1,25 @@
+{
+    "company": "World Fair",
+    "menu": {
+        "home": "Home",
+        "about": "About Us",
+        "service": "Our Services",
+        "calendar": "Exhibition Calendar",
+        "news": "News",
+        "apply": "Apply for Job",
+        "reserve": "Reserve a Booth"
+    },
+    "footer": {
+        "company": "World Fair Co., Ltd.",
+        "addr": "1,3,5,7 Soi Ladprao 128/1 Ladprao Rd. Klongchan Bangkapi Bangkok 10240",
+        "tel": "Tel : 02-731-1331",
+        "email": "Email : operation@worldfair.co.th",
+        "copyright": "copyright © 2023 World Fair Co., Ltd.",
+        "follow": "Follow us :"
+    },
+    "home": {
+        "regist": "Registration",
+        "notopen": "out of service",
+        "reserve": "Reserve a Booth"
+    }
+}

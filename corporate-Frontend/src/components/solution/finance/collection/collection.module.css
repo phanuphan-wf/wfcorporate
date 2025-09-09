@@ -1,0 +1,257 @@
+﻿.collection {
+  font-size: 14px !important;
+}
+
+.collection h1 {
+  font-size: 1.5rem;
+}
+
+.collection input,
+select,
+button {
+  font-size: 14px !important;
+}
+
+input:read-only {
+  color: black;
+}
+
+.boxborder {
+  border: 1px solid #787878;
+  border-radius: 5px;
+  padding-bottom: 1rem;
+  margin-right: 0px;
+}
+
+#exhibition.boxborder {
+  position: relative;
+  left: -10px;
+}
+
+.boxborder .boxheader {
+  position: relative;
+  background: white;
+  top: -10px;
+  padding: 0 0.5rem 0 0.5rem;
+  width: fit-content;
+}
+
+.boxborder .boxcontrol {
+  border: none;
+}
+
+.pagegroup {
+  text-align: end;
+}
+
+.pagegroup .pagenumber {
+  text-align: end;
+  font-size: 1.2rem;
+}
+
+.pagegroup .cbalance {
+  text-align: end;
+}
+
+.boxborder #pDate {
+  padding: 2px;
+}
+
+.recordtable {
+  margin-bottom: 1rem;
+}
+
+.recordtable table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.recordtable thead {
+  border-radius: 20px 20px 0 0;
+}
+
+.recordtable td {
+  border-top: 1px solid black;
+}
+
+.recordtable th,
+td {
+  border-left: 1px solid black;
+}
+
+.recordtable th#tno,
+td#tno {
+  border-left: none;
+}
+
+.recordtable th {
+  background-color: #c0c0c0;
+}
+
+.recordtable #tabledisable {
+  margin: 5px auto;
+  display: table;
+  color: red;
+}
+
+.recordtable td#tcustomer,
+.recordtable td#tdetail {
+  width: 18%;
+}
+
+.recordtable td#tdue,
+.recordtable td#tsale,
+.recordtable td#tamount,
+.recordtable td#ttotal {
+  text-align: right;
+  width: 10%;
+}
+
+.recordtable td#ttax {
+  width: 7%;
+  text-align: right;
+}
+
+.recordtable td#tno,
+.recordtable td#tpage {
+  width: 4%;
+}
+
+.recordtable span#dataloading {
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, 115%);
+  transform: translate(-50%, 115%);
+  background-color: white;
+  z-index: 99;
+  font-size: 1.2rem;
+  color: red;
+}
+
+.footer {
+  margin: 0.5rem 0 2rem;
+}
+
+.footer .boxborder#left {
+  position: relative;
+  left: -10px;
+}
+
+.footer .boxborder#left input {
+  text-align: end;
+}
+
+.footer .boxborder#left label {
+  text-align: end;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.footer .boxborder#right input {
+  text-align: end;
+}
+
+.footer .boxborder#exsum {
+  margin-top: 10px;
+  position: relative;
+  left: -10px;
+}
+
+.footer .boxborder#exsum input {
+  text-align: end;
+}
+
+.footer .boxborder#printsum {
+  margin-top: 10px;
+}
+
+.footer .boxborder .btnprint {
+  padding-left: 0;
+}
+
+.print {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.print .printbox {
+  position: relative;
+  width: 80%;
+  height: 80vh;
+  background-color: #fff;
+  border: 1px solid #999;
+  border-radius: 4px;
+  margin: 50px auto;
+  padding: 20px;
+  overflow: scroll;
+}
+
+.print .page {
+  position: relative;
+  width: 33cm;
+  height: 21.6cm;
+  margin: 10px 0;
+  padding: 0;
+  border: 1px solid;
+}
+
+.print .page table,
+.print .page th,
+.print .page td {
+  border: 1px solid;
+}
+
+.print .page #tlogo,
+.print .page #ttop {
+  border: none;
+}
+
+.print .page #logo {
+  height: 1.5cm;
+}
+
+.print .page th {
+  text-align: center;
+}
+
+.print .page td {
+  height: 18px;
+  font-size: 0.8rem;
+}
+
+.print .page td#list {
+  border-right: none;
+}
+
+.print .page td#due {
+  border-left: none;
+  width: fit-content;
+}
+
+.print .btnclose {
+  position: relative;
+  width: fit-content;
+  bottom: 10px;
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  #exhibition.boxborder {
+    left: 0px;
+  }
+
+  .footer .boxborder#left {
+    left: 0px;
+  }
+
+  .footer .boxborder#right {
+    margin-top: 10px;
+  }
+}
+
