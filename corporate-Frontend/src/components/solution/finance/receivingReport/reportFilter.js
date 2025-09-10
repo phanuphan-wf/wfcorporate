@@ -84,6 +84,7 @@ function ReportFilter() {
           <option value="4">Transfer KBank</option>
           <option value="5">Transfer Krungsri</option>
           <option value="10">Transfer TTB</option>
+          <option value="11">Transfer SCB</option>
           <option value="6">Credit Card</option>
           <option value="3">Cash</option>
           <option value="9">Barter</option>
