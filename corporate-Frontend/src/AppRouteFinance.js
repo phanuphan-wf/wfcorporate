@@ -41,6 +41,14 @@ const AppRouteFinance = [
       { dept: 6, acc: 1 },
     ],
   },
+  {
+    path: "finance/collectionreport",
+    element: <Receiving />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 6, acc: 1 },
+    ],
+  },
 ];
 
 export default AppRouteFinance;
