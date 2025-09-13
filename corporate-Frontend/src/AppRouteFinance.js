@@ -3,6 +3,7 @@ import CommReport from "./components/solution/finance/commReport/CommReport";
 import CollectionHistory from "./components/solution/finance/collectionHistory/collectionHistory";
 import Cheque from "./components/solution/finance/chequeReport/report";
 import Receiving from "./components/solution/finance/receivingReport/report";
+import CollectionReport from "./components/solution/finance/collectionReport/report";
 
 const AppRouteFinance = [
   {
@@ -43,7 +44,7 @@ const AppRouteFinance = [
   },
   {
     path: "finance/collectionreport",
-    element: <Receiving />,
+    element: <CollectionReport />,
     show: [
       { dept: 1, acc: 1 },
       { dept: 6, acc: 1 },
