@@ -2,8 +2,8 @@
     "landing": {
         "lng": "เปลี่ยนภาษา",
         "show": "Furniture Fair",
-        "showdate": "August 16-24, 2025",
-        "hall": "Hall 7-8",
+        "showdate": "October 4-13, 2025",
+        "hall": "Hall 9-11",
         "time": "10.30-20.30 hrs.",
         "regist": "Register get",
         "gift": "Gift Set",
@@ -19,10 +19,10 @@
             "Home decor items"
         ],
         "elec": [
-            "Powerbuy Shocking discounts up to 70% off, plus an extra 15% off for The 1 members",
-            "Home appliances such as refrigerators, washing machines, air conditioners, and microwaves",
-            "Small appliances such as irons, blenders, and air fryers",
-            "Audio and video devices such as TVs, soundbars, and DVD players"
+            "It's Back — HomePro Electric Expo!",
+            "The Biggest Home Appliance Sale Event from HomePro",
+            "Get up to 160,000 THB Cashback + Extra Savings up to 7,200 THB",
+            "0% Installments for up to 10 Months Across the Event"
         ]
     },
     "landing2": {
@@ -55,8 +55,8 @@
     "regist": {
         "lng": "เปลี่ยนภาษา",
         "show": "Furniture Fair",
-        "showdate": "August 16-24, 2025",
-        "hall": "Hall 7-8",
+        "showdate": "October 4-13, 2025",
+        "hall": "Hall 9-11",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
         "pre": "Preregistration Form",
@@ -132,6 +132,28 @@
                     {
                         "col": "Small appliances such as electric kettle, rice cooker, blender",
                         "id": "E_small"
+                    }
+                ],
+                "selecthp": [
+                    {
+                        "col": "Image and sound such as TV, sound bar",
+                        "id": "E_av"
+                    },
+                    {
+                        "col": "Home appliances such as refrigerator, washing machine, microwave",
+                        "id": "E_ha"
+                    },
+                    {
+                        "col": "Small appliances such as electric kettle, rice cooker, blender",
+                        "id": "E_small"
+                    },
+                    {
+                        "col": "Household items such as Gas Stove, Sink, pans",
+                        "id": "H_homeproduct"
+                    },
+                    {
+                        "col": "Tools",
+                        "id": "H_material"
                     }
                 ]
             },
