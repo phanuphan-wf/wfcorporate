@@ -4,6 +4,7 @@ import AppRouteFinance from "../../../../AppRouteFinance";
 import SelectExhibition from "./selectExhibition";
 import PrintOptions from "./PrintOptions";
 import Filter from "./Filter";
+import PrintReport from "./PrintReport";
 
 import { CgMoreO } from "react-icons/cg";
 import useHeader from "../../../hook/useHeader";
@@ -64,9 +65,8 @@ function CollectionReport(props) {
         {showFilter && <Filter />}
 
         {/* Print Report Button */}
-        <div className="flex justify-end mt-6">
-          <button className="btn-primary px-2">Print Report</button>
-        </div>
+        <PrintReport/>
+        
       </section>
     </dataContext.Provider>
   );
