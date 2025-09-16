@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 import AppRouteFinance from "../../../../AppRouteFinance";
 
 import SelectExhibition from "./selectExhibition";
@@ -14,27 +14,72 @@ import Axios from "axios";
 export const dataContext = createContext();
 
 function CollectionReport(props) {
+  const initDate = {
+    d1: new Date().getDate(),
+    m1: new Date().getMonth() + 1,
+    y1: new Date().getFullYear(),
+    d2: new Date().getDate(),
+    m2: new Date().getMonth() + 1,
+    y2: new Date().getFullYear(),
+  };
+  const [date, setDate] = useState(initDate);
+  const initFilter = {
+    date1: date.y1 + "-" + date.m1 + "-" + date.d1,
+    date2: date.y2 + "-" + date.m2 + "-" + date.d2,
+    range: false,
+    type: "0",
+    exID: "0",
+    sales: "0",
+    customer: 0,
+    bank: "0",
+    account: "0",
+    yearParse: process.env.REACT_APP_YEARPARSE,
+  };
+  const [filter, setFilter] = useState(initFilter);
+  const [printDate, setPrintDate] = useState({
+    date1: "",
+    date2: "",
+    due: false,
+  });
   const [showFilter, setShowFilter] = useState(false);
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cht;
 
-  const bearer = useHeader();
+  const [reportlist, setReportlist] = useState([]);
 
-  Axios.defaults.headers.common = {
-    Authorization: "Bearer " + bearer,
+  const getReport = async () => {
+    if (filter.type == "0") {
+      alert("Please select receiving type");
+      return;
+    }
+    const res = await Axios.post(url + "/getReport", filter);
+    setReportlist(res.data);
   };
+  useEffect(() => {
+    console.log(filter);
+  }, [filter]);
 
-  const [exhibition, setExhibition] = useState({});
-  const [customer, setCustomer] = useState([]);
-  const [data, setData] = useState([]);
+  /* Check if user is authorized to view this page must insert before return part ----*/
+  const show = AppRouteFinance.find(
+    (x) => x.path === "finance/receivingreport"
+  ).show;
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!show.some((x) => x.dept === user.Dept && x.acc === user.ALevel)) {
+    return (
+      <section className="2xl:container">
+        <h1 className="text-xl text-red-500">
+          You are not authorized to view this page
+        </h1>
+      </section>
+    );
+  }
+  /* Check if user is authorized to view this page must insert before return part ----*/
   return (
     <dataContext.Provider
       value={{
-        exhibitionC: [exhibition, setExhibition],
-        customerC: [customer, setCustomer],
-        dataC: [data, setData],
-      }}
-    >
+        filterC: [filter, setFilter],
+      }}>
       <section className="2xl:container pt-1 pb-5 px-5">
         <h1 className="text-xl font-semibold mb-2">Collection Report</h1>
 
@@ -49,8 +94,7 @@ function CollectionReport(props) {
           className={`rounded-md py-0.5 text-white mt-4 ${
             !showFilter ? "bg-green-600 px-2" : "bg-red-500 px-3"
           } flex items-center gap-2`}
-          onClick={() => setShowFilter(!showFilter)}
-        >
+          onClick={() => setShowFilter(!showFilter)}>
           {!showFilter ? (
             <>
               <CgMoreO />
@@ -65,8 +109,7 @@ function CollectionReport(props) {
         {showFilter && <Filter />}
 
         {/* Print Report Button */}
-        <PrintReport/>
-        
+        <PrintReport />
       </section>
     </dataContext.Provider>
   );

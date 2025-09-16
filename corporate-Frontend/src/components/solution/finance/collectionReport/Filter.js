@@ -13,10 +13,13 @@ function Filter() {
           <div className="flex items-center gap-3">
             <label
               htmlFor="bySales"
-              className="flex items-center font-medium gap-2 w-36"
-            >
-              <input type="checkbox" id="bySales" className="size-4 accent-red-500" />
-              BySales :
+              className="flex items-center font-medium gap-2 w-36">
+              <input
+                type="checkbox"
+                id="bySales"
+                className="size-4 accent-red-500"
+              />
+              By Sales :
             </label>
             <input
               id="salesInput"
@@ -29,16 +32,18 @@ function Filter() {
           <div className="flex items-center gap-3">
             <label
               htmlFor="byZone"
-              className="flex items-center font-medium gap-2 w-36"
-            >
-              <input type="checkbox" id="byZone" className="size-4 accent-red-500" />
-              ByZone :
+              className="flex items-center font-medium gap-2 w-36">
+              <input
+                type="checkbox"
+                id="byZone"
+                className="size-4 accent-red-500"
+              />
+              By Zone :
             </label>
             <select
               className="border rounded-md p-1.5 w-full md:w-100"
               id="cmbExhibition"
-              defaultValue="0"
-            >
+              defaultValue="0">
               <option value="0" disabled hidden>
                 select exhibition
               </option>
@@ -52,10 +57,13 @@ function Filter() {
           <div className="flex items-center gap-3">
             <label
               htmlFor="byShop"
-              className="flex items-center font-medium gap-2 w-36"
-            >
-              <input type="checkbox" id="byShop" className="size-4 accent-red-500" />
-              ByShop :
+              className="flex items-center font-medium gap-2 w-36">
+              <input
+                type="checkbox"
+                id="byShop"
+                className="size-4 accent-red-500"
+              />
+              By Customer :
             </label>
             <input
               id="shopInput"
@@ -69,29 +77,32 @@ function Filter() {
           <div className="flex items-center gap-3">
             <label
               htmlFor="byDebt"
-              className="flex items-center font-medium gap-2 w-36"
-            >
-              <input type="checkbox" id="byDebt" className="size-4 accent-red-500" />
-              ByDebt :
+              className="flex items-center font-medium gap-2 w-36">
+              <input
+                type="checkbox"
+                id="byPayment"
+                className="size-4 accent-red-500"
+              />
+              By Payment Status :
             </label>
             <div className="flex gap-4">
-              <label className="flex items-center gap-1">
+              <label className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="debtStatus"
-                  value="noDebt"
+                  value="no"
                   className="accent-red-500 size-4"
                 />
-                <span>NO Arrearage</span>
+                <span>No Balance Remaining</span>
               </label>
-              <label className="flex items-center gap-1">
+              <label className="flex items-center gap-2">
                 <input
                   type="radio"
                   name="debtStatus"
                   value="hasDebt"
                   className="accent-red-500 size-4"
                 />
-                <span>Arrearage</span>
+                <span>Balance Remaining</span>
               </label>
             </div>
           </div>

@@ -1,69 +1,47 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
-import useHeader from "../../../hook/useHeader";
+// src/components/solution/finance/collectionReport/selectExhibition.js
+import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-
-import CorrectDate from "../correctDate";
 
 import { dataContext } from "./report";
 
-function SelectExhibition() {
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cht;
+import CorrectDate from "../../../hook/correctDate";
 
-  const bearer = useHeader();
+export default function SelectExhibition() {
+  const { filterC } = useContext(dataContext);
 
-  Axios.defaults.headers.common = {
-    Authorization: "Bearer " + bearer,
-  };
+  const [filter, setFilter] = filterC;
 
-  const { exhibitionC } = useContext(dataContext);
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
 
-  const [exhibition, setExhibition] = exhibitionC;
-
-  const [exhibitionlist, setExhibitionlist] = useState([]);
+  const [exhibition, setExhibtion] = useState([]);
   const [past, setPast] = useState(false);
 
-  const getExhibition = async (past) => {
-    try {
-      const res = await Axios.get(url + "/getExhibition/" + past).then((r) =>
-        setExhibitionlist(r.data)
-      );
-    } catch (error) {
-      console.log(error);
-    }
+  const getExhibition = async () => {
+    const res = await Axios.get(url + "/getExhibition/" + past).then((r) => {
+      if (r.status === 200) {
+        setExhibtion(r.data);
+      }
+    });
   };
 
   useEffect(() => {
-    getExhibition(past);
-    document.getElementById("eName").value = 0;
-    setExhibition({});
+    getExhibition();
   }, [past]);
 
-  useEffect(() => {
-    //console.log(exhibition);
-  }, [exhibition]);
-
-  const selectEx = (v) => {
-    const ex = exhibitionlist.filter((e) => e.code === v)[0];
-    setExhibition(ex);
-  };
-
-  const location = useLocation();
-
-  var exId;
-
-  if (location.state) {
-    ({ exId } = location.state);
-  }
+  const [show, setShow] = useState({});
 
   useEffect(() => {
-    if (exhibitionlist.length !== 0) {
-      if (exId) {
-        document.getElementById("eName").value = exId;
-        selectEx(exId);
-      }
+    if (filter.exID != 0 || filter.exID != "") {
+      console.log(exhibition.filter((x) => x.code == filter.exID));
+      setShow(exhibition.filter((x) => x.code == filter.exID)[0]);
+    } else {
+      setShow({});
     }
-  }, [exhibitionlist]);
+  }, [filter.exID]);
+
+  useEffect(() => {
+    //console.log(show);
+  }, [show]);
 
   return (
     <section id="select-exhibition ">
@@ -77,36 +55,35 @@ function SelectExhibition() {
               <label htmlFor="eName" className="w-[140px]">
                 Exhibition Name
               </label>
-
               <select
                 id="eName"
                 className="cmb"
-                onChange={(e) => selectEx(e.target.value)}
-              >
+                onChange={(e) =>
+                  setFilter({ ...filter, exID: e.target.value })
+                }>
                 <option value="0">----</option>
-                {exhibitionlist.map((e, i) => (
-                  <option key={e.i} value={e.code}>
-                    {e.name + " (" + e.code + ")"}
-                  </option>
-                ))}
+                {exhibition.length &&
+                  exhibition.map((d, i) => (
+                    <option value={d.code}>
+                      {d.name + " (" + d.code + ")"}
+                    </option>
+                  ))}
               </select>
             </div>
             <div className="flex items-center">
               <label htmlFor="vName" className="w-[140px]">
                 Venue
               </label>
-              <span>{exhibition.venue ? exhibition.venue : ""}</span>
+              <span>{show && Object.keys(show).length > 0 && show.venue}</span>
             </div>
             <div className="flex items-center">
               <label htmlFor="during" className="w-[140px]">
                 During
               </label>
               <span>
-                {exhibition.sDate
-                  ? CorrectDate(exhibition.sDate, "s") +
-                    " - " +
-                    CorrectDate(exhibition.eDate, "s")
-                  : ""}
+                {show &&
+                  Object.keys(show).length > 0 &&
+                  CorrectDate(show.sDate) + " - " + CorrectDate(show.eDate)}
               </span>
             </div>
 
@@ -114,8 +91,8 @@ function SelectExhibition() {
               <input
                 type="checkbox"
                 id="eFinish"
-                className="accent-red-500"
-                onChange={(e) => setPast(!past)}
+                className="accent-red-500 size-4"
+                onChange={() => setPast(!past)}
               />
               <label htmlFor="eFinish" className="ml-2">
                 Show Finished Exhibition
@@ -127,5 +104,3 @@ function SelectExhibition() {
     </section>
   );
 }
-
-export default SelectExhibition;
