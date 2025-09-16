@@ -1,6 +1,11 @@
-import React from "react";
+import { useState, useEffect, useContext } from "react";
+import { dataContext } from "./report";
 
-function PrintOptions() {
+export default function PrintOptions() {
+  const { filterC } = useContext(dataContext);
+
+  const [filter, setFilter] = filterC;
+
   return (
     <section id="print-options">
       <div className="border border-zinc-300 rounded-md relative mt-6 p-4 bg-white">
@@ -13,7 +18,14 @@ function PrintOptions() {
         <div className="flex items-center justify-between max-md:flex-col">
           <div className="flex flex-wrap gap-6 mt-4">
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-red-500 w-4 h-4" />
+              <input
+                type="checkbox"
+                className="accent-red-500 w-4 h-4"
+                checked={filter.printall}
+                onChange={() =>
+                  setFilter({ ...filter, printall: !filter.printall })
+                }
+              />
               Print all
             </label>
             <label className="flex items-center gap-2">
@@ -36,5 +48,3 @@ function PrintOptions() {
     </section>
   );
 }
-
-export default PrintOptions;

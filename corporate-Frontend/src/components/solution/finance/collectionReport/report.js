@@ -14,25 +14,17 @@ import Axios from "axios";
 export const dataContext = createContext();
 
 function CollectionReport(props) {
-  const initDate = {
-    d1: new Date().getDate(),
-    m1: new Date().getMonth() + 1,
-    y1: new Date().getFullYear(),
-    d2: new Date().getDate(),
-    m2: new Date().getMonth() + 1,
-    y2: new Date().getFullYear(),
-  };
-  const [date, setDate] = useState(initDate);
   const initFilter = {
-    date1: date.y1 + "-" + date.m1 + "-" + date.d1,
-    date2: date.y2 + "-" + date.m2 + "-" + date.d2,
-    range: false,
     type: "0",
     exID: "0",
     sales: "0",
     customer: 0,
     bank: "0",
     account: "0",
+    printall: true,
+    wSale: false,
+    wZone: false,
+    sumReport: false,
     yearParse: process.env.REACT_APP_YEARPARSE,
   };
   const [filter, setFilter] = useState(initFilter);
