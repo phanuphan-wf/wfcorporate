@@ -28,21 +28,63 @@ export default function PrintOptions() {
               />
               Print all
             </label>
+
+            {/* Without Sales */}
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-red-500 w-4 h-4" />
+              <input
+                type="checkbox"
+                className="accent-red-500 w-4 h-4"
+                checked={filter.withoutSales}
+                onChange={() =>
+                  setFilter({ ...filter, withoutSales: !filter.withoutSales })
+                }
+              />
               Without Sales
             </label>
+
+
+          
+             {/* Without Zones */}
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-red-500 w-4 h-4" />
+              <input
+                type="checkbox"
+                className="accent-red-500 w-4 h-4"
+                checked={filter.withoutZones}
+                onChange={() =>
+                  setFilter({ ...filter, withoutZones: !filter.withoutZones })
+                }
+              />
               Without Zones
             </label>
+
+
           </div>
-          <div>
-            <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-red-500 w-4 h-4" />
-              Summary Report
-            </label>
-          </div>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              className="accent-red-500 w-4 h-4"
+              checked={filter.summary}
+              onChange={() => {
+                if (!filter.summary) {
+                  // ✅ ถ้าติ๊ก summary → reset ทุกค่าเหลือแค่ summary: true
+                  setFilter({
+                    printall: false,
+                    withoutSales: false,
+                    withoutZones: false,                   
+                    summary: true,
+                  });
+                } else {
+                  // ถ้าเอาติ๊กออก → summary = false
+                  setFilter({ ...filter, summary: false });
+                }
+              }}
+            />
+            Summary Report
+          </label>
+
+
+
         </div>
       </div>
     </section>

@@ -1,68 +1,120 @@
-// src/components/solution/finance/collectionReport/checkboxPrint.js
-import React from "react";
+import { useState, useEffect, useContext } from "react";
+import { dataContext } from "./report";
+import Axios from "axios";
 
-function Filter() {
+export default function Filter() {
+  const { filterC } = useContext(dataContext);
+  const [filter, setFilter] = filterC;
+
+
+  const isDisabled = !filter.exID || filter.exID === "0";
+
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cr;
+  // const [sales, setSales] = useState([]);
+  // const [zones, setZones] = useState([]);
+
+  const [sales, setSales] = useState([]);
+  const [zones, setZones] = useState([]);
+  const [selectedZone, setSelectedZone] = useState(filter.zone || "");
+
+  // ดึง Sales
+  const getSales = async () => {
+    try {
+      const res = await Axios.get(url + "/getSales");
+      setSales(res.data);
+    } catch (err) {
+      console.error("Error fetching sales:", err);
+    }
+  };
+
+  // ดึง Zone
+  const getZone = async () => {
+    try {
+      const res = await Axios.get(url + "/getZone");
+      console.log("Zone API response:", res.data); // <--- ดูข้อมูลที่ได้
+      setZones(res.data);
+    } catch (err) {
+      console.error("Error fetching Zone:", err);
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (!isDisabled) {
+      getSales();
+      getZone();
+    }
+  }, [isDisabled]);
+  
+
   return (
+
     <section id="checkbox-print">
       <div className="border border-zinc-300 rounded-md relative mt-6">
         <div className="absolute bg-white px-2 py-1 -top-4 left-3 text-red-600">
           Filter
         </div>
+
+        
+        
         <div className="flex flex-col px-3 py-4 space-y-3">
+
           {/* By Sales */}
           <div className="flex items-center gap-3">
             <label
               htmlFor="bySales"
-              className="flex items-center font-medium gap-2 w-36">
-              <input
-                type="checkbox"
-                id="bySales"
-                className="size-4 accent-red-500"
-              />
+              className="flex items-center font-medium gap-2 w-36"
+            >
               By Sales :
             </label>
-            <input
-              id="salesInput"
+            <select
+              id="bySales"
               className="border rounded-md p-1.5 w-full md:w-100"
-              placeholder="ระบุสถานที่จัดงาน"
-            />
+              disabled={isDisabled}
+              value={filter.sales || ""}
+              onChange={(e) => setFilter({ ...filter, sales: e.target.value })}
+            >
+              <option value="0">All sales</option>
+              {sales.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* By Zone */}
+           {/* By Zone */}
           <div className="flex items-center gap-3">
             <label
               htmlFor="byZone"
-              className="flex items-center font-medium gap-2 w-36">
-              <input
-                type="checkbox"
-                id="byZone"
-                className="size-4 accent-red-500"
-              />
+              className="flex items-center font-medium gap-2 w-36"
+            >
               By Zone :
             </label>
             <select
               className="border rounded-md p-1.5 w-full md:w-100"
               id="cmbExhibition"
-              defaultValue="0">
+              value={selectedZone}
+              onChange={(e) => setSelectedZone(e.target.value)}
+              disabled={isDisabled}
+            >
               <option value="0" disabled hidden>
                 select exhibition
               </option>
-              <option value="1">Exhibition 1</option>
-              <option value="2">Exhibition 2</option>
-              <option value="other">Other</option>
+              {/* {zones.map((zone, zid) => (
+                <option key={idx} value={zone.id}>
+                  {zone.name}
+                </option>
+              ))} */}
             </select>
-          </div>
+          </div> 
+
+         
 
           {/* By Shop */}
           <div className="flex items-center gap-3">
-            <label
-              htmlFor="byShop"
-              className="flex items-center font-medium gap-2 w-36">
-              <input
-                type="checkbox"
-                id="byShop"
-                className="size-4 accent-red-500"
-              />
+            <label htmlFor="byShop" className="flex items-center font-medium gap-2 w-36">
               By Customer :
             </label>
             <input
@@ -70,19 +122,13 @@ function Filter() {
               type="text"
               className="border rounded-md p-1.5 w-full md:w-100"
               placeholder="ระบุชื่อร้านค้า"
+              disabled={isDisabled}
             />
           </div>
 
           {/* By Debt */}
           <div className="flex items-center gap-3">
-            <label
-              htmlFor="byDebt"
-              className="flex items-center font-medium gap-2 w-36">
-              <input
-                type="checkbox"
-                id="byPayment"
-                className="size-4 accent-red-500"
-              />
+            <label htmlFor="byDebt" className="flex items-center font-medium gap-2 w-36">
               By Payment Status :
             </label>
             <div className="flex gap-4">
@@ -92,6 +138,7 @@ function Filter() {
                   name="debtStatus"
                   value="no"
                   className="accent-red-500 size-4"
+                  disabled={isDisabled}
                 />
                 <span>No Balance Remaining</span>
               </label>
@@ -101,6 +148,7 @@ function Filter() {
                   name="debtStatus"
                   value="hasDebt"
                   className="accent-red-500 size-4"
+                  disabled={isDisabled}
                 />
                 <span>Balance Remaining</span>
               </label>
@@ -111,5 +159,3 @@ function Filter() {
     </section>
   );
 }
-
-export default Filter;

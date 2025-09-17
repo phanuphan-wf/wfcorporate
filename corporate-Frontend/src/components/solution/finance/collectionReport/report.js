@@ -27,7 +27,17 @@ function CollectionReport(props) {
     sumReport: false,
     yearParse: process.env.REACT_APP_YEARPARSE,
   };
-  const [filter, setFilter] = useState(initFilter);
+  // const [filter, setFilter] = useState(initFilter);
+
+  const [filter, setFilter] = useState({
+    printall: true,
+    withoutSales: false,
+    withoutZones: false,
+    summary: false,
+  });
+
+
+
   const [printDate, setPrintDate] = useState({
     date1: "",
     date2: "",
@@ -68,10 +78,21 @@ function CollectionReport(props) {
   }
   /* Check if user is authorized to view this page must insert before return part ----*/
   return (
-    <dataContext.Provider
-      value={{
-        filterC: [filter, setFilter],
-      }}>
+    // <dataContext.Provider
+    //   value={{
+    //     filterC: [filter, setFilter],
+    //   }}
+    // >
+      <dataContext.Provider
+        value={{
+          //exhibitionC: [exhibition, setExhibition],
+          //customerC: [customer, setCustomer],
+         // dataC: [data, setData],
+          filterC: [filter, setFilter],   // ✅ เพิ่มตรงนี้
+        }}
+      >
+
+
       <section className="2xl:container pt-1 pb-5 px-5">
         <h1 className="text-xl font-semibold mb-2">Collection Report</h1>
 
