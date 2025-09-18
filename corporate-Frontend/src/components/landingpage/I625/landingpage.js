@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import useCheckMobile from "../../hook/useCheckMobile";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
@@ -21,6 +21,8 @@ export default function Landingpage(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
   const exId = "i625";
 
+  const [sponShow, setSponShow] = useState(false);
+
   useEffect(() => {
     document.title = "Furniture Fair Information";
 
@@ -30,6 +32,14 @@ export default function Landingpage(props) {
       res();
     }
   }, []);
+
+  useEffect(() => {
+    const umb = ["F9CAA5", "0220AD", "C21AD8", "293F2C"];
+
+    if (umb.some((x) => x == cp)) {
+      setSponShow(true);
+    }
+  }, [cp]);
 
   const clickPos = useRef();
 
@@ -64,8 +74,9 @@ export default function Landingpage(props) {
   });
 
   useEffect(() => {
-    //setBannerH(bannerRef.current.clientHeight);
-  }, [bannerH]);
+    //console.log(cp);
+    //console.log(sponShow);
+  }, [sponShow]);
 
   return (
     <section className={`landing_${exId}`}>
@@ -106,7 +117,7 @@ export default function Landingpage(props) {
         </>
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
-      {bannerLoaded && (
+      {bannerLoaded && sponShow && (
         <div className="premium my-6">
           {new Date() < new Date("2025-08-10T00:00:00Z") ? (
             <img
@@ -116,12 +127,18 @@ export default function Landingpage(props) {
               className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
             />
           ) : (
-            <img
-              src={require("./img/sponsor.png")}
-              alt="premium bag"
-              id="premium"
-              className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
-            />
+            <div className="w-full">
+              <span className="text-center text-lg font-medium text-red-500">
+                {t("regist")}
+                {t("free")}
+              </span>
+              <img
+                src={require("./img/sponsor.png")}
+                alt="premium bag"
+                id="premium"
+                className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
+              />
+            </div>
           )}
         </div>
       )}
