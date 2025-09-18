@@ -129,8 +129,7 @@ export default function Landingpage(props) {
           ) : (
             <div className="w-full">
               <span className="text-center text-lg font-medium text-red-500">
-                {t("regist")}
-                {t("free")}
+                {t("regist") + " " + t("free")}
               </span>
               <img
                 src={require("./img/sponsor.png")}
