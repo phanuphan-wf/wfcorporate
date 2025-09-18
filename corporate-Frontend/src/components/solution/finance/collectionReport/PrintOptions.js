@@ -17,14 +17,27 @@ export default function PrintOptions() {
         {/* Checkboxes */}
         <div className="flex items-center justify-between max-md:flex-col">
           <div className="flex flex-wrap gap-6 mt-4">
+           
+           
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 className="accent-red-500 w-4 h-4"
                 checked={filter.printall}
-                onChange={() =>
-                  setFilter({ ...filter, printall: !filter.printall })
+                onChange={() => {
+                if (!filter.printall) {
+                  // ✅ ถ้าติ๊ก summary → reset ทุกค่าเหลือแค่ summary: true
+                  setFilter({
+                    printall: true,
+                    withoutSales: false,
+                    withoutZones: false,                   
+                    summary: false,
+                  });
+                } else {
+                  // ถ้าเอาติ๊กออก → summary = false
+                  setFilter({ ...filter, printall: false });
                 }
+              }}
               />
               Print all
             </label>

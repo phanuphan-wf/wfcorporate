@@ -15,6 +15,8 @@ export default function Filter() {
   const [sales, setSales] = useState([]);
   const [zones, setZones] = useState([]);
 
+  const [payment, setPayment] = useState([]);
+
   // ดึง Sales
   const getSales = async () => {
     console.log(url + "/getSales");
@@ -38,15 +40,19 @@ export default function Filter() {
     }
   };
 
+  //const getPayment = 0;
+
   useEffect(() => {
     if (filter.exID != 0) {
       getSales();
-      //getZone();
+      getZone();
+     // getPayment();
       setIsDisabled(false);
-    } else {
-      setIsDisabled(true);
+    } else {      
       setSales([]);
       setZones([]);
+     // getPayment([]);
+      setIsDisabled(true);
     }
   }, [filter.exID]);
 
@@ -90,13 +96,13 @@ export default function Filter() {
             <select
               className="border rounded-md p-1.5 w-full md:w-100"
               id="cmbExhibition"
-              value={filter.zone}
+              value={filter.zone || ""}
               onChange={(e) => setFilter({ ...filter, zone: e.target.value })}
               disabled={isDisabled}>
-              <option value="0">select zone</option>
+              <option value="0">All Zone</option>
               {zones.map((z, i) => (
                 <option key={i} value={z.zid}>
-                  {z.name}
+                  {z.zone}
                 </option>
               ))}
             </select>
@@ -129,21 +135,23 @@ export default function Filter() {
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  name="debtStatus"
-                  value="no"
-                  className="accent-red-500 size-4"
+                  name="paymentStatus"
+                  value="01"
+                  onChange={(e) => setFilter({ ...filter, payment: e.target.value })}
                   disabled={isDisabled}
                 />
+
                 <span>No Balance Remaining</span>
               </label>
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
-                  name="debtStatus"
-                  value="hasDebt"
-                  className="accent-red-500 size-4"
+                  name="paymentStatus"
+                  value="02"
+                  onChange={(e) => setFilter({ ...filter, payment: e.target.value })}
                   disabled={isDisabled}
                 />
+
                 <span>Balance Remaining</span>
               </label>
             </div>
