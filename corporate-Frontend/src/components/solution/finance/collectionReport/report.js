@@ -15,12 +15,11 @@ export const dataContext = createContext();
 
 function CollectionReport(props) {
   const initFilter = {
-    type: "0",
     exID: "0",
     sales: "0",
-    customer: 0,
-    bank: "0",
-    account: "0",
+    customer: "0",
+    zone: "0",
+    payment: "0",
     printall: true,
     wSale: false,
     wZone: false,
@@ -29,14 +28,7 @@ function CollectionReport(props) {
   };
   // const [filter, setFilter] = useState(initFilter);
 
-  const [filter, setFilter] = useState({
-    printall: true,
-    withoutSales: false,
-    withoutZones: false,
-    summary: false,
-  });
-
-
+  const [filter, setFilter] = useState(initFilter);
 
   const [printDate, setPrintDate] = useState({
     date1: "",
@@ -83,16 +75,13 @@ function CollectionReport(props) {
     //     filterC: [filter, setFilter],
     //   }}
     // >
-      <dataContext.Provider
-        value={{
-          //exhibitionC: [exhibition, setExhibition],
-          //customerC: [customer, setCustomer],
-         // dataC: [data, setData],
-          filterC: [filter, setFilter],   // ✅ เพิ่มตรงนี้
-        }}
-      >
-
-
+    <dataContext.Provider
+      value={{
+        //exhibitionC: [exhibition, setExhibition],
+        //customerC: [customer, setCustomer],
+        // dataC: [data, setData],
+        filterC: [filter, setFilter], // ✅ เพิ่มตรงนี้
+      }}>
       <section className="2xl:container pt-1 pb-5 px-5">
         <h1 className="text-xl font-semibold mb-2">Collection Report</h1>
 

@@ -6,19 +6,18 @@ export default function Filter() {
   const { filterC } = useContext(dataContext);
   const [filter, setFilter] = filterC;
 
+  const [isDisabled, setIsDisabled] = useState(true);
 
-  const isDisabled = !filter.exID || filter.exID === "0";
-
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cr;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
   // const [sales, setSales] = useState([]);
   // const [zones, setZones] = useState([]);
 
   const [sales, setSales] = useState([]);
   const [zones, setZones] = useState([]);
-  const [selectedZone, setSelectedZone] = useState(filter.zone || "");
 
   // ดึง Sales
   const getSales = async () => {
+    console.log(url + "/getSales");
     try {
       const res = await Axios.get(url + "/getSales");
       setSales(res.data);
@@ -29,8 +28,9 @@ export default function Filter() {
 
   // ดึง Zone
   const getZone = async () => {
+    console.log(url + "/getZone/" + filter.exID);
     try {
-      const res = await Axios.get(url + "/getZone");
+      const res = await Axios.get(url + "/getZone/" + filter.exID);
       console.log("Zone API response:", res.data); // <--- ดูข้อมูลที่ได้
       setZones(res.data);
     } catch (err) {
@@ -38,34 +38,31 @@ export default function Filter() {
     }
   };
 
-
-
   useEffect(() => {
-    if (!isDisabled) {
+    if (filter.exID != 0) {
       getSales();
-      getZone();
+      //getZone();
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+      setSales([]);
+      setZones([]);
     }
-  }, [isDisabled]);
-  
+  }, [filter.exID]);
 
   return (
-
     <section id="checkbox-print">
       <div className="border border-zinc-300 rounded-md relative mt-6">
         <div className="absolute bg-white px-2 py-1 -top-4 left-3 text-red-600">
           Filter
         </div>
 
-        
-        
         <div className="flex flex-col px-3 py-4 space-y-3">
-
           {/* By Sales */}
           <div className="flex items-center gap-3">
             <label
               htmlFor="bySales"
-              className="flex items-center font-medium gap-2 w-36"
-            >
+              className="flex items-center font-medium gap-2 w-36">
               By Sales :
             </label>
             <select
@@ -73,48 +70,43 @@ export default function Filter() {
               className="border rounded-md p-1.5 w-full md:w-100"
               disabled={isDisabled}
               value={filter.sales || ""}
-              onChange={(e) => setFilter({ ...filter, sales: e.target.value })}
-            >
+              onChange={(e) => setFilter({ ...filter, sales: e.target.value })}>
               <option value="0">All sales</option>
-              {sales.map((s) => (
-                <option key={s.id} value={s.id}>
+              {sales.map((s, i) => (
+                <option key={i} value={s.eid}>
                   {s.name}
                 </option>
               ))}
             </select>
           </div>
 
-           {/* By Zone */}
+          {/* By Zone */}
           <div className="flex items-center gap-3">
             <label
               htmlFor="byZone"
-              className="flex items-center font-medium gap-2 w-36"
-            >
+              className="flex items-center font-medium gap-2 w-36">
               By Zone :
             </label>
             <select
               className="border rounded-md p-1.5 w-full md:w-100"
               id="cmbExhibition"
-              value={selectedZone}
-              onChange={(e) => setSelectedZone(e.target.value)}
-              disabled={isDisabled}
-            >
-              <option value="0" disabled hidden>
-                select exhibition
-              </option>
-              {/* {zones.map((zone, zid) => (
-                <option key={idx} value={zone.id}>
-                  {zone.name}
+              value={filter.zone}
+              onChange={(e) => setFilter({ ...filter, zone: e.target.value })}
+              disabled={isDisabled}>
+              <option value="0">select zone</option>
+              {zones.map((z, i) => (
+                <option key={i} value={z.zid}>
+                  {z.name}
                 </option>
-              ))} */}
+              ))}
             </select>
-          </div> 
-
-         
+          </div>
 
           {/* By Shop */}
           <div className="flex items-center gap-3">
-            <label htmlFor="byShop" className="flex items-center font-medium gap-2 w-36">
+            <label
+              htmlFor="byShop"
+              className="flex items-center font-medium gap-2 w-36">
               By Customer :
             </label>
             <input
@@ -128,7 +120,9 @@ export default function Filter() {
 
           {/* By Debt */}
           <div className="flex items-center gap-3">
-            <label htmlFor="byDebt" className="flex items-center font-medium gap-2 w-36">
+            <label
+              htmlFor="byDebt"
+              className="flex items-center font-medium gap-2 w-36">
               By Payment Status :
             </label>
             <div className="flex gap-4">
