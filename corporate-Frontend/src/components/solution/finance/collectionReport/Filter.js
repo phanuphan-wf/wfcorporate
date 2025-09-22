@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { dataContext } from "./report";
 import Axios from "axios";
 
+import ModalSeach from "./modalSearch";
+
 export default function Filter() {
   const { filterC } = useContext(dataContext);
   const [filter, setFilter] = filterC;
@@ -19,24 +21,24 @@ export default function Filter() {
 
   // ดึง Sales
   const getSales = async () => {
-    console.log(url + "/getSales");
+    // console.log(url + "/getSales");
     try {
       const res = await Axios.get(url + "/getSales");
       setSales(res.data);
     } catch (err) {
-      console.error("Error fetching sales:", err);
+      // console.error("Error fetching sales:", err);
     }
   };
 
   // ดึง Zone
   const getZone = async () => {
-    console.log(url + "/getZone/" + filter.exID);
+    // console.log(url + "/getZone/" + filter.exID);
     try {
       const res = await Axios.get(url + "/getZone/" + filter.exID);
-      console.log("Zone API response:", res.data); // <--- ดูข้อมูลที่ได้
+      // console.log("Zone API response:", res.data); // <--- ดูข้อมูลที่ได้
       setZones(res.data);
     } catch (err) {
-      console.error("Error fetching Zone:", err);
+      // console.error("Error fetching Zone:", err);
     }
   };
 
@@ -55,6 +57,53 @@ export default function Filter() {
       setIsDisabled(true);
     }
   }, [filter.exID]);
+
+
+  
+
+  const [modalShow, setModalShow] = useState(false);
+
+  const closeModal = () => {
+    setModalShow(false);
+  };
+
+  const searchName = (e) => {
+    if (e.key === "Enter") {
+      setModalShow(true);
+    }
+  };
+
+  // const [exData, setExData] = useState(initExData);
+  // const fillName = (id, name) => {
+  //   setExData({ id: id, name: name });
+  //   setExName(name);
+  //   setModalShow(false);
+  // };
+
+  //  const searchtxtChange = (value) => {
+  //   setExName(value);
+  //   setExData(initExData);
+  // };
+
+
+  // setExData(initExData);
+  // setExName("");
+
+
+  //  const getExName = async () => {
+  //   try {
+  //     const res = await Axios.get(
+  //       url + "/getExName/" + regData.customerID
+  //     ).then((r) => {
+  //       setExData(r.data);
+  //       setExName(r.data.name);
+  //     });
+  //   } catch (err) {
+  //     if (err.response.status == 404) {
+  //       alert("Not found Exhibition name");
+  //     }
+  //   }
+  // };
 
   return (
     <section id="checkbox-print">
@@ -106,22 +155,28 @@ export default function Filter() {
                 </option>
               ))}
             </select>
-          </div>
+          </div>     
 
-          {/* By Shop */}
+          {/* By Customer */}          
           <div className="flex items-center gap-3">
-            <label
-              htmlFor="byShop"
-              className="flex items-center font-medium gap-2 w-36">
-              By Customer :
+            <label htmlFor="exname" className="mr-7">
+                   By Customer:
             </label>
-            <input
-              id="shopInput"
-              type="text"
-              className="border rounded-md p-1.5 w-full md:w-100"
-              placeholder="ระบุชื่อร้านค้า"
-              disabled={isDisabled}
-            />
+
+            <div className="flex flex-grow gap-2">
+              <input
+                    id="exname"
+                    className="w-full md:w-100"  
+                    // onChange={(e) => searchtxtChange(e.target.value)}
+                    // onKeyDown={(e) => searchName(e)}
+                    // value={exName}             
+                  />
+              <div 
+                 className="btn-primary px-3"
+                 onClick={() => setModalShow(true)}>
+                Search
+              </div>
+            </div>
           </div>
 
           {/* By Debt */}
@@ -157,7 +212,16 @@ export default function Filter() {
             </div>
           </div>
         </div>
+        
       </div>
+
+        <ModalSeach
+              show={modalShow}
+              //  exID={exID}
+              onHide={closeModal}
+              // search={exName}
+              // fill={fillName}
+            />
     </section>
   );
 }
