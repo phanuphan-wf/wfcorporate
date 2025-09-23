@@ -18,6 +18,7 @@ export default function Filter() {
   const [zones, setZones] = useState([]);
 
   const [payment, setPayment] = useState([]);
+  const [customerName, setCustomerName] = useState([]);  // ✅ state เก็บชื่อ
 
   // ดึง Sales
   const getSales = async () => {
@@ -49,6 +50,7 @@ export default function Filter() {
       getSales();
       getZone();
      // getPayment();
+
       setIsDisabled(false);
     } else {      
       setSales([]);
@@ -72,6 +74,20 @@ export default function Filter() {
       setModalShow(true);
     }
   };
+
+
+  //  By Customer
+
+  const [selectedCustomer, setSelectedCustomer] = useState({ id: "", name: "" });
+
+  const customerClick = (customer) => {
+    setFilter({ ...filter, customer: customer.id }); // เก็บ id ไว้ใน filter
+    setSelectedCustomer(customer);                   // เก็บทั้ง object
+    setModalShow(false);
+  };
+
+
+  
 
   // const [exData, setExData] = useState(initExData);
   // const fillName = (id, name) => {
@@ -157,27 +173,34 @@ export default function Filter() {
             </select>
           </div>     
 
-          {/* By Customer */}          
+          
+          {/* By Customer */}
           <div className="flex items-center gap-3">
-            <label htmlFor="exname" className="mr-7">
-                   By Customer:
+            <label
+              htmlFor="exname"
+              className="flex items-center font-medium gap-2 w-36"
+            >
+              By Customer :
             </label>
 
-            <div className="flex flex-grow gap-2">
+            <div className="flex w-full gap-2">
               <input
-                    id="exname"
-                    className="w-full md:w-100"  
-                    // onChange={(e) => searchtxtChange(e.target.value)}
-                    // onKeyDown={(e) => searchName(e)}
-                    // value={exName}             
-                  />
-              <div 
-                 className="btn-primary px-3"
-                 onClick={() => setModalShow(true)}>
+                id="exname"
+                className="w-full md:w-100"
+                disabled={isDisabled}
+                value={selectedCustomer.name || ""} // ✅ กันกรณี undefined
+                readOnly
+              />
+              <button
+                type="button"
+                className="btn-primary px-3"
+                onClick={() => setModalShow(true)}
+              >
                 Search
-              </div>
+              </button>
             </div>
           </div>
+
 
           {/* By Debt */}
           <div className="flex items-center gap-3">
@@ -215,13 +238,14 @@ export default function Filter() {
         
       </div>
 
-        <ModalSeach
-              show={modalShow}
-              //  exID={exID}
-              onHide={closeModal}
-              // search={exName}
-              // fill={fillName}
-            />
+       <ModalSeach
+          show={modalShow}
+          onHide={closeModal}
+          search={selectedCustomer.name} // ส่งชื่อไป modal ถ้ามี
+          fill={customerClick}           // ✅ callback รับค่ากลับมา
+        />
+
+
     </section>
   );
 }

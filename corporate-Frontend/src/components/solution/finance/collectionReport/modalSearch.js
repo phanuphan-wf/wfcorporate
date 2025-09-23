@@ -37,9 +37,14 @@ export default function ModalSeach(props) {
     }
   }, [props.show]);
 
-  const nameClick = (id) => {
-    props.fill(id);
+  // const nameClick = (id) => {
+  //   props.fill(id);
+  // };
+
+  const nameClick = (c) => {
+      props.fill({ id: c.cid, name: c.name });
   };
+
 
   const pressEnter = (e) => {
     if (e.key == "Enter") {
@@ -111,14 +116,25 @@ export default function ModalSeach(props) {
             {/*-- Modal body --*/}
             <div className="p-6 space-y-6 max-h-[60vh] overflow-y-scroll">
               <ul>
-                {customer.map((c) => (
+                {/* {customer.map((c) => (
                   <li
                     onClick={() => nameClick(c.cid)}
                     className="cursor-pointer w-fit"
                   >
                     {c.name}
                   </li>
+                ))} */}
+
+                {customer.map((c) => (
+                  <li
+                    key={c.cid}
+                    onClick={() => nameClick(c)}
+                    className="cursor-pointer w-fit"
+                  >
+                    {c.name}
+                  </li>
                 ))}
+
               </ul>
             </div>
             {/*-- Modal footer --*/}
