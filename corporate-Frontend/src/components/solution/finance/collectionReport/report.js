@@ -111,7 +111,8 @@ function CollectionReport(props) {
         {showFilter && <Filter />}
 
         {/* Print Report Button */}
-        <PrintReport />
+        <PrintReport filter={filter} />
+
       </section>
     </dataContext.Provider>
   );
