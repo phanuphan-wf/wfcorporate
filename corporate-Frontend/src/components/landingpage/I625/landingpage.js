@@ -132,7 +132,7 @@ export default function Landingpage(props) {
                 {t("regist") + " " + t("free")}
               </span>
               <img
-                src={require("./img/sponsor.png")}
+                src={require("./img/sponsor2.png")}
                 alt="premium bag"
                 id="premium"
                 className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
