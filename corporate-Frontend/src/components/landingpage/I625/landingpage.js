@@ -117,8 +117,8 @@ export default function Landingpage(props) {
         </>
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
-      {bannerLoaded && sponShow && (
-        <div className="premium my-6">
+      {bannerLoaded && (
+        /* sponShow && */ <div className="premium my-6">
           {new Date() < new Date("2025-08-10T00:00:00Z") ? (
             <img
               src={require("./img/sponsor.png")}
