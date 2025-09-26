@@ -39,18 +39,46 @@ function CollectionReport(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cht;
 
   const [reportlist, setReportlist] = useState([]);
+  const [showReport, setShowReport] = useState(false); // ✅ ประกาศ state สำหรับแสดง/ซ่อน report
 
-  const getReport = async () => {
-    if (filter.type == "0") {
-      alert("Please select receiving type");
-      return;
+  
+
+
+
+  const getReport = async (params) => {
+    try {
+      console.log("📤 ค่าที่ส่งออกไป:", params);
+
+      const res = await Axios.post(
+        process.env.REACT_APP_API_URI + process.env.REACT_APP_clr + "/getReport",
+        params
+      );
+
+      console.log("📥 ค่าที่ API ส่งกลับมา:", res.data);
+      setReportlist(res.data);
+    } catch (err) {
+      console.error("❌ Error fetching report:", err);
     }
-    const res = await Axios.post(url + "/getReport", filter);
-    setReportlist(res.data);
   };
+
   useEffect(() => {
-    console.log(filter);
-  }, [filter]);
+    if (filter.exID !== "0" && filter.exID !== "") {
+      const params = {
+        customer: filter.customer || "0",
+        exID: filter.exID,
+        payment: filter.payment || "0",
+        sales: filter.sales || "0",
+        zone: filter.zone || "0",
+      };
+      getReport(params);
+    }
+  }, [filter]); // เรียกใหม่เมื่อ filter เปลี่ยน
+
+  // แยก useEffect สำหรับเช็ค reportlist
+  // แสดง report อัตโนมัติเมื่อ reportlist มีข้อมูล
+  // useEffect(() => {
+  //   setShowReport(reportlist.length > 0);
+  // }, [reportlist]);
 
   /* Check if user is authorized to view this page must insert before return part ----*/
   const show = AppRouteFinance.find(
@@ -110,8 +138,25 @@ function CollectionReport(props) {
         {/* Filter Section */}
         {showFilter && <Filter />}
 
-        {/* Print Report Button */}
-        <PrintReport filter={filter} />
+        {/* Print Report Button */}      
+        <div className="flex justify-end mt-4">
+          <button
+            className="btn-primary px-2"
+            onClick={() => setShowReport(!showReport)} // toggle
+          >
+            {showReport ? "Close Report" : "Print Report"}
+          </button>
+        </div>
+
+        {/* PrintReport */}
+        <PrintReport
+          filter={filter}
+          reportlist={reportlist}
+          showReport={showReport} // ตารางจะถูกแสดงตาม state
+          onPrint={getReport}
+        />
+
+
 
       </section>
     </dataContext.Provider>

@@ -40,7 +40,7 @@ export default function SelectExhibition() {
   }, [filter.exID]);
 
   useEffect(() => {
-    //console.log(show);
+    console.log(show);
   }, [show]);
 
   return (
