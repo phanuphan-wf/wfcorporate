@@ -5,6 +5,9 @@ import SelectExhibition from "./selectExhibition";
 import PrintOptions from "./PrintOptions";
 import Filter from "./Filter";
 import PrintReport from "./PrintReport";
+import Without_Zones from "./Without_Zones";
+import Without_Sales from "./Without_Sales";
+import Summary_Report from "./Summary_Report";
 
 import { CgMoreO } from "react-icons/cg";
 import useHeader from "../../../hook/useHeader";
@@ -19,30 +22,17 @@ function CollectionReport(props) {
     sales: "0",
     customer: "0",
     zone: "0",
-    payment: "0",
-    printall: true,
-    wSale: false,
-    wZone: false,
-    sumReport: false,
-    yearParse: process.env.REACT_APP_YEARPARSE,
+    payment: "0", 
   };
-  // const [filter, setFilter] = useState(initFilter);
+
 
   const [filter, setFilter] = useState(initFilter);
 
-  const [printDate, setPrintDate] = useState({
-    date1: "",
-    date2: "",
-    due: false,
-  });
   const [showFilter, setShowFilter] = useState(false);
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cht;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
 
   const [reportlist, setReportlist] = useState([]);
   const [showReport, setShowReport] = useState(false); // ✅ ประกาศ state สำหรับแสดง/ซ่อน report
-
-  
-
 
 
   const getReport = async (params) => {
@@ -50,7 +40,7 @@ function CollectionReport(props) {
       console.log("📤 ค่าที่ส่งออกไป:", params);
 
       const res = await Axios.post(
-        process.env.REACT_APP_API_URI + process.env.REACT_APP_clr + "/getReport",
+        url + "/getReport",
         params
       );
 
@@ -63,22 +53,11 @@ function CollectionReport(props) {
 
   useEffect(() => {
     if (filter.exID !== "0" && filter.exID !== "") {
-      const params = {
-        customer: filter.customer || "0",
-        exID: filter.exID,
-        payment: filter.payment || "0",
-        sales: filter.sales || "0",
-        zone: filter.zone || "0",
-      };
-      getReport(params);
+     
+      getReport(filter);
     }
   }, [filter]); // เรียกใหม่เมื่อ filter เปลี่ยน
-
-  // แยก useEffect สำหรับเช็ค reportlist
-  // แสดง report อัตโนมัติเมื่อ reportlist มีข้อมูล
-  // useEffect(() => {
-  //   setShowReport(reportlist.length > 0);
-  // }, [reportlist]);
+  
 
   /* Check if user is authorized to view this page must insert before return part ----*/
   const show = AppRouteFinance.find(
@@ -98,17 +77,11 @@ function CollectionReport(props) {
   }
   /* Check if user is authorized to view this page must insert before return part ----*/
   return (
-    // <dataContext.Provider
-    //   value={{
-    //     filterC: [filter, setFilter],
-    //   }}
-    // >
+
     <dataContext.Provider
-      value={{
-        //exhibitionC: [exhibition, setExhibition],
-        //customerC: [customer, setCustomer],
-        // dataC: [data, setData],
-        filterC: [filter, setFilter], // ✅ เพิ่มตรงนี้
+      value={{       
+        filterC: [filter, setFilter],
+        reportC: [reportlist,setReportlist] // ✅ เพิ่มตรงนี้
       }}>
       <section className="2xl:container pt-1 pb-5 px-5">
         <h1 className="text-xl font-semibold mb-2">Collection Report</h1>
@@ -117,7 +90,7 @@ function CollectionReport(props) {
         <SelectExhibition />
 
         {/* Print Options */}
-        <PrintOptions />
+        <PrintOptions/>
 
         {/* Filter Button */}
         <button
@@ -140,23 +113,28 @@ function CollectionReport(props) {
 
         {/* Print Report Button */}      
         <div className="flex justify-end mt-4">
-          <button
-            className="btn-primary px-2"
-            onClick={() => setShowReport(!showReport)} // toggle
-          >
-            {showReport ? "Close Report" : "Print Report"}
+          <button className="btn-primary px-2" >
+            Print Report
           </button>
         </div>
 
         {/* PrintReport */}
-        <PrintReport
-          filter={filter}
-          reportlist={reportlist}
+        {/* <PrintReport
           showReport={showReport} // ตารางจะถูกแสดงตาม state
-          onPrint={getReport}
-        />
+        /> */}
 
+        {/* =================== RENDER AREA =================== */}
+        {filter.sumReport ? (
+          <Summary_Report />
+        ) : filter.wSale ? (
+          <Without_Sales />
+        ) : filter.wZone ? (
+          <Without_Zones />
+        ) : (
+          <PrintReport />
+        )}
 
+        {/* =================================================== */}
 
       </section>
     </dataContext.Provider>

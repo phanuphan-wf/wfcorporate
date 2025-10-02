@@ -8,6 +8,8 @@ export default function Filter() {
   const { filterC } = useContext(dataContext);
   const [filter, setFilter] = filterC;
 
+  
+
   const [isDisabled, setIsDisabled] = useState(true);
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
@@ -85,41 +87,8 @@ export default function Filter() {
     setSelectedCustomer(customer);                   // เก็บทั้ง object
     setModalShow(false);
   };
-
-
   
-
-  // const [exData, setExData] = useState(initExData);
-  // const fillName = (id, name) => {
-  //   setExData({ id: id, name: name });
-  //   setExName(name);
-  //   setModalShow(false);
-  // };
-
-  //  const searchtxtChange = (value) => {
-  //   setExName(value);
-  //   setExData(initExData);
-  // };
-
-
-  // setExData(initExData);
-  // setExName("");
-
-
-  //  const getExName = async () => {
-  //   try {
-  //     const res = await Axios.get(
-  //       url + "/getExName/" + regData.customerID
-  //     ).then((r) => {
-  //       setExData(r.data);
-  //       setExName(r.data.name);
-  //     });
-  //   } catch (err) {
-  //     if (err.response.status == 404) {
-  //       alert("Not found Exhibition name");
-  //     }
-  //   }
-  // };
+ 
 
   return (
     <section id="checkbox-print">
@@ -214,7 +183,7 @@ export default function Filter() {
                 <input
                   type="radio"
                   name="paymentStatus"
-                  value="01"
+                  value="1"
                   onChange={(e) => setFilter({ ...filter, payment: e.target.value })}
                   disabled={isDisabled}
                 />
@@ -225,7 +194,7 @@ export default function Filter() {
                 <input
                   type="radio"
                   name="paymentStatus"
-                  value="02"
+                  value="2"
                   onChange={(e) => setFilter({ ...filter, payment: e.target.value })}
                   disabled={isDisabled}
                 />
