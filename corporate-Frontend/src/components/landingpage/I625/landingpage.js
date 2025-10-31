@@ -22,13 +22,15 @@ export default function Landingpage(props) {
   const exId = "i625";
 
   const [sponShow, setSponShow] = useState(false);
+  const [elec, setElec] = useState(false);
 
   useEffect(() => {
     document.title = "Furniture Fair Information";
 
     if (cp != undefined) {
       let tag = { code: cp };
-      const res = async () => await Axios.post(url + "/postUTM", tag);
+      const res = async () =>
+        await Axios.post(url + "/postUTM", tag).then((r) => setElec(r.data));
       res();
     }
   }, []);
@@ -84,7 +86,11 @@ export default function Landingpage(props) {
         className="w-full absolute top-0 left-1/2 -translate-x-1/2"
         ref={bannerRef}>
         <img
-          src={require("./img/hero_banner.jpg")}
+          src={
+            !elec
+              ? require("./img/hero_banner.jpg")
+              : require("./img/hp_banner.jpg")
+          }
           alt="landing hero"
           id="hero_banner"
           className="mx-auto"
@@ -110,12 +116,21 @@ export default function Landingpage(props) {
         </div>
       )}
 
-      {bannerLoaded && (
-        <>
-          <FurSection />
-          <ElecSection />
-        </>
-      )}
+      {bannerLoaded &&
+        (!elec ? (
+          <div>
+            <FurSection />
+            <ElecSection />
+          </div>
+        ) : (
+          <div>
+            <ElecSection />
+            <div className="text-center text-bold text-xl">
+              <span>จัดพร้อมกับงาน</span>
+            </div>
+            <FurSection />
+          </div>
+        ))}
       {/*----------------- ส่วนของ sponsor -----------------*/}
       {bannerLoaded && (
         /* sponShow && */ <div className="premium my-6">

@@ -49,8 +49,7 @@ export default function ContractPrintCompany() {
                 <span
                   className={`${
                     i != contract.prefix ? "line-through decoration-2" : ""
-                  }`}
-                >
+                  }`}>
                   {p + (i < arr.length - 1 ? "/" : "")}
                 </span>
               ))}
@@ -109,7 +108,7 @@ export default function ContractPrintCompany() {
       </div>
       <div className="my-3">
         <p className="indent-8">
-          ซึ่งต่อไปในสัญญานี้เรียกว่า “ผู้แสดงสินค้า” ฝ่ายหนึ่ง และ บริษัท
+          ซึ่งต่อไปในสัญญานี้เรียกว่า “ผู้แสดงสินค้า” ฝ่ายหนึ่ง กับ บริษัท
           เวิลด์ แฟร์ จำกัด ตั้งอยู่เลขที่ 1,3,5,7 ซอยลาดพร้าว128/1 ถนนลาดพร้าว
           แขวงคลองจั่น เขตบางกะปิ กรุงเทพมหานคร ซึ่งต่อไปในสัญญานี้เรียกว่า
           “ผู้จัดงาน” อีกฝ่ายหนึ่ง
