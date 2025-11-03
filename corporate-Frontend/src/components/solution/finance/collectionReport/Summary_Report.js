@@ -6,20 +6,37 @@ export default function SummaryReport() {
   const { reportC } = useContext(dataContext);
   const [reportlist] = reportC;
 
-  const safeList = Array.isArray(reportlist) ? reportlist : [];
-
-  // (ตัวเลือก) Normalize: บริษัทเดียวกันให้ amount โผล่เฉพาะรายการแรก
   const normalizedList = useMemo(() => {
-    const seen = new Set();
-    return safeList.map((row) => {
-      const name = row?.name ?? "ไม่ระบุบริษัท";
-      if (!seen.has(name)) {
-        seen.add(name);
-        return { ...row, amount: Number(row?.amount ?? 0) };
+    const list = Array.isArray(reportlist) ? reportlist : [];
+    const seen = new Map(); // เก็บ company → index ของแถวแรก
+
+    // 1) mark amount แถวแรกของแต่ละบริษัท
+    list.forEach((row, idx) => {
+      const company = row?.name ?? "ไม่ระบุบริษัท";
+      if (!seen.has(company)) {
+        seen.set(company, idx); // เก็บ index แถวแรก
+        row.amount = Number(row?.amount ?? 0);
+      } else {
+        row.amount = 0;
       }
-      return { ...row, amount: 0 };
     });
-  }, [safeList]);
+
+    // 2) รวม volume ของบริษัทเดียวกัน
+    const balanceMap = new Map();
+    list.forEach((row) => {
+      const company = row?.name ?? "ไม่ระบุบริษัท";
+      balanceMap.set(company, (balanceMap.get(company) || 0) + Number(row?.volume ?? 0));
+    });
+
+    // 3) set balance แถวแรกของบริษัท, แถวถัดไป = 0
+    return list.map((row, idx) => {
+      const company = row?.name ?? "ไม่ระบุบริษัท";
+      const firstIndex = seen.get(company);
+      const balance = idx === firstIndex ? balanceMap.get(company) - Number(row?.amount ?? 0) : 0;
+      return { ...row, balance };
+    });
+  }, [reportlist]);
+
 
   // (ตัวเลือก) เรียงข้อมูลให้อ่านง่าย: Zone > Sales > Name
   const sortedRows = useMemo(() => {
@@ -110,8 +127,12 @@ export default function SummaryReport() {
                 <td className="border px-2 py-1 text-center">{row?.booth ?? "-"}</td>
                 <td className="border px-2 py-1 text-right">{Number(row?.qty ?? 0).toFixed(2)}</td>
                 <td className="border px-2 py-1 text-right">{Number(row?.volume ?? 0).toLocaleString()}</td>
-                <td className="border px-2 py-1 text-right">{Number(row?.amount ?? 0).toLocaleString()}</td>
-                <td className="border px-2 py-1 text-right">{Number(row?.balance ?? 0).toLocaleString()}</td>
+                <td className="border px-2 py-1 text-right">
+                    {Number(row?.amount ?? 0) === 0 ? "---------": Number(row?.amount).toLocaleString()}
+                </td>
+                <td className="border px-2 py-1 text-right">
+                  {row.balance === 0 ? "---------" : row.balance.toLocaleString()}
+                </td>
    
                 <td className="border px-2 py-1 whitespace-pre-wrap break-words">
                   {row?.tel
