@@ -1,6 +1,7 @@
 import { useContext, useMemo } from "react";
 import { dataContext } from "./report";
 import { pdf, Document, Page, Text, View, StyleSheet, Font ,Image} from "@react-pdf/renderer";
+// import { Table, TH, TR, TD } from "@ag-media/react-pdf-table";
 
 import PrintButton from "./PrintButton"; 
 
@@ -82,54 +83,80 @@ function PrintReport() {
   });
 
 
-  // 2️⃣ ใช้ชื่อเดียวกันใน style
-  const styles = StyleSheet.create({
-    page: { padding: 20, fontSize: 10, fontFamily: "Sarabun" }, // เดิม 12 → ลดเป็น 10
-    header: { fontSize: 11, marginBottom: 8, fontFamily: "Sarabun" },
-    zoneTitle: { fontSize: 8, marginTop: 8, fontWeight: "bold", fontFamily: "Sarabun" },
-    salesTitle: { fontSize: 8, marginTop: 4, marginLeft: 10, fontFamily: "Sarabun" },
-    row: {
-      flexDirection: "row",
-      borderBottom: "1px solid #ccc",
-      paddingVertical: 1.5, // ลดระยะห่าง
-      fontFamily: "Sarabun",
-    },
-    col: { width: "11%", textAlign: "center", fontSize: 8.5, fontFamily: "Sarabun" },
-    textLeft: { textAlign: "left", fontFamily: "Sarabun" },
+      // 2️⃣ ใช้ชื่อเดียวกันใน style 
+      const styles = StyleSheet.create({
+      page: { padding: 20, fontSize: 10, fontFamily: "Sarabun" }, 
+      header: { fontSize: 11, marginBottom: 8, fontFamily: "Sarabun" },
+      zoneTitle: { fontSize: 8, marginTop: 8, fontWeight: "bold", fontFamily: "Sarabun" },
+      salesTitle: { fontSize: 8, marginTop: 4, marginLeft: 10, fontFamily: "Sarabun" },
 
-    tableRow: {
-      flexDirection: "row",
-      borderBottomWidth: 0.5,
-      borderColor: "#999",
-      alignItems: "center",
-      minHeight: 20,
-    },
-    tableHeader: {
-      backgroundColor: "#f0f0f0",
-      borderTopWidth: 0.5,
-      borderBottomWidth: 1,
-      fontWeight: 'bold',
-    },
-    tableFooter: {
-      backgroundColor: "#fafafa",
-      borderTopWidth: 1,
-    },
-    tableCell: {
-      fontSize: 7, // 👈 ปรับจาก 8 เป็น 7
-      padding: 2,
-      borderRightWidth: 0.5,
-      borderColor: "#999",
-      fontFamily: "Sarabun",
-    },
+      row: {
+        flexDirection: "row",
+        borderBottom: "1px solid #ccc",
+        paddingVertical: 1.5,
+        fontFamily: "Sarabun",
+      },
 
-     tableName: {
-      fontSize: 7, // 👈 ปรับจาก 8 เป็น 7
-      padding: 2,
-      borderRightWidth: 1.0,
-      borderColor: "#999",
-      fontFamily: "Sarabun",
-    },
-  });
+      col: { width: "11%", textAlign: "center", fontSize: 8.5, fontFamily: "Sarabun" },
+      textLeft: { textAlign: "left", fontFamily: "Sarabun" },
+
+      // ✅ ตารางหลัก
+      table: {
+        borderWidth: 0.5,
+        borderColor: "black",
+        flexDirection: "column",
+        margin: 0,
+        padding: 0,
+      },
+
+
+      tableRow: {
+        flexDirection: "row",
+        borderBottomWidth: 0.5,
+        borderColor: "black",
+        alignItems: "center",        
+      },
+
+      tableHeader: {
+        backgroundColor: "#f0f0f0",       
+        fontWeight: "bold",
+        borderBottomWidth: 0.5,
+      },      
+
+      tableCell: {
+        fontSize: 7,
+        paddingVertical: 2,
+        paddingHorizontal: 3,
+        borderRightWidth: 0.5,
+        borderColor: "black",
+        fontFamily: "Sarabun",
+      },
+
+      // ✅ ช่องสุดท้ายในแต่ละแถว — ไม่ให้มีเส้นขวาซ้อนกับกรอบนอก
+      tableCellLast: {
+        fontSize: 7,
+        padding: 2,
+        borderColor: "black",
+        fontFamily: "Sarabun", 
+        borderRightWidth: 0, // ❌ ปิดเส้นขวาในช่องสุดท้าย       
+      },
+
+      tableCellFirst: {
+          fontSize: 7,
+          paddingVertical: 2,
+          paddingHorizontal: 3,
+          borderLeftWidth: 0.5,  // ✅ เพิ่มเส้นซ้าย
+          borderRightWidth: 0.5,
+          borderColor: "black",
+          fontFamily: "Sarabun",
+      },
+
+
+      tableFooter: {
+        backgroundColor: "#fafafa",
+        borderTopWidth: 1,
+      },
+    });
 
 
     // ฟังก์ชันแปลงเป็น วัน/เดือน/ปี พ.ศ.
@@ -177,28 +204,55 @@ function PrintReport() {
       <Document>
         <Page size="A4" style={styles.page}>
           
-           <View style={{ flexDirection: "row", alignItems: "center" }}>
-              {/* โลโก้ชิดซ้าย */}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between", // ✅ ให้แต่ละคอลัมอยู่ห่างกันพอดี
+              marginBottom: 1, // ระยะห่างจากบรรทัดถัดไป
+            }}
+          >
+            {/* คอลัมน์ซ้าย: โลโก้ */}
+            <View style={{ flex: 1, alignItems: "flex-start" }}>
               <Image
-                src="/android-chrome-192x192.png"   // path ของไฟล์โลโก้ใน public
-                style={{ width: 60, height: 60 }}
+                src="/android-chrome-192x192.png"
+                style={{ width: 40, height: 40 }}
               />
+            </View>
 
-              {/* ตรงกลาง */}
-              <Text style={{ textAlign: "center", flex: 1, fontSize: 10, fontFamily: "Sarabun" }}>
-                ** รายงานการเรียกเก็บเงิน **
-              </Text>
-
-              {/* ชิดขวา */}
-              <Text style={{ textAlign: "right", fontSize: 10, fontFamily: "Sarabun" }}>
-                ณ วันที่ {formatThaiDate(new Date())}
+            {/* คอลัมน์กลาง: หัวเรื่อง */}
+            <View style={{ flex: 2, alignItems: "center" }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 10,
+                  fontFamily: "Sarabun",
+                }}
+              >
+                ** รายงานการเก็บเงิน **
               </Text>
             </View>
 
-            <View style={{ alignItems: "center"}}>
+            {/* คอลัมน์ขวา: วันที่ */}
+            <View style={{ flex: 1, alignItems: "flex-end" }}>
+              <Text
+                style={{
+                  textAlign: "right",
+                  fontSize: 10,
+                  fontFamily: "Sarabun",
+                }}
+              >
+                ณ วันที่ {formatThaiDate(new Date())}
+              </Text>
+            </View>
+          </View>
+
+
+            {/* ส่วนข้อมูล event */}
+            <View style={{ alignItems: "center" }}>
               <View
                 style={{
-                  flexDirection: "column", // ✅ เปลี่ยนเป็น column เพื่อให้ขึ้นบรรทัดใหม่
+                  flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
                 }}
@@ -222,7 +276,9 @@ function PrintReport() {
                     marginVertical: 2,
                   }}
                 >
-                   {event ? `${formatThaiDateJob(event.sDate)} - ${formatThaiDateJob(event.eDate)}` : "-"}
+                  {event
+                    ? `${formatThaiDateJob(event.sDate)} - ${formatThaiDateJob(event.eDate)}`
+                    : "-"}
                 </Text>
 
                 <Text
@@ -230,7 +286,7 @@ function PrintReport() {
                     textAlign: "center",
                     fontSize: 10,
                     fontFamily: "Sarabun",
-                    marginVertical: 2,
+                    marginVertical: 2,                 
                   }}
                 >
                   {event ? event.venue : "-"}
@@ -238,13 +294,14 @@ function PrintReport() {
               </View>
             </View>
 
+
           {Object.entries(groupedByZoneAndSales).map(([zone, salesGroup]) => (
             <View key={zone} style={styles.section}>
               
               {Object.entries(salesGroup).map(([sales, rows]) => {
                 const total = calcTotals(rows);
                 return (
-                  <View key={sales} style={{ marginLeft: 10 }}>                   
+                  <View key={sales} style={{ marginLeft: 10  ,marginTop: 6}}>                   
                     <View
                       style={{
                         flexDirection: "row",
@@ -255,90 +312,82 @@ function PrintReport() {
                     >
                     {/* ด้านซ้าย */}
                     <Text style={{ flex: 1, textAlign: "left", fontSize: 8 }}>
-                      โซน: {zone}
+                      โซน : {zone}
                     </Text>
 
                     {/* ด้านกลาง */}
                     <Text style={{ flex: 1, textAlign: "center", fontSize: 8 }}>
-                      พนักงานขาย: {sales}
+                      พนักงานขาย : {sales}
                     </Text>
 
                     {/* ด้านขวา — แสดงเลขหน้า */}
                     <Text
                       style={{ flex: 1, textAlign: "right", fontSize: 8 }}
                       render={({ pageNumber, totalPages }) =>
-                        `หน้าที่ ${pageNumber}`
+                        `หน้าที่ : ${pageNumber}`
                         // `หน้าที่ ${pageNumber} / ${totalPages}`
                       }
                     />
                   </View>
-
-
-
                     {/* แถวหัวตาราง */}
                       <View style={[styles.tableRow, styles.tableHeader]}>
-                        <Text style={[styles.tableCell, { width: 30,  textAlign: "center" }]}>ลำดับ</Text>
-                        <Text style={[styles.tableCell, { width: 100, textAlign: "center" }]}>ชื่อลูกค้า</Text>
+                        <Text style={[styles.tableCell, { width: 30,  textAlign: "center" }]}>ลำดับ </Text>
+                        <Text style={[styles.tableCell, { width: 120, textAlign: "center" }]}>ชื่อลูกค้า</Text>
                         <Text style={[styles.tableCell, { width: 20,  textAlign: "center" }]}>หน้า</Text>
-                        <Text style={[styles.tableCell, { width: 20,  textAlign: "left"   }]}>#บูท</Text>
-                        <Text style={[styles.tableCell, { width: 50,  textAlign: "center" }]}>จำนวน </Text>
+                        <Text style={[styles.tableCell, { width: 25,  textAlign: "left"   }]}>#บูท</Text>
+                        <Text style={[styles.tableCell, { width: 30,  textAlign: "center" }]}>จำนวน </Text>
                         <Text style={[styles.tableCell, { width: 50,  textAlign: "center" }]}>ยอดเงิน</Text>
                         <Text style={[styles.tableCell, { width: 50,  textAlign: "center" }]}>ชำระแล้ว </Text>
                         <Text style={[styles.tableCell, { width: 50,  textAlign: "center" }]}>ยอดคงค้าง</Text>
-                        <Text style={[styles.tableCell, {flex: 2, width: 100, textAlign: "center" }]}>โทรศัพท์</Text>
+                        <Text style={[styles.tableCell, { flex: 2, width: 150, textAlign: "center" }]}>โทรศัพท์</Text>
                       </View>
-                    {/* ข้อมูล */}
-                    /* {rows.map((r, i) => (
+                   
+
+                   {/* ข้อมูล */}
+                    {rows.map((r, i) => (
                       <View key={i} style={styles.tableRow}>
-                        <Text style={[styles.tableCell, { width: 30, textAlign: "center" }]}>{i + 1} </Text>
-                        <Text style={[styles.tableCell, { width: 100, textAlign: "left" }]}>{r.name ?? "-"} </Text>
+                        <Text style={[styles.tableCellFirst, { width: 30, textAlign: "center" }]}>{i + 1}</Text>
+                        <Text style={[styles.tableCell, { width: 120, textAlign: "left" }]}>{r.name ?? "-"} </Text>
                         <Text style={[styles.tableCell, { width: 20, textAlign: "center" }]}>-</Text>
-                        <Text style={[styles.tableCell, { width: 20, textAlign: "center" }]}>{r.booth ?? "-"}</Text>
-                        <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
+                        <Text style={[styles.tableCell, { width: 25, textAlign: "center" }]}>{r.booth ?? "-"}</Text>
+                        <Text style={[styles.tableCell, { width: 30, textAlign: "center" }]}>
                           {Number(r.qty ?? 0).toLocaleString()}
                         </Text>
                         <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
                           {Number(r.volume ?? 0).toLocaleString()}
                         </Text>
-                        <Text style={[styles.tableCell, {width: 50, textAlign: "center" }]}>
+                        <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
                           {(r.amount ?? 0) === 0 ? "-------" : Number(r.amount).toLocaleString()}
                         </Text>
-
-                        <Text style={[styles.tableCell, {width: 50, textAlign: "center" }]}>
+                        <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
                           {(r.balance ?? 0) === 0 ? "-------" : Number(r.balance).toLocaleString()}
                         </Text>
-
-                       <Text style={[styles.tableCell, { flex: 2, width: 100, textAlign: "left" }]}>
+                        <Text style={[styles.tableCell, { flex: 2, width: 150, textAlign: "left" }]}>
                           {r.tel ?? "-"}
                         </Text>
-
-                      
                       </View>
-                    ))} 
+                    ))}
 
                     {/* Total */}
-                    <View style={[styles.tableRow, styles.tableFooter]}>
-                      <Text style={[styles.tableCell, {flex: 2, width: 148, textAlign: "right" }]}>รวมยอดทั้งสิ้น</Text>
-                     
-
-                      <Text style={[styles.tableCell, { width: 45, textAlign: "center" }]}>
+                    <View style={[styles.tableRow, styles.tableFooter]}>                 
+                      <Text style={[styles.tableCell, {width: 195,textAlign: "right", fontWeight: "bold",},]}> 
+                        รวมยอดทั้งสิ้น 
+                      </Text>                
+                      <Text style={[styles.tableCell, {width: 30, textAlign: "center" }]}>
                         {Number(total.qty ?? 0).toFixed(2)}
                       </Text>
-                      
-
-                      <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
-                        {Number(total.volume ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <Text style={[styles.tableCell,{width: 50,textAlign: "center",},]}>
+                        {Number(total.volume ?? 0).toLocaleString(undefined, {minimumFractionDigits: 2,maximumFractionDigits: 2,})}
                       </Text>
-                      <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
-                        {Number(total.amount ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <Text style={[styles.tableCell,{width: 50,textAlign: "center",},]}>
+                         {Number(total.amount ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2,})}
                       </Text>
-                      <Text style={[styles.tableCell, { width: 50, textAlign: "center" }]}>
-                        {Number(total.balance ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      <Text style={[styles.tableCell, {width: 50, textAlign: "center",},]}>
+                        {Number(total.balance ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2,})}
                       </Text>
-
-
-                      <Text style={[styles.tableCell, {flex: 2, width: 100, textAlign: "center" }]}></Text>
+                       <Text style={[styles.tableCell, {flex: 2,width: 150, textAlign: "center" }]}></Text> 
                     </View>
+
                 </View>
                 );
               })}
