@@ -34,77 +34,114 @@ export default function ContractPrintCompany() {
         </div>
       </div>
       <div className="my-3">
-        <p className="whitespace-normal break-all indent-8">
-          สัญญานี้ทำขึ้นระหว่าง
-          {contract.company !== "" ? (
-            <strong>{" " + contract.company + " "}</strong>
-          ) : (
-            blank
+        <div className="flex w-full gap-4">
+          <p className="min-w-fit">สัญญานี้ทำขึ้นระหว่าง</p>
+          <span className="w-full border-b border-dotted text-center border-gray-800">
+            {contract.company !== "" ? (
+              <strong>{" " + contract.company + " "}</strong>
+            ) : (
+              ""
+            )}
+          </span>
+        </div>
+        <div className="flex w-full gap-4">
+          <p className="min-w-fit">โดย</p>
+          <div className={`${contract.pos != "" ? "w-3/5" : "w-full"}`}>
+            {contract.name !== "" ? (
+              <strong className="min-w-fit flex">
+                (
+                {["นาย", "นาง", "นางสาว"].map((p, i, arr) => (
+                  <span
+                    className={`${
+                      i != contract.prefix ? "line-through decoration-2" : ""
+                    }`}>
+                    {p + (i < arr.length - 1 ? "/" : "")}
+                  </span>
+                ))}
+                )
+                <div className="w-full border-b border-dotted text-center border-gray-800">
+                  {contract.name}
+                </div>
+              </strong>
+            ) : (
+              <div className="flex">
+                <span className="min-w-fit pr-4">(นาย/นาง/นางสาว)</span>
+                <div className="w-full border-b border-dotted text-center border-gray-800"></div>
+              </div>
+            )}
+          </div>
+
+          {contract.pos !== "" && (
+            <div className="w-2/5 flex gap-4">
+              <span className="min-w-fit">ตำแหน่ง</span>
+              <strong className="w-full border-b border-dotted text-center border-gray-800">
+                {contract.pos}
+              </strong>
+            </div>
           )}
-          โดย
-          {contract.name !== "" ? (
-            <strong>
-              (
-              {["นาย", "นาง", "นางสาว"].map((p, i, arr) => (
-                <span
-                  className={`${
-                    i != contract.prefix ? "line-through decoration-2" : ""
-                  }`}>
-                  {p + (i < arr.length - 1 ? "/" : "")}
-                </span>
-              ))}
-              ){" " + contract.name + " "}
+        </div>
+        <div className="w-full flex gap-4">
+          <p className="min-w-fit">บัตรประจำตัวประชาชนเลขที่</p>
+          {contract.pid !== "" ? (
+            <strong className="w-full border-b border-dotted text-center border-gray-800">
+              {contract.pid}
             </strong>
           ) : (
-            "(นาย/นาง/นางสาว) " + blank + " "
+            <strong className="w-full border-b border-dotted text-center border-gray-800">
+              {""}
+            </strong>
           )}
-          {contract.pos !== "" && (
-            <span>
-              ตำแหน่ง
-              <strong>{" " + contract.pos + " "}</strong>
-            </span>
-          )}
-          บัตรประจำตัวประชาชนเลขที่
-          {contract.pid !== "" ? (
-            <strong>{" " + contract.pid + " "}</strong>
-          ) : (
-            " " + blank + " "
-          )}
-          ที่อยู่เลขที่
-          <strong>
+        </div>
+        <div className="flex w-full gap-4">
+          <p className="min-w-fit">ที่อยู่เลขที่</p>
+          <div className="w-full border-b border-dotted text-center border-gray-800">
             {contract.addr !== "" ? (
               <strong>{" " + contract.addr + " "}</strong>
             ) : (
-              " " + blank + " "
+              ""
             )}
-          </strong>
-          โทรศัพท์
-          <strong>
-            {contract.tel !== "" ? (
-              <strong>{" " + contract.tel + " "}</strong>
-            ) : (
-              " " + blank + " "
-            )}
-          </strong>
+          </div>
+        </div>
+        <div className="flex flex-wrap">
+          <div className="min-w-[25%] flex-grow">
+            <div className="flex gap-2">
+              <p className="min-w-fit">โทรศัพท์</p>
+              <strong className="w-full min-w-fit border-b border-dotted text-center border-gray-800">
+                {contract.tel !== "" ? contract.tel : ""}
+              </strong>
+            </div>
+          </div>
           {contract.fax !== "" && (
-            <>
-              โทรสาร
-              <strong>{" " + contract.fax + " "}</strong>
-            </>
+            <div className="min-w-[25%] flex-grow">
+              <div className="flex gap-2">
+                <p className="min-w-fit">โทรสาร</p>
+                <strong className="w-full min-w-fit border-b border-dotted text-center border-gray-800">
+                  {contract.fax}
+                </strong>
+              </div>
+            </div>
           )}
           {contract.email !== "" && (
-            <>
-              อีเมล
-              <strong>{" " + contract.email + " "}</strong>
-            </>
+            <div className="min-w-[25%] flex-grow">
+              <div className="flex gap-2">
+                <p className="min-w-fit">อีเมล</p>
+                <strong className="w-full min-w-fit border-b border-dotted text-center border-gray-800">
+                  {contract.email}
+                </strong>
+              </div>
+            </div>
           )}
           {contract.line !== "" && (
-            <>
-              ไลน์ไอดี
-              <strong>{" " + contract.line + " "}</strong>
-            </>
+            <div className="min-w-[25%] flex-grow">
+              <div className="flex gap-2">
+                <p className="min-w-fit">ไลน์ไอดี</p>
+                <strong className="w-full min-w-fit border-b border-dotted text-center border-gray-800">
+                  {contract.line}
+                </strong>
+              </div>
+            </div>
           )}
-        </p>
+        </div>
       </div>
       <div className="my-3">
         <p className="indent-8">
