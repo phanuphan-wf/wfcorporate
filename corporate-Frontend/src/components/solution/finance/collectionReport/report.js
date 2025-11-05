@@ -145,11 +145,11 @@ function CollectionReport(props) {
         {/* =================== RENDER AREA =================== */}
           <div ref={pdfRef} className="mt-4">
             {filter.sumReport ? (
-              <Summary_Report />
+              <Summary_Report event={selectedEvent}/>
             ) : filter.wSale ? (
-              <Without_Sales />
+              <Without_Sales event={selectedEvent}/>
             ) : filter.wZone ? (
-              <Without_Zones />
+              <Without_Zones event={selectedEvent}/>
             ) : (
               <Print_all  event={selectedEvent} />
             )}

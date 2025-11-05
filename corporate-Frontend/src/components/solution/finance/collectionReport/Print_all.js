@@ -10,7 +10,7 @@ function PrintReport() {
   const [reportlist] = reportC;    
   const [event] = eventC;
   
-  console.log("event 👉", event);
+  // console.log("event 👉", event);
 
 
   // ✅ 0) ปรับข้อมูลให้ amount แสดงเฉพาะแถวแรกของแต่ละบริษัท (แถวถัดไป = 0)
@@ -116,12 +116,15 @@ function PrintReport() {
         borderColor: "black",
         alignItems: "center",        
       },
-
+      
       tableHeader: {
-        backgroundColor: "#f0f0f0",       
+        backgroundColor: "#f0f0f0",
         fontWeight: "bold",
-        borderBottomWidth: 0.5,
-      },      
+        borderTopWidth: 1,        // เพิ่มเส้นขอบด้านบน
+        borderBottomWidth: 1,     // เส้นขอบด้านล่างหนา
+        borderColor: "black",     // ให้เส้นขอบแสดงผลแน่นอน
+      },
+
 
       tableCell: {
         fontSize: 7,
@@ -311,13 +314,13 @@ function PrintReport() {
                       }}
                     >
                     {/* ด้านซ้าย */}
-                    <Text style={{ flex: 1, textAlign: "left", fontSize: 8 }}>
-                      โซน : {zone}
+                    <Text style={{ flex: 1, textAlign: "left", fontSize: 8 }}>                    
+                      พนักงานขาย : {sales}
                     </Text>
 
                     {/* ด้านกลาง */}
                     <Text style={{ flex: 1, textAlign: "center", fontSize: 8 }}>
-                      พนักงานขาย : {sales}
+                        โซน : {zone}
                     </Text>
 
                     {/* ด้านขวา — แสดงเลขหน้า */}
