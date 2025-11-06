@@ -154,7 +154,8 @@ export default function ContractPrintCompany() {
               )}
               {contract.cheque !== "" ? (
                 <div>
-                  โดยสั่งจ่ายเป็นเช็คล่วงหน้า ภายในวันที่ {contract.cheque}
+                  โดยสั่งจ่ายเป็นเช็คลงวันที่ล่วงหน้า ภายในวันที่{" "}
+                  {contract.cheque}
                 </div>
               ) : (
                 ""
