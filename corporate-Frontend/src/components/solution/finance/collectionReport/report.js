@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useRef, useCallback, useContext} from "react";
+import { useState, useEffect, createContext, useRef, useCallback, useContext, useMemo} from "react";
 import AppRouteFinance from "../../../../AppRouteFinance";
 
 import SelectExhibition from "./selectExhibition";
@@ -25,6 +25,7 @@ function CollectionReport(props) {
     exID: "0",
     sales: "0",
     customer: "0",
+    customername: "0",
     zone: "0",
     payment: "0", 
   };
@@ -33,43 +34,56 @@ function CollectionReport(props) {
   const [filter, setFilter] = useState(initFilter);
   const [showFilter, setShowFilter] = useState(false);  
   const [reportlist, setReportlist] = useState([]);
-  const [showReport, setShowReport] = useState(false); // ✅ ประกาศ state สำหรับแสดง/ซ่อน report
-  const [event, setEvent] = useState({}); // ✅ เพิ่มบรรทัดนี้
-
+  // const [showReport, setShowReport] = useState(false); // ✅ ประกาศ state สำหรับแสดง/ซ่อน report
+  const [event, setEvent] = useState({}); 
   const [selectedEvent, setSelectedEvent] = useState(null);
 
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
+  const pdfRef = useRef(null);
 
-
-
+  // ================== 📥 โหลดข้อมูลรายงาน ==================
   const getReport = async (params) => {
     try {
       console.log("📤 ค่าที่ส่งออกไป:", params);
-
-      const res = await Axios.post(
-        url + "/getReport",
-        params
-      );
-
+      const res = await Axios.post(url + "/getReport",params);
       console.log("📥 ค่าที่ API ส่งกลับมา:", res.data);
       setReportlist(res.data);
     } catch (err) {
       console.error("❌ Error fetching report:", err);
     }
   };
-
+  // ================== 🧭 โหลดข้อมูลเมื่อเลือก Exhibition ==================
   useEffect(() => {
-    if (filter.exID !== "0" && filter.exID !== "") {
-     
+    if (filter.exID !== "0" && filter.exID !== "") {     
       getReport(filter);
     }
-  }, [filter]); // เรียกใหม่เมื่อ filter เปลี่ยน
+  }, [filter.exID]);
 
-  const pdfRef = useRef(null);
+  // ================== 🧮 กรองข้อมูลในฝั่ง React ==================
+  const filteredReport = useMemo(() => {
+    return reportlist.filter((item) => {
+      // กรองตาม Sales
+      if (filter.sales !== "0" && item.sales?.trim() !== filter.sales.trim()) return false;
+
+      // กรองตาม Zone
+      if (filter.zone !== "0" && item.zone?.trim() !== filter.zone.trim()) return false;
+
+      // กรองตามชื่อลูกค้า (search)
+      if (filter.customer && !item.name?.includes(filter.customer)) return false;
+
+      // กรองตามสถานะชำระเงิน (ตัวอย่าง)
+      if (filter.payment === "1" && item.amount <= 0) return false; // ชำระแล้ว
+      if (filter.payment === "2" && item.amount > 0) return false;  // ค้างชำระ
+
+      return true;
+    });
+  }, [reportlist, filter]);
+
+  // ================== 🖨️ ฟังก์ชัน Print ==================
+
   const handlePrint = useCallback(() => {
     if (!pdfRef.current) return;
-
     const opt = {
       margin: [10, 10, 10, 10],
       filename: "collection-report.pdf",
@@ -82,7 +96,7 @@ function CollectionReport(props) {
     html2pdf().set(opt).from(pdfRef.current).save();
   }, []);
 
-  /* Check if user is authorized to view this page must insert before return part ----*/
+   // ================== 🔐 ตรวจสิทธิ์ผู้ใช้งาน ==================
     const show = AppRouteFinance.find(
       (x) => x.path === "finance/receivingreport"
     ).show;
@@ -101,7 +115,7 @@ function CollectionReport(props) {
   
 
 
-  /* Check if user is authorized to view this page must insert before return part ----*/
+  // ================== 🧾 ส่วนแสดงผล ==================
   return (
 
       <dataContext.Provider

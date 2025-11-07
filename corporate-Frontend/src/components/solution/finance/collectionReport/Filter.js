@@ -1,93 +1,141 @@
 import { useState, useEffect, useContext } from "react";
 import { dataContext } from "./report";
 import Axios from "axios";
-
 import ModalSeach from "./modalSearch";
 
 export default function Filter() {
-  const { filterC } = useContext(dataContext);
-  const [filter, setFilter] = filterC;
 
-  
+  const { filterC, reportC} = useContext(dataContext);
+  const [filter, setFilter] = filterC; 
+  const [reportList] =  reportC 
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
-  // const [sales, setSales] = useState([]);
-  // const [zones, setZones] = useState([]);
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;  
 
   const [sales, setSales] = useState([]);
   const [zones, setZones] = useState([]);
-
-  const [payment, setPayment] = useState([]);
-  const [customerName, setCustomerName] = useState([]);  // ✅ state เก็บชื่อ
-
-  // ดึง Sales
-  const getSales = async () => {
-    // console.log(url + "/getSales");
-    try {
-      const res = await Axios.get(url + "/getSales");
-      setSales(res.data);
-    } catch (err) {
-      // console.error("Error fetching sales:", err);
-    }
-  };
-
-  // ดึง Zone
-  const getZone = async () => {
-    // console.log(url + "/getZone/" + filter.exID);
-    try {
-      const res = await Axios.get(url + "/getZone/" + filter.exID);
-      // console.log("Zone API response:", res.data); // <--- ดูข้อมูลที่ได้
-      setZones(res.data);
-    } catch (err) {
-      // console.error("Error fetching Zone:", err);
-    }
-  };
+  const [customerName, setCustomerName] = useState([]); 
+  //const [payment, setPayment] = useState([]);
+  
 
   //const getPayment = 0;
 
   useEffect(() => {
-    if (filter.exID != 0) {
-      getSales();
-      getZone();
-     // getPayment();
+    if (filter.exID != 0) {      
+      // ✅ ดึงชื่อ Sales ที่ไม่ซ้ำกัน
+      const uniqueSales = [...new Set(reportList.map((item) => item.sales))];
+      setSales(uniqueSales.map((s) => ({ eid: s, name: s })));
+
+      // ✅ ดึงชื่อ Zone ที่ไม่ซ้ำกัน
+      const uniqueZones = [...new Set(reportList.map((item) => item.zone))];
+      setZones(uniqueZones.map((z) => ({ zid: z, zone: z })));
+
+      // ✅ ดึงชื่อ Customer ที่ไม่ซ้ำกัน
+      const uniqueCustomers = [...new Set(reportList.map((item) => item.name))];
+      setCustomerName(uniqueCustomers.map((n) => ({ name: n })));
 
       setIsDisabled(false);
     } else {      
       setSales([]);
       setZones([]);
+      setCustomerName([]);
      // getPayment([]);
       setIsDisabled(true);
     }
-  }, [filter.exID]);
-
+  }, [filter.exID],[reportList]);
 
   
+    const [modalShow, setModalShow] = useState(false);
+    const closeModal = () => setModalShow(false);
 
-  const [modalShow, setModalShow] = useState(false);
+    const [selectedCustomer, setSelectedCustomer] = useState({ id: "", name: "" });
 
-  const closeModal = () => {
-    setModalShow(false);
-  };
-
-  const searchName = (e) => {
-    if (e.key === "Enter") {
+    // 👉 เพิ่มฟังก์ชันตรวจว่าพิมพ์ชื่อก่อนเปิด Modal หรือไม่
+    const handleOpenModal = () => {
+      if (!selectedCustomer.name.trim()) {
+        alert("⚠️ กรุณากรอกชื่อลูกค้าก่อนค้นหา");
+        return;
+      }
       setModalShow(true);
-    }
-  };
+    };
+
+    // ถ้าอยากให้กด Enter แล้วเปิด modal ได้ด้วย
+    const searchName = (e) => {
+      if (e.key === "Enter") {
+        handleOpenModal();
+      }
+    };
+
+    const customerClick = (c) => {
+      setSelectedCustomer({ id: c.id, name: c.name });
+      setFilter((prev) => ({
+        ...prev,
+        customer: c.id,
+        customername: c.name,
+      }));
+      setModalShow(false); // ✅ ปิด modal หลังเลือก
+    };
 
 
-  //  By Customer
+    const searchCustomerByName = async (name) => {
+      try {
+        const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_rr;
+        const res = await Axios.post(url + "/getCustomer", { name });
+        if (res.data?.length > 0) {
+          // ถ้าเจอชื่อเดียวตรง ๆ
+          setSelectedCustomer({ id: res.data[0].cid, name: res.data[0].name });
+          setFilter({ ...filter, customer: res.data[0].cid });
+        } else {
+          // ถ้าไม่เจอ → เปิด Modal ให้เลือกเอง
+          setModalShow(true);
+        }
+      } catch (error) {
+        console.error("❌ Error searching customer:", error);
+        setModalShow(true);
+      }
+    };
 
-  const [selectedCustomer, setSelectedCustomer] = useState({ id: "", name: "" });
 
-  const customerClick = (customer) => {
-    setFilter({ ...filter, customer: customer.id }); // เก็บ id ไว้ใน filter
-    setSelectedCustomer(customer);                   // เก็บทั้ง object
-    setModalShow(false);
-  };
-  
+    const handleSearchCustomer = (triggerByEnter = false) => {
+      const searchText = selectedCustomer.name?.trim();
+
+      // ถ้าไม่กรอกอะไร แล้วกด Enter → เปิด ModalSearch ทันที
+      if (triggerByEnter && !searchText) {
+        setModalShow(true);
+        return;
+      }
+
+      if (!searchText) return; // ไม่ทำงานถ้าไม่พิมพ์
+
+      // ✅ ดึงชื่อลูกค้าที่ไม่ซ้ำ
+      const uniqueCustomers = [...new Set(reportList.map((item) => item.name))];
+      setCustomerName(uniqueCustomers.map((n) => ({ name: n })));
+
+      // ✅ ตรวจสอบว่ามีชื่อตรงกันไหม
+      const foundCustomer = uniqueCustomers.find((name) =>
+        name.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      if (foundCustomer) {
+        // ✅ ถ้ามีชื่อตรงกัน → กรองข้อมูลทันที
+        setFilter({
+          ...filter,
+          customer: foundCustomer,
+          customername: foundCustomer,
+        });
+        console.log("✅ พบลูกค้า:", foundCustomer);
+      } else {
+        // ❌ ถ้าไม่พบชื่อ → เปิด ModalSearch
+        console.log("❌ ไม่พบลูกค้า → เปิด ModalSearch");
+        setModalShow(true);
+      }
+    };
+
+
+
+
+
  
 
   return (
@@ -152,23 +200,49 @@ export default function Filter() {
               By Customer :
             </label>
 
-            <div className="flex w-full gap-2">
-              <input
-                id="exname"
-                className="w-full md:w-100"
-                disabled={isDisabled}
-                value={selectedCustomer.name || ""} // ✅ กันกรณี undefined
-                readOnly
-              />
+            {/* กล่องครอบช่องค้นหา */}
+            <div className="flex w-full gap-2 items-center">
+              <div className="relative w-full">
+                <input
+                  id="exname"
+                  className="w-full md:w-100 border rounded px-2 py-1 pr-8" // ✅ เพิ่ม padding ขวาให้เว้นที่สำหรับปุ่ม ✕
+                  placeholder="พิมพ์ชื่อลูกค้า..."
+                  value={selectedCustomer.name || ""}
+                  onChange={(e) =>
+                    setSelectedCustomer({ ...selectedCustomer, name: e.target.value })
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleSearchCustomer();
+                  }}
+                />
+
+                {/* ✅ ปุ่มกากบาทอยู่ภายในช่อง input */}
+                {selectedCustomer.name && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCustomer({ id: "", name: "" });
+                      setFilter({ ...filter, customer: "",customername:"" });
+                      // reloadDefaultData(); // โหลดข้อมูลกลับมาเหมือนเดิม
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500"
+                    title="ล้างชื่อ"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
               <button
                 type="button"
                 className="btn-primary px-3"
-                onClick={() => setModalShow(true)}
+                onClick={handleSearchCustomer}
               >
                 Search
               </button>
             </div>
           </div>
+
 
 
           {/* By Debt */}
@@ -207,12 +281,20 @@ export default function Filter() {
         
       </div>
 
-       <ModalSeach
+       {/* ✅ ModalSearch แสดงเมื่อหาไม่เจอ */}
+        <ModalSeach
           show={modalShow}
-          onHide={closeModal}
-          search={selectedCustomer.name} // ส่งชื่อไป modal ถ้ามี
-          fill={customerClick}           // ✅ callback รับค่ากลับมา
+          onHide={() => setModalShow(false)}
+          search={selectedCustomer.name}   // ส่งคำค้นที่พิมพ์ไปให้ Modal ใช้ค้นต่อ
+          fill={(c) => {
+            // เมื่อผู้ใช้เลือกชื่อลูกค้าจาก Modal
+            setSelectedCustomer({ id: c.id, name: c.name });
+            setFilter({ ...filter, customer: c.id, customername: c.name });
+            setModalShow(false);
+          }}
+          exid={filter.exID}
         />
+
 
 
     </section>

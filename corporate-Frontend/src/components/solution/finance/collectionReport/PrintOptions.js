@@ -15,29 +15,23 @@ export default function PrintOptions() {
     ...filter,
   };
 
-  // ให้เลือกได้ทีละโหมด (exclusive) โดย "รักษาคีย์อื่น ๆ" ด้วยการ merge
   const setMode = useCallback((mode) => {
-    setFilter((prev) => {
-      const base = {
-        printall: false,
-        wSale: false,
-        wZone: false,
-        sumReport: false,
-      };
-      switch (mode) {
-        case "printall":
-          return { ...prev, ...base, printall: true };
-        case "wSale":
-          return { ...prev, ...base, wSale: true };
-        case "wZone":
-          return { ...prev, ...base, wZone: true };
-        case "summary":
-          return { ...prev, ...base, sumReport: true };
-        default:
-          return prev;
-      }
-    });
+      setFilter((prev) => {
+        switch (mode) {
+          case "printall":
+            return { ...prev, printall: !prev.printall };
+          case "wSale":
+            return { ...prev, wSale: !prev.wSale };
+          case "wZone":
+            return { ...prev, wZone: !prev.wZone };
+          case "summary":
+            return { ...prev, sumReport: !prev.sumReport };
+          default:
+            return prev;
+        }
+      });
   }, [setFilter]);
+
 
   useEffect(() => {
     console.log("📌 filter เปลี่ยนค่า:", safeFilter);

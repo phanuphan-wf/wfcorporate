@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo ,useEffect} from "react";
 import { dataContext } from "./report";
 import { pdf, Document, Page, Text, View, StyleSheet, Font ,Image} from "@react-pdf/renderer";
 // import { Table, TH, TR, TD } from "@ag-media/react-pdf-table";
@@ -6,44 +6,106 @@ import { pdf, Document, Page, Text, View, StyleSheet, Font ,Image} from "@react-
 import PrintButton from "./PrintButton"; 
 
 function PrintReport() {
-  const { reportC,eventC } = useContext(dataContext);
-  const [reportlist] = reportC;    
+  const { reportC,eventC,filterC } = useContext(dataContext);
+  const [reportlist] = reportC; 
   const [event] = eventC;
+  const [filter] = filterC;
   
-  // console.log("event 👉", event);
+  //console.log("filter 👉", filter);
+  //console.log("reportlist 👉", reportlist);
+  
 
+ 
 
-  // ✅ 0) ปรับข้อมูลให้ amount แสดงเฉพาะแถวแรกของแต่ละบริษัท (แถวถัดไป = 0)
-  const normalizedList = useMemo(() => {
+    const normalizedList = useMemo(() => {
     const list = Array.isArray(reportlist) ? reportlist : [];
-    const seen = new Map(); // เก็บ company → index ของแถวแรก
+    console.log("🔹 raw reportlist 👉", list);
+    console.log("🔹 filter 👉", filter);
 
-    // 1) mark amount แถวแรกของแต่ละบริษัท
-    list.forEach((row, idx) => {
+    if (list.length === 0) return [];
+
+    // ✅ สร้าง Sales Group แบบ Dynamic จาก reportlist
+    const uniqueSales = [...new Set(list.map((r) => r.sales).filter(Boolean))];
+    const salesGroupMap = uniqueSales.reduce((acc, name) => {
+      acc[name] = [name]; // ให้แต่ละ Sales เป็น group ของตัวเอง
+      return acc;
+    }, {});
+    console.log("🧩 Dynamic salesGroupMap 👉", salesGroupMap);
+
+    // เริ่มกรองข้อมูล
+    let filtered = list;   
+    
+     //  กรอง exID
+    if (filter.exID && filter.exID !== "0") {
+      filtered = filtered.filter((r) => r.exid === filter.exID);
+    }
+
+    // กรอง Sales — รองรับทั้งชื่อรายบุคคล และกลุ่ม (จาก filter.sales)
+    if (filter.sales && filter.sales !== "0") {
+      const selectedSales =
+        salesGroupMap[filter.sales] || [filter.sales];
+      filtered = filtered.filter((r) =>
+        selectedSales.some(
+          (s) => r.sales?.trim()?.toLowerCase() === s.trim().toLowerCase()
+        )
+      );
+    }
+
+    //  กรอง Zone
+    if (filter.zone && filter.zone !== "0") {
+      filtered = filtered.filter(
+        (r) => r.zone?.toLowerCase() === filter.zone.toLowerCase()
+      );
+    }   
+
+    //  กรองชื่อลูกค้า
+    if (filter.customername && filter.customername !== "0") {
+      filtered = filtered.filter(
+        (r) =>
+          r.name?.trim()?.toLowerCase() ===
+          filter.customername.trim()?.toLowerCase()
+      );
+    }
+
+    console.log("✅ filtered 👉", filtered);
+
+    // 🧮 คำนวณยอดรวมและ balance ตามบริษัท
+    const seen = new Map();
+    const balanceMap = new Map();
+
+    filtered.forEach((row) => {
+      const company = row?.name ?? "ไม่ระบุบริษัท";
+      balanceMap.set(
+        company,
+        (balanceMap.get(company) || 0) + Number(row?.volume ?? 0)
+      );
+    });
+
+    filtered.forEach((row, idx) => {
       const company = row?.name ?? "ไม่ระบุบริษัท";
       if (!seen.has(company)) {
-        seen.set(company, idx); // เก็บ index แถวแรก
+        seen.set(company, idx);
         row.amount = Number(row?.amount ?? 0);
       } else {
         row.amount = 0;
       }
     });
 
-    // 2) รวม volume ของบริษัทเดียวกัน
-    const balanceMap = new Map();
-    list.forEach((row) => {
-      const company = row?.name ?? "ไม่ระบุบริษัท";
-      balanceMap.set(company, (balanceMap.get(company) || 0) + Number(row?.volume ?? 0));
-    });
-
-    // 3) set balance แถวแรกของบริษัท, แถวถัดไป = 0
-    return list.map((row, idx) => {
+    const result = filtered.map((row, idx) => {
       const company = row?.name ?? "ไม่ระบุบริษัท";
       const firstIndex = seen.get(company);
-      const balance = idx === firstIndex ? balanceMap.get(company) - Number(row?.amount ?? 0) : 0;
+      const balance =
+        idx === firstIndex
+          ? balanceMap.get(company) - Number(row?.amount ?? 0)
+          : 0;
       return { ...row, balance };
     });
-  }, [reportlist]);
+
+    console.log("📊 normalizedList 👉", result);
+    return result;
+  }, [reportlist, filter]);
+
+
 
 
   // ✅ 1) Group ซ้อนกัน: Zone → Sales (ใช้ normalizedList)
@@ -195,11 +257,7 @@ function PrintReport() {
     };
 
 
-   
-  //const { filterC, showC } = useContext(dataContext);
-  //const [show] = showC; // สมมติว่า showC เป็น [show, setShow]
-
-  // ======= ฟังก์ชันสร้าง PDF และดาวน์โหลด =======
+    // ======= ฟังก์ชันสร้าง PDF และดาวน์โหลด =======
   const handlePrint = async () => {
     
 

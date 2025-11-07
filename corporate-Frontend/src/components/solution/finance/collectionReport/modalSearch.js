@@ -18,10 +18,20 @@ export default function ModalSeach(props) {
   }, [props.exid]);
 
   const searchClick = async () => {
-    const res = await Axios.post(url + "/getCustomer", search).then((res) => {
+    if (!search.name.trim()) {
+      alert("⚠️ กรุณากรอกชื่อลูกค้าก่อนค้นหา");
+      return;
+    }
+
+    try {
+      const res = await Axios.post(url + "/getCustomer", search);
       setCustomer(res.data);
-    });
+    } catch (err) {
+      console.error("❌ Error fetching customer:", err);
+      setCustomer([]);
+    }
   };
+
 
   useEffect(() => {
     setSearch({ ...search, name: props.search });
@@ -29,7 +39,7 @@ export default function ModalSeach(props) {
 
   useEffect(() => {
     if (props.show) {
-      if (search.name != "") {
+      if (search.name.trim() !== "") {
         searchClick();
       } else {
         setCustomer([]);
@@ -37,14 +47,14 @@ export default function ModalSeach(props) {
     }
   }, [props.show]);
 
-  // const nameClick = (id) => {
-  //   props.fill(id);
-  // };
+
 
   const nameClick = (c) => {
-      props.fill({ id: c.cid, name: c.name });
+    props.fill({ id: c.cid, name: c.name });
+    props.onHide(); // ✅ ปิด modal หลังเลือก
   };
 
+  
 
   const pressEnter = (e) => {
     if (e.key == "Enter") {
