@@ -5,12 +5,37 @@ import { pdf, Document, Page, Text, View, StyleSheet, Font ,Image} from "@react-
 import PrintButton from "./PrintButton"; 
 
 export default function Without_Zones() {
-  const { reportC,eventC } = useContext(dataContext);
+  const { reportC, eventC, filterC} = useContext(dataContext);
   const [reportlist] = reportC;
   const [event] = eventC;
+  const [filter] = filterC;
 
+   // ✅ ขั้นตอนที่ 1: กรองข้อมูลตาม filter ก่อน
+  const filteredList = useMemo(() => {
+    if (!Array.isArray(reportlist)) return [];
+
+    return reportlist.filter((item) => {
+      const matchExid = filter.exID ? item.exid === filter.exID : true;
+      const matchZone =
+        filter.zone && filter.zone !== "0"
+          ? item.zone === filter.zone
+          : true;
+      const matchSales =
+        filter.sales && filter.sales !== "0"
+          ? item.sales === filter.sales
+          : true;
+      const matchCustomer =
+        filter.customer && filter.customer !== "0"
+          ? item.name === filter.customername || item.cid === filter.customer
+          : true;
+
+      return matchExid && matchZone && matchSales && matchCustomer;
+    });
+  }, [reportlist, filter]);
+
+  // ✅ ขั้นตอนที่ 2: normalize (รวมยอดซ้ำบริษัทเดียวกัน)
   const normalizedList = useMemo(() => {
-    const list = Array.isArray(reportlist) ? reportlist : [];
+    const list = Array.isArray(filteredList) ? filteredList : [];
     const seen = new Map(); // เก็บ company → index ของแถวแรก
 
     // 1) mark amount แถวแรกของแต่ละบริษัท
@@ -38,7 +63,7 @@ export default function Without_Zones() {
       const balance = idx === firstIndex ? balanceMap.get(company) - Number(row?.amount ?? 0) : 0;
       return { ...row, balance };
     });
-  }, [reportlist]);
+  },[filteredList]);
 
 
   // Group เฉพาะ Sales
@@ -410,10 +435,10 @@ export default function Without_Zones() {
 
       <PrintButton event={event} onPrint={handlePrint} />
       
-      <div className="border border-zinc-300 rounded-md p-4 bg-white">
+      {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600">Report (Without Zones)</h3>
         <p>Sales ทั้งหมด: {Object.keys(groupedBySales).length} คน</p>
-      </div>
+      </div> */}
 
       {Object.entries(groupedBySales).map(([sales, rows]) => (
         <div key={`sales-only-${sales}`} className="border border-zinc-300 rounded-md p-4 bg-white mb-4">

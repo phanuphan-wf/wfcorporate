@@ -13,14 +13,12 @@ function PrintReport() {
   
   //console.log("filter 👉", filter);
   //console.log("reportlist 👉", reportlist);
-  
-
  
 
     const normalizedList = useMemo(() => {
     const list = Array.isArray(reportlist) ? reportlist : [];
-    console.log("🔹 raw reportlist 👉", list);
-    console.log("🔹 filter 👉", filter);
+   // console.log("🔹 raw reportlist 👉", list);
+   // console.log("🔹 filter 👉", filter);
 
     if (list.length === 0) return [];
 
@@ -30,7 +28,7 @@ function PrintReport() {
       acc[name] = [name]; // ให้แต่ละ Sales เป็น group ของตัวเอง
       return acc;
     }, {});
-    console.log("🧩 Dynamic salesGroupMap 👉", salesGroupMap);
+    //console.log("🧩 Dynamic salesGroupMap 👉", salesGroupMap);
 
     // เริ่มกรองข้อมูล
     let filtered = list;   
@@ -67,7 +65,7 @@ function PrintReport() {
       );
     }
 
-    console.log("✅ filtered 👉", filtered);
+    //console.log("✅ filtered 👉", filtered);
 
     // 🧮 คำนวณยอดรวมและ balance ตามบริษัท
     const seen = new Map();
@@ -101,7 +99,7 @@ function PrintReport() {
       return { ...row, balance };
     });
 
-    console.log("📊 normalizedList 👉", result);
+    //console.log("📊 normalizedList 👉", result);
     return result;
   }, [reportlist, filter]);
 
@@ -132,21 +130,20 @@ function PrintReport() {
 
   
 
-  // 1️⃣ Register ฟอนต์
-   
-  Font.register({
-    family: "Sarabun",
-    fonts: [
-        { src: "/fonts/Sarabun-Regular.ttf", fontWeight: "400", fontStyle: "normal" },
-        { src: "/fonts/Sarabun-Bold.ttf", fontWeight: "700", fontStyle: "normal" },
-        { src: "/fonts/Sarabun-Italic.ttf", fontWeight: "400", fontStyle: "italic" },
-        { src: "/fonts/Sarabun-ThinItalic.ttf", fontWeight: "100", fontStyle: "italic" },
-    ],
-  });
+    // 1️⃣ Register ฟอนต์   
+    Font.register({
+      family: "Sarabun",
+      fonts: [
+          { src: "/fonts/Sarabun-Regular.ttf", fontWeight: "400", fontStyle: "normal" },
+          { src: "/fonts/Sarabun-Bold.ttf", fontWeight: "700", fontStyle: "normal" },
+          { src: "/fonts/Sarabun-Italic.ttf", fontWeight: "400", fontStyle: "italic" },
+          { src: "/fonts/Sarabun-ThinItalic.ttf", fontWeight: "100", fontStyle: "italic" },
+      ],
+    });
 
 
       // 2️⃣ ใช้ชื่อเดียวกันใน style 
-      const styles = StyleSheet.create({
+    const styles = StyleSheet.create({
       page: { padding: 20, fontSize: 10, fontFamily: "Sarabun" }, 
       header: { fontSize: 11, marginBottom: 8, fontFamily: "Sarabun" },
       zoneTitle: { fontSize: 8, marginTop: 8, fontWeight: "bold", fontFamily: "Sarabun" },

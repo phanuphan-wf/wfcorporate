@@ -5,36 +5,42 @@ export default function PrintOptions() {
   const { filterC } = useContext(dataContext);
   const [filter, setFilter] = filterC;
 
-  // เผื่อกรณี state เริ่มต้นยังไม่มีฟิลด์ ให้กำหนดค่าเริ่มต้นชัดเจน
+  // ✅ กำหนดค่าเริ่มต้น
   const safeFilter = {
     printall: filter?.printall ?? true,
     wSale: filter?.wSale ?? false,
     wZone: filter?.wZone ?? false,
     sumReport: filter?.sumReport ?? false,
-    // ...คีย์อื่น ๆ ของคุณ (เช่น exID) ยังคงอยู่เพราะเราจะ merge เสมอ
+    order: filter?.order ?? [],
     ...filter,
   };
 
-  const setMode = useCallback((mode) => {
+  // ✅ toggle การเลือก + จัดลำดับ
+  const setMode = useCallback(
+    (mode) => {
       setFilter((prev) => {
-        switch (mode) {
-          case "printall":
-            return { ...prev, printall: !prev.printall };
-          case "wSale":
-            return { ...prev, wSale: !prev.wSale };
-          case "wZone":
-            return { ...prev, wZone: !prev.wZone };
-          case "summary":
-            return { ...prev, sumReport: !prev.sumReport };
-          default:
-            return prev;
-        }
-      });
-  }, [setFilter]);
+        const newState = { ...prev };
+        const order = [...(prev.order || [])];
 
+        const current = !prev[mode];
+        newState[mode] = current;
+
+        if (current) {
+          if (!order.includes(mode)) order.push(mode);
+        } else {
+          const idx = order.indexOf(mode);
+          if (idx !== -1) order.splice(idx, 1);
+        }
+
+        newState.order = order;
+        return newState;
+      });
+    },
+    [setFilter]
+  );
 
   useEffect(() => {
-    console.log("📌 filter เปลี่ยนค่า:", safeFilter);
+    // console.log("✅ filter:", safeFilter);
   }, [safeFilter]);
 
   return (
@@ -56,7 +62,7 @@ export default function PrintOptions() {
                 checked={safeFilter.printall}
                 onChange={() => setMode("printall")}
               />
-              Print all 
+              Print all
             </label>
 
             {/* Without Sales */}
@@ -67,7 +73,7 @@ export default function PrintOptions() {
                 checked={safeFilter.wSale}
                 onChange={() => setMode("wSale")}
               />
-              Without Sales 
+              Without Sales
             </label>
 
             {/* Without Zones */}
@@ -88,7 +94,7 @@ export default function PrintOptions() {
               type="checkbox"
               className="accent-red-500 w-4 h-4"
               checked={safeFilter.sumReport}
-              onChange={() => setMode("summary")}
+              onChange={() => setMode("sumReport")}
             />
             Summary Report
           </label>

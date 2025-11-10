@@ -45,12 +45,12 @@ function CollectionReport(props) {
   // ================== 📥 โหลดข้อมูลรายงาน ==================
   const getReport = async (params) => {
     try {
-      console.log("📤 ค่าที่ส่งออกไป:", params);
+      //console.log("📤 ค่าที่ส่งออกไป:", params);
       const res = await Axios.post(url + "/getReport",params);
-      console.log("📥 ค่าที่ API ส่งกลับมา:", res.data);
+    //  console.log("📥 ค่าที่ API ส่งกลับมา:", res.data);
       setReportlist(res.data);
     } catch (err) {
-      console.error("❌ Error fetching report:", err);
+      //console.error("❌ Error fetching report:", err);
     }
   };
   // ================== 🧭 โหลดข้อมูลเมื่อเลือก Exhibition ==================
@@ -157,17 +157,31 @@ function CollectionReport(props) {
      
 
         {/* =================== RENDER AREA =================== */}
-          <div ref={pdfRef} className="mt-4">
-            {filter.sumReport ? (
-              <Summary_Report event={selectedEvent}/>
-            ) : filter.wSale ? (
-              <Without_Sales event={selectedEvent}/>
-            ) : filter.wZone ? (
-              <Without_Zones event={selectedEvent}/>
-            ) : (
-              <Print_all  event={selectedEvent} />
-            )}
-          </div>
+         
+        <div ref={pdfRef} className="mt-4">
+          {/* ถ้าไม่มี order หรือยังไม่ได้ติ๊กอะไรเลย → แสดง Print_all */}
+          {(!filter.order || filter.order.length === 0) && (
+            <Print_all key="default" event={selectedEvent} />
+          )}
+
+          {/* ถ้ามี order → แสดงตามลำดับที่ติ๊ก */}
+          {filter.order?.map((key) => {
+            switch (key) {
+              case "sumReport":
+                return <Summary_Report key={key} event={selectedEvent} />;
+              case "wSale":
+                return <Without_Sales key={key} event={selectedEvent} />;
+              case "wZone":
+                return <Without_Zones key={key} event={selectedEvent} />;
+              case "printall":
+                return <Print_all key={key} event={selectedEvent} />;
+              default:
+                return null;
+            }
+          })}
+        </div>
+
+
         {/* =================================================== */}
 
       </section>

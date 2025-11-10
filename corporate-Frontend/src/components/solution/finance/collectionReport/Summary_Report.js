@@ -5,40 +5,62 @@ import { pdf, Document, Page, Text, View, StyleSheet, Font ,Image} from "@react-
 import PrintButton from "./PrintButton"; 
 
 export default function SummaryReport() {
-  const { reportC,eventC } = useContext(dataContext);
+  const { reportC, eventC, filterC} = useContext(dataContext);
   const [reportlist] = reportC;    
   const [event] = eventC;
+  const [filter] = filterC;
 
+   // 🔹 กรองข้อมูลตาม filter ก่อน
+  const filteredList = useMemo(() => {
+    let list = Array.isArray(reportlist) ? [...reportlist] : [];
+
+    if (filter.exID && filter.exID !== "0") {
+      list = list.filter((r) => r.exid === filter.exID);
+    }
+
+    if (filter.sales && filter.sales !== "0") {
+      list = list.filter((r) => r.sales === filter.sales);
+    }
+
+    if (filter.zone && filter.zone !== "0") {
+      list = list.filter((r) => r.zone === filter.zone);
+    }
+
+    if (filter.customer && filter.customer !== "0") {
+      list = list.filter((r) => r.name === filter.customername);
+    }
+
+    return list;
+  }, [reportlist, filter]);
+
+   // ✅ Normalize list เหมือนเดิม
   const normalizedList = useMemo(() => {
-    const list = Array.isArray(reportlist) ? reportlist : [];
-    const seen = new Map(); // เก็บ company → index ของแถวแรก
+    const list = Array.isArray(filteredList) ? filteredList : [];
+    const seen = new Map();
+    const balanceMap = new Map();
 
-    // 1) mark amount แถวแรกของแต่ละบริษัท
+    list.forEach((row) => {
+      const company = row?.name ?? "ไม่ระบุบริษัท";
+      balanceMap.set(company, (balanceMap.get(company) || 0) + Number(row?.volume ?? 0));
+    });
+
     list.forEach((row, idx) => {
       const company = row?.name ?? "ไม่ระบุบริษัท";
       if (!seen.has(company)) {
-        seen.set(company, idx); // เก็บ index แถวแรก
+        seen.set(company, idx);
         row.amount = Number(row?.amount ?? 0);
       } else {
         row.amount = 0;
       }
     });
 
-    // 2) รวม volume ของบริษัทเดียวกัน
-    const balanceMap = new Map();
-    list.forEach((row) => {
-      const company = row?.name ?? "ไม่ระบุบริษัท";
-      balanceMap.set(company, (balanceMap.get(company) || 0) + Number(row?.volume ?? 0));
-    });
-
-    // 3) set balance แถวแรกของบริษัท, แถวถัดไป = 0
     return list.map((row, idx) => {
       const company = row?.name ?? "ไม่ระบุบริษัท";
       const firstIndex = seen.get(company);
       const balance = idx === firstIndex ? balanceMap.get(company) - Number(row?.amount ?? 0) : 0;
       return { ...row, balance };
     });
-  }, [reportlist]);
+  }, [filteredList]);
 
 
   // (ตัวเลือก) เรียงข้อมูลให้อ่านง่าย: Zone > Sales > Name
@@ -59,9 +81,8 @@ export default function SummaryReport() {
     balance: sortedRows.reduce((s, r) => s + Number(r?.balance ?? 0), 0),
   }), [sortedRows]);
 
-      // 1️⃣ Register ฟอนต์
-      
-      Font.register({
+    // 1️⃣ Register ฟอนต์      
+    Font.register({
         family: "Sarabun",
         fonts: [
             { src: "/fonts/Sarabun-Regular.ttf", fontWeight: "400", fontStyle: "normal" },
@@ -69,11 +90,11 @@ export default function SummaryReport() {
             { src: "/fonts/Sarabun-Italic.ttf", fontWeight: "400", fontStyle: "italic" },
             { src: "/fonts/Sarabun-ThinItalic.ttf", fontWeight: "100", fontStyle: "italic" },
         ],
-      });
+    });
 
 
-      // 2️⃣ ใช้ชื่อเดียวกันใน style 
-      const styles = StyleSheet.create({
+    // 2️⃣ ใช้ชื่อเดียวกันใน style 
+    const styles = StyleSheet.create({
       page: { padding: 20, fontSize: 10, fontFamily: "Sarabun" }, 
       header: { fontSize: 11, marginBottom: 8, fontFamily: "Sarabun" },
       zoneTitle: { fontSize: 8, marginTop: 8, fontWeight: "bold", fontFamily: "Sarabun" },
@@ -416,7 +437,7 @@ export default function SummaryReport() {
     <section className="mt-6 space-y-8">
        <PrintButton event={event} onPrint={handlePrint} />
       {/* Summary cards */}
-      <div className="border border-zinc-300 rounded-md p-4 bg-white">
+      {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600 mb-3">Summary Report</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="p-3 rounded bg-gray-50 border">
@@ -436,7 +457,7 @@ export default function SummaryReport() {
             <div className="font-semibold">{totals.balance.toLocaleString()}</div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* One big table */}
       <div className="border border-zinc-300 rounded-md p-4 bg-white mb-4">

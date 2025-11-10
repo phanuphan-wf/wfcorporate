@@ -5,13 +5,48 @@ import { pdf, Document, Page, Text, View, StyleSheet, Font ,Image} from "@react-
 import PrintButton from "./PrintButton"; 
 
 export default function Without_Sales() {
-  const { reportC,eventC } = useContext(dataContext);
+  const { reportC,eventC,filterC } = useContext(dataContext);
   const [reportlist] = reportC;
   const [event] = eventC;
+  const [filter] = filterC;
+  
+
+  // console.log("filter 👉", filter);
+  // console.log("event 👉",event);
+  // console.log("reportlist 👉", reportlist);
+ 
+  // 🎯 ส่วนกรองข้อมูลหลักจาก filter ก่อนเข้าสู่ normalizedList
+  const filteredList = useMemo(() => {
+    let list = Array.isArray(reportlist) ? [...reportlist] : [];
+
+    // 🔹 กรองตาม exID (ต้องมีเสมอ)
+    if (filter.exID && filter.exID !== "0") {
+      list = list.filter((r) => r.exid === filter.exID);
+    }
+
+    // 🔹 กรองตาม sales (ถ้ามีเลือก)
+    if (filter.sales && filter.sales !== "0") {
+      list = list.filter((r) => r.sales === filter.sales);
+    }
+
+    // 🔹 กรองตาม zone
+    if (filter.zone && filter.zone !== "0") {
+      list = list.filter((r) => r.zone === filter.zone);
+    }
+
+    // 🔹 กรองตาม customer
+    if (filter.customer && filter.customer !== "0") {
+      list = list.filter((r) => r.name === filter.customername);
+    }
+
+    return list;
+  }, [reportlist, filter]);
+
+
 
   const normalizedList = useMemo(() => {
-    const list = Array.isArray(reportlist) ? reportlist : [];
-    const seen = new Map(); // เก็บ company → index ของแถวแรก
+    const list = Array.isArray(filteredList) ? filteredList : [];
+    const seen = new Map();
 
     // 1) mark amount แถวแรกของแต่ละบริษัท
     list.forEach((row, idx) => {
@@ -38,7 +73,7 @@ export default function Without_Sales() {
       const balance = idx === firstIndex ? balanceMap.get(company) - Number(row?.amount ?? 0) : 0;
       return { ...row, balance };
     });
-  }, [reportlist]);
+  }, [filteredList]);
  
 
     // Group เฉพาะ Zone
@@ -72,7 +107,7 @@ export default function Without_Sales() {
 
 
       // 2️⃣ ใช้ชื่อเดียวกันใน style 
-      const styles = StyleSheet.create({
+    const styles = StyleSheet.create({
         page: { padding: 20, fontSize: 10, fontFamily: "Sarabun" }, 
         header: { fontSize: 11, marginBottom: 8, fontFamily: "Sarabun" },
         zoneTitle: { fontSize: 8, marginTop: 8, fontWeight: "bold", fontFamily: "Sarabun" },
@@ -150,7 +185,7 @@ export default function Without_Sales() {
           borderTopWidth: 1,
         },
 
-      });
+    });
 
 
     // ฟังก์ชันแปลงเป็น วัน/เดือน/ปี พ.ศ.
@@ -437,10 +472,10 @@ export default function Without_Sales() {
 
       <PrintButton event={event} onPrint={handlePrint} />
 
-      <div className="border border-zinc-300 rounded-md p-4 bg-white">
+      {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600">Report (Without Sales)</h3>
         <p>Zone ทั้งหมด: {Object.keys(groupedByZone).length} โซน</p>
-      </div>
+      </div> */}
 
       {Object.entries(groupedByZone).map(([zone, rows]) => (
         <div key={`zone-only-${zone}`} className="border border-zinc-300 rounded-md p-4 bg-white mb-4">

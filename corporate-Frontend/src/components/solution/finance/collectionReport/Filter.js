@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { dataContext } from "./report";
-import Axios from "axios";
+// import Axios from "axios";
 import ModalSeach from "./modalSearch";
 
 export default function Filter() {
@@ -11,7 +11,7 @@ export default function Filter() {
 
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;  
+  // const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;  
 
   const [sales, setSales] = useState([]);
   const [zones, setZones] = useState([]);
@@ -78,23 +78,6 @@ export default function Filter() {
     };
 
 
-    const searchCustomerByName = async (name) => {
-      try {
-        const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_rr;
-        const res = await Axios.post(url + "/getCustomer", { name });
-        if (res.data?.length > 0) {
-          // ถ้าเจอชื่อเดียวตรง ๆ
-          setSelectedCustomer({ id: res.data[0].cid, name: res.data[0].name });
-          setFilter({ ...filter, customer: res.data[0].cid });
-        } else {
-          // ถ้าไม่เจอ → เปิด Modal ให้เลือกเอง
-          setModalShow(true);
-        }
-      } catch (error) {
-        console.error("❌ Error searching customer:", error);
-        setModalShow(true);
-      }
-    };
 
 
     const handleSearchCustomer = (triggerByEnter = false) => {
@@ -131,10 +114,6 @@ export default function Filter() {
         setModalShow(true);
       }
     };
-
-
-
-
 
  
 
