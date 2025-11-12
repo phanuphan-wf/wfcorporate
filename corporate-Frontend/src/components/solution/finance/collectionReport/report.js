@@ -149,8 +149,6 @@ function CollectionReport(props) {
 
         {/* ✅ ปุ่มกดเพื่อพิมพ์เฉพาะส่วน */}
         <Print_PDF pdfRef={pdfRef} />
-
-
      
 
         {/* =================== RENDER AREA =================== */}
