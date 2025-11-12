@@ -11,7 +11,7 @@ export default function PrintOptions() {
     wSale: filter?.wSale ?? false,
     wZone: filter?.wZone ?? false,
     sumReport: filter?.sumReport ?? false,
-    order: filter?.order ?? [],
+    // order: filter?.order ?? [],
     ...filter,
   };
 
@@ -21,6 +21,9 @@ export default function PrintOptions() {
       setFilter((prev) => {
         const newState = { ...prev };
         const order = [...(prev.order || [])];
+
+        // ระบุว่า user เริ่มมีการกระทำแล้ว
+        newState.userInteracted = true;
 
         const current = !prev[mode];
         newState[mode] = current;
@@ -38,6 +41,7 @@ export default function PrintOptions() {
     },
     [setFilter]
   );
+
 
   useEffect(() => {
     // console.log("✅ filter:", safeFilter);

@@ -425,6 +425,7 @@ export default function Without_Zones() {
           <td className="border px-2 py-1 text-right">{t.amount.toLocaleString()}</td>
           <td className="border px-2 py-1 text-right">{t.balance.toLocaleString()}</td>
           <td className="border px-2 py-1"></td>
+          <td className="border px-2 py-1"></td>
         </tr>
       </tfoot>
     );
@@ -433,7 +434,7 @@ export default function Without_Zones() {
   return (
     <section className="mt-6 space-y-8">
 
-      <PrintButton event={event} onPrint={handlePrint} />
+      {/* <PrintButton event={event} onPrint={handlePrint} /> */}
       
       {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600">Report (Without Zones)</h3>
@@ -444,7 +445,7 @@ export default function Without_Zones() {
         <div key={`sales-only-${sales}`} className="border border-zinc-300 rounded-md p-4 bg-white mb-4">
           <div className="relative flex items-center mb-2">
              <h4 className="font-semibold text-green-600 mb-2">พนักงานขาย : {sales}</h4>
-            <h3 className="flex-1 text-right">หน้าที่ : </h3>
+            {/* <h3 className="flex-1 text-right">หน้าที่ : </h3> */}
           </div>
           <table className="w-full border-collapse border">
             <TableHead />

@@ -11,7 +11,7 @@ function PrintReport() {
   const [event] = eventC;
   const [filter] = filterC;
   
-  //console.log("filter 👉", filter);
+  console.log("filter 👉", filter);
   //console.log("reportlist 👉", reportlist);
  
 
@@ -468,9 +468,10 @@ function PrintReport() {
   return (
     <section className="mt-6 space-y-8">
 
-       <PrintButton event={event} onPrint={handlePrint} />
+      {/* <PrintButton event={event} onPrint={handlePrint} /> */}
       {/* ✅ Summary */}
-      <div className="border border-zinc-300 rounded-md p-4 bg-white">
+
+      {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600">Report (Print All)</h3>
         <p>Zone ทั้งหมด: {Object.keys(groupedByZoneAndSales).length} โซน</p>
         <p>
@@ -484,7 +485,8 @@ function PrintReport() {
           }{" "}
           คน
         </p>
-      </div>     
+      </div>   */}
+
 
       {/* ✅ ตาราง Zone > Sales */}
       {Object.entries(groupedByZoneAndSales).map(([zone, salesObj], idx) => (
@@ -506,7 +508,7 @@ function PrintReport() {
                   <h3 className="absolute left-1/2 -translate-x-1/2 text-center">
                     โซน : {zone}
                   </h3>
-                  <h3 className="flex-1 text-right">หน้าที่ : </h3>
+                  {/* <h3 className="flex-1 text-right">หน้าที่ : </h3> */}
                 </div>
 
                 <table className="w-full border-collapse border">

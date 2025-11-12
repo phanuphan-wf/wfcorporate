@@ -462,6 +462,7 @@ export default function Without_Sales() {
           <td className="border px-2 py-1 text-right">{t.amount.toLocaleString()}</td>
           <td className="border px-2 py-1 text-right">{t.balance.toLocaleString()}</td>
           <td className="border px-2 py-1"></td>
+          <td className="border px-2 py-1"></td>
         </tr>
       </tfoot>
     );
@@ -470,7 +471,7 @@ export default function Without_Sales() {
   return (
     <section className="mt-6 space-y-8">
 
-      <PrintButton event={event} onPrint={handlePrint} />
+      {/* <PrintButton event={event} onPrint={handlePrint} /> */}
 
       {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600">Report (Without Sales)</h3>

@@ -15,6 +15,8 @@ import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 
 import html2pdf from "html2pdf.js";
+import Print_PDF from "./Print_PDF"; // ✅ เพิ่มบรรทัดนี้
+
 
 
 // สร้าง context
@@ -56,8 +58,10 @@ function CollectionReport(props) {
   // ================== 🧭 โหลดข้อมูลเมื่อเลือก Exhibition ==================
   useEffect(() => {
     if (filter.exID !== "0" && filter.exID !== "") {     
+      // console.log("📦 ค่าที่จะส่งไป getReport:", filter);
       getReport(filter);
     }
+    
   }, [filter.exID]);
 
   // ================== 🧮 กรองข้อมูลในฝั่ง React ==================
@@ -79,22 +83,9 @@ function CollectionReport(props) {
       return true;
     });
   }, [reportlist, filter]);
+ 
 
-  // ================== 🖨️ ฟังก์ชัน Print ==================
 
-  const handlePrint = useCallback(() => {
-    if (!pdfRef.current) return;
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: "collection-report.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
-      pagebreak: { mode: ["css", "legacy"] },
-    };
-
-    html2pdf().set(opt).from(pdfRef.current).save();
-  }, []);
 
    // ================== 🔐 ตรวจสิทธิ์ผู้ใช้งาน ==================
     const show = AppRouteFinance.find(
@@ -154,33 +145,54 @@ function CollectionReport(props) {
 
         {/* Filter Section */}
         {showFilter && <Filter />}        
+
+
+        {/* ✅ ปุ่มกดเพื่อพิมพ์เฉพาะส่วน */}
+        <Print_PDF pdfRef={pdfRef} />
+
+
      
 
         {/* =================== RENDER AREA =================== */}
          
         <div ref={pdfRef} className="mt-4">
-          {/* ถ้าไม่มี order หรือยังไม่ได้ติ๊กอะไรเลย → แสดง Print_all */}
-          {(!filter.order || filter.order.length === 0) && (
-            <Print_all key="default" event={selectedEvent} />
+
+          {/* ✅ เงื่อนไข:
+              ถ้ายังไม่มี order และยังไม่ได้ติ๊กอะไร → แสดง Print_all default
+              แต่ถ้าผู้ใช้เริ่มติ๊กแล้ว (แม้ติ๊กออกหมด) → ไม่ต้องแสดง default */}
+          {(!filter.order || filter.order.length === 0) &&
+            !filter.userInteracted && (
+              <Print_all key="default" event={selectedEvent} />
           )}
 
-          {/* ถ้ามี order → แสดงตามลำดับที่ติ๊ก */}
+          {/* ✅ ถ้ามี order → แสดงตามลำดับที่ติ๊ก */}
           {filter.order?.map((key) => {
             switch (key) {
-              case "sumReport":
-                return <Summary_Report key={key} event={selectedEvent} />;
-              case "wSale":
-                return <Without_Sales key={key} event={selectedEvent} />;
-              case "wZone":
-                return <Without_Zones key={key} event={selectedEvent} />;
               case "printall":
-                return <Print_all key={key} event={selectedEvent} />;
+                return filter.printall ? (
+                  <Print_all key={key} event={selectedEvent} />
+                ) : null;
+
+              case "sumReport":
+                return filter.sumReport ? (
+                  <Summary_Report key={key} event={selectedEvent} />
+                ) : null;
+
+              case "wSale":
+                return filter.wSale ? (
+                  <Without_Sales key={key} event={selectedEvent} />
+                ) : null;
+
+              case "wZone":
+                return filter.wZone ? (
+                  <Without_Zones key={key} event={selectedEvent} />
+                ) : null;
+
               default:
                 return null;
             }
           })}
         </div>
-
 
         {/* =================================================== */}
 

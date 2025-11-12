@@ -435,7 +435,7 @@ export default function SummaryReport() {
 
   return (
     <section className="mt-6 space-y-8">
-       <PrintButton event={event} onPrint={handlePrint} />
+      {/* <PrintButton event={event} onPrint={handlePrint} /> */}
       {/* Summary cards */}
       {/* <div className="border border-zinc-300 rounded-md p-4 bg-white">
         <h3 className="font-semibold text-red-600 mb-3">Summary Report</h3>
