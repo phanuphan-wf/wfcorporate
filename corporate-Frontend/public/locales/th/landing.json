@@ -243,5 +243,39 @@
             "accept": "ยอมรับ",
             "cancel": "ไม่ยอมรับ"
         }
+        
+    },
+    
+    "redeem":{
+            "buyerregist":{
+                "header" : "ท่านได้ลงทะเบียนหน้างานแล้วหรือไม่",
+                "radio_register" : "ลงทะเบียนแล้ว",
+                "label_register" : "เบอร์โทรศัพท์ที่ลงทะเบียน",
+                "placeholder" : "กรอกเบอร์โทรศัพท์ของคุณ",
+                "button_check":"ตรวจสอบข้อมูล",
+                "radio_not_registered" : "ยังไม่ลงทะเบียน",
+                "button_registered" : "ไปหน้าลงทะเบียน",
+                "alert_phone" : "กรุณากรอกเบอร์โทรให้ครบ 10 หลัก",
+                "alert_success" : "คุณลงทะเบียนงานนี้แล้ว",
+                "alert_error_title" : "ไม่พบข้อมูล",
+                "alert_error_text" : "กรุณาตรวจสอบเบอร์โทรอีกครั้ง"
+            },
+            "Qrcode" :{
+                "header": "โปรดนำ QR Code แสดงกับเจ้าหน้าที่",
+                "details" : "กรุณาแสดง QR Code นี้กับเจ้าหน้าที่ประตูเข้างาน"
+            },
+            "FormRegister" : {
+                "header": "ฟอร์มลงทะเบียนเข้าชมงานแสดงสินค้า",
+                "name": "ชื่อ *",
+                "surname": "นามสกุล *",
+                "phone": "เบอร์โทรศัพท์ *",
+                "btn_submit" : " ลงทะเบียน",
+                "alert_warning_title" : "เบอร์มือถือไม่ถูกต้อง",
+                "alert_warning_text" : "กรุณากรอกอย่างน้อย 10 หลัก",
+                "alert_success_title" : "ลงทะเบียนสำเร็จ",
+                "alert_success_text" : "โปรดรอรับ SMS พร้อมลิงก์ยืนยันหมายเลขโทรศัพท์"
+            } 
+            
+            
     }
 }

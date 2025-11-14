@@ -8,6 +8,13 @@ import PostPage_dc from "./components/registration/I525/postregister";
 
 import Exregist from "./components/exregist/exregist";
 import Exqr from "./components/exregist/exqr";
+
+import BuyerRegist from "./components/buyerregist/BuyerRegist";
+import QRCode from "./components/buyerregist/QRCode";
+import FormRegister from "./components/buyerregist/FormRegister";
+
+
+
 const AppRegistRoutes = [
   {
     path: "exregist",
@@ -50,6 +57,21 @@ const AppRegistRoutes = [
     path: "i525/postregister/:res/:key",
     element: <PostPage_dc />,
   },
+  {
+    path:"buyerregist",
+    element:<BuyerRegist />,
+  },
+
+  {
+    path: "Qrcode",
+    element: <QRCode />,
+  },
+  
+  {
+    path: "FormRegister",
+    element: <FormRegister />,
+  },
+
 ];
 
 export default AppRegistRoutes;

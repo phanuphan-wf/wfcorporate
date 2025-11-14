@@ -243,5 +243,38 @@
             "accept": "Accept",
             "cancel": "Do not accept"
         }
+    },
+    "redeem": {
+        "buyerregist": {
+            "header": "Have you already registered at the event?",
+            "radio_register": "Already registered",
+            "label_register": "Registered phone number",
+            "placeholder": "Enter your phone number",
+            "button_check": "Verify",
+            "radio_not_registered": "Not yet registered",
+            "button_registered": "Go to registration",
+            "alert_phone": "Please enter at least 10 digits",
+            "alert_success": "You have already registered for this event",
+            "alert_error_title": "Data not found",
+            "alert_error_text": "Please check your phone number again"
+        },
+
+        "Qrcode": {
+            "header": "Please present this QR Code to the staff",
+            "details": "Show this QR Code to the staff at the entrance gate"
+        },
+
+        "FormRegister": {
+            "header": "Exhibition Registration Form",
+            "name": "First Name *",
+            "surname": "Last Name *",
+            "phone": "Phone Number *",
+            "btn_submit": "Register",
+            "alert_warning_title": "Invalid phone number",
+            "alert_warning_text": "Please enter at least 10 digits",
+            "alert_success_title": "Registration successful",
+            "alert_success_text": "Please wait for the SMS with the phone number verification link"
+        }
     }
+
 }
