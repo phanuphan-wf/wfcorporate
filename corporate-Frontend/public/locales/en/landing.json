@@ -1,9 +1,9 @@
 {
     "landing": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair",
-        "showdate": "October 4-13, 2025",
-        "hall": "Hall 9-11",
+        "show": "Furniture Fair Grand Year-End",
+        "showdate": "December 5-14, 2025",
+        "hall": "EH 102-104",
         "time": "10.30-20.30 hrs.",
         "regist": "Fill in to get",
         "gift": "Gift",
@@ -19,10 +19,11 @@
             "Home decor items"
         ],
         "elec": [
-            "It's Back — HomePro Electric Expo!",
-            "The Biggest Home Appliance Sale Event from HomePro",
-            "Get up to 160,000 THB Cashback + Extra Savings up to 7,200 THB",
-            "0% Installments for up to 10 Months Across the Event"
+            "Massive Year-End Deals on Top Electrical & IT Products!",
+            "Big Savings, Big Choices — Huge Discounts + 0% Installments Across the Event!",
+            "Featuring must-have home appliances: TVs, Refrigerators, Air Conditioners and more",
+            "Washer-Dryers, Vacuum Cleaners, Air Purifiers, Water Heaters — All at Special Prices!",
+            "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
         ]
     },
     "landing2": {
@@ -40,10 +41,11 @@
             "Home decor items"
         ],
         "elec": [
-            "Big Discounts, Real Deals — Up to 60% Off!, Plus an Extra 15% Off for The 1 Members",
-            "Home appliances such as refrigerators, washing machines, air conditioners, and microwaves",
-            "Small appliances such as irons, blenders, and air fryers",
-            "Audio and video devices such as TVs, soundbars, and DVD players"
+            "Massive Year-End Deals on Top Electrical & IT Products!",
+            "Big Savings, Big Choices — Huge Discounts + 0% Installments Across the Event!",
+            "Featuring must-have home appliances: TVs, Refrigerators, Air Conditioners and more",
+            "Washer-Dryers, Vacuum Cleaners, Air Purifiers, Water Heaters — All at Special Prices!",
+            "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
         ]
     },
     "regist2": {
@@ -54,9 +56,9 @@
     },
     "regist": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair",
-        "showdate": "October 4-13, 2025",
-        "hall": "Hall 9-11",
+        "show": "Furniture Fair Grand Year-End",
+        "showdate": "December 5-14, 2025",
+        "hall": "EH 102-104",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
         "pre": "Preregistration Form",
