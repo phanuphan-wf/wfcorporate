@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Axios from "axios";
+import useHeader from "../hook/useHeader"
 
 export default function BuyerRegist() {
   const { t, i18n } = useTranslation("landing", {
@@ -12,42 +14,67 @@ export default function BuyerRegist() {
   const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
+  //const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
+  const urlCheck = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
+  const bearer = useHeader();
 
+  Axios.defaults.headers.common = {
+    Authorization: "Bearer " + bearer,
+  };
   // ================================
   // 🔍 ฟังก์ชันเช็คเบอร์โทร
   // ================================
-  const handleSubmit = async () => {
+  const MobileCheck = async () => {
     if (registerStatus !== "registered") return;
 
-    if (phone.length < 10) {
-      Swal.fire({
-        icon: "warning",
-        title: t("alert_phone"),
-        confirmButtonText: "OK",
-        customClass: { confirmButton: "swal2-red-btn" },
-      });
-      return;
-    }
+    
+    try {
+      const checkUrl = `${urlCheck}/vismobile/${phone.replaceAll(" ", "")}`;
+      
 
-    const registeredPhones = ["0634495388"];
+      console.log("Request URL:", checkUrl);
 
-    if (registeredPhones.includes(phone)) {
+      const res = await Axios.get(checkUrl);
+      console.log("API response:", res.data);
+        //console.log(res.data);
+      if (!res.data || res.data.length === 0) {
+        Swal.fire({
+          icon: "error",
+          title: t("alert_error_title"), // ใช้ translation
+          text: t("alert_error_text"),
+          confirmButtonText: "OK",
+          customClass: { confirmButton: "swal2-red-btn" },
+        });
+        return;
+      }
+      
+      
       Swal.fire({
         icon: "success",
-        title: t("alert_success"),
+        title: t("alert_success"),       
         confirmButtonText: "OK",
         customClass: { confirmButton: "swal2-red-btn" },
       }).then(() => navigate("/Qrcode"));
-    } else {
+
+      
+    } catch (error) {
+      console.error("API error:", error);
+
       Swal.fire({
         icon: "error",
-        title: t("alert_error_title"),
-        text: t("alert_error_text"),
+        title: error, // ใช้ translation
+        text: error,
         confirmButtonText: "OK",
         customClass: { confirmButton: "swal2-red-btn" },
       });
     }
+
+ 
   };
+
+   
+  
+  
 
   useEffect(() => {
     console.log("สถานะการลงทะเบียน:", registerStatus);
@@ -134,7 +161,7 @@ export default function BuyerRegist() {
 
             <button
               type="button"
-              onClick={handleSubmit}
+              onClick={MobileCheck}
               disabled={phone.length < 10}
               className={`mt-3 px-4 py-2 rounded-lg w-full ${
                 phone.length >= 10
