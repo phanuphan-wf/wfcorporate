@@ -3,76 +3,90 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Axios from "axios";
-import useHeader from "../hook/useHeader"
+// import useHeader from "../hook/useHeader";
 
 export default function BuyerRegist() {
   const { t, i18n } = useTranslation("landing", {
     keyPrefix: "redeem.buyerregist",
   });
+  
 
   const [registerStatus, setRegisterStatus] = useState("");
   const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
-  //const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
-  const urlCheck = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
-  const bearer = useHeader();
-
-  Axios.defaults.headers.common = {
-    Authorization: "Bearer " + bearer,
-  };
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
+  //const urlCheck = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
+  
   // ================================
   // 🔍 ฟังก์ชันเช็คเบอร์โทร
   // ================================
   const MobileCheck = async () => {
     if (registerStatus !== "registered") return;
 
-    
     try {
-      const checkUrl = `${urlCheck}/vismobile/${phone.replaceAll(" ", "")}`;
-      
+      const res = await Axios.post(url + "/MobileCheck", {
+        mobile: phone,
+        code: ""
+      });
 
-      console.log("Request URL:", checkUrl);
+      // เช็ค status HTTP
+      if (res.status === 200) {
+        //console.log("เจอเบอร์:", res.data);
+        Swal.fire({
+          icon: "success",
+          title: "พบข้อมูล",
+          text: "คุณลงทะเบียนงานแล้ว",
+          confirmButtonText: "ตกลง",
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+                  
+        }).then(() => navigate("/Qrcode"));
 
-      const res = await Axios.get(checkUrl);
-      console.log("API response:", res.data);
-        //console.log(res.data);
-      if (!res.data || res.data.length === 0) {
+      } else if (res.status === 404) {
+       // console.log("เบอร์ไม่ถูก");
         Swal.fire({
           icon: "error",
-          title: t("alert_error_title"), // ใช้ translation
-          text: t("alert_error_text"),
-          confirmButtonText: "OK",
-          customClass: { confirmButton: "swal2-red-btn" },
+          title: "ไม่พบข้อมูล",
+          text: "กรุณาตรวจสอบเบอร์โทรอีกครั้ง",
+          confirmButtonText: "ตกลง",
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+              
         });
-        return;
+
+      } else {//status === 400 error
+        //console.log("เกิดข้อผิดพลาดอื่นๆ");
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด",
+          text: "ไม่สามารถตรวจสอบข้อมูลได้",
+          confirmButtonText: "ตกลง",
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+              
+        });
       }
-      
-      
-      Swal.fire({
-        icon: "success",
-        title: t("alert_success"),       
-        confirmButtonText: "OK",
-        customClass: { confirmButton: "swal2-red-btn" },
-      }).then(() => navigate("/Qrcode"));
 
-      
-    } catch (error) {
-      console.error("API error:", error);
-
+    } catch (err) {
+      // กรณี API ไม่ตอบกลับ หรือ network error
+      //console.error("❌ API Error:", err);
       Swal.fire({
         icon: "error",
-        title: error, // ใช้ translation
-        text: error,
-        confirmButtonText: "OK",
-        customClass: { confirmButton: "swal2-red-btn" },
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถตรวจสอบข้อมูลได้",
+        confirmButtonText: "ตกลง",
+        customClass: {
+            confirmButton: "swal2-red-btn",
+          },
       });
     }
-
- 
   };
 
-   
+
   
   
 
@@ -152,7 +166,7 @@ export default function BuyerRegist() {
               type="tel"
               id="phone"
               name="phone"
-              value={phone}
+              value={phone}               
               onChange={(e) => setPhone(e.target.value)}
               placeholder={t("placeholder")}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"

@@ -275,6 +275,204 @@
             "alert_success_title": "Registration successful",
             "alert_success_text": "Please wait for the SMS with the phone number verification link"
         }
+    },
+     "regist2_redeem": {
+        "show": "Furniture Fair",
+        "showdate": "September 6-14, 2025",
+        "hall": "Hall 9-10",
+        "time": "10.30-20.30 hrs."
+    },
+    "regist_redeem": {
+        "lng": "เปลี่ยนภาษา",
+        "show": "Furniture Fair",
+        "showdate": "October 4-13, 2025",
+        "hall": "Hall 9-11",
+        "time": "10.30-20.30 hrs.",
+        "title": "Registration Form",
+        "pre": "Preregistration Form",
+        "newsaccept": "I agree to receive news from World Fair",
+        "acceptterm": "I agree to the terms and conditions of",
+        "policy": "Privacy Policy",
+        "submit": "Submit",
+        "saving": "Saving data...",
+        "dup": "Sorry, you have already registered",
+        "unsuccess": "Failed to add data. Please try again",
+        "info": {
+            "name": "Name *",
+            "surname": "Surname *",
+            "email": "Email",
+            "phone": "Mobile Phone *",
+            "male": "Male",
+            "female": "Female",
+            "sex_na": "Not specified",
+            "sex": "Sex *",
+            "month": "Birth Month",
+            "year": "Birth Year *",
+            "income": "Monthly Income",
+            "occupation": "Occupation",
+            "province": "Province *",
+            "district": "District *",
+            "veriPhone": "* Please enter a valid mobile number without any characters",
+            "veriEmail": "* Please enter a valid email address",
+            "less": "less than",
+            "more": "more than"
+        },
+        "interest": {
+            "title": "What type of products are you interested in visiting the event? (Multiple answers allowed.) *",
+            "fur": {
+                "name": "Furniture category",
+                "select": [
+                    {
+                        "col": "Bedroom such as bed, bedding, dressing table",
+                        "id": "F_bed"
+                    },
+                    {
+                        "col": "Living room such as TV shelf, showcase, storage cabinet",
+                        "id": "F_living"
+                    },
+                    {
+                        "col": "Sofa such as fabric sofa, leather sofa, armchair",
+                        "id": "F_sofa"
+                    },
+                    {
+                        "col": "Kitchen such as ready-made kitchen set",
+                        "id": "F_kitchen"
+                    },
+                    {
+                        "col": "Dining room such as dining table, bar counter",
+                        "id": "F_dining"
+                    },
+                    {
+                        "col": "Office such as desk, bookshelf, office chair",
+                        "id": "F_working"
+                    }
+                ]
+            },
+            "elec": {
+                "name": "Electronics category",
+                "select": [
+                    {
+                        "col": "Image and sound such as TV, sound bar",
+                        "id": "E_av"
+                    },
+                    {
+                        "col": "Home appliances such as refrigerator, washing machine, microwave",
+                        "id": "E_ha"
+                    },
+                    {
+                        "col": "Small appliances such as electric kettle, rice cooker, blender",
+                        "id": "E_small"
+                    }
+                ],
+                "selecthp": [
+                    {
+                        "col": "Image and sound such as TV, sound bar",
+                        "id": "E_av"
+                    },
+                    {
+                        "col": "Home appliances such as refrigerator, washing machine, microwave",
+                        "id": "E_ha"
+                    },
+                    {
+                        "col": "Small appliances such as electric kettle, rice cooker, blender",
+                        "id": "E_small"
+                    },
+                    {
+                        "col": "Household items such as Gas Stove, Sink, pans",
+                        "id": "H_homeproduct"
+                    },
+                    {
+                        "col": "Tools",
+                        "id": "H_material"
+                    }
+                ]
+            },
+            "homedecor": {
+                "name": "Home Decor category",
+                "select": [
+                    {
+                        "col": "Small home decor items",
+                        "id": "H_decor"
+                    },
+                    {
+                        "col": "Household items such as plates, pans",
+                        "id": "H_homeproduct"
+                    },
+                    {
+                        "col": "Tools",
+                        "id": "H_material"
+                    },
+                    {
+                        "col": "Plants and gardening",
+                        "id": "G_garden"
+                    }
+                ]
+            },
+            "other": {
+                "name": "Other categories",
+                "select": [
+                    {
+                        "col": "Fashion and accessories",
+                        "id": "F_fashion"
+                    },
+                    {
+                        "col": "Food and beverages",
+                        "id": "F_food"
+                    },
+                    {
+                        "col": "Miscellaneous products",
+                        "id": "F_fashion"
+                    }
+                ]
+            }
+        },
+        "filldata": {
+            "title": "Registration Information",
+            "pleasefill": "Please fill in the information of",
+            "before": ",before saving",
+            "pAccept": "Please accept",
+            "term": "terms and conditions of personal data collection",
+            "accept": "Accept",
+            "visitor": "Personal data",
+            "product": "Interest product"
+        },
+        "resident": {
+            "title": "Please specify your type of residence."
+        },
+        "media": {
+            "title": "How did you learn about this event? (Multiple answers allowed.)"
+        },
+        "post": {
+            "dupAlert": "The system has sent an SMS to you already. If you did not receive the SMS, please check your phone number or contact the staff.",
+            "none": {
+                "h1": "Registration failed",
+                "h4": "Sorry, your mobile number has already been registered",
+                "pStrong": "We thank you for your interest in visiting our event again"
+            },
+            "success": {
+                "h1": "Registration Successful",
+                "h4": "Thank you for registering to visit our event",
+                "pStrong": "You'll receive an SMS shortly — please show the code to our staff"
+            },
+            "expire": {
+                "h1": "Pre-registration Closed",
+                "h4": "Thank you for your interest in pre-registering to visit our event",
+                "pStrong": "We have now closed pre-registration",
+                "p": "You can register for complimentary gifts at the event"
+            },
+            "sms": {
+                "h1": "Registration Failed",
+                "h4": "Please check the phone number you used to register again",
+                "pStrong": "We could not send the registration code to you. We apologize for the inconvenience"
+            },
+            "addfriend": "'Add us as a friend'",
+            "receive": "to receive news and other benefits"
+        },
+        "modalpolicy": {
+            "title": "Privacy Policy and Terms of Service",
+            "accept": "Accept",
+            "cancel": "Do not accept"
+        }
     }
 
 }

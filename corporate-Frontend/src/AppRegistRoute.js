@@ -11,7 +11,7 @@ import Exqr from "./components/exregist/exqr";
 
 import BuyerRegist from "./components/buyerregist/BuyerRegist";
 import QRCode from "./components/buyerregist/QRCode";
-import FormRegister from "./components/buyerregist/FormRegister";
+import FormRegister from "./components/buyerregist/redeem/preregistration";
 
 
 
