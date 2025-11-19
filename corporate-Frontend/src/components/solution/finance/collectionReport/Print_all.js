@@ -11,7 +11,7 @@ function PrintReport() {
   const [event] = eventC;
   const [filter] = filterC;
   
-  console.log("filter 👉", filter);
+  //console.log("filter 👉", filter);
   //console.log("reportlist 👉", reportlist);
  
 

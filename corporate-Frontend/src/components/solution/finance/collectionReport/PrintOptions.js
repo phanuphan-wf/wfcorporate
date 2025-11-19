@@ -7,44 +7,82 @@ export default function PrintOptions() {
 
   // ✅ กำหนดค่าเริ่มต้น
   const safeFilter = {
-    printall: filter?.printall ?? true,
-    wSale: filter?.wSale ?? false,
-    wZone: filter?.wZone ?? false,
-    sumReport: filter?.sumReport ?? false,
-    // order: filter?.order ?? [],
+    printall: true,
+    wSale:  false,
+    wZone: false,
+    sumReport: false,
+    order: [],
+    userInteracted: false,
     ...filter,
   };
 
-  // ✅ toggle การเลือก + จัดลำดับ
-  const setMode = useCallback(
-    (mode) => {
-      setFilter((prev) => {
-        const newState = { ...prev };
-        const order = [...(prev.order || [])];
+  const setMode = (mode) => {
+    setFilter((prev) => {
+      const newFilter = { ...prev };
+      const newValue = !prev[mode]; // ค่าใหม่ที่จะเป็น (True หรือ False)
 
-        // ระบุว่า user เริ่มมีการกระทำแล้ว
-        newState.userInteracted = true;
+      // 1. ตั้งค่าพื้นฐาน
+      newFilter[mode] = newValue;
+      newFilter.userInteracted = true; // บอกว่า User เริ่มกดแล้ว
 
-        const current = !prev[mode];
-        newState[mode] = current;
+      // 2. ดึง Order เดิมมาเตรียมแก้ไข
+      let newOrder = [...(prev.order || [])];
 
-        if (current) {
-          if (!order.includes(mode)) order.push(mode);
-        } else {
-          const idx = order.indexOf(mode);
-          if (idx !== -1) order.splice(idx, 1);
+      // ----------------------------------------------------------
+      // 💡 LOGIC การจัดการความสัมพันธ์ (Exclusive Logic)
+      // ----------------------------------------------------------
+      
+      if (newValue === true) {
+        // ✅ กรณี: กำลัง "ติ๊กเลือก" (Turning ON)
+        
+        // เพิ่มตัวปัจจุบันเข้าไปใน Order (ถ้ายังไม่มี)
+        if (!newOrder.includes(mode)) {
+          newOrder.push(mode);
         }
 
-        newState.order = order;
-        return newState;
-      });
-    },
-    [setFilter]
-  );
+        if (mode === "printall") {
+          // 🟢 ถ้าเลือก Print All -> ล้างทุกอย่าง
+          newFilter.wSale = false;
+          newFilter.wZone = false;
+          newFilter.sumReport = false;
+          
+          // Order เหลือแค่ printall ตัวเดียว
+          newOrder = ["printall"];
+        } 
+        else if (mode === "sumReport") {
+          // 🟡 ถ้าเลือก Summary -> ล้างทุกอย่าง (ตามเงื่อนไข else เดิมของคุณ)
+          newFilter.printall = false;
+          newFilter.wSale = false;
+          newFilter.wZone = false;
 
+          // Order เหลือแค่ sumReport ตัวเดียว
+          newOrder = ["sumReport"];
+        } 
+        else if (mode === "wSale" || mode === "wZone") {
+          // 🔵 ถ้าเลือก Without... -> ล้าง PrintAll และ Summary แต่ "ไม่ล้างกันเอง"
+          newFilter.printall = false;
+          newFilter.sumReport = false;
 
+          // ลบ printall และ sumReport ออกจาก Order (ถ้ามี)
+          newOrder = newOrder.filter(item => item !== "printall" && item !== "sumReport");
+        }
+
+      } else {
+        // ❌ กรณี: กำลัง "เอาติ๊กออก" (Turning OFF)
+        // ลบตัวนั้นออกจาก Order
+        newOrder = newOrder.filter((item) => item !== mode);
+      }
+
+      // 3. บันทึก Order กลับเข้าไป
+      newFilter.order = newOrder;
+
+      return newFilter;
+    });
+  };
+
+  
   useEffect(() => {
-    // console.log("✅ filter:", safeFilter);
+     console.log("✅ filter:", safeFilter);
   }, [safeFilter]);
 
   return (

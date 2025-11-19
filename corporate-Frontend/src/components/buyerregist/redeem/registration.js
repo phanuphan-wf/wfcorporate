@@ -243,8 +243,15 @@ export default function Registration(props) {
       });
       return;
     }
+    
+    // 🔥 สร้าง Visitor ID ที่นี่
+    const VisitorCode = generateRandomCode();
+    console.log("Generated Visitor ID:", VisitorCode);
+
+    // ส่งให้ API (เพิ่ม visitorId เข้าไป)   
+    
     setSubmiting(true);
-    postBio();
+    postBio(VisitorCode);
   };
 
   const postBio = async () => {
