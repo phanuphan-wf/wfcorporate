@@ -3,7 +3,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import { useTranslation } from "react-i18next";
 
 export default function Qrcode() {
-  const { t, i18n } = useTranslation("landing", {
+  const { t, i18n } = useTranslation("redeem", {
     keyPrefix: "redeem.Qrcode",
   });
 

@@ -1,58 +1,43 @@
 {
-    "landing": {
-        "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair",
-        "showdate": "October 4-13, 2025",
-        "hall": "Hall 9-11",
-        "time": "10.30-20.30 hrs.",
-        "regist": "Register get",
-        "gift": "Gift Set",
-        "free": "Free!",
-        "click": "Click",
-        "fur": [
-            "Living room furniture such as sofa, chair, coffee table, recliner, carpet",
-            "Bedroom furniture such as bed, mattress, bedding set, wardrobe, pillow, lamp",
-            "Built-in / knockdown / free-standing / outdoor furniture / wooden furniture / dining room",
-            "Interior design and decoration",
-            "Home convenience equipment",
-            "Lamp / curtains / blinds / wallpaper / carpet",
-            "Home decor items"
-        ],
-        "elec": [
-            "It's Back — HomePro Electric Expo!",
-            "The Biggest Home Appliance Sale Event from HomePro",
-            "Get up to 160,000 THB Cashback + Extra Savings up to 7,200 THB",
-            "0% Installments for up to 10 Months Across the Event"
-        ]
+     "redeem": {
+        "buyerregist": {
+            "header": "Have you already registered at the event?",
+            "radio_register": "Already registered",
+            "label_register": "Registered phone number",
+            "placeholder": "Enter your phone number",
+            "button_check": "Verify",
+            "radio_not_registered": "Not yet registered",
+            "button_registered": "Go to registration",
+            "alert_phone": "Please enter at least 10 digits",
+            "alert_success": "You have already registered for this event",
+            "alert_error_title": "Data not found",
+            "alert_error_text": "Please check your phone number again"
+        },
+
+        "Qrcode": {
+            "header": "Please present this QR Code to the staff",
+            "details": "Show this QR Code to the staff at the entrance gate"
+        },
+
+        "FormRegister": {
+            "header": "Exhibition Registration Form",
+            "name": "First Name *",
+            "surname": "Last Name *",
+            "phone": "Phone Number *",
+            "btn_submit": "Register",
+            "alert_warning_title": "Invalid phone number",
+            "alert_warning_text": "Please enter at least 10 digits",
+            "alert_success_title": "Registration successful",
+            "alert_success_text": "Please wait for the SMS with the phone number verification link"
+        }
     },
-    "landing2": {
-        "show": "Furniture Fair",
-        "showdate": "September 6-14, 2025",
-        "hall": "Hall 9-10",
-        "time": "10.30-20.30 hrs.",
-        "fur": [
-            "Living room furniture such as sofa, chair, coffee table, recliner, carpet",
-            "Bedroom furniture such as bed, mattress, bedding set, wardrobe, pillow, lamp",
-            "Built-in / knockdown / free-standing / outdoor furniture / wooden furniture / dining room",
-            "Interior design and decoration",
-            "Home convenience equipment",
-            "Lamp / curtains / blinds / wallpaper / carpet",
-            "Home decor items"
-        ],
-        "elec": [
-            "Big Discounts, Real Deals — Up to 60% Off!, Plus an Extra 15% Off for The 1 Members",
-            "Home appliances such as refrigerators, washing machines, air conditioners, and microwaves",
-            "Small appliances such as irons, blenders, and air fryers",
-            "Audio and video devices such as TVs, soundbars, and DVD players"
-        ]
-    },
-    "regist2": {
+     "regist2_redeem": {
         "show": "Furniture Fair",
         "showdate": "September 6-14, 2025",
         "hall": "Hall 9-10",
         "time": "10.30-20.30 hrs."
     },
-    "regist": {
+    "regist_redeem": {
         "lng": "เปลี่ยนภาษา",
         "show": "Furniture Fair",
         "showdate": "October 4-13, 2025",
@@ -244,4 +229,5 @@
             "cancel": "Do not accept"
         }
     }
+
 }

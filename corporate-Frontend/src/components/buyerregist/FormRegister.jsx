@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
 export default function FormRegister() {
-  const { t, i18n } = useTranslation("landing", {
+  const { t, i18n } = useTranslation("redeem", {
     keyPrefix: "redeem.FormRegister",
   });
 

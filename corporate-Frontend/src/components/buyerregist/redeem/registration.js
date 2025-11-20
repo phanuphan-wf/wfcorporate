@@ -17,8 +17,8 @@ import { MdLocationOn } from "react-icons/md";
 import { MdAvTimer } from "react-icons/md";
 
 export default function Registration(props) {
-  const { t: tr } = useTranslation("landing", { keyPrefix: "regist_redeem" });
-  const { t, i18n } = useTranslation("landing", { keyPrefix: "regist_redeem" });
+  const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
+  const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
   const exId = "i625";
