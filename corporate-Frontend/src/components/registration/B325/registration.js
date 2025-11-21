@@ -17,10 +17,10 @@ import { MdLocationOn } from "react-icons/md";
 import { MdAvTimer } from "react-icons/md";
 
 export default function Registration(props) {
-  const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
-  const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
+  const { t: tr } = useTranslation("landing", { keyPrefix: "regist" });
+  const { t, i18n } = useTranslation("landing", { keyPrefix: "regist" });
   const mobile = useCheckMobile();
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
   const exId = "b325";
   const navigate = useNavigate();
 
@@ -205,22 +205,6 @@ export default function Registration(props) {
 
   const [submiting, setSubmiting] = useState(false);
 
-  const generateRandomCode = () => {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
-
-    const getRandom = (chars, length) =>
-      Array.from({ length }, () =>
-        chars.charAt(Math.floor(Math.random() * chars.length))
-      ).join("");
-
-    const prefix = getRandom(letters, 2);
-    const middle = getRandom(numbers, 6);
-    const suffix = getRandom(letters, 2);
-
-    return prefix + middle + suffix;
-  };
-
   const submitData = () => {
     if (!verifyFill()) {
       setModalFillShow({
@@ -248,25 +232,16 @@ export default function Registration(props) {
       });
       return;
     }
-    
-    // 🔥 สร้าง Visitor ID ที่นี่
-
-    const VisitorCode = generateRandomCode();
-    console.log("Generated Visitor ID:", VisitorCode);
-
-    // ส่งให้ API (เพิ่ม VisitorCode เข้าไป)   
-    
     setSubmiting(true);
-    postBio(VisitorCode);
+    postBio();
   };
 
   const postBio = async () => {
     let vid = "";
     let result = false;
-    
-    let visdata = Object.assign(bio, uac);// ตรงนี้ต้องส่ง key อย่างไงไป
+    let visdata = Object.assign(bio, uac);
     try {
-      const res = await Axios.post(url + "/Visitor", visdata,{params:{code:generateRandomCode()}}).then((res) => {
+      const res = await Axios.post(url + "/Visitor", visdata).then((res) => {
         if (res.status === 200) {
           result = true;
           vid = res.data;
@@ -345,69 +320,53 @@ export default function Registration(props) {
 
   return (
     <section className="regist_i525 xl:container">
-       
-        <div className="lg:container flex items-center justify-between lg:px-5 py-4 relative">
-          {/* ซ้ายว่าง */}
-          <div className="w-1/3"></div>
-
-          {/* Logo อยู่ตรงกลาง */}
-          <div className="w-1/3 flex justify-center">
-            <img
-              src={require("../../img/logo-wf-sq.png")}
-              alt="wf-logo"
-              className="w-20 object-contain"
-            />
+      <div className="lg:container flex justify-end lg:px-5 py-4">
+        <div className="mr-2">{t("lng")}</div>
+        <div className="flex gap-2">
+          <div
+            className={`${
+              i18n.language == "en"
+                ? "text-slate-500"
+                : "font-bold text-red-500"
+            } cursor-pointer`}
+            onClick={() => changLng("en")}>
+            EN
           </div>
-
-          {/* ตัวเลือกภาษา ชิดขวา */}
-          <div className="w-1/3 flex justify-end items-center gap-2">
-            <div className="mr-2">{t("lng")}</div>
-            <div className="flex gap-2">
-              <div
-                className={`cursor-pointer ${
-                  i18n.language === "en" ? "font-bold text-red-500" : "text-slate-500"
-                }`}
-                onClick={() => changLng("en")}
-              >
-                EN
-              </div>
-              <div>|</div>
-              <div
-                className={`cursor-pointer ${
-                  i18n.language === "th" ? "font-bold text-red-500" : "text-slate-500"
-                }`}
-                onClick={() => changLng("th")}
-              >
-                TH
-              </div>
-            </div>
+          <div>|</div>
+          <div
+            className={`${
+              i18n.language == "th"
+                ? "text-slate-500"
+                : "font-bold text-red-500"
+            } cursor-pointer`}
+            onClick={() => changLng("th")}>
+            TH
           </div>
         </div>
-
-
-      {/* <div className="w-full flex justify-center my-3">
+      </div>
+      <div className="w-full flex justify-center my-3">
         <img
-          src={require("../../landingpage/I625/img/fur_logo.png")}
+          src={require("../../landingpage/B325/img/fur_logo.png")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto w-2/3 md:w-1/3"
         />
-      </div> */}
-      {/* <div className="text-center text-xl md:text-xl lg:text-3xl font-medium mb-4">
+      </div>
+      <div className="text-center text-xl md:text-xl lg:text-3xl font-medium mb-4">
         {tr("show")}
         {mobile ? <br /> : " | "}
         {tr("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-green-600 text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#0C6C37] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdLocationOn />
           {tr("hall")}
         </div>
-        <div className="bg-green-600 text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#0C6C37] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdAvTimer />
           {tr("time")}
         </div>
-      </div> */}
+      </div>
       <div className="text-center text-2xl md:text-3xl font-medium my-10">
         {uac.preregist ? t("pre") : t("title")}
       </div>
@@ -446,7 +405,7 @@ export default function Registration(props) {
           </label>
         </div>
         <div
-          className="mt-3 mx-auto w-full sm:w-3/4 md:w-1/2 bg-gradient-to-r from-green-600 from-[50%] to-green-500 bg-[size:200%] bg-[position:_0%_0%] hover:bg-[position:_100%_100%] text-white rounded-lg text-center py-1 transition-all duration-300 max-md:text-lg"
+          className="mt-3 mx-auto w-full sm:w-3/4 md:w-1/2 bg-gradient-to-r from-[#0C6C37] from-[50%] to-[#0F8444] bg-[size:200%] bg-[position:_0%_0%] hover:bg-[position:_100%_100%] text-white rounded-lg text-center py-1 transition-all duration-300 max-md:text-lg"
           onClick={submitData}
           disabled={submiting}>
           {!submiting ? t("submit") : t("saving")}

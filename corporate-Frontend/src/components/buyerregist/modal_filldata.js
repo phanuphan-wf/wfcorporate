@@ -2,8 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function ModalFillData(props) {
-  const { t, i18n } = useTranslation("landing", {
-    keyPrefix: "regist.filldata",
+  const { t, i18n } = useTranslation("redeem", {
+    keyPrefix: "regist_redeem.filldata",
   });
 
   return (

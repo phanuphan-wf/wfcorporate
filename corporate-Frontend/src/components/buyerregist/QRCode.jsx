@@ -1,13 +1,14 @@
 import React from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 export default function Qrcode() {
   const { t, i18n } = useTranslation("redeem", {
     keyPrefix: "redeem.Qrcode",
   });
 
-  const qrValue = "https://www.worldfair.co.th"; // หรือค่าที่ต้องการส่งต่อ
+  const {qr} = useParams();  
 
   return (
     <section className="exregsit container mx-auto py-4 px-2 lg:py-10 relative">
@@ -63,15 +64,17 @@ export default function Qrcode() {
       <div className="flex flex-col items-center mt-4">
         <div className="p-4 border rounded-xl shadow">
           <QRCodeCanvas
-            value={qrValue}
+            value={qr}
             size={220}
             level={"H"}
             includeMargin={true}
           />
+          <span>{qr}</span>
         </div>
 
         <p className="mt-4 text-gray-600 text-center">
           {t("details")}
+
         </p>
       </div>
 

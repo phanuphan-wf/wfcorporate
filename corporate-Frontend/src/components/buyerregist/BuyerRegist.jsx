@@ -3,21 +3,42 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Axios from "axios";
+import Qrcode from "./QRCode";
 // import useHeader from "../hook/useHeader";
 
 export default function BuyerRegist() {
-  const { t, i18n } = useTranslation("landing", {
+  const { t, i18n } = useTranslation("redeem", {
     keyPrefix: "redeem.buyerregist",
   });
   
 
-  const [registerStatus, setRegisterStatus] = useState("");
+  const [registerStatus, setRegisterStatus] = useState(false);
   const [phone, setPhone] = useState("");
+  const [visitor, setvisitor] = useState("");
+
 
   const navigate = useNavigate();
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
-  //const urlCheck = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;  
   
+  const generateRandomCode = () => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+
+    const getRandom = (chars, length) =>
+      Array.from({ length }, () =>
+        chars.charAt(Math.floor(Math.random() * chars.length))
+      ).join("");
+
+    const prefix = getRandom(letters, 2);
+    const middle = getRandom(numbers, 6);
+    const suffix = getRandom(letters, 2);
+
+    return prefix + middle + suffix;
+  };
+  
+  const codeqr = generateRandomCode(); 
+  
+
   // ================================
   // 🔍 ฟังก์ชันเช็คเบอร์โทร
   // ================================
@@ -27,9 +48,12 @@ export default function BuyerRegist() {
     try {
       const res = await Axios.post(url + "/MobileCheck", {
         mobile: phone,
-        code: ""
+        code: codeqr
       });
-
+  
+      
+      console.log(res);
+   
       // เช็ค status HTTP
       if (res.status === 200) {
         //console.log("เจอเบอร์:", res.data);
@@ -42,7 +66,7 @@ export default function BuyerRegist() {
             confirmButton: "swal2-red-btn",
           },
                   
-        }).then(() => navigate("/Qrcode"));
+        }).then(() => navigate("/redeem/"+ codeqr ));
 
       } else if (res.status === 404) {
        // console.log("เบอร์ไม่ถูก");
@@ -57,7 +81,20 @@ export default function BuyerRegist() {
               
         });
 
-      } else {//status === 400 error
+      } else if (res.status === 505) {
+       // console.log("เบอร์ไม่ถูก");
+        Swal.fire({
+          icon: "error",
+          title: "คุณลงทะเบียนแล้ว",
+          text: "กรุณาตรวจสอบ SMS",
+          confirmButtonText: "ตกลง",
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+              
+        }); 
+      
+      }else {//status === 400 error
         //console.log("เกิดข้อผิดพลาดอื่นๆ");
         Swal.fire({
           icon: "error",
@@ -206,7 +243,7 @@ export default function BuyerRegist() {
 
         <button
           type="button"
-          onClick={() => navigate("/FormRegister")}
+          onClick={() => navigate("/redeem/form")}
           disabled={registerStatus !== "not-registered"}
           className={`px-2 py-2 max-md:w-full border rounded-lg mt-2 w-full ${
             registerStatus === "not-registered"

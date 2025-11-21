@@ -5,8 +5,8 @@ import Condition from "./condition_text";
 import Condition_en from "./condition_en_text";
 
 export default function ModalPolicy(props) {
-  const { t, i18n } = useTranslation("landing", {
-    keyPrefix: "regist.modalpolicy",
+  const { t, i18n } = useTranslation("redeem", {
+    keyPrefix: "regist_redeem.modalpolicy",
   });
   return (
     <div>

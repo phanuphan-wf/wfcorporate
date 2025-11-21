@@ -13,8 +13,8 @@ import { MdAvTimer } from "react-icons/md";
 import useCheckMobile from "../../hook/useCheckMobile";
 
 export default function Postregister(props) {
-  const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem.post" });
-  const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
+  const { t, i18n } = useTranslation("landing", { keyPrefix: "regist.post" });
+  const { t: tr } = useTranslation("landing", { keyPrefix: "regist" });
   const mobile = useCheckMobile();
   var CryptoJS = require("crypto-js");
 

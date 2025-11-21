@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function Resident(props) {
-  const { t, i18n } = useTranslation("redeem", {
-    keyPrefix: "regist_redeem.resident",
+  const { t, i18n } = useTranslation("landing", {
+    keyPrefix: "regist.resident",
   });
   const resident = [
     {

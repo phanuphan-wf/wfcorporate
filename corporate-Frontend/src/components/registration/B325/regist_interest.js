@@ -3,7 +3,7 @@ import { BsCheckCircleFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 
 export default function Interest(props) {
-  const { t } = useTranslation("redeem", { keyPrefix: "regist_redeem.interest" });
+  const { t } = useTranslation("landing", { keyPrefix: "regist.interest" });
   const interest = [
     {
       cat: "fur",

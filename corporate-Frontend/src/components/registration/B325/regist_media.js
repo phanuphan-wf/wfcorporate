@@ -1,11 +1,9 @@
-
-
 import React, { useEffect, useState } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useTranslation } from "react-i18next";
 
 export default function Media(props) {
-  const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem.media" });
+  const { t, i18n } = useTranslation("landing", { keyPrefix: "regist.media" });
   const media = [
     {
       col_th: "TV",

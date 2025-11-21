@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -6,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import style from "./registraion.module.css";
 
 export default function RegistInfo(props) {
-  const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem.info" });
+  const { t, i18n } = useTranslation("landing", { keyPrefix: "regist.info" });
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
 
   const getYear = () => {
