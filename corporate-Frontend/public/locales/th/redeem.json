@@ -9,10 +9,14 @@
                 "button_check":"ตรวจสอบข้อมูล",
                 "radio_not_registered" : "ยังไม่ลงทะเบียน",
                 "button_registered" : "ไปหน้าลงทะเบียน",
-                "alert_phone" : "กรุณากรอกเบอร์โทรให้ครบ 10 หลัก",
-                "alert_success" : "คุณลงทะเบียนงานนี้แล้ว",
+                "alert_phone" : "กรุณากรอกเบอร์โทรให้ครบ 10 หลัก",                
+                "alert_success_title" : "พบข้อมูล",
+                "alert_success_text" : "คุณลงทะเบียนงานนี้แล้ว",
+                
                 "alert_error_title" : "ไม่พบข้อมูล",
-                "alert_error_text" : "กรุณาตรวจสอบเบอร์โทรอีกครั้ง"
+                "alert_error_text" : "กรุณาตรวจสอบเบอร์โทรอีกครั้ง",
+                
+                "confirmButtonText" : "ตกลง"
             },
             "Qrcode" :{
                 "header": "โปรดนำ QR Code แสดงกับเจ้าหน้าที่",

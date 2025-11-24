@@ -18,7 +18,7 @@ export default function Postregister(props) {
   const mobile = useCheckMobile();
   var CryptoJS = require("crypto-js");
 
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
 
   const [smsStatus, SetSms] = useState(true);
 

@@ -9,9 +9,14 @@
             "radio_not_registered": "Not yet registered",
             "button_registered": "Go to registration",
             "alert_phone": "Please enter at least 10 digits",
-            "alert_success": "You have already registered for this event",
+
+            "alert_success_title": "Record Found",
+            "alert_success_text": "You have already registered for this event.",
+
+
             "alert_error_title": "Data not found",
-            "alert_error_text": "Please check your phone number again"
+            "alert_error_text": "Please check your phone number again",
+            "confirmButtonText" : "OK"
         },
 
         "Qrcode": {

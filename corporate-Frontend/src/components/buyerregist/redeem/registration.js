@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useTranslation } from "react-i18next";
-
+import Swal from "sweetalert2";
 import useCheckMobile from "../../hook/useCheckMobile";
 
 import RegistInfo from "./regist_info";
@@ -15,6 +15,7 @@ import ModalFillData from "../modal_filldata";
 
 import { MdLocationOn } from "react-icons/md";
 import { MdAvTimer } from "react-icons/md";
+import Qrcode from "../QRCode";
 
 export default function Registration(props) {
   const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
@@ -25,6 +26,9 @@ export default function Registration(props) {
   const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
+  const [smsStatus, SetSms] = useState(true);
+
+  //const [resSMS, setresSMS] = useState();
 
   const closeModal = () => {
     setModalShow(!modalShow);
@@ -249,15 +253,10 @@ export default function Registration(props) {
       return;
     }
     
-    // 🔥 สร้าง Visitor ID ที่นี่
-
-    const VisitorCode = generateRandomCode();
-    console.log("Generated Visitor ID:", VisitorCode);
-
-    // ส่งให้ API (เพิ่ม VisitorCode เข้าไป)   
+    // 🔥 สร้าง Visitor ID ที่นี่ 
     
     setSubmiting(true);
-    postBio(VisitorCode);
+    postBio();
   };
 
   const postBio = async () => {
@@ -266,10 +265,15 @@ export default function Registration(props) {
     
     let visdata = Object.assign(bio, uac);// ตรงนี้ต้องส่ง key อย่างไงไป
     try {
-      const res = await Axios.post(url + "/Visitor", visdata,{params:{code:generateRandomCode()}}).then((res) => {
+      const res = await Axios.post(url + "/Visitor", visdata,{params:{code: generateRandomCode()}}).then((res) => {
         if (res.status === 200) {
           result = true;
           vid = res.data;
+
+          // console.log(vid);
+          // console.log(res.data);
+          // console.log(res.status);
+          // console.log(result);
 
           if (vid.visitorID) {
             let intr = qIntr;
@@ -285,33 +289,63 @@ export default function Registration(props) {
             resi.uid = vid.visitorID.toString();
             postQResi(resi);
           }
+
+          const resSMS = Axios.post(url + "/PostSMS", {
+            mob: bio.mobile,
+            id: vid.visitorID.toString(),
+          }); 
+          
+          if (resSMS.status === 200) {
+            console.log(resSMS + "ส่ง SMS สำเร็จ");
+              Swal.fire({
+                icon: "success",
+                title: "แล้วลงทะเบียนสำเร็จ",
+                text: "ตรวจสอบ SMS เพื่อรับของสมนาคุณ",
+                confirmButtonText: t("confirmButtonText"),
+                customClass: {
+                  confirmButton: "swal2-red-btn",
+                },                              
+              })
+              
+          }else if (resSMS.status === 400){
+            console.log(resSMS + "ใส่ VisterID ไม่สำเร็จ");
+          }else if (resSMS.status === 409) {
+            console.log(resSMS + "เบอร์โทร กับ VisterID ไม่ตรงกัน");
+          }else{
+            // ตอบกลับมา 404
+            console.log("Qrcode ยังไม่ผูกกับ Vister ID");
+          }       
+        
+        
         }
-      });
 
-      if (result) {
-        var CryptoJS = require("crypto-js");
-        let valmoid = {
-          mob: bio.mobile,
-          id: vid.visitorID.toString(),
-          preregist: uac.preregist,
-          exID: uac.exID,
-        };
-        let key = CryptoJS.AES.encrypt(
-          JSON.stringify(valmoid),
-          process.env.REACT_APP_KEY
-        ).toString();
-        key = key
-          .replaceAll("+", "WFPLU")
-          .replaceAll("/", "WFSLA")
-          .replaceAll("=", "WFEQU");
+      });     
+      
 
-        navigate("/" + exId + "/postregister/success/" + key);
-      } else {
-        alert(t("dup"));
-      }
+      
+     
     } catch (err) {
-      alert(err);
-      navigate("/" + exId + "/postregister/none/xfmb");
+       //alert(err);
+       // navigate("/" + exId + "/postregister/none/xfmb");  
+
+      if (result === false) {       
+
+          Swal.fire({
+            icon: "error",
+            title: "การลงทะเบียนไม่สำเร็จ",
+            html: `
+              ขออภัยหมายเลขมือถือของท่านได้มีการลงทะเบียนแล้ว<br/>
+              เราขอขอบพระคุณที่ให้ความสนใจเข้าชมงานอีกครั้ง
+            `,
+            confirmButtonText: "ปิด",
+            customClass: {
+              confirmButton: "swal2-red-btn",
+            },
+              
+          }).then(() => navigate("/redeem/"));
+      }
+
+
     }
     setSubmiting(false);
   };
