@@ -290,32 +290,62 @@ export default function Registration(props) {
             postQResi(resi);
           }
 
-          const resSMS = Axios.post(url + "/PostSMS", {
-            mob: bio.mobile,
-            id: vid.visitorID.toString(),
-          }); 
-          
-          if (resSMS.status === 200) {
-            console.log(resSMS + "ส่ง SMS สำเร็จ");
-              Swal.fire({
-                icon: "success",
-                title: "แล้วลงทะเบียนสำเร็จ",
-                text: "ตรวจสอบ SMS เพื่อรับของสมนาคุณ",
-                confirmButtonText: t("confirmButtonText"),
-                customClass: {
-                  confirmButton: "swal2-red-btn",
-                },                              
-              })
-              
-          }else if (resSMS.status === 400){
-            console.log(resSMS + "ใส่ VisterID ไม่สำเร็จ");
-          }else if (resSMS.status === 409) {
-            console.log(resSMS + "เบอร์โทร กับ VisterID ไม่ตรงกัน");
-          }else{
-            // ตอบกลับมา 404
-            console.log("Qrcode ยังไม่ผูกกับ Vister ID");
-          }       
+
+          const smsPayload = {
+                mob: bio.mobile,
+                id: vid.visitorID.toString(),
+          };
         
+          const resSMS = Axios.post(url + "/PostSMS", smsPayload).then((res) => {
+              if (resSMS.status === 200) {
+                SetSms(true);
+                Swal.fire({
+                  icon: "success",
+                  title: "แล้วลงทะเบียนสำเร็จ",
+                  text: "โปรดตรวจสอบ SMS เพื่อรับของสมนาคุณ",
+                  confirmButtonText: t("confirmButtonText"),
+                  customClass: {
+                    confirmButton: "swal2-red-btn",
+                  },                              
+                });
+
+                    //console.log(res.data);
+              } else if (res.data.code === 400) {
+                SetSms(false);
+                Swal.fire({
+                  icon: "error",
+                  title: "การลงทะเบียนไม่สำเร็จ",
+                  text: "ใส่ VisterID ไม่สำเร็จ",
+                  confirmButtonText: "ปิด",
+                  customClass: {
+                    confirmButton: "swal2-red-btn",
+                  },                    
+                });               
+              }else if (res.data.code === 409){
+                SetSms(false); 
+                Swal.fire({
+                  icon: "error",
+                  title: "การลงทะเบียนไม่สำเร็จ",
+                  text: "เบอร์โทร กับ VisterID ไม่ตรงกัน",
+                  confirmButtonText: "ปิด",
+                  customClass: {
+                    confirmButton: "swal2-red-btn",
+                  },                    
+                });  
+              }else{
+                SetSms(false); 
+                // ตอบกลับมา 404                
+                Swal.fire({
+                  icon: "error",
+                  title: "การลงทะเบียนไม่สำเร็จ",
+                  text: "Qrcode ยังไม่ผูกกับ Vister ID",
+                  confirmButtonText: "ปิด",
+                  customClass: {
+                    confirmButton: "swal2-red-btn",
+                  },                    
+                });
+              }
+          });         
         
         }
 
