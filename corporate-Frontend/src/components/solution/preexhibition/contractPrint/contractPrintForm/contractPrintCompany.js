@@ -28,7 +28,7 @@ export default function ContractPrintCompany() {
               : ".........................."}{" "}
             พ.ศ.{" "}
             {contract.year !== ""
-              ? contract.year + 543
+              ? Number(contract.year) + 543
               : "...................."}
           </p>
         </div>
