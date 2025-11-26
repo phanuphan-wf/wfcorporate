@@ -297,7 +297,7 @@ export default function Registration(props) {
           }
         
           const resSMS =  Axios.post(url + "/PostSMS", smsdata).then((res) => {
-
+                
                 if (res.status === 200) {
                   if (res.data.code == 200) {           
                   Swal.fire({
