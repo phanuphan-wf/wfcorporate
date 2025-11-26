@@ -18,15 +18,16 @@ import { MdAvTimer } from "react-icons/md";
 import Qrcode from "../QRCode";
 
 export default function Registration(props) {
-  const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
+  //const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
   const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
+  
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
   const exId = "b325";
   const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
-  const [smsStatus, SetSms] = useState(true);
+  const [smsStatus, setSms] = useState(true);
 
   //const [resSMS, setresSMS] = useState();
 
@@ -268,115 +269,85 @@ export default function Registration(props) {
       const res = await Axios.post(url + "/Visitor", visdata,{params:{code: generateRandomCode()}}).then((res) => {
         if (res.status === 200) {
           result = true;
-          vid = res.data;
+          vid = res.data.visitorID;
 
           // console.log(vid);
           // console.log(res.data);
           // console.log(res.status);
           // console.log(result);
 
-          if (vid.visitorID) {
+          if (vid) {
             let intr = qIntr;
-            intr.uid = vid.visitorID.toString();
+            intr.uid = vid.toString();
 
             postQIntr(intr);
 
             let media = qMedia;
-            media.uid = vid.visitorID.toString();
+            media.uid = vid.toString();
             postQMedia(media);
 
             let resi = qResi;
-            resi.uid = vid.visitorID.toString();
+            resi.uid = vid.toString();
             postQResi(resi);
+          } 
+
+          const smsdata = {
+            mob:bio.mobile,
+            id:vid.toString()
           }
-
-
-          const smsPayload = {
-                mob: bio.mobile,
-                id: vid.visitorID.toString(),
-          };
         
-          const resSMS = Axios.post(url + "/PostSMS", smsPayload).then((res) => {
-              if (resSMS.status === 200) {
-                SetSms(true);
-                Swal.fire({
-                  icon: "success",
-                  title: "แล้วลงทะเบียนสำเร็จ",
-                  text: "โปรดตรวจสอบ SMS เพื่อรับของสมนาคุณ",
-                  confirmButtonText: t("confirmButtonText"),
-                  customClass: {
-                    confirmButton: "swal2-red-btn",
-                  },                              
-                });
+          const resSMS =  Axios.post(url + "/PostSMS", smsdata).then((res) => {
 
-                    //console.log(res.data);
-              } else if (res.data.code === 400) {
-                SetSms(false);
-                Swal.fire({
-                  icon: "error",
-                  title: "การลงทะเบียนไม่สำเร็จ",
-                  text: "ใส่ VisterID ไม่สำเร็จ",
-                  confirmButtonText: "ปิด",
-                  customClass: {
-                    confirmButton: "swal2-red-btn",
-                  },                    
-                });               
-              }else if (res.data.code === 409){
-                SetSms(false); 
-                Swal.fire({
-                  icon: "error",
-                  title: "การลงทะเบียนไม่สำเร็จ",
-                  text: "เบอร์โทร กับ VisterID ไม่ตรงกัน",
-                  confirmButtonText: "ปิด",
-                  customClass: {
-                    confirmButton: "swal2-red-btn",
-                  },                    
-                });  
-              }else{
-                SetSms(false); 
-                // ตอบกลับมา 404                
-                Swal.fire({
-                  icon: "error",
-                  title: "การลงทะเบียนไม่สำเร็จ",
-                  text: "Qrcode ยังไม่ผูกกับ Vister ID",
-                  confirmButtonText: "ปิด",
-                  customClass: {
-                    confirmButton: "swal2-red-btn",
-                  },                    
-                });
-              }
-          });         
+                if (res.status === 200) {
+                  if (res.data.code == 200) {           
+                  Swal.fire({
+                    icon: "success",
+                    title: t("success_200.title"),
+                    text: t("success_200.text"),
+                    confirmButtonText: t("success_200.confirmButtonText"),
+                    customClass: {
+                      confirmButton: "swal2-red-btn",
+                    },                              
+                  });} else if (res.data.code == 400){
+                    //ให้ alert เบอร์ไม่ถูก ยิง sms ไม่ได้
+                      Swal.fire({
+                        icon: "error",
+                        title: t("error_400.title"),   
+                        html: `${t("error_400.text_1")}<br>${t("error_400.text_2")}`,
+                        confirmButtonText: t("error_400.confirmButtonText"),
+                        customClass: {
+                          confirmButton: "swal2-red-btn",
+                        },                    
+                      });
+                  }
+                } else {
+                
+                  Swal.fire({
+                    icon: "warning",
+                    title:  t("warning.title"),
+                    text: t("warning.text"),
+                    confirmButtonText: t("warning.confirmButtonText"),
+                    customClass: {
+                      confirmButton: "swal2-red-btn",
+                    },                    
+                  });               
+                }})}})}
         
+        catch {
+
+          // ดักจับ error 404 กับ 409
+            Swal.fire({
+              icon: "error",
+              title: t("error_404.title"),
+              html: `${t("error_404.text_1")}<br>${t("error_404.text_2")}`,
+              confirmButtonText: t("error_404.confirmButtonText"),
+              customClass: {
+                confirmButton: "swal2-red-btn",
+              },
+                
+            }).then(() => navigate("/redeem/"));             
         }
-
-      });     
-      
-
-      
-     
-    } catch (err) {
-       //alert(err);
-       // navigate("/" + exId + "/postregister/none/xfmb");  
-
-      if (result === false) {       
-
-          Swal.fire({
-            icon: "error",
-            title: "การลงทะเบียนไม่สำเร็จ",
-            html: `
-              ขออภัยหมายเลขมือถือของท่านได้มีการลงทะเบียนแล้ว<br/>
-              เราขอขอบพระคุณที่ให้ความสนใจเข้าชมงานอีกครั้ง
-            `,
-            confirmButtonText: "ปิด",
-            customClass: {
-              confirmButton: "swal2-red-btn",
-            },
-              
-          }).then(() => navigate("/redeem/"));
-      }
-
-
-    }
+    
     setSubmiting(false);
   };
 

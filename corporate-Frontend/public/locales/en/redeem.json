@@ -232,7 +232,32 @@
             "title": "Privacy Policy and Terms of Service",
             "accept": "Accept",
             "cancel": "Do not accept"
+        },
+        "success_200" :{
+             "title" : "Registration Successful",
+             "text"  : "Please check your SMS to claim your reward.",
+             "confirmButtonText" : "OK"
+        },
+        "error_400" :{
+             "title" : "Registration Failed",
+             "text_1": "Please verify the phone number you entered.",
+             "text_2": "We are unable to send you the verification code. We apologize for the inconvenience.",
+             "confirmButtonText" : "OK"
+        },
+        "warning" :{
+             "title" : "Registration Failed",
+             "text"  : "Invalid registration information. Please contact support staff.",          
+             "confirmButtonText" : "OK"
+        },
+        "error_404" :{
+             "title" : "Registration Failed",
+             "text_1" : "Sorry, this mobile number is already registered.",
+             "text_2": "Thank you for your interest in our event.",
+             "confirmButtonText" : "OK"
         }
+
+
+
     }
 
 }
