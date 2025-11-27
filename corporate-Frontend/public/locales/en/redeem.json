@@ -10,18 +10,28 @@
             "button_registered": "Go to registration",
             "alert_phone": "Please enter at least 10 digits",
 
-            "alert_success_title": "Record Found",
-            "alert_success_text": "You have already registered for this event.",
+            "alert_success_title": "Thank You for Registering",
+            "alert_success_text": "Please present your QR code to the staff members.",
 
-
-            "alert_error_title": "Data not found",
-            "alert_error_text": "Please check your phone number again",
+            "alert_error_title": "Sorry! Invalid Phone Number Format",
+            "alert_error_text": "Please enter a 10-digit number.",
+            
+            "alert_error404_title": "Sorry, Your Phone Number Was Not Found",
+            "alert_error404_text": "Please check the number again.",             
+            
             "confirmButtonText" : "OK"
         },
 
         "Qrcode": {
             "header": "Please present this QR Code to the staff",
-            "details": "Show this QR Code to the staff at the entrance gate"
+            "details": "Show this QR Code to the staff at the entrance gate",
+            "condition": [
+                "This QR Code can be reused throughout the exhibition period, and you may save a screenshot of this page.",
+                "The right to claim a premium item is limited to **1 privilege / 1 person / 1 day** only, and cannot be claimed repeatedly on the same day.",
+                "The organizer reserves the right to grant premium items based solely on the company's terms and conditions.",
+                "The organizer reserves the right to change these conditions without prior notice."
+            ]
+            
         },
 
         "FormRegister": {
@@ -233,10 +243,15 @@
             "accept": "Accept",
             "cancel": "Do not accept"
         },
-        "success_200" :{
-             "title" : "Registration Successful",
-             "text"  : "Please check your SMS to claim your reward.",
-             "confirmButtonText" : "OK"
+       "success_200": {
+            "title": "Thank You for Registering",
+            "text": "Please await the SMS and present the QR code to the staff.",
+            "confirmButtonText": "OK"
+        },
+        "error_200": {
+            "title": "Sorry, The Registered Phone Number is Incorrect",
+            "text": "Please check your phone number again.",
+            "confirmButtonText": "OK"
         },
         "error_400" :{
              "title" : "Registration Failed",
@@ -254,6 +269,11 @@
              "text_1" : "Sorry, this mobile number is already registered.",
              "text_2": "Thank you for your interest in our event.",
              "confirmButtonText" : "OK"
+        }, 
+        "success_409": {
+            "title": "Thank You for Registering",
+            "text": "Please present your QR code to the staff.",
+            "confirmButtonText": "OK"
         }
 
 
