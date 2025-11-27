@@ -337,17 +337,17 @@ export default function Registration(props) {
                     confirmButton: "swal2-red-btn",
                   },
                                 
-              }).then(() => nav("/redeem"));
+              });
 
               //alert("Not found visitor data");
-              //nav("/redeem");
+              nav("/redeem");
             }
           }
         }
       });
     } catch (err) {
       if (err.response.status == 409) {
-
+       // "ขอบพระคุณสำหรับการลงทะเบียน กรุณแสดงรหัส qr code กับ เจ้าหน้าที่",
          Swal.fire({
               icon: "success",            
               title: t("success_409.title"),
