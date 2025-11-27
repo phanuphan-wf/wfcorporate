@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -13,21 +13,16 @@ import Media from "./regist_media";
 import ModalPolicy from "../modal_policy";
 import ModalFillData from "../modal_filldata";
 
-import { MdLocationOn } from "react-icons/md";
-import { MdAvTimer } from "react-icons/md";
-import Qrcode from "../QRCode";
-
 export default function Registration(props) {
-  //const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
   const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
-  
+
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
   const exId = "b325";
-  const navigate = useNavigate();
+  const nav = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
-  const [smsStatus, setSms] = useState(true);
+  const [qrcode, setQrcode] = useState("");
 
   //const [resSMS, setresSMS] = useState();
 
@@ -49,6 +44,7 @@ export default function Registration(props) {
       setUac({ ...uac, preregist: true, campaign: props.campaign });
     }
     document.title = "World Fair | Visitor Registration";
+    setQrcode(generateRandomCode());
   }, []);
 
   const initBio = {
@@ -172,7 +168,7 @@ export default function Registration(props) {
 
   useEffect(() => {
     //console.log(uac);
-    document.title = "World Fair | Visitor Registration";
+    document.title = "World Fair | Buyer Information";
   }, [uac]);
 
   const verifyFill = () => {
@@ -236,6 +232,7 @@ export default function Registration(props) {
       return;
     }
 
+    /*
     if (!verifyIntr()) {
       setModalFillShow({
         ...modalFillShow,
@@ -244,6 +241,7 @@ export default function Registration(props) {
       });
       return;
     }
+    */
 
     if (!uac.accept) {
       setModalFillShow({
@@ -253,9 +251,9 @@ export default function Registration(props) {
       });
       return;
     }
-    
-    // 🔥 สร้าง Visitor ID ที่นี่ 
-    
+
+    // 🔥 สร้าง Visitor ID ที่นี่
+
     setSubmiting(true);
     postBio();
   };
@@ -263,38 +261,56 @@ export default function Registration(props) {
   const postBio = async () => {
     let vid = "";
     let result = false;
-    
-    let visdata = Object.assign(bio, uac);// ตรงนี้ต้องส่ง key อย่างไงไป
+
+    let visdata = Object.assign(bio, uac);
     try {
-      const res = await Axios.post(url + "/Visitor", visdata,{params:{code: generateRandomCode()}}).then((res) => {
+      const res = await Axios.post(url + "/Visitor", visdata, {
+        params: { code: qrcode },
+      }).then((res) => {
         if (res.status === 200) {
           result = true;
           vid = res.data.visitorID;
 
-          // console.log(vid);
-          // console.log(res.data);
-          // console.log(res.status);
-          // console.log(result);
-
           if (vid) {
+            /*
             let intr = qIntr;
             intr.uid = vid.toString();
 
             postQIntr(intr);
-
+            */
             let media = qMedia;
             media.uid = vid.toString();
             postQMedia(media);
-
+            /*
             let resi = qResi;
             resi.uid = vid.toString();
             postQResi(resi);
-          } 
+            */
+          }
 
           const smsdata = {
-            mob:bio.mobile,
-            id:vid.toString()
+            mob: bio.mobile,
+            id: vid.toString(),
+          };
+
+          try {
+            const sms = postsms(smsdata);
+            if (sms) {
+              //alert รอรับ sms และแสดง qr code กับ เจ้าหน้าที่
+              alert("sms success");
+              nav("/" + exId);
+            } else {
+              //alert หมายเลขโทรศัพท์ที่ลงทะเบียน ไม่ถูกต้อง โปรดตรวจสอบอีกครั้ง
+              alert("sms failed");
+            }
+          } catch (err) {
+            if (err.response.status == 404) {
+              //alert ไม่พบข้อมูลผู้ลงทะเบียน
+              alert("Not found visitor data");
+              nav("/redeem");
+            }
           }
+<<<<<<< HEAD
         
           const resSMS =  Axios.post(url + "/PostSMS", smsdata).then((res) => {
                 
@@ -346,9 +362,46 @@ export default function Registration(props) {
               },
                 
             }).then(() => navigate("/redeem/"));             
+=======
+>>>>>>> 52800a7e889515197e6620a8c52f6b2e45d206f5
         }
-    
+      });
+    } catch (err) {
+      if (err.response.status == 409) {
+        const data = {
+          mobile: visdata.mobile,
+          code: qrcode,
+        };
+        const result = mobilecheck(data);
+        if (result == true) {
+          nav("/redeem/" + qrcode);
+        }
+      }
+    }
+
     setSubmiting(false);
+  };
+
+  const postsms = async (data) => {
+    const resSMS = await Axios.post(url + "/PostSMS", data).then((r) => {
+      if (r.status == 200) {
+        if (r.data.code == 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  };
+
+  const mobilecheck = async (data) => {
+    const res = await Axios.post(url + "/MobileCheck", data).then((r) => {
+      if (r.status == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   };
 
   async function postQMedia(data) {
@@ -380,75 +433,46 @@ export default function Registration(props) {
 
   return (
     <section className="regist_i525 xl:container">
-       
-        <div className="lg:container flex items-center justify-between lg:px-5 py-4 relative">
-          {/* ซ้ายว่าง */}
-          <div className="w-1/3"></div>
-
-          {/* Logo อยู่ตรงกลาง */}
-          <div className="w-1/3 flex justify-center">
-            <img
-              src={require("../../img/logo-wf-sq.png")}
-              alt="wf-logo"
-              className="w-20 object-contain"
-            />
+      <div className="flex justify-end items-center gap-2 mt-4">
+        <div className="mr-2">{t("lng")}</div>
+        <div className="flex gap-2">
+          <div
+            className={`cursor-pointer ${
+              i18n.language === "en"
+                ? "font-bold text-red-500"
+                : "text-slate-500"
+            }`}
+            onClick={() => changLng("en")}>
+            EN
           </div>
-
-          {/* ตัวเลือกภาษา ชิดขวา */}
-          <div className="w-1/3 flex justify-end items-center gap-2">
-            <div className="mr-2">{t("lng")}</div>
-            <div className="flex gap-2">
-              <div
-                className={`cursor-pointer ${
-                  i18n.language === "en" ? "font-bold text-red-500" : "text-slate-500"
-                }`}
-                onClick={() => changLng("en")}
-              >
-                EN
-              </div>
-              <div>|</div>
-              <div
-                className={`cursor-pointer ${
-                  i18n.language === "th" ? "font-bold text-red-500" : "text-slate-500"
-                }`}
-                onClick={() => changLng("th")}
-              >
-                TH
-              </div>
-            </div>
+          <div>|</div>
+          <div
+            className={`cursor-pointer ${
+              i18n.language === "th"
+                ? "font-bold text-red-500"
+                : "text-slate-500"
+            }`}
+            onClick={() => changLng("th")}>
+            TH
           </div>
         </div>
-
-
-      {/* <div className="w-full flex justify-center my-3">
-        <img
-          src={require("../../landingpage/I625/img/fur_logo.png")}
-          alt="landing hero"
-          id="hero_banner"
-          className="mx-auto w-2/3 md:w-1/3"
-        />
-      </div> */}
-      {/* <div className="text-center text-xl md:text-xl lg:text-3xl font-medium mb-4">
-        {tr("show")}
-        {mobile ? <br /> : " | "}
-        {tr("showdate")}
       </div>
-      <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-green-600 text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
-          <MdLocationOn />
-          {tr("hall")}
-        </div>
-        <div className="bg-green-600 text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
-          <MdAvTimer />
-          {tr("time")}
-        </div>
-      </div> */}
-      <div className="text-center text-2xl md:text-3xl font-medium my-10">
-        {uac.preregist ? t("pre") : t("title")}
+      <div className="flex justify-center">
+        <img
+          src={require("../../img/logo-wf-sq.png")}
+          alt="wf-logo"
+          className="w-24 object-contain"
+        />
+      </div>
+
+      <div className="text-center text-2xl md:text-3xl font-medium my-6">
+        {t("title")}
       </div>
       <RegistInfo bioData={getBio} verify={bioVerify} />
+      {/*
       <Interest intrData={getQItr} verify={intrVerify} />
       <Resident resiData={getResi} />
+      */}
       <Media mediaData={getMedia} />
       <div className="container max-w-5xl px-10 mb-10">
         <div className="max-md:text-lg">
