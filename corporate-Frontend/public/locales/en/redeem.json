@@ -1,5 +1,5 @@
 {
-    "redeem": {
+     "redeem": {
         "buyerregist": {
             "header": "Have you already registered at the event?",
             "radio_register": "Already registered",
@@ -9,16 +9,21 @@
             "radio_not_registered": "Not yet registered",
             "button_registered": "Go to registration",
             "alert_phone": "Please enter at least 10 digits",
+
             "alert_success_title": "Record Found",
             "alert_success_text": "You have already registered for this event.",
+
+
             "alert_error_title": "Data not found",
             "alert_error_text": "Please check your phone number again",
-            "confirmButtonText": "OK"
+            "confirmButtonText" : "OK"
         },
+
         "Qrcode": {
             "header": "Please present this QR Code to the staff",
             "details": "Show this QR Code to the staff at the entrance gate"
         },
+
         "FormRegister": {
             "header": "Exhibition Registration Form",
             "name": "First Name *",
@@ -31,7 +36,7 @@
             "alert_success_text": "Please wait for the SMS with the phone number verification link"
         }
     },
-    "regist2_redeem": {
+     "regist2_redeem": {
         "show": "Furniture Fair",
         "showdate": "September 6-14, 2025",
         "hall": "Hall 9-10",
@@ -43,7 +48,7 @@
         "showdate": "October 4-13, 2025",
         "hall": "Hall 9-11",
         "time": "10.30-20.30 hrs.",
-        "title": "Redemption Filling Form",
+        "title": "Registration Form",
         "pre": "Preregistration Form",
         "newsaccept": "I agree to receive news from World Fair",
         "acceptterm": "I agree to the terms and conditions of",
@@ -228,27 +233,31 @@
             "accept": "Accept",
             "cancel": "Do not accept"
         },
-        "success_200": {
-            "title": "Registration Successful",
-            "text": "Please check your SMS to claim your reward.",
-            "confirmButtonText": "OK"
+        "success_200" :{
+             "title" : "Registration Successful",
+             "text"  : "Please check your SMS to claim your reward.",
+             "confirmButtonText" : "OK"
         },
-        "error_400": {
-            "title": "Registration Failed",
-            "text_1": "Please verify the phone number you entered.",
-            "text_2": "We are unable to send you the verification code. We apologize for the inconvenience.",
-            "confirmButtonText": "OK"
+        "error_400" :{
+             "title" : "Registration Failed",
+             "text_1": "Please verify the phone number you entered.",
+             "text_2": "We are unable to send you the verification code. We apologize for the inconvenience.",
+             "confirmButtonText" : "OK"
         },
-        "warning": {
-            "title": "Registration Failed",
-            "text": "Invalid registration information. Please contact support staff.",
-            "confirmButtonText": "OK"
+        "warning" :{
+             "title" : "Registration Failed",
+             "text"  : "Invalid registration information. Please contact support staff.",          
+             "confirmButtonText" : "OK"
         },
-        "error_404": {
-            "title": "Registration Failed",
-            "text_1": "Sorry, this mobile number is already registered.",
-            "text_2": "Thank you for your interest in our event.",
-            "confirmButtonText": "OK"
+        "error_404" :{
+             "title" : "Registration Failed",
+             "text_1" : "Sorry, this mobile number is already registered.",
+             "text_2": "Thank you for your interest in our event.",
+             "confirmButtonText" : "OK"
         }
+
+
+
     }
+
 }

@@ -57,13 +57,13 @@ export default function Media(props) {
       col_en: "Friends and Family",
       id: "friend",
     },
-    /*
+
     {
       col_th: "SMS",
       col_en: "SMS",
       id: "sms",
     },
-    */
+
     {
       col_th: "อื่นๆ",
       col_en: "Other",

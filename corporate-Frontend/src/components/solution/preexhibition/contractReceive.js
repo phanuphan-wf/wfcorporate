@@ -184,7 +184,7 @@ export default function ContractReceive(props) {
   }, [priceCorrection.historyID]);
 
   useEffect(() => {
-    //console.log(contractDetail);
+    console.log(contractDetail);
   }, [contractDetail]);
 
   useEffect(() => {
@@ -201,7 +201,8 @@ export default function ContractReceive(props) {
         searchNameC: [searchName, setSearchName],
         resetC: [reset, setReset],
         boothAvaiC: [boothAvai, setBoothAvai],
-      }}>
+      }}
+    >
       <section className="contract-receive">
         <div>
           <h1 className="text-2xl">Contract Receiving</h1>
@@ -228,7 +229,8 @@ export default function ContractReceive(props) {
           <button
             className="btn-green px-5 disabled:border-gray-300 disabled:bg-gray-300 disabled:hover:text-white"
             onClick={submitContract}
-            disabled={submit}>
+            disabled={submit}
+          >
             Submit
           </button>
         </div>

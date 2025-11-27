@@ -11,7 +11,9 @@ import Exqr from "./components/exregist/exqr";
 
 import BuyerRegist from "./components/buyerregist/BuyerRegist";
 import QRCode from "./components/buyerregist/QRCode";
-import FormRegister from "./components/buyerregist/redeem/registration";
+import FormRegister from "./components/buyerregist/redeem/preregistration";
+
+
 
 const AppRegistRoutes = [
   {
@@ -39,6 +41,7 @@ const AppRegistRoutes = [
     element: <PostPage />,
   },
 
+
   {
     path: "b325/preregistration",
     element: <PreregistPage_dc />,
@@ -56,20 +59,23 @@ const AppRegistRoutes = [
     element: <PostPage_dc />,
   },
 
+
+
   {
-    path: "redeem",
-    element: <BuyerRegist />,
+    path:"redeem",
+    element:<BuyerRegist />,
   },
 
   {
     path: "redeem/:qr",
     element: <QRCode />,
   },
-
+  
   {
     path: "redeem/form",
     element: <FormRegister />,
   },
+
 ];
 
 export default AppRegistRoutes;

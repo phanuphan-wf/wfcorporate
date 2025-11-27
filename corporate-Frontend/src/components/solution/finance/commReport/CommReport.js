@@ -122,8 +122,7 @@ export default function CommReport(props) {
         } else if (
           a.paytypeID === 4 ||
           a.paytypeID === 5 ||
-          a.paytypeID === 10 ||
-          a.paytypeID === 11
+          a.paytypeID === 10
         ) {
           a.clearing = a.trdate;
         } else {
