@@ -318,10 +318,9 @@ export default function Registration(props) {
           mobile: visdata.mobile,
           code: qrcode,
         };
-        const result = mobilecheck(data);
-        if (result == true) {
-          nav("/redeem/" + qrcode);
-        }
+        const result = await Axios.post(url + "/MobileCheck", data).then(
+          (r) => r.status && nav("/redeem/" + qrcode)
+        );
       }
     }
 
@@ -336,16 +335,6 @@ export default function Registration(props) {
         } else {
           return false;
         }
-      }
-    });
-  };
-
-  const mobilecheck = async (data) => {
-    const res = await Axios.post(url + "/MobileCheck", data).then((r) => {
-      if (r.status == 200) {
-        return true;
-      } else {
-        return false;
       }
     });
   };
