@@ -146,7 +146,7 @@ export default function BuyerData(props) {
       })
       .catch((err) => {
         if (err.response.status == 404) {
-          alert("Cannot find data of this qr code");
+          alert("Warning! QR Code is expire");
         }
       });
   };
