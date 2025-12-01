@@ -2,7 +2,6 @@ import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useCookies } from "react-cookie";
 
 import SendPixel from "../sendPixel";
 
@@ -13,124 +12,55 @@ import { MdAvTimer } from "react-icons/md";
 import useCheckMobile from "../../hook/useCheckMobile";
 
 export default function Postregister(props) {
-  const { t, i18n } = useTranslation("redeem", { keyPrefix: "regist_redeem.post" });
-  const { t: tr } = useTranslation("redeem", { keyPrefix: "regist_redeem" });
+  const { t, i18n } = useTranslation("landing", { keyPrefix: "regist.post" });
+  const { t: tr } = useTranslation("landing", { keyPrefix: "regist" });
+
   const mobile = useCheckMobile();
-  var CryptoJS = require("crypto-js");
-
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
-
-  const [smsStatus, SetSms] = useState(true);
-
-  const [cookies, setCookie, removeCookie] = useCookies([]);
-
-  const params = useParams();
-
-  async function getData() {
-    var param = params.key
-      .toString()
-      .replaceAll("WFPLU", "+")
-      .replaceAll("WFSLA", "/")
-      .replaceAll("WFEQU", "=");
-    const data = CryptoJS.AES.decrypt(param, process.env.REACT_APP_KEY);
-    const key = JSON.parse(data.toString(CryptoJS.enc.Utf8));
-
-    const res = await Axios.post(url + "/GetSMS", key);
-    if (res.data.code === 0) {
-      if (cookies.appWFCookieAccept === "true") {
-        SendPixel({ mob: key.mob, preregist: key.preregist });
-      }
-
-      const resSMS = Axios.post(url + "/PostSMS", key).then((res) => {
-        if (res.data.code === 0) {
-          SetSms(true);
-
-          //console.log(res.data);
-        } else if (res.data.code === 505) {
-          SetSms(false);
-        }
-      });
-    } else if (res.data.code === 409) {
-      alert(t("dupAlert"));
-    }
-  }
 
   useEffect(() => {
     document.title = "World Fair | Post Registration";
   }, []);
 
-  const initText = { header: "", article: "" };
+  const initText = {
+    header: <h1>{t("success.h1")}</h1>,
+    article: (
+      <div>
+        <h4>{t("success.h4")}</h4>
+        <p>
+          <strong>{t("success.pStrong")}</strong>
+        </p>
+      </div>
+    ),
+  };
   const [text, setText] = useState(initText);
 
-  useEffect(() => {
-    if (params.res === "none") {
-      setText({
-        header: <h1>{t("none.h1")}</h1>,
-        article: (
-          <div>
-            <h4>{t("none.h4")}</h4>
-            <p>
-              <strong>{t("none.pStrong")}</strong>
-            </p>
-          </div>
-        ),
-      });
-    } else if (params.res === "success") {
-      setText({
-        header: <h1>{t("success.h1")}</h1>,
-        article: (
-          <div>
-            <h4>{t("success.h4")}</h4>
-            <p>
-              <strong>{t("success.pStrong")}</strong>
-            </p>
-          </div>
-        ),
-      });
-      getData();
-    } else if (params.res === "expire") {
-      setText({
-        header: <h1>{t("expire.h1")}</h1>,
-        article: (
-          <div>
-            <h4>{t("expire.h4")}</h4>
-            <p>
-              <strong>{t("expire.pStrong")}</strong>
-            </p>
-            <p>{t("expire.p")}</p>
-          </div>
-        ),
-      });
-    }
-  }, [params.res]);
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
+
+  const [ex, setEx] = useState("");
+
+  const getEx = async () => {
+    const res = await Axios.get(url + "/GetEx").then((r) => {
+      if (r.status == 200) {
+        setEx(r.data);
+      }
+    });
+  };
 
   useEffect(() => {
-    if (!smsStatus) {
-      setText({
-        header: <h1>{t("sms.h1")}</h1>,
-        article: (
-          <div>
-            <h4>{t("sms.h4")}</h4>
-            <p>
-              <strong>{t("sms.pStrong")}</strong>
-            </p>
-          </div>
-        ),
-      });
-    }
-  }, [smsStatus]);
-
-  // const [csss, setCsss] = useState({});
+    getEx();
+  }, []);
 
   return (
     <div className="lg:container">
       <div className="w-full flex justify-center my-3">
-        <img
-          src={require("../../landingpage/B325/img/fur_logo.png")}
-          alt="landing hero"
-          id="hero_banner"
-          className="mx-auto w-2/3 md:w-1/3"
-        />
+        {ex && (
+          <img
+            src={require(`../../landingpage/${ex.toUpperCase()}/img/fur_logo.png`)}
+            alt="landing hero"
+            id="hero_banner"
+            className="mx-auto w-2/3 md:w-1/3"
+          />
+        )}
       </div>
       <div className="text-center text-xl md:text-xl lg:text-3xl font-medium mb-4">
         {tr("show")}

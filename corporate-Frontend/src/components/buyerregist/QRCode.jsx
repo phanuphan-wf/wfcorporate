@@ -12,7 +12,7 @@ export default function Qrcode() {
   const condition = t("condition", { returnObjects: true });
 
   return (
-    <section className="exregsit w-full py-4 px-2 lg:py-10 text-center">
+    <section className="exregsit w-full py-4 lg:py-10 text-center container px-4 max-w-[1024px]">
       <div className="size-20 mb-4 mx-auto">
         <img
           src={require("../img/logo-wf-sq.png")}
@@ -21,8 +21,9 @@ export default function Qrcode() {
         />
       </div>
       {/* ขอบคุณสำหรับการลงทะเบียน */}
-      <h1 className="text-2xl font-semibold mb-6">{t("header")}</h1>
+      <h1 className="text-2xl font-semibold mb-3">{t("header")}</h1>
       {/* โปรดนำ QR Code แสดงแก่เจ้าหน้าที่เพื่อรับของสมนาคุณ */}
+      <p className="mb-6">{t("details")}</p>
       <div className="p-4 border rounded-xl shadow w-fit mx-auto">
         <QRCodeCanvas value={qr} size={220} level={"H"} includeMargin={true} />
         <span>{qr}</span>
@@ -33,9 +34,11 @@ export default function Qrcode() {
       {/* ผู้จัดงานขอสงวนสิทธิในการแลกของสมนาคุณ ตามเงื่อนไขของบริษัทเท่านั้น และขอสงวนสิทธิในการเปลี่ยนแปลงเงื่อนไขโดยไม่ต้องแจ้งให้ทราบล่วงหน้า */}
 
       {/* รายการเงื่อนไข */}
-    <ul className="conditions-list text-left text-xm list-disc list-inside space-y-1 mx-auto mt-6" style={{ maxWidth: '400px' }}>
-        {condition.map((c)=>(<li>{c}</li>))}
-    </ul>
+      <ul className="conditions-list text-left text-xm list-disc list-inside mx-auto my-6">
+        {condition.map((c) => (
+          <li className="mt-4">{c}</li>
+        ))}
+      </ul>
     </section>
   );
 }

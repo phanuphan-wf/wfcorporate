@@ -41,15 +41,14 @@ export default function BuyerRegist() {
       //แก้ไข alert
       //alert("Number format invalid");
       Swal.fire({
-          icon: "error",
-          title: t("alert_error_title"),
-          text: t("alert_error_text"),
-          confirmButtonText: t("confirmButtonText"),
-          customClass: {
-            confirmButton: "swal2-red-btn",
-          },
-                  
-        });
+        icon: "error",
+        title: t("alert_error_title"),
+        text: t("alert_error_text"),
+        confirmButtonText: t("confirmButtonText"),
+        customClass: {
+          confirmButton: "swal2-red-btn",
+        },
+      });
       return;
     }
 
@@ -57,8 +56,7 @@ export default function BuyerRegist() {
       const res = await Axios.post(url + "/MobileCheck", registCheck).then(
         (r) => {
           if (r.status == 200) {
-
-             //console.log("เจอเบอร์:", res.data);
+            //console.log("เจอเบอร์:", res.data);
             Swal.fire({
               icon: "success",
               title: t("alert_success_title"),
@@ -67,9 +65,7 @@ export default function BuyerRegist() {
               customClass: {
                 confirmButton: "swal2-red-btn",
               },
-                      
-            }).then(() => nav("/redeem/"+ registCheck.code ));
-            
+            }).then(() => nav("/redeem/" + registCheck.code));
           }
         }
       );
@@ -85,10 +81,7 @@ export default function BuyerRegist() {
           customClass: {
             confirmButton: "swal2-red-btn",
           },
-                  
         });
-
-
       }
     }
   };
@@ -96,19 +89,29 @@ export default function BuyerRegist() {
   return (
     <section className="exregsit container mx-auto py-6 px-4 lg:py-10">
       {/* 🔹 ปุ่มเปลี่ยนภาษา (มุมขวาบน) */}
-      <div className="absolute top-4 right-4 flex gap-2 z-10">
-        {["th", "en"].map((lng) => (
-          <button
-            key={lng}
-            onClick={() => i18n.changeLanguage(lng)}
-            className={`px-3 py-1 rounded border transition ${
-              i18n.language === lng
-                ? "bg-red-500 text-white border-red-500"
-                : "bg-white text-gray-600 border-gray-300"
-            }`}>
-            {lng.toUpperCase()}
-          </button>
-        ))}
+      <div className="flex justify-end items-center gap-2 mt-4">
+        <div className="mr-2">{t("lng")}</div>
+        <div className="flex gap-2">
+          <div
+            className={`cursor-pointer ${
+              i18n.language === "en"
+                ? "font-bold text-red-500"
+                : "text-slate-500"
+            }`}
+            onClick={() => i18n.changeLanguage("en")}>
+            EN
+          </div>
+          <div>|</div>
+          <div
+            className={`cursor-pointer ${
+              i18n.language === "th"
+                ? "font-bold text-red-500"
+                : "text-slate-500"
+            }`}
+            onClick={() => i18n.changeLanguage("th")}>
+            TH
+          </div>
+        </div>
       </div>
 
       {/* 🔹 โลโก้กึ่งกลาง */}
@@ -120,7 +123,8 @@ export default function BuyerRegist() {
         />
       </div>
 
-      <h1 className="text-2xl mt-4 font-semibold">{t("header")}</h1>
+      <h1 className="text-2xl mt-4 font-semibold text-center">{t("header")}</h1>
+      <p className="mt-4">{t("question")}</p>
 
       {/* 🔹 กล่องเนื้อหา */}
       <div className="mt-6 md:w-2/3 xl:w-1/2 mx-auto">
