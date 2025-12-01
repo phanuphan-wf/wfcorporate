@@ -44,11 +44,7 @@ export default function ContractPrintCompany() {
             </td>
           </tr>
           <tr id="product" className="border border-black h-[52px]">
-            <td className="pl-4">
-              รายละเอียดของสินค้าที่นำมาแสดง
-              <br />
-              (โปรดระบุให้ละเอียด)
-            </td>
+            <td className="pl-4">รายละเอียดของสินค้าที่นำมาแสดง</td>
             <td className="border-l border-black px-2">
               <strong>{" " + contract.product}</strong>
             </td>
@@ -88,7 +84,7 @@ export default function ContractPrintCompany() {
           <tr className="border border-black">
             <td className="pl-4">การชำระเงิน</td>
             <td className="border-l border-black px-2">
-              1.ชำระเงินส่วนแรก{" "}
+              1.ชำระเงินมัดจำ{" "}
               <strong>
                 {contract.deposit !== "" ? (
                   <strong>
@@ -111,7 +107,7 @@ export default function ContractPrintCompany() {
                 )}
               </strong>
               <br />
-              2.ชำระเงินส่วนที่สอง{" "}
+              2.ชำระเงินส่วนแรก{" "}
               <strong>
                 {contract.pay1 !== "" ? (
                   <strong>
@@ -154,8 +150,7 @@ export default function ContractPrintCompany() {
               )}
               {contract.cheque !== "" ? (
                 <div>
-                  โดยสั่งจ่ายเป็นเช็คลงวันที่ล่วงหน้า ภายในวันที่{" "}
-                  {contract.cheque}
+                  โดยสั่งจ่ายเป็นเช็คล่วงหน้า ภายในวันที่ {contract.cheque}
                 </div>
               ) : (
                 ""

@@ -8,7 +8,8 @@ function ContractPrintForm(ref, props) {
   return (
     <section
       id="contractPrintForm"
-      className="w-[210mm] h-[297mm] px-[5mm] py-[10mm] text-[12px] font-sans">
+      className="w-[215mm] h-[355mm] px-[5mm] py-[10mm] text-[12px] font-sans"
+    >
       <div className="flex justify-center ">
         <div className="h-[40px]">
           <img

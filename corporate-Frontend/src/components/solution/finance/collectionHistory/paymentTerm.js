@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Axios from "axios";
 import useHeader from "../../../hook/useHeader";
 import { NumericFormat } from "react-number-format";
@@ -387,7 +387,8 @@ function PaymentTerm() {
                     setConfirmOpen(true);
                   }
                   setEdit(!edit);
-                }}>
+                }}
+              >
                 {!edit ? "Edit" : "Save"}
               </button>
             </div>

@@ -12,6 +12,12 @@ input:focus {
   border: white 1px solid;
 }
 
+input.box-green:focus {
+  box-shadow: 0 0 0 0.2rem white, 0 0 5px 0.25rem green;
+  outline: none;
+  border: white 1px solid;
+}
+
 select {
   appearance: none;
   outline: none;

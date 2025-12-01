@@ -633,3 +633,15 @@ video {
   font-size: 1.5rem;
   line-height: 2rem;
 }
+
+
+.swal2-red-btn {
+  background-color: #ef4444;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+}
+.swal2-red-btn:hover {
+  background-color: #dc2626;
+}
+

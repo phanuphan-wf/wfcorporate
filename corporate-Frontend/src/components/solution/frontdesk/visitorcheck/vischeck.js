@@ -67,7 +67,7 @@ export default function VisCheck(props) {
             {campaign == "1" ? (
               <p className="text-center text-red-500">----Parking Card----</p>
             ) : campaign == "2" ? (
-              <p className="text-center text-orange-400">----Umbella----</p>
+              <p className="text-center text-orange-400">----Bag Premium----</p>
             ) : (
               ""
             )}

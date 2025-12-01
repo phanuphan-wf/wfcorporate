@@ -86,7 +86,8 @@ export default function ReportDateSelect(props) {
           <select
             className="cmb"
             id="com-day"
-            onChange={(e) => setData({ ...data, d1: e.target.value })}>
+            onChange={(e) => setData({ ...data, d1: e.target.value })}
+          >
             {Array.from({ length: 31 }, (_, i) => i + 1).map((i) => {
               if (i !== new Date().getDate()) {
                 return <option value={i}>{i}</option>;
@@ -104,7 +105,8 @@ export default function ReportDateSelect(props) {
           <select
             className="cmb"
             id="com-month"
-            onChange={(e) => setData({ ...data, m1: e.target.value })}>
+            onChange={(e) => setData({ ...data, m1: e.target.value })}
+          >
             {tmonth.map((m, i) => {
               if (i !== new Date().getMonth()) {
                 return <option value={i + 1}>{m}</option>;
@@ -122,7 +124,8 @@ export default function ReportDateSelect(props) {
           <select
             className="cmb"
             id="com-year"
-            onChange={(e) => setData({ ...data, y1: e.target.value })}>
+            onChange={(e) => setData({ ...data, y1: e.target.value })}
+          >
             {selectYear().map((y) => {
               if (y !== new Date().getFullYear()) {
                 return <option value={y}>{y}</option>;
@@ -134,7 +137,6 @@ export default function ReportDateSelect(props) {
                 );
               }
             })}
-            <option value={2017}>2017</option>
           </select>
         </div>
         <div className={"pt-1"}>
@@ -152,7 +154,8 @@ export default function ReportDateSelect(props) {
             className="cmb disabled:bg-slate-200"
             id="com-day2"
             disabled={duringBox}
-            onChange={(e) => setData({ ...data, d2: e.target.value })}>
+            onChange={(e) => setData({ ...data, d2: e.target.value })}
+          >
             {Array.from({ length: 31 }, (_, i) => i + 1).map((i) => {
               if (i !== new Date().getDate()) {
                 return <option value={i}>{i}</option>;
@@ -171,7 +174,8 @@ export default function ReportDateSelect(props) {
             className="cmb disabled:bg-slate-200"
             id="com-month2"
             disabled={duringBox}
-            onChange={(e) => setData({ ...data, m2: e.target.value })}>
+            onChange={(e) => setData({ ...data, m2: e.target.value })}
+          >
             {tmonth.map((m, i) => {
               if (i !== new Date().getMonth()) {
                 return <option value={i + 1}>{m}</option>;
@@ -190,7 +194,8 @@ export default function ReportDateSelect(props) {
             className="cmb disabled:bg-slate-200"
             id="com-year2"
             disabled={duringBox}
-            onChange={(e) => setData({ ...data, y2: e.target.value })}>
+            onChange={(e) => setData({ ...data, y2: e.target.value })}
+          >
             {selectYear().map((y) => {
               if (y !== new Date().getFullYear()) {
                 return <option value={y}>{y}</option>;
@@ -202,7 +207,6 @@ export default function ReportDateSelect(props) {
                 );
               }
             })}
-            <option value={2017}>2017</option>
           </select>
         </div>
       </div>

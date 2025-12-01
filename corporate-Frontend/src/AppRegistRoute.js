@@ -8,6 +8,12 @@ import PostPage_dc from "./components/registration/B325/postregister";
 
 import Exregist from "./components/exregist/exregist";
 import Exqr from "./components/exregist/exqr";
+
+import BuyerRegist from "./components/buyerregist/BuyerRegist";
+import QRCode from "./components/buyerregist/QRCode";
+import FormRegister from "./components/buyerregist/redeem/registration";
+import PostRedeem from "./components/buyerregist/redeem/postregister";
+
 const AppRegistRoutes = [
   {
     path: "exregist",
@@ -49,6 +55,25 @@ const AppRegistRoutes = [
   {
     path: "b325/postregister/:res/:key",
     element: <PostPage_dc />,
+  },
+
+  {
+    path: "redeem",
+    element: <BuyerRegist />,
+  },
+
+  {
+    path: "redeem/:qr",
+    element: <QRCode />,
+  },
+
+  {
+    path: "redeem/form",
+    element: <FormRegister />,
+  },
+  {
+    path: "redeem/postregister",
+    element: <PostRedeem />,
   },
 ];
 
