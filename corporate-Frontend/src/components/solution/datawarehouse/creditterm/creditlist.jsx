@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import CreditData from "./creditdata";
 
 export const dataContext = createContext();
 
@@ -12,8 +13,10 @@ export default function CreditList() {
           <label htmlFor="customer">Customer Name</label>
           <input id="customer" className="w-full lg:w-[400px]" />
           <button className="btn-primary px-2">search</button>
-        </div>
+        </div>        
       </section>
+
+      <CreditData/>
     </dataContext.Provider>
   );
 }
