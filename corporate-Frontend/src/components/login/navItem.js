@@ -197,7 +197,16 @@ const NavItems = [
           { dept: 6, acc: 2 },
         ],
       },
-
+      {
+        title: "Credit List",
+        url: "/solution/datawarehouse/creditlist",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },
+          { dept: 6, acc: 1 },
+          { dept: 3, acc: 2 },
+        ],
+      },
       {
         title: "SMS Number",
         url: "/solution/datawarehouse/sms",

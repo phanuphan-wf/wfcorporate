@@ -3,6 +3,7 @@ import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 import NumberType from "./numberType";
 import ShowList from "./showList";
+import { CSVLink } from "react-csv";
 
 export const dataContext = createContext();
 
@@ -87,10 +88,6 @@ export default function SmsNumber(props) {
     setNumber([]);
   }, [exType]);
 
-  useEffect(() => {
-    //console.log(number);
-  }, [number]);
-
   const copyToClipboard = () => {
     const textToCopy = number.join(",");
     navigator.clipboard
@@ -103,6 +100,18 @@ export default function SmsNumber(props) {
       });
   };
 
+  const numbertoCSV = () => {
+    let transpose = [];
+    number.map((n) => {
+      transpose.push(["66" + n.substring(1)]);
+    });
+    return transpose;
+  };
+
+  useEffect(() => {
+    //console.log(numbertoCSV());
+  }, [number]);
+
   return (
     <dataContext.Provider
       value={{
@@ -110,8 +119,7 @@ export default function SmsNumber(props) {
         bearer,
         exTypeC: [exType, setExType],
         exSelC: [exSelected, setExSelected],
-      }}
-    >
+      }}>
       <section id="smsnumber" className="xl:container">
         <div className="my-3">
           <h1 className="text-2xl">SMS Number</h1>
@@ -136,8 +144,7 @@ export default function SmsNumber(props) {
               </span>
               <button
                 className="border border-gray-400 text-gray-400 px-3 rounded-md"
-                onClick={copyToClipboard}
-              >
+                onClick={copyToClipboard}>
                 copy
               </button>
             </div>
@@ -153,6 +160,14 @@ export default function SmsNumber(props) {
         ) : (
           ""
         )}
+        <div className={`flex justify-end my-10 ${!number.length && "hidden"}`}>
+          <CSVLink
+            data={number.length ? numbertoCSV() : ""}
+            filename={"smsnumber.csv"}
+            className={`btn-green px-4`}>
+            Download CSV
+          </CSVLink>
+        </div>
       </section>
     </dataContext.Provider>
   );

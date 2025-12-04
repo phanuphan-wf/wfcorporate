@@ -98,13 +98,13 @@ export default function ContractDeco() {
       setContract({
         ...contract,
         moveout1: convertAddDate(selectShow.endDate, 0),
-        mot1: "20.30-24.00น.",
+        mot1: "20.30-00.00น.",
         moveout2: convertAddDate(selectShow.endDate, 1),
         mot2:
           selectShow.venueName ==
           "ศูนย์แสดงสินค้าและการประชุม อิมแพ็ค เมืองทองธานี"
-            ? "00.00-10.00น."
-            : "00.00-04.00น.",
+            ? "00.01-04.00น."
+            : "00.01-04.00น.",
       });
     }
   }, [auto3]);
@@ -131,13 +131,13 @@ export default function ContractDeco() {
         setContract((prev) => ({
           ...prev,
           moveout1: convertAddDate(selectShow.endDate, 0),
-          mot1: "20.30-24.00น.",
+          mot1: "20.30-00.00น.",
           moveout2: convertAddDate(selectShow.endDate, 1),
           mot2:
             selectShow.venueName ==
             "ศูนย์แสดงสินค้าและการประชุม อิมแพ็ค เมืองทองธานี"
-              ? "00.00-10.00น."
-              : "00.00-04.00น.",
+              ? "00.01-04.00น."
+              : "00.01-04.00น.",
         }));
       }
     }

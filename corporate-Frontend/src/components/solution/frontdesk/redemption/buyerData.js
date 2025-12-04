@@ -67,6 +67,9 @@ export default function BuyerData(props) {
 
   useEffect(() => {
     props.data(visitor);
+    if (qrcode.length == 10) {
+      idCheck();
+    }
   }, [visitor]);
 
   const clearData = () => {
@@ -74,10 +77,11 @@ export default function BuyerData(props) {
     setMobileCheck(true);
     setPidCheck(false);
     setBirthCheck(false);
+    setQrcode("");
   };
 
   useEffect(() => {
-    document.getElementById("bname").focus();
+    document.getElementById("qrcode").focus();
   }, []);
 
   useEffect(() => {
@@ -85,9 +89,13 @@ export default function BuyerData(props) {
   }, [props.reset]);
 
   const idCheck = async () => {
-    const res = await Axios.get(
-      url + "/visCheck/" + visitor.PersonalID + "/" + props.exID
-    ).then((res) => {
+    const data = {
+      id: qrcode.length == 10 ? visitor.Tel : visitor.PersonalID,
+      exid: props.exID,
+      qr: qrcode.length == 10,
+    };
+
+    const res = await Axios.post(url + "/visCheck", data).then((res) => {
       if (res.data == false) {
         setInfoText({
           header: "Information",
@@ -113,8 +121,54 @@ export default function BuyerData(props) {
     }
   };
 
+  const [qrcode, setQrcode] = useState("");
+
+  const getVisData = async () => {
+    const res = await Axios.get(url + "/qrVis/" + qrcode)
+      .then((r) => {
+        if (r.status === 200) {
+          let v = r.data;
+          setVisitor({
+            ...visitor,
+            Name: v.name,
+            Surname: v.surname,
+            PersonalID: "0-0000-00000-00-0",
+            Street: "",
+            SubDis: "",
+            District: v.district,
+            Province: v.province,
+            Sex: v.sex,
+            Tel: v.mobile,
+            email: v.email,
+            birthday: v.birth,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err.response.status == 404) {
+          alert("Warning! QR Code is expire");
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (qrcode.length == 10) {
+      getVisData();
+    }
+  }, [qrcode]);
+
   return (
     <section>
+      <div className="flex items-center gap-4 my-8">
+        <label htmlFor="qrcode">QR Code</label>
+        <input
+          id="qrcode"
+          className="w-1/4 disabled:bg-gray-200"
+          value={qrcode}
+          onChange={(e) => setQrcode(e.target.value)}
+          disabled={!props.exID}
+        />
+      </div>
       <div className="border rounded-md p-3 mt-8 mb-2 border-slate-400 relative">
         <div className="text-lg absolute -top-4 left-2 px-3 bg-white h-fit">
           Buyer Data
@@ -271,8 +325,7 @@ export default function BuyerData(props) {
       <div className="flex w-full justify-end">
         <div
           className="border-2 border-slate-400 px-4 py-1 rounded-md w-fit bg-slate-400 text-white hover:bg-white hover:text-slate-400"
-          onClick={clearData}
-        >
+          onClick={clearData}>
           Clear Data
         </div>
       </div>

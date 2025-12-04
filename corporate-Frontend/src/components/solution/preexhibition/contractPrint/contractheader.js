@@ -112,8 +112,7 @@ export default function ContractHeader() {
           className="cmb w-10 disabled:bg-slate-300"
           id="cmb-day"
           onChange={(e) => setContract({ ...contract, day: e.target.value })}
-          disabled={blank}
-        >
+          disabled={blank}>
           {selectDay().map((day, index) => {
             if (day == contract.day) {
               return (
@@ -136,18 +135,17 @@ export default function ContractHeader() {
           onChange={(e) =>
             setContract({ ...contract, month: tmonth[e.target.value] })
           }
-          disabled={blank}
-        >
+          disabled={blank}>
           {tmonth.map((month, index) => {
             if (month == contract.month) {
               return (
-                <option key={index} value={index + 1} selected>
+                <option key={index} value={index} selected>
                   {month}
                 </option>
               );
             } else {
               return (
-                <option key={index} value={index + 1}>
+                <option key={index} value={index}>
                   {month}
                 </option>
               );
@@ -158,8 +156,7 @@ export default function ContractHeader() {
           className="cmb w-10 disabled:bg-slate-300"
           id="cmb-year"
           onChange={(e) => setContract({ ...contract, year: e.target.value })}
-          disabled={blank}
-        >
+          disabled={blank}>
           {selectYear().map((year, index) => {
             if (year == contract.year) {
               return (

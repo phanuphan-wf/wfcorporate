@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import useCheckMobile from "../../hook/useCheckMobile";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
@@ -21,15 +21,27 @@ export default function Landingpage(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
   const exId = "i625";
 
+  const [sponShow, setSponShow] = useState(false);
+  const [elec, setElec] = useState(false);
+
   useEffect(() => {
     document.title = "Furniture Fair Information";
 
     if (cp != undefined) {
       let tag = { code: cp };
-      const res = async () => await Axios.post(url + "/postUTM", tag);
+      const res = async () =>
+        await Axios.post(url + "/postUTM", tag).then((r) => setElec(r.data));
       res();
     }
   }, []);
+
+  useEffect(() => {
+    const umb = ["F9CAA5", "0220AD", "C21AD8", "293F2C"];
+
+    if (umb.some((x) => x == cp)) {
+      setSponShow(true);
+    }
+  }, [cp]);
 
   const clickPos = useRef();
 
@@ -64,8 +76,9 @@ export default function Landingpage(props) {
   });
 
   useEffect(() => {
-    //setBannerH(bannerRef.current.clientHeight);
-  }, [bannerH]);
+    //console.log(cp);
+    //console.log(sponShow);
+  }, [sponShow]);
 
   return (
     <section className={`landing_${exId}`}>
@@ -73,7 +86,11 @@ export default function Landingpage(props) {
         className="w-full absolute top-0 left-1/2 -translate-x-1/2"
         ref={bannerRef}>
         <img
-          src={require("./img/hero_banner.jpg")}
+          src={
+            !elec
+              ? require("./img/hero_banner.jpg")
+              : require("./img/hp_banner.jpg")
+          }
           alt="landing hero"
           id="hero_banner"
           className="mx-auto"
@@ -99,15 +116,24 @@ export default function Landingpage(props) {
         </div>
       )}
 
-      {bannerLoaded && (
-        <>
-          <FurSection />
-          <ElecSection />
-        </>
-      )}
+      {bannerLoaded &&
+        (!elec ? (
+          <div>
+            <FurSection />
+            <ElecSection />
+          </div>
+        ) : (
+          <div>
+            <ElecSection />
+            <div className="text-center text-bold text-xl">
+              <span>จัดพร้อมกับงาน</span>
+            </div>
+            <FurSection />
+          </div>
+        ))}
       {/*----------------- ส่วนของ sponsor -----------------*/}
       {bannerLoaded && (
-        <div className="premium my-6">
+        /* sponShow && */ <div className="premium my-6">
           {new Date() < new Date("2025-08-10T00:00:00Z") ? (
             <img
               src={require("./img/sponsor.png")}
@@ -116,12 +142,17 @@ export default function Landingpage(props) {
               className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
             />
           ) : (
-            <img
-              src={require("./img/sponsor.png")}
-              alt="premium bag"
-              id="premium"
-              className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
-            />
+            <div className="w-full">
+              <span className="text-center text-lg font-medium text-red-500">
+                {t("regist") + " " + t("free")}
+              </span>
+              <img
+                src={require("./img/sponsor2.png")}
+                alt="premium bag"
+                id="premium"
+                className="mx-auto w-1/2 lg:w-1/3 xl:w-1/4"
+              />
+            </div>
           )}
         </div>
       )}

@@ -5,6 +5,7 @@ import useCheckMobile from "../../../hook/useCheckMobile";
 import { NumericFormat } from "react-number-format";
 
 import { dataContext } from "../contractReceive";
+import PaymentTerm from "./paymentTerm";
 
 import ModalAddBooth from "./modalAddBooth";
 
@@ -238,8 +239,7 @@ export default function ContractInfo(props) {
           <select
             className="cmb"
             id="cmbExhibition"
-            onChange={(e) => setSelectExhibition(e.target.value)}
-          >
+            onChange={(e) => setSelectExhibition(e.target.value)}>
             <option value={"0"} disabled hidden selected>
               select exhibition
             </option>
@@ -263,8 +263,7 @@ export default function ContractInfo(props) {
       {boothFocus && (
         <div
           className="absolute z-10 w-screen h-screen"
-          onClick={() => setBoothFocus(false)}
-        ></div>
+          onClick={() => setBoothFocus(false)}></div>
       )}
       <div className="border rounded-md relative w-full mt-4">
         <div className="bg-white px-3 absolute -top-3 left-4">
@@ -299,8 +298,7 @@ export default function ContractInfo(props) {
                   className="absolute md:top-4 z-20 max-md:mt-2 shadow-lg"
                   style={{
                     left: boothShowPosition(),
-                  }}
-                >
+                  }}>
                   <div className="border rounded-md  bg-white">
                     <div className="border-b px-4 py-2 bg-red-200 text-red-600 rounded-t-md">
                       Available Booth
@@ -310,8 +308,7 @@ export default function ContractInfo(props) {
                         {boothShow().map((b, i) => (
                           <li
                             className="hover:bg-indigo-500 hover:text-white px-4 py-1"
-                            onClick={() => boothSelect(b.boothNo)}
-                          >
+                            onClick={() => boothSelect(b.boothNo)}>
                             {b.boothNo}
                           </li>
                         ))}
@@ -319,8 +316,7 @@ export default function ContractInfo(props) {
                     </div>
                     <div
                       className="border-t px-4 py-2 text-indigo-500 hover:bg-indigo-700 hover:text-white rounded-b-md cursor-pointer"
-                      onClick={() => setIsAdd(true)}
-                    >
+                      onClick={() => setIsAdd(true)}>
                       Add Booth
                     </div>
                   </div>
@@ -361,8 +357,7 @@ export default function ContractInfo(props) {
                     PriceID: Number(e.target.value),
                   })
                 }
-                value={contractDetail.PriceID}
-              >
+                value={contractDetail.PriceID}>
                 <option value={"0"} disabled selected hidden>
                   select zone
                 </option>
@@ -609,11 +604,13 @@ export default function ContractInfo(props) {
               </div>
             </div>
           </div>
+          <div className="my-3">
+            <PaymentTerm />
+          </div>
           <div className="flex justify-between mt-2">
             <button
               className="border rounded-md bg-slate-300 px-3 py-1 hover:bg-white"
-              onClick={clearData}
-            >
+              onClick={clearData}>
               Clear Data
             </button>
             <div>
