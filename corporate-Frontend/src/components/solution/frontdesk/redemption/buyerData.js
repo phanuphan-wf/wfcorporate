@@ -167,6 +167,7 @@ export default function BuyerData(props) {
           value={qrcode}
           onChange={(e) => setQrcode(e.target.value)}
           disabled={!props.exID}
+          maxLength={10}
         />
       </div>
       <div className="border rounded-md p-3 mt-8 mb-2 border-slate-400 relative">
