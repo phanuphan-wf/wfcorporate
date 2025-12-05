@@ -281,11 +281,10 @@ export default function Registration(props) {
             let media = qMedia;
             media.uid = vid.toString();
             postQMedia(media);
-            /*
+
             let resi = qResi;
             resi.uid = vid.toString();
             postQResi(resi);
-            */
           }
 
           const smsdata = {
@@ -498,14 +497,15 @@ export default function Registration(props) {
         />
       </div>
 
-      <div className="text-center text-2xl md:text-3xl font-medium my-6">
+      <div className="text-center text-2xl md:text-3xl font-semibold my-6">
         {t("title")}
       </div>
       <RegistInfo bioData={getBio} verify={bioVerify} />
       {/*
       <Interest intrData={getQItr} verify={intrVerify} />
-      <Resident resiData={getResi} />
       */}
+      <Resident resiData={getResi} />
+
       <Media mediaData={getMedia} />
       <div className="container max-w-5xl px-10 mb-10">
         <div className="max-md:text-lg">
