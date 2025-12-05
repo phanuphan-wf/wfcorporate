@@ -19,6 +19,7 @@ export default function MediaSum(props) {
     "radio",
     "tiktok",
     "sms",
+    "bts",
   ];
 
   useEffect(() => {

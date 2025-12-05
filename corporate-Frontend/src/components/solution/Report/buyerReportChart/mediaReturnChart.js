@@ -87,6 +87,10 @@ export default function MediaReturnChart(props) {
       col: "วิทยุ",
       id: "radio",
     },
+    {
+      col: "BTS",
+      id: "bts",
+    },
   ];
   const [media, setMedia] = useState(initMedia);
   const [cat, setCat] = useState([]);
