@@ -1,6 +1,6 @@
 {
   "name": "coporateweb",
-  "version": "3.9.2025.6",
+  "version": "3.9.2025.7",
   "private": true,
   "dependencies": {
     "@azure/storage-blob": "^12.17.0",
@@ -78,7 +78,7 @@
   },
   "scripts": {
     "start": "rimraf ./build && react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/"

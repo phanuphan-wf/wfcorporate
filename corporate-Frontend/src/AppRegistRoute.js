@@ -20,6 +20,10 @@ const AppRegistRoutes = [
     element: <Exregist />,
   },
   {
+    path: "exregist/:code",
+    element: <Exregist />,
+  },
+  {
     path: "exqr",
     element: <Exqr />,
   },

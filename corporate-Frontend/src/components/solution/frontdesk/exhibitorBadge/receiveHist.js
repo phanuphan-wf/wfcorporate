@@ -55,7 +55,7 @@ export default function ReceiveHist(props) {
           <thead className="border-b-2">
             <tr>
               <td>Name</td>
-              <td>ID Card</td>
+              <td>Mobile</td>
               <td>Location</td>
               <td>Time</td>
               <td>Received</td>
@@ -65,7 +65,7 @@ export default function ReceiveHist(props) {
             {histlist.map((h, i) => (
               <tr key={i}>
                 <td>{h.name}</td>
-                <td>{h.pid}</td>
+                <td>{h.mobile}</td>
                 <td>{h.loc}</td>
                 <td>{dateConvert(h.recTime)}</td>
                 <td>{h.recNo}</td>

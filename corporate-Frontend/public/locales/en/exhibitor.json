@@ -1,0 +1,18 @@
+{
+    "regist": {
+        "title": "Exhibitor Registration",
+        "subtitle": "Please fill out the information to register for your exhibitor badge.",
+        "search": "Search Exhibitor",
+        "customer": "Exhibitor Name",
+        "name": "Name",
+        "surname": "Surame",
+        "mobile": "Mobile",
+        "text-placeholder": "Please use search button only",
+        "submit": "Register",
+        "notfound": "** Exhibitor code is invalid, please check access link again **"
+    },
+    "qr": {
+        "title": "Thank you for registering.<br />Please show this QR code to our staff<br />to complete your registration.",
+        "footer": "You may save a screenshot of this page and present it to our staff for faster processing in case you need to close this browser."
+    }
+}

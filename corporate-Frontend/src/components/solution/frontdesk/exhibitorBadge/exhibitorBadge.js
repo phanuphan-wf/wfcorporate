@@ -8,11 +8,10 @@ import ReceiveList from "./receivelist";
 import ReceiveHist from "./receiveHist";
 import ModalSeach from "./modalSearch";
 import PrintBadge from "./printBadge";
+import ModalQR from "./modalQR";
 
 export default function ExhibitorBadge(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
-  //const url =
-  //process.env.REACT_APP_API_URI_TEST + process.env.REACT_APP_frontdesk;
 
   const bearer = useHeader();
 
@@ -35,7 +34,7 @@ export default function ExhibitorBadge(props) {
   const initExData = { id: "", name: "" };
   const [exData, setExData] = useState(initExData);
 
-  const [exID, setExID] = useState("i425");
+  const [exID, setExID] = useState("");
 
   const getExID = async () => {
     const res = await Axios.get(url + "/getExID").then((res) => {
@@ -57,7 +56,9 @@ export default function ExhibitorBadge(props) {
   };
 
   useEffect(() => {
-    getLoc();
+    if (exID) {
+      getLoc();
+    }
   }, [exID]);
 
   const [modalShow, setModalShow] = useState(false);
@@ -97,10 +98,10 @@ export default function ExhibitorBadge(props) {
     setCanPrint(value);
   };
 
-  const [loc, setLoc] = useState("");
+  const [loc, setLoc] = useState(0);
 
   useEffect(() => {
-    if (loc != "" && exData.id != "" && canPrint) {
+    if (loc != 0 && exData.id != "" && canPrint) {
       setReady(true);
     } else {
       setReady(false);
@@ -147,6 +148,8 @@ export default function ExhibitorBadge(props) {
         delete dat.name;
         delete dat.pid;
         delete dat.surname;
+
+        console.log(dat);
 
         const res = await Axios.put(url + "/putExReceive", dat).then((res) => {
           if (res.status !== 200) {
@@ -200,16 +203,33 @@ export default function ExhibitorBadge(props) {
   useEffect(() => {
     if (regCode.regcode.length == 8) {
       getExData();
+    } else {
+      setExData(initExData);
+      setSave(!save);
     }
   }, [regCode]);
 
   useEffect(() => {
-    if (regData) {
+    if (Object.keys(regData).length) {
       getExName();
+    } else {
+      setExName("");
     }
   }, [regData]);
 
-  useEffect(() => {}, [exData]);
+  useEffect(() => {
+    //console.log(regData);
+  }, [regData]);
+
+  const [qrIsShow, setQrIsShow] = useState(false);
+
+  const closeQR = () => {
+    setQrIsShow(false);
+  };
+
+  useEffect(() => {
+    console.log(exData);
+  }, [exData]);
 
   return (
     <section className="ex-badge">
@@ -253,7 +273,7 @@ export default function ExhibitorBadge(props) {
                 Exhibitor Name
               </label>
 
-              <div className="flex flex-grow gap-2">
+              <div className="flex flex-grow gap-2 items-center">
                 <input
                   id="exname"
                   className="w-3/4 md:w-1/2"
@@ -266,6 +286,13 @@ export default function ExhibitorBadge(props) {
                   onClick={() => setModalShow(true)}>
                   Search
                 </div>
+                <div className="ml-10">
+                  <button
+                    className="btn-green px-3 py-1"
+                    onClick={() => setQrIsShow(true)}>
+                    Show QR
+                  </button>
+                </div>
               </div>
             </div>
             <ReceiveList
@@ -276,15 +303,16 @@ export default function ExhibitorBadge(props) {
               regData={regData}
             />
             <div className="flex justify-center md:justify-start my-6">
-              <div
+              <button
                 className={`btn-primary w-full sm:w-1/2 lg:w-1/4 px-4 py-1 ${
                   ready
                     ? "bg-green-600 border-green-600 hover:text-green-600 hover:border-green-600"
                     : ""
                 }`}
-                onClick={badgeAdd}>
+                onClick={badgeAdd}
+                disabled={!ready}>
                 Save
-              </div>
+              </button>
             </div>
           </div>
 
@@ -346,6 +374,11 @@ export default function ExhibitorBadge(props) {
         onHide={closeModal}
         search={exName}
         fill={fillName}
+      />
+      <ModalQR
+        show={qrIsShow}
+        onHide={closeQR}
+        customer={{ id: exData.id, ex: exID }}
       />
     </section>
   );

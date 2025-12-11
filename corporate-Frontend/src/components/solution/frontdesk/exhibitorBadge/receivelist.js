@@ -96,22 +96,24 @@ export default function ReceiveList(props) {
   useEffect(() => {
     let d = props.regData;
     if (d && Object.keys(d).length != 0) {
-      if (rlist.length == 0) {
-        setRlist([
-          ...rlist,
-          {
-            name: d.name,
-            surname: d.surname,
-            pid: d.pid,
-            mobile: d.mobile,
-            receive: d.recNum,
-          },
-        ]);
-      }
+      setRlist([
+        {
+          name: d.name,
+          surname: d.surname,
+          pid: d.pid,
+          mobile: d.mobile,
+          receive: 1,
+        },
+      ]);
+
       setAdded(true);
       setCanPrint(true);
     }
   }, [props.regData]);
+
+  useEffect(() => {
+    console.log(rlist);
+  }, [rlist]);
 
   return (
     <div>
