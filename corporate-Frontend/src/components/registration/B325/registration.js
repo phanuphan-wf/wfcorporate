@@ -271,21 +271,23 @@ export default function Registration(props) {
           preregist: uac.preregist,
           exID: uac.exID,
         };
-        let key = CryptoJS.AES.encrypt(
-          JSON.stringify(valmoid),
-          process.env.REACT_APP_KEY
-        ).toString();
-        key = key
-          .replaceAll("+", "WFPLU")
-          .replaceAll("/", "WFSLA")
-          .replaceAll("=", "WFEQU");
+        const sendSMS = await Axios.post(url + "/postSMS", valmoid);
+        if (sendSMS.status == 200) {
+          let key = CryptoJS.AES.encrypt(
+            JSON.stringify(valmoid),
+            process.env.REACT_APP_KEY
+          ).toString();
+          key = key
+            .replaceAll("+", "WFPLU")
+            .replaceAll("/", "WFSLA")
+            .replaceAll("=", "WFEQU");
 
-        navigate("/" + exId + "/postregister/success/" + key);
+          navigate("/" + exId + "/postregister/success/" + key);
+        }
       } else {
         alert(t("dup"));
       }
     } catch (err) {
-      alert(err);
       navigate("/" + exId + "/postregister/none/xfmb");
     }
     setSubmiting(false);

@@ -35,24 +35,20 @@ export default function Postregister(props) {
     const data = CryptoJS.AES.decrypt(param, process.env.REACT_APP_KEY);
     const key = JSON.parse(data.toString(CryptoJS.enc.Utf8));
 
-    const res = await Axios.post(url + "/GetSMS", key);
-    if (res.data.code === 0) {
-      if (cookies.appWFCookieAccept === "true") {
-        SendPixel({ mob: key.mob, preregist: key.preregist });
-      }
-
-      const resSMS = Axios.post(url + "/PostSMS", key).then((res) => {
-        if (res.data.code === 0) {
-          SetSms(true);
-
-          //console.log(res.data);
-        } else if (res.data.code === 505) {
-          SetSms(false);
+    const res = await Axios.post(url + "/GetSMS", key).then((res) => {
+      console.log(res.data);
+      if (res.data.code === 0) {
+        if (cookies.appWFCookieAccept === "true") {
+          SendPixel({ mob: key.mob, preregist: key.preregist });
         }
-      });
-    } else if (res.data.code === 409) {
-      alert(t("dupAlert"));
-    }
+        SetSms(true);
+        //console.log(res.data);
+      } else if (res.data.code === 505) {
+        SetSms(false);
+      } else {
+        alert(t("dupAlert"));
+      }
+    });
   }
 
   useEffect(() => {

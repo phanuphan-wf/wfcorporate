@@ -359,7 +359,7 @@ export default function Registration(props) {
 
                 timer = setInterval(() => {
                   checkSMS();
-                }, 500);
+                }, 1000);
               } catch {
                 // try checkSMS
                 alert("Cannot send sms to user");

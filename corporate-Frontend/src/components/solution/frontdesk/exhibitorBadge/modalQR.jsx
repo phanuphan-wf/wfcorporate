@@ -55,7 +55,7 @@ export default function ModalQR(props) {
             </div>
             <div className="flex justify-center">
               <QRCodeSVG
-                value={"https://www.worldfair.co.th/exrgist/" + excode.code}
+                value={"https://www.worldfair.co.th/exregist/" + excode.code}
                 size={200}
               />
             </div>

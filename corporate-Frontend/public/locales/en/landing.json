@@ -215,7 +215,7 @@
             "title": "How did you learn about this event? (Multiple answers allowed.)"
         },
         "post": {
-            "dupAlert": "The system has sent an SMS to you already. If you did not receive the SMS, please check your phone number or contact the staff.",
+            "dupAlert": "Sorry, the SMS has been sent, but delivery confirmation from the operator has not been received. Please check your mobile phone again.",
             "none": {
                 "h1": "Registration failed",
                 "h4": "Sorry, your mobile number has already been registered",
