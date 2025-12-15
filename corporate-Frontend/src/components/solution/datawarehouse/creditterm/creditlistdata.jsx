@@ -7,6 +7,14 @@ import { dataContext } from "./creditlist";
 
 export default function CreditListData() {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdt;
+  var CryptoJS = require("crypto-js");
+
+  const emID = CryptoJS.AES.decrypt(
+        JSON.parse(localStorage.getItem("user")).EmID,
+        process.env.REACT_APP_KEY
+      ).toString(CryptoJS.enc.Utf8);
+  
+
   const bearer = useHeader();
 
   Axios.defaults.headers.common = {
@@ -25,6 +33,31 @@ export default function CreditListData() {
 
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
+
+ 
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("ยืนยันการลบข้อมูลนี้ ?")) return;
+
+    try {
+      const res = await Axios.delete(
+        `${url}/delCredit/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${bearer}`,
+          },
+        }
+      );
+
+      console.log("DELETE RESPONSE:", res.data);
+
+      setReloadTable((x) => !x);
+    } catch (error) {
+      console.error("DELETE ERROR:", error);
+      alert("ลบข้อมูลไม่สำเร็จ");
+    }
+  };
+
 
   // -------------------------------
   // เมื่อเลือกชื่อจาก modalSearch
@@ -79,7 +112,8 @@ export default function CreditListData() {
             {hisfilter.length > 0 ? (
               hisfilter.map((row, index) => (
                 <tr key={row.id} className="border-b">
-                  <td className="border-t p-2 text-center">{index + 1}</td>
+                  <td className="border-t p-2 text-center">{index + 1}</td>     
+                  {/* <td className="border-t border-l p-2">{row.id}</td>             */}
                   <td className="border-t border-l p-2">{row.name}</td>
                   <td className="border-t border-l p-2 text-center">{row.term1}</td>
                   <td className="border-t border-l p-2 text-center">{row.term2}</td>
@@ -90,15 +124,29 @@ export default function CreditListData() {
 
                   <td className="border-t border-l p-2 text-center">
                     <button
-                      className="btn-primary"
+                      className="btn-green mr-1" 
                       onClick={() => {
-                        setEditData(row);
+                        setEditData({
+                          id: row.id,   
+                          name: row.name,
+                          cr1: row.term1,      
+                          cr2: row.term2,      
+                        });
                         setShowModal(true);
                       }}
                     >
                       <i className="fas fa-edit mr-1"></i> แก้ไข
                     </button>
+
+                     <button
+                      className="btn-primary"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <i className="fas fa-trash mr-1"></i> ลบ
+                    </button>
+
                   </td>
+
                 </tr>
               ))
             ) : (
@@ -118,9 +166,10 @@ export default function CreditListData() {
       {/* --------------------------------------
           Modal แก้ไขข้อมูล
       --------------------------------------- */}
-      {showModal && editData && (
+     {showModal && editData && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg w-[400px] p-4 shadow-lg">
+
             {/* Header */}
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg">แก้ไขข้อมูล</h3>
@@ -136,8 +185,13 @@ export default function CreditListData() {
             <div className="space-y-3 text-sm">
               <div>
                 <label>Customer</label>
+                {/* <input
+                  className="border w-full px-2 py-1 rounded bg-gray-100"
+                  value={editData.id}
+                  readOnly
+                /> */}
                 <input
-                  className="border w-full px-2 py-1 rounded"
+                  className="border w-full px-2 py-1 rounded bg-gray-100"
                   value={editData.name}
                   readOnly
                 />
@@ -146,10 +200,11 @@ export default function CreditListData() {
               <div>
                 <label>งวดที่ 1</label>
                 <input
+                  type="number"
                   className="border w-full px-2 py-1 rounded"
-                  value={editData.term1}
+                  value={editData.cr1}
                   onChange={(e) =>
-                    setEditData({ ...editData, term1: e.target.value })
+                   setEditData({ ...editData, cr1: e.target.value })
                   }
                 />
               </div>
@@ -157,10 +212,11 @@ export default function CreditListData() {
               <div>
                 <label>งวดที่ 2</label>
                 <input
+                  type="number"
                   className="border w-full px-2 py-1 rounded"
-                  value={editData.term2}
+                  value={editData.cr2}
                   onChange={(e) =>
-                    setEditData({ ...editData, term2: e.target.value })
+                    setEditData({ ...editData, cr2: e.target.value })
                   }
                 />
               </div>
@@ -172,26 +228,54 @@ export default function CreditListData() {
                 className="px-3 py-1 bg-gray-300 rounded"
                 onClick={() => setShowModal(false)}
               >
-                ยกเลิก
+                ยกเลิก Credit
               </button>
 
               <button
                 className="btn-primary"
-                onClick={() => {
-                  console.log("SAVE DATA:", editData);
+                onClick={async () => {
+                  if (!editData?.id) {
+                    alert("ไม่พบ customerID");
+                    return;
+                  }
 
-                  // 👉 refresh table after editing
-                  setReloadTable((x) => !x);
+                  const payload = {
+                    customerID: editData.id,
+                    cr1: Number(editData.cr1),
+                    cr2: Number(editData.cr2),
+                    do_by: emID,
+                  };
 
-                  setShowModal(false);
+                  console.log("SAVE DATA:", payload);
+
+                  try {
+                    const res = await Axios.put(
+                      `${url}/updateCredit`,
+                      payload,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${bearer}`,
+                        },
+                      }
+                    );
+
+                    console.log("API RESPONSE:", res.data);
+
+                    setReloadTable((x) => !x);
+                    setShowModal(false);
+                  } catch (error) {
+                    console.error("UPDATE CREDIT ERROR:", error);
+                    alert("บันทึกข้อมูลไม่สำเร็จ");
+                  }
                 }}
               >
-                บันทึก
+                อนุมัติ เครดิต
               </button>
             </div>
           </div>
         </div>
       )}
+
     </section>
   );
 }
