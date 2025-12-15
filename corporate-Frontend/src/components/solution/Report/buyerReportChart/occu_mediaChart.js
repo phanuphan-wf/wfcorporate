@@ -90,6 +90,10 @@ export default function Occu_MediaChart(props) {
       col: "วิทยุ",
       id: "radio",
     },
+    {
+      col: "BTS",
+      id: "bts",
+    },
   ];
   const [media, setMedia] = useState(initMedia);
   const [occu, setOccu] = useState([]);
