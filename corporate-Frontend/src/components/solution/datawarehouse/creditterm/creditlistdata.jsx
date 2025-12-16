@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
+import Swal from "sweetalert2";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { dataContext } from "./creditlist";
@@ -13,7 +14,11 @@ export default function CreditListData() {
         JSON.parse(localStorage.getItem("user")).EmID,
         process.env.REACT_APP_KEY
       ).toString(CryptoJS.enc.Utf8);
-  
+      
+  const user = JSON.parse(localStorage.getItem("user"));
+  //console.log("USER RAW:", user);
+  //const user = 2;
+
 
   const bearer = useHeader();
 
@@ -27,9 +32,24 @@ export default function CreditListData() {
   const { customerC } = useContext(dataContext);
   const [customer, setCustomer] = customerC;
 
+  //   useEffect(() => {
+  //   console.log(customer);
+  // }, [customer]);
+
   const [searchKey, setSearchKey] = useState("");
   const [hisfilter, setHisfilter] = useState([]);
-  const [reloadTable, setReloadTable] = useState(false);
+
+  const { hasCreditC } = useContext(dataContext);
+  const [hasCredit, setHasCredit] = hasCreditC;
+  
+  // useEffect(() => {
+  //   console.log(hasCredit);
+  // }, [hasCredit]);
+
+
+  const { reloadTableC } = useContext(dataContext);
+  const [reloadTable, setReloadTable] = reloadTableC;
+  
 
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
@@ -37,7 +57,29 @@ export default function CreditListData() {
  
 
   const handleDelete = async (id) => {
-    if (!window.confirm("ยืนยันการลบข้อมูลนี้ ?")) return;
+
+      const result = await Swal.fire({
+        title: "ยืนยันลบข้อมูลเครดิต?",
+        text: "เมื่อลบแล้วไม่สามารถกู้คืนได้",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "ลบ",
+        cancelButtonText: "ยกเลิก",
+        
+        buttonsStyling: false,
+        customClass: {
+          actions: "swal-actions-gap",  
+          confirmButton: "swal2-red-btn",
+          cancelButton: "swal2-gray-btn",
+        },
+
+    });
+
+    if (!result.isConfirmed) return;
+
+    if (result.isConfirmed) {
+      setShowModal(false);
+    }
 
     try {
       const res = await Axios.delete(
@@ -49,7 +91,7 @@ export default function CreditListData() {
         }
       );
 
-      console.log("DELETE RESPONSE:", res.data);
+      //console.log("DELETE RESPONSE:", res.data);
 
       setReloadTable((x) => !x);
     } catch (error) {
@@ -58,37 +100,69 @@ export default function CreditListData() {
     }
   };
 
-
   // -------------------------------
   // เมื่อเลือกชื่อจาก modalSearch
   // -------------------------------
   useEffect(() => {
     if (customer?.searchName) {
       setSearchKey(customer.searchName);
+      setHisfilter([]);     // ✅ ล้างข้อมูลเก่าทันที
+      setHasCredit(false); // ✅ reset สถานะ
     } else {
       setSearchKey("");
-      setHisfilter([]); // ไม่ต้องแสดงข้อมูล
+      setHisfilter([]);
+      setHasCredit(false);
     }
-  }, [customer]);
+  }, [customer, setHasCredit]);
 
   // -------------------------------
-  // โหลดข้อมูลรายการ Credit
+  // โหลดข้อมูลเครดิต
   // -------------------------------
   const loadCreditHistory = async (name) => {
+    setHisfilter([]);        // ล้างข้อมูลเก่าทันที
+    setHasCredit(false);     // reset สถานะ
+
     try {
       const res = await Axios.get(`${url}/creditList/${name}`);
-      setHisfilter(res.data?.length ? res.data : []);
+
+      //console.log("API RESPONSE:", res.data);
+
+      if (Array.isArray(res.data) && res.data.length > 0) {
+
+        // กรองเฉพาะชื่อที่ตรงกับ customer.Name
+        const exactMatch = res.data.filter(
+          (row) => row.name === customer.Name
+        );
+
+        //console.log("FILTERED RESULT:", exactMatch);
+
+        if (exactMatch.length > 0) {
+          setHisfilter(exactMatch);
+          setHasCredit(true);   //  พบข้อมูลตรงจริง
+        } else {
+          setHisfilter([]);
+          setHasCredit(false);  //  ไม่มีชื่อที่ตรง
+        }
+
+      } else {
+        setHisfilter([]);
+        setHasCredit(false);
+      }
+
     } catch (error) {
       console.error("Error loading history:", error);
       setHisfilter([]);
+      setHasCredit(false);
     }
   };
 
+  
   // โหลด API เมื่อ searchKey เปลี่ยน
   useEffect(() => {
     if (!searchKey) return;
     loadCreditHistory(searchKey);
   }, [searchKey, reloadTable]);
+
 
   return (
     <section id="customer-history-list">
@@ -138,12 +212,12 @@ export default function CreditListData() {
                       <i className="fas fa-edit mr-1"></i> แก้ไข
                     </button>
 
-                     <button
+                    {/* <button
                       className="btn-primary"
                       onClick={() => handleDelete(row.id)}
                     >
                       <i className="fas fa-trash mr-1"></i> ลบ
-                    </button>
+                    </button> */}
 
                   </td>
 
@@ -155,7 +229,7 @@ export default function CreditListData() {
                   colSpan="7"
                   className="text-center py-5 text-gray-400 border-t"
                 >
-                  ไม่มีข้อมูลสำหรับลูกค้ารายนี้
+                  ไม่มีข้อมูลเครดิตสำหรับลูกค้ารายนี้
                 </td>
               </tr>
             )}
@@ -174,11 +248,13 @@ export default function CreditListData() {
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg">แก้ไขข้อมูล</h3>
               <button
-                className="text-red-500 text-xl"
                 onClick={() => setShowModal(false)}
+                className="text-red-500 hover:text-red-500"
+                aria-label="Close"
               >
-                ×
+                <i className="fas fa-times text-xl"></i>
               </button>
+
             </div>
 
             {/* Body */}
@@ -223,16 +299,22 @@ export default function CreditListData() {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-end gap-2 mt-4">
+            <div className="flex justify-between items-center mt-4">
+
               <button
-                className="px-3 py-1 bg-gray-300 rounded"
-                onClick={() => setShowModal(false)}
+                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => handleDelete(editData.id)}
               >
                 ยกเลิก Credit
               </button>
 
-              <button
-                className="btn-primary"
+            
+
+              <button 
+                className={`btn-green ${
+                  user?.ALevel !== 1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={user?.ALevel !== 1}
                 onClick={async () => {
                   if (!editData?.id) {
                     alert("ไม่พบ customerID");
@@ -271,6 +353,8 @@ export default function CreditListData() {
               >
                 อนุมัติ เครดิต
               </button>
+          
+
             </div>
           </div>
         </div>

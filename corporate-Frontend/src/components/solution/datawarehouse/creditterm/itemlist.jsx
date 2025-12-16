@@ -16,8 +16,11 @@ export default function ItemList() {
   };
 
   // ✅ ดึงค่าจาก Context
-  const { customerC } = useContext(dataContext);
-  const [customer, setCustomer] = customerC;
+  const { customerC,hasCreditC,reloadTableC } = useContext(dataContext);
+
+  const [customer, setCustomer] = customerC; 
+  const [hasCredit, setHasCredit] = hasCreditC;  
+  const [ReloadTable, setReloadTable] = reloadTableC;
 
   const [modalShow, setModalShow] = useState(false); 
   
@@ -88,12 +91,20 @@ export default function ItemList() {
           )}
 
           <button
-            className={`btn-green px-3 ${!customer.Name ? "opacity-50 cursor-not-allowed" : ""}`}
-            onClick={() => customer.Name && setShowAddModal(true)}
-            disabled={!customer.Name}
+            className={`btn-green px-3 ${
+              !customer.Name || hasCredit
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+            }`}
+            onClick={() => {
+              if (!customer.Name || hasCredit) return;
+              setShowAddModal(true);
+            }}
+            disabled={!customer.Name || hasCredit}
           >
             Add Credit Customer
           </button>
+
 
         </div>
    
@@ -107,6 +118,7 @@ export default function ItemList() {
         customer={customer}  
         onSave={(data) => {
           console.log("save customer", data);
+          setReloadTable((x) => !x);  
           setShowAddModal(false);
         }}
       />

@@ -42,9 +42,9 @@ export default function ModalSeach(props) {
 
   const nameClick = (id, cname) => {
     props.fill(id, cname, search.Name);      
-    console.log("Selected Customer:", search.Name);
-    console.log("customerID:", id);
-    console.log("name:", cname);
+    //console.log("Selected Customer:", search.Name);
+    //console.log("customerID:", id);
+   // console.log("name:", cname);
   };
 
   const pressEnter = (e) => {

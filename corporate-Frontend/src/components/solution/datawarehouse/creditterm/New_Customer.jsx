@@ -59,7 +59,8 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
         customClass: { confirmButton: "swal2-red-btn" },
       });
 
-      if (onSave) onSave(payload);
+      // if (onSave) onSave(payload);
+      if (onSave) onSave();
 
       resetForm();
       onClose();
