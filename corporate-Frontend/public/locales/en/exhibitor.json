@@ -12,7 +12,13 @@
         "notfound": "** Exhibitor code is invalid, please check access link again **"
     },
     "qr": {
-        "title": "Thank you for registering.<br />Please show this QR code to our staff<br />to complete your registration.",
-        "footer": "You may save a screenshot of this page and present it to our staff for faster processing in case you need to close this browser."
+        "title": "Exhibition Pass",
+        "footer": [
+            "Please save a screenshot of this QR Code for your convenience during future use.",
+            "Please present this QR Code to our staff for registration.",
+            "This QR Code is valid only within the specified period.",
+            "This QR Code is intended exclusively for registered exhibitors to receive exhibitor benefits during the event.",
+            "The company reserves the right to cancel this QR Code without prior notice."
+        ]
     }
 }
