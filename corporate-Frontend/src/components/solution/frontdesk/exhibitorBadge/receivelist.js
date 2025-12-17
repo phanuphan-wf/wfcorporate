@@ -1,123 +1,52 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import useCheckMobile from "../../../hook/useCheckMobile";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
+import { dataContext } from "./exhibitorBadge";
+
 export default function ReceiveList(props) {
-  const initName = { name: "", surname: "", pid: "", mobile: "", receive: 1 };
-  const [rlist, setRlist] = useState([]);
+  const { regDataC, badge } = useContext(dataContext);
+  const [regData, setRegData] = regDataC;
 
-  const [rName, setRName] = useState(initName);
-
-  const addName = () => {
-    if (rName.name == "" && rName.mobile == "") {
-      alert("Please insert receiver data before added");
-      return;
-    }
-    if (added) {
-      setRlist([...rlist, rName]);
+  const [pidCheck, setPidCheck] = useState(true);
+  const pidChange = (p) => {
+    setRegData({ ...regData, pid: p });
+    const re = /^[1-8]-\d{4}-\d{5}-\d{2}-\d$/;
+    if (re.test(p) || p == "") {
+      setPidCheck(true);
     } else {
-      setRlist([rName]);
+      setPidCheck(false);
     }
-    setRName(initName);
-    setAdded(true);
-    setMob(true);
   };
 
-  const deleteName = (id) => {
-    setRlist((l) => l.filter((l, i) => i != id));
-  };
-
-  const [pidCheck, setPid] = useState(false);
-
-  const pidChange = (pid) => {
-    if (pid.match(/^\d{1}[-]\d{4}[-]\d{5}[-]\d{2}[-]\d{1}$/)) {
-      setPid(true);
+  const [mobCheck, setMobCheck] = useState(true);
+  const mobChange = (m) => {
+    setRegData({ ...regData, mobile: m });
+    const re = /^0[6-9]\d{8}$/;
+    if (re.test(m) || m == "") {
+      setMobCheck(true);
     } else {
-      setPid(false);
+      setMobCheck(false);
     }
-    setRName({ ...rName, pid: pid });
   };
 
-  const [mobCheck, setMob] = useState(true);
-
-  const mobChange = (mob) => {
-    if (mob.match(/^[0]\d{9}$/) || mob == "") {
-      setMob(true);
-    } else {
-      setMob(false);
+  useEffect(() => {
+    if (Object.keys(regData).length && regData.recNum == undefined) {
+      setRegData({ ...regData, recNum: 1 });
     }
-    setRName({ ...rName, mobile: mob });
-  };
-
-  const [added, setAdded] = useState(false);
+  }, [regData]);
 
   useEffect(() => {
-    if (rlist.length > 0) {
-      if (rName.name != "" || rName.mobile != "") {
-        setCanPrint(false);
-      } else {
-        setCanPrint(true);
-      }
+    if (badge == "e") {
+      setRegData({ ...regData, recNum: 1 });
     }
-
-    if (!added) {
-      if (rName.name != "" || rName.mobile != "") {
-        setRlist([rName]);
-        setCanPrint(true);
-      } else {
-        setRlist([]);
-        setCanPrint(false);
-      }
-    }
-  }, [rName]);
-
-  useEffect(() => {
-    props.data(rlist);
-    if (!rlist.length) {
-      setAdded(false);
-      setCanPrint(false);
-    }
-  }, [rlist]);
-
-  const [canPrint, setCanPrint] = useState(false);
-
-  useEffect(() => {
-    props.btn(canPrint);
-  }, [canPrint]);
-
-  useEffect(() => {
-    if (props.ready) {
-      setRlist([]);
-      setRName(initName);
-    }
-  }, [props.save]);
-
-  useEffect(() => {
-    let d = props.regData;
-    if (d && Object.keys(d).length != 0) {
-      setRlist([
-        {
-          name: d.name,
-          surname: d.surname,
-          pid: d.pid,
-          mobile: d.mobile,
-          receive: 1,
-        },
-      ]);
-
-      setAdded(true);
-      setCanPrint(true);
-    }
-  }, [props.regData]);
-
-  useEffect(() => {
-    console.log(rlist);
-  }, [rlist]);
+  }, [badge]);
 
   return (
     <div>
-      {added && (
+      {/* ไม่ใช้งานเนื่องจากเปลี่ยนระบบเป็นรับผ่าน QR ซึ่งเป็น 1:1
+      regData.length > 1 && (
         <div className="mt-3 border-b">
           <table className="w-full">
             <thead>
@@ -131,7 +60,7 @@ export default function ReceiveList(props) {
               </tr>
             </thead>
             <tbody>
-              {rlist.map((l, i) => (
+              {regData.map((l, i) => (
                 <tr>
                   <td>{l.name}</td>
                   <td>{l.surname}</td>
@@ -150,7 +79,7 @@ export default function ReceiveList(props) {
             </tbody>
           </table>
         </div>
-      )}
+      )*/}
       <div className="mt-3 flex gap-2 items-start flex-auto w-full max-sm:flex-wrap">
         <div className="w-1/2 lg:w-1/4">
           <label htmlFor="fname" className="block">
@@ -159,8 +88,8 @@ export default function ReceiveList(props) {
           <input
             id="fname"
             className="w-full"
-            onChange={(e) => setRName({ ...rName, name: e.target.value })}
-            value={rName.name}
+            onChange={(e) => setRegData({ ...regData, name: e.target.value })}
+            value={regData.name != undefined ? regData.name : ""}
           />
         </div>
         <div className="w-1/2 lg:w-1/4">
@@ -170,8 +99,10 @@ export default function ReceiveList(props) {
           <input
             id="fsurname"
             className="w-full"
-            onChange={(e) => setRName({ ...rName, surname: e.target.value })}
-            value={rName.surname}
+            onChange={(e) =>
+              setRegData({ ...regData, surname: e.target.value })
+            }
+            value={regData.surname != undefined ? regData.surname : ""}
           />
         </div>
         <div className="w-full md:w-2/3 lg:w-1/2">
@@ -182,7 +113,7 @@ export default function ReceiveList(props) {
             id="pid"
             className="w-full"
             onChange={(e) => pidChange(e.target.value)}
-            value={rName.pid}
+            value={regData.pid != undefined ? regData.pid : ""}
           />
           <span className={`${pidCheck ? "hidden" : ""} text-red-500`}>
             format: x-xxxx-xxxxx-xx-x
@@ -198,7 +129,8 @@ export default function ReceiveList(props) {
             id="mobile"
             className="w-full"
             onChange={(e) => mobChange(e.target.value)}
-            value={rName.mobile}
+            value={regData.mobile != undefined ? regData.mobile : ""}
+            max={10}
           />
           <span className={`${mobCheck ? "hidden" : ""} text-red-500`}>
             Mobile not correct format
@@ -211,16 +143,19 @@ export default function ReceiveList(props) {
           <input
             id="receive"
             type="number"
-            className="w-full"
-            onChange={(e) => setRName({ ...rName, receive: e.target.value })}
-            value={rName.receive}
+            className="w-full disabled:bg-gray-100"
+            onChange={(e) => setRegData({ ...regData, recNum: e.target.value })}
+            value={regData.name != undefined ? regData.recNum : ""}
+            disabled={badge == "e"}
           />
         </div>
+        {/*}
         <div
           className="btn-primary px-6 md:px-4 h-fit bg-green-600 border-green-600 hover:bg-white hover:border-green-600 hover:text-green-600 sm:mt-6"
           onClick={addName}>
           Add
         </div>
+        */}
       </div>
     </div>
   );

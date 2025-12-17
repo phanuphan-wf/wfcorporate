@@ -1,7 +1,8 @@
 import { QRCodeSVG } from "qrcode.react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
+import { dataContext } from "./exhibitorBadge";
 
 export default function ModalQR(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
@@ -11,32 +12,32 @@ export default function ModalQR(props) {
   Axios.defaults.headers.common = {
     Authorization: "Bearer " + bearer,
   };
-
-  const [customer, setCustomer] = useState({});
-
-  useEffect(() => {
-    if (Object.keys(props.customer).length != 0) {
-      setCustomer(props.customer);
-    }
-  }, [props.customer]);
+  const { exID, exDataC } = useContext(dataContext);
+  const [exData, setExData] = exDataC;
 
   const [excode, setExcode] = useState({});
 
   const getCode = async () => {
-    const res = await Axios.get(
-      url + "/getCustomerCode/" + customer.id + "/" + customer.ex
-    ).then((r) => {
-      if (r.status == 200) {
-        setExcode(r.data);
-      }
-    });
+    try {
+      const res = await Axios.get(
+        url + "/getCustomerCode/" + exData.id + "/" + exID
+      ).then((r) => {
+        if (r.status == 200) {
+          setExcode(r.data);
+        }
+      });
+    } catch (err) {
+      return;
+    }
   };
 
   useEffect(() => {
     if (bearer) {
-      getCode();
+      if (exData.id != "" || exData.id != undefined) {
+        getCode();
+      }
     }
-  }, [customer]);
+  }, [exData]);
 
   return (
     <section

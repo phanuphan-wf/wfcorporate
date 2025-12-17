@@ -23,13 +23,14 @@ export default function Exregist() {
     Name: "",
     Surname: "",
     Mobile: "",
-    recNum: 1,
   };
   const [data, setData] = useState(initData);
 
+  const [onSubmit, setOnSubmit] = useState(false);
+
   const clickSubmit = async () => {
     let success = false;
-
+    setOnSubmit(true);
     try {
       const res = await Axios.post(url + "/exRegist", data, {
         params: { excode: param.code },
@@ -46,6 +47,7 @@ export default function Exregist() {
         console.error("Error during submit:", err.response.data);
       }
     }
+    setOnSubmit(false);
   };
 
   const initCustomer = { id: "", name: "" };
@@ -89,7 +91,7 @@ export default function Exregist() {
   }, [param.code]);
 
   useEffect(() => {
-    console.log(customer);
+    //console.log(customer);
   }, [customer]);
 
   return (
@@ -174,14 +176,21 @@ export default function Exregist() {
         <input
           name="mobile"
           className="w-full mt-2"
-          onChange={(e) => setData({ ...data, Mobile: e.target.value })}
+          onChange={(e) =>
+            setData({ ...data, Mobile: e.target.value.replace(/\D/g, "") })
+          }
           value={data.Mobile}
+          type="tel"
+          inputmode="numeric"
+          pattern="[0-9]{10}"
+          maxlength="10"
         />
       </div>
       <div className="flex justify-end mt-5">
         <button
           className="px-2 py-2 max-md:w-full border border-red-500 bg-red-500 text-white rounded-lg"
-          onClick={clickSubmit}>
+          onClick={clickSubmit}
+          disabled={onSubmit}>
           {t("submit")}
         </button>
       </div>

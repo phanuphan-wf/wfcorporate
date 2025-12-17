@@ -38,11 +38,13 @@ export default function ModalSeach(props) {
     }
   }, [props.search]);
 
+  /*
   useEffect(() => {
     if (props.show) {
       searchClick(search.Name);
     }
   }, [props.show]);
+  */
 
   useEffect(() => {
     //console.log(customer);
