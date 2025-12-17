@@ -90,6 +90,10 @@ export default function Age_MediaChart(props) {
       col: "วิทยุ",
       id: "radio",
     },
+    {
+      col: "BTS",
+      id: "bts",
+    },
   ];
 
   const initAge = [

@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Axios from "axios";
 import * as d3 from "d3";
+import useHeader from "../../../hook/useHeader";
+
+import { dataContext } from "./exhibitorBadge";
 
 export default function ReceiveHist(props) {
-  useEffect(() => {
-    Axios.defaults.headers.common = {
-      Authorization: "Bearer " + props.bearer,
-    };
-  }, [props.bearer]);
+  const { exID, exDataC } = useContext(dataContext);
+  const [exData, setExData] = exDataC;
+  const bearer = useHeader();
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_frontdesk;
+
+  Axios.defaults.headers.common = {
+    Authorization: "Bearer " + bearer,
+  };
 
   const [histlist, setHistlist] = useState([]);
 
   const getHist = async () => {
     const res = await Axios.get(
-      props.url + "/getBadgeHist/" + props.cus + "/" + props.ex
+      url + "/getBadgeHist/" + exData.id + "/" + exID
     ).then((res) => {
       if (res.status == 200) {
         setHistlist(res.data);
@@ -22,12 +28,12 @@ export default function ReceiveHist(props) {
   };
 
   useEffect(() => {
-    if (props.cus != "") {
+    if (exData.id != "" && bearer) {
       getHist();
     } else {
       setHistlist([]);
     }
-  }, [props.cus]);
+  }, [exData]);
 
   const [recsum, setRecsum] = useState(0);
 
@@ -36,16 +42,18 @@ export default function ReceiveHist(props) {
     setRecsum(sum);
   }, [histlist]);
 
-  const dateConvert = (value) => {
-    let date = value.substring(0, value.indexOf("T"));
-    let time = value.substring(value.indexOf("T") + 1, value.indexOf("T") + 6);
-    let y = date.substring(0, date.indexOf("-"));
-    let md = date.substring(value.indexOf("-") + 1, value.indexOf("T"));
-    let m = md.substring(0, md.indexOf("-"));
-    let d = md.substring(md.indexOf("-") + 1);
+  function formatDateTime(dateString) {
+    const locale = "en-US";
 
-    return d + "-" + m + "-" + y + " " + time;
-  };
+    return new Date(dateString).toLocaleString(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  }
 
   return (
     <div className="border-t mt-6">
@@ -55,20 +63,27 @@ export default function ReceiveHist(props) {
           <thead className="border-b-2">
             <tr>
               <td>Name</td>
-              <td>ID Card</td>
+              <td>Mobile</td>
               <td>Location</td>
               <td>Time</td>
               <td>Received</td>
+              <td>Badge</td>
             </tr>
           </thead>
           <tbody>
             {histlist.map((h, i) => (
-              <tr key={i}>
+              <tr
+                key={i}
+                className={`${h.type == "Exhibitor" ? "bg-green-100" : ""}`}>
                 <td>{h.name}</td>
-                <td>{h.pid}</td>
+                <td>{h.mobile}</td>
                 <td>{h.loc}</td>
-                <td>{dateConvert(h.recTime)}</td>
+                <td>{formatDateTime(h.recTime)}</td>
                 <td>{h.recNo}</td>
+                <td
+                  className={`${h.type == "Exhibitor" ? "text-red-500" : ""}`}>
+                  {h.type}
+                </td>
               </tr>
             ))}
           </tbody>

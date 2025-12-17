@@ -4,11 +4,12 @@ import Axios from "axios";
 
 export default function ModalSeach(props) {
   const url = process.env.REACT_APP_API_URI + "/api/Exregist";
-  const bearer = useHeader();
+  /*const bearer = useHeader();
 
   Axios.defaults.headers.common = {
     Authorization: "Bearer " + bearer,
   };
+  */
 
   const [search, setSearch] = useState({ customerID: "", Name: "" });
   const [customer, setCustomer] = useState([]);
@@ -37,11 +38,13 @@ export default function ModalSeach(props) {
     }
   }, [props.search]);
 
+  /*
   useEffect(() => {
     if (props.show) {
       searchClick(search.Name);
     }
   }, [props.show]);
+  */
 
   useEffect(() => {
     //console.log(customer);

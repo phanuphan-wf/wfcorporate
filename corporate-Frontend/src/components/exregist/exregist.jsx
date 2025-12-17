@@ -1,32 +1,21 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router";
 
 import ModalSeach from "./modalSearch";
 
 export default function Exregist() {
+  const { t, i18n } = useTranslation("exhibitor", { keyPrefix: "regist" });
   const [isSearch, setIsSearch] = useState(false);
   const url = process.env.REACT_APP_API_URI + "/api/Exregist";
   const navigate = useNavigate();
 
+  const param = useParams();
+
   const closeModal = () => {
     setIsSearch(false);
-  };
-
-  const generateRandomCode = () => {
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = "0123456789";
-
-    const getRandom = (chars, length) =>
-      Array.from({ length }, () =>
-        chars.charAt(Math.floor(Math.random() * chars.length))
-      ).join("");
-
-    const prefix = getRandom(letters, 2);
-    const middle = getRandom(numbers, 4);
-    const suffix = getRandom(letters, 2);
-
-    return prefix + middle + suffix;
   };
 
   const initData = {
@@ -34,37 +23,31 @@ export default function Exregist() {
     Name: "",
     Surname: "",
     Mobile: "",
-    recNum: 1,
-    uid: "",
   };
   const [data, setData] = useState(initData);
 
+  const [onSubmit, setOnSubmit] = useState(false);
+
   const clickSubmit = async () => {
-    let code = generateRandomCode();
     let success = false;
+    setOnSubmit(true);
+    try {
+      const res = await Axios.post(url + "/exRegist", data, {
+        params: { excode: param.code },
+      });
 
-    while (!success) {
-      code = generateRandomCode();
-
-      try {
-        const res = await Axios.post(url + "/exRegist", {
-          ...data,
-          uid: code,
-        });
-
-        if (res.status === 200 || res.status === 201) {
-          success = true;
-          sessionStorage.setItem("excode", code);
-          navigate("/exqr");
-        }
-      } catch (err) {
-        if (err.response && err.response.status === 409) {
-        } else {
-          console.error("Error during submit:", err);
-          break;
-        }
+      if (res.status === 200 || res.status === 201) {
+        success = true;
+        sessionStorage.setItem("excode", res.data.uid);
+        navigate("/exqr");
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
+      } else {
+        console.error("Error during submit:", err.response.data);
       }
     }
+    setOnSubmit(false);
   };
 
   const initCustomer = { id: "", name: "" };
@@ -80,8 +63,65 @@ export default function Exregist() {
     console.log(data);
   }, [data]);
 
+  const [notfound, setNotfound] = useState(false);
+
+  const getCustomer = async () => {
+    try {
+      const res = await Axios.get(url + "/getExhibitor/" + param.code).then(
+        (r) => {
+          if (r.status == 200) {
+            setCustomer(r.data);
+            setData({ ...data, customerID: r.data.id });
+          }
+        }
+      );
+    } catch (err) {
+      if (err.response.status == 404) {
+        setNotfound(true);
+      } else {
+        alert("Error right searching data");
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (param.code) {
+      getCustomer();
+    }
+  }, [param.code]);
+
+  useEffect(() => {
+    //console.log(customer);
+  }, [customer]);
+
   return (
     <section className="exregsit container mx-auto py-4 px-2 lg:py-10">
+      <div className="lg:container flex justify-end lg:px-5 py-4">
+        <div className="mr-2">
+          {i18n.language == "th" ? "change language" : "เปลี่ยนภาษา"}
+        </div>
+        <div className="flex gap-2">
+          <div
+            className={`${
+              i18n.language == "en"
+                ? "text-slate-300"
+                : "font-bold text-red-500"
+            } cursor-pointer`}
+            onClick={() => i18n.changeLanguage("en")}>
+            Eng
+          </div>
+          <div>|</div>
+          <div
+            className={`${
+              i18n.language == "th"
+                ? "text-slate-300"
+                : "font-bold text-red-500"
+            } cursor-pointer`}
+            onClick={() => i18n.changeLanguage("th")}>
+            ไทย
+          </div>
+        </div>
+      </div>
       <div className="size-20">
         <img
           src={require("../img/logo-wf-sq.png")}
@@ -89,28 +129,31 @@ export default function Exregist() {
           className=" w-full object-contain"
         />
       </div>
-      <h1 className="text-2xl">ฟอร์มลงทะเบียนผู้แสดงสินค้าค้า</h1>
+      <h1 className="text-2xl">{t("title")}</h1>
+      <p>{t("subtitle")}</p>
       <div className="mt-4 md:w-2/3 xl:w-1/2">
         <label htmlFor="exhibitor" className="block">
-          ชื่อร้านค้า
+          {t("customer")}
         </label>
 
-        <div className="flex justify-end">
+        <div className={`flex justify-end ${param.code && "hidden"}`}>
           <button
             className="px-2 py-2 border border-amber-500 bg-amber-500 text-white rounded-lg max-md:w-full"
             onClick={() => setIsSearch(true)}>
-            ค้นหาชื่อร้านค้า
+            {t("search")}
           </button>
         </div>
 
         <input
           name="exhibitor"
-          placeholder="กรุณาค้นหาชื่อร้านค้าเท่านั้น"
-          className="w-full mt-2"
-          value={customer.name != "" ? customer.name : ""}
+          placeholder={t("text-placeholder")}
+          className={`w-full mt-2 ${notfound ? "text-red-500" : ""}`}
+          value={
+            customer.name != "" ? customer.name : notfound ? t("notfound") : ""
+          }
         />
         <label htmlFor="name" className="block mt-2">
-          ชื่อ
+          {t("name")}
         </label>
         <input
           name="name"
@@ -119,7 +162,7 @@ export default function Exregist() {
           value={data.Name}
         />
         <label htmlFor="surname" className="block mt-2">
-          นามสกุล
+          {t("surname")}
         </label>
         <input
           name="surname"
@@ -128,20 +171,27 @@ export default function Exregist() {
           value={data.Surname}
         />
         <label htmlFor="mobile" className="block mt-2">
-          เบอร์มือถือ
+          {t("mobile")}
         </label>
         <input
           name="mobile"
           className="w-full mt-2"
-          onChange={(e) => setData({ ...data, Mobile: e.target.value })}
+          onChange={(e) =>
+            setData({ ...data, Mobile: e.target.value.replace(/\D/g, "") })
+          }
           value={data.Mobile}
+          type="tel"
+          inputmode="numeric"
+          pattern="[0-9]{10}"
+          maxlength="10"
         />
       </div>
       <div className="flex justify-end mt-5">
         <button
           className="px-2 py-2 max-md:w-full border border-red-500 bg-red-500 text-white rounded-lg"
-          onClick={clickSubmit}>
-          ลงทะเบียน
+          onClick={clickSubmit}
+          disabled={onSubmit}>
+          {t("submit")}
         </button>
       </div>
 
