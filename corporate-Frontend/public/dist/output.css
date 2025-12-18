@@ -645,3 +645,13 @@ video {
   background-color: #dc2626;
 }
 
+.swal2-gray-btn {
+  background-color: #9ca3af !important;
+  color: white !important;
+  padding: 8px 20px;
+  border-radius: 6px;
+}
+
+.swal2-actions button {
+  margin: 0 6px;
+}
