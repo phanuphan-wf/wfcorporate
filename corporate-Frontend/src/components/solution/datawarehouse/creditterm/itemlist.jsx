@@ -22,6 +22,9 @@ export default function ItemList() {
   const [hasCredit, setHasCredit] = hasCreditC;  
   const [ReloadTable, setReloadTable] = reloadTableC;
 
+  //console.log(customerC);
+  const isCustomerSelected = !!customer?.customerID;
+
   const [modalShow, setModalShow] = useState(false); 
   
    // modal add customer  **ประกาศตัวนี้ (หายไปก่อนหน้า)**
@@ -63,12 +66,30 @@ export default function ItemList() {
               type="text"
               id="name"
               className="w-72"
-              onChange={(e) =>
-                setCustomer({ ...customer, Name: e.target.value })
-              }
-              onKeyDown={pressEnter}
               value={customer.Name}
+              onChange={(e) => {
+                const val = e.target.value;
+
+                if (val.trim() === "") {
+                  
+                  setCustomer({
+                    customerID: "",
+                    Name: "",
+                    searchName: "",
+                  });
+                } else {
+                  
+                  setCustomer({
+                    ...customer,
+                    Name: val,
+                    customerID: "",
+                    searchName: "",
+                  });
+                }
+              }}
+              onKeyDown={pressEnter}
             />
+            
 
             <button
               className="btn-primary px-3"
@@ -84,23 +105,23 @@ export default function ItemList() {
         {/* แสดงค่าที่เลือก */}
         <div className="flex items-center gap-3 mb-3">
 
-          {customer.Name && (
+          {/* {customer.Name && (
             <div className="px-3 py-1 bg-blue-100 border border-blue-400 rounded text-blue-700">
               {customer.Name}
             </div>
-          )}
+          )} */}
 
           <button
             className={`btn-green px-3 ${
-              !customer.Name || hasCredit
+              !customer.customerID || hasCredit
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
             onClick={() => {
-              if (!customer.Name || hasCredit) return;
+              if (!customer.customerID || hasCredit) return;
               setShowAddModal(true);
             }}
-            disabled={!customer.Name || hasCredit}
+            disabled={!customer.customerID || hasCredit}
           >
             Add Credit Customer
           </button>

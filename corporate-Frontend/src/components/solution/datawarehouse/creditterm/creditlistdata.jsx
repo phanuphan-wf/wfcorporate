@@ -3,6 +3,7 @@ import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 import Swal from "sweetalert2";
 import { FaRegEdit } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 
 import { dataContext } from "./creditlist";
 
@@ -172,7 +173,7 @@ export default function CreditListData() {
               hisfilter.map((row, index) => (
                 <tr key={row.id} className="border-b">
                   <td className="border-t p-2 text-center">{index + 1}</td>
-                  {/* <td className="border-t border-l p-2">{row.id}</td>             */}
+                  {/* <td className="border-t border-l p-2">{row.id}</td> */}
                   <td className="border-t border-l p-2">{row.name}</td>
                   <td className="border-t border-l p-2 text-center">
                     {row.term1}
@@ -240,7 +241,7 @@ export default function CreditListData() {
                 onClick={() => setShowModal(false)}
                 className="text-red-500 hover:text-red-500"
                 aria-label="Close">
-                <i className="fas fa-times text-xl"></i>
+                 <IoMdClose />
               </button>
             </div>
 

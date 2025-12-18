@@ -100,13 +100,23 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
 
         {/* Form */}
         <div className="space-y-3 text-sm">
+
+          <div>
+            <label>Customer</label>
+            <input
+              className="border w-full px-2 py-1 rounded bg-gray-100"
+              value={customer.Name}
+              readOnly
+            />
+          </div>
+
           <div>
             <label>งวดที่ 1</label>
-            <input
-              className="border w-full px-2 py-1 rounded"
-              value={form.cr1}
-              onChange={(e) => setForm({ ...form, cr1: e.target.value })}
-            />
+              <input
+                className="border w-full px-2 py-1 rounded"
+                value={form.cr1}
+                onChange={(e) => setForm({ ...form, cr1: e.target.value })}
+              />
           </div>
 
           <div>
