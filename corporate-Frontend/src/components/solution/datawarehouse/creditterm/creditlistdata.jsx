@@ -29,13 +29,15 @@ export default function CreditListData() {
   // -------------------------------
   // Context
   // -------------------------------
-  const { customerC } = useContext(dataContext);
-  const [customer, setCustomer] = customerC;
+  const { customerC, reloadAllC } = useContext(dataContext);
+  const [customer] = customerC;
+  const [reloadAll] = reloadAllC;
 
-  //   useEffect(() => {
-  //   console.log(customer);
-  // }, [customer]);
-
+  // useEffect(() => {
+  //     console.log(reloadAll);
+  // }, [reloadAll]);
+    
+  
   const [searchKey, setSearchKey] = useState("");
   const [hisfilter, setHisfilter] = useState([]);
 
@@ -45,12 +47,51 @@ export default function CreditListData() {
   // useEffect(() => {
   //   console.log(hasCredit);
   // }, [hasCredit]);
+  
 
   const { reloadTableC } = useContext(dataContext);
   const [reloadTable, setReloadTable] = reloadTableC;
 
   const [showModal, setShowModal] = useState(false);
   const [editData, setEditData] = useState(null);
+
+  const [listCredit, setListCredit] = useState([]); 
+  //const [reloadAll, setReloadAll] = useState(false);
+
+  
+  const loadCreditAll = async (text = "") => {
+    try {
+      //setLoadingAll(true);
+
+      const res = await Axios.get(
+        `${url}/creditList`,
+        { params: { text } }
+      );
+
+      //console.log("📦 API DATA:", res.data);
+      //setListCredit(res.data || []);
+      setHisfilter(res.data ||[]);
+
+    } catch (error) {
+      console.error("Load credit error:", error);
+      //setListCredit([]);
+    }
+  };
+
+  useEffect(() => {    
+    console.log("🔥 reloadAll changed:", reloadAll);
+    if (reloadAll == true) {
+      loadCreditAll(""); // โหลดทั้งหมด
+    }else{
+      setHisfilter([]);
+    }       
+  }, [reloadAll]);
+
+
+  // useEffect(() => {
+  //   loadCreditAll(""); // ✅ เรียกจริง
+  // }, []); // ✅ run แค่ครั้งเดียว
+   
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
@@ -91,6 +132,8 @@ export default function CreditListData() {
     }
   };
 
+  
+
   // -------------------------------
   // เมื่อเลือกชื่อจาก modalSearch
   // -------------------------------
@@ -109,27 +152,34 @@ export default function CreditListData() {
   // -------------------------------
   // โหลดข้อมูลเครดิต
   // -------------------------------
-  const loadCreditHistory = async (name) => {
-    setHisfilter([]); // ล้างข้อมูลเก่าทันที
-    setHasCredit(false); // reset สถานะ
+    const loadCreditHistory = async (name) => {
+    setHisfilter([]);      // ล้างข้อมูลเก่าทันที
+    setHasCredit(false);   // reset สถานะ
+
+    if (!name) return;
 
     try {
-      const res = await Axios.get(`${url}/creditList/${name}`);
+      const res = await Axios.get(
+        `${url}/creditList`,
+        {
+          params: { text: name } // 👉 ?text=เกรท
+        }
+      );
 
-      //console.log("API RESPONSE:", res.data);
+      //console.log("📦 API RESPONSE:", res.data);
 
       if (Array.isArray(res.data) && res.data.length > 0) {
         // กรองเฉพาะชื่อที่ตรงกับ customer.Name
-        const exactMatch = res.data.filter((row) => row.name === customer.Name);
-
-        //console.log("FILTERED RESULT:", exactMatch);
+        const exactMatch = res.data.filter(
+          (row) => row.name === customer.Name
+        );
 
         if (exactMatch.length > 0) {
           setHisfilter(exactMatch);
-          setHasCredit(true); //  พบข้อมูลตรงจริง
+          setHasCredit(true);   // ✅ พบข้อมูลตรง
         } else {
           setHisfilter([]);
-          setHasCredit(false); //  ไม่มีชื่อที่ตรง
+          setHasCredit(false);  // ❌ ไม่มีชื่อที่ตรง
         }
       } else {
         setHisfilter([]);
@@ -142,11 +192,14 @@ export default function CreditListData() {
     }
   };
 
+
   // โหลด API เมื่อ searchKey เปลี่ยน
   useEffect(() => {
     if (!searchKey) return;
     loadCreditHistory(searchKey);
-  }, [searchKey, reloadTable]);
+  }, [searchKey, reloadTable]);   
+ 
+  
 
   return (
     <section id="customer-history-list">
@@ -325,12 +378,12 @@ export default function CreditListData() {
                       }
                     );
 
-                    console.log("API RESPONSE:", res.data);
-
+                    //console.log("API RESPONSE:", res.data);
+                    loadCreditAll("");
                     setReloadTable((x) => !x);
                     setShowModal(false);
                   } catch (error) {
-                    console.error("UPDATE CREDIT ERROR:", error);
+                    //console.error("UPDATE CREDIT ERROR:", error);
                     alert("บันทึกข้อมูลไม่สำเร็จ");
                   }
                 }}>

@@ -4,7 +4,8 @@ import Axios from "axios";
 import { dataContext } from "./creditlist";
 import ModalSeach from "./modalSearch";
 import AddCreditCustomer from "./New_Customer";
-
+//import ModalCredit from "./modalCredit";
+ 
 
 export default function ItemList() {
   
@@ -16,16 +17,16 @@ export default function ItemList() {
   };
 
   // ✅ ดึงค่าจาก Context
-  const { customerC,hasCreditC,reloadTableC } = useContext(dataContext);
+  const { customerC,hasCreditC,reloadTableC,reloadAllC } = useContext(dataContext);
 
   const [customer, setCustomer] = customerC; 
   const [hasCredit, setHasCredit] = hasCreditC;  
   const [ReloadTable, setReloadTable] = reloadTableC;
+  const [ReloadAll, setReloadAll] =  reloadAllC;
 
-  //console.log(customerC);
-  const isCustomerSelected = !!customer?.customerID;
-
+ 
   const [modalShow, setModalShow] = useState(false); 
+  
   
    // modal add customer  **ประกาศตัวนี้ (หายไปก่อนหน้า)**
   const [showAddModal, setShowAddModal] = useState(false);
@@ -33,10 +34,19 @@ export default function ItemList() {
   const closeModal = () => setModalShow(false);
 
   const pressEnter = (e) => {
-    if (e.key === "Enter") {
+    if (e.key !== "Enter") return;
+    const keyword = customer.Name;
+    
+    if (!keyword) {
+      // ช่องค้นหาว่าง
+      console.log(ReloadAll);
+      setReloadAll((prev) => !prev);      
+    } else {
+      // ช่องค้นหามีข้อความ
       setModalShow(true);
     }
   };
+
 
   const fillCustomer = (id, fullName, searchName) => {
     setCustomer({
@@ -144,13 +154,16 @@ export default function ItemList() {
         }}
       />
 
-
       <ModalSeach
         show={modalShow}
         onHide={closeModal}
         search={customer.Name}
         fill={fillCustomer}
       />
+     
+
+
+
     </section>
   );
 }

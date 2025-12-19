@@ -15,12 +15,15 @@ export default function CreditList() {
   });
 
   const [reloadTable, setReloadTable] = useState(false);
+  const [reloadAll, setReloadAll] = useState("");
 
   return (
     <dataContext.Provider value={{
         customerC: [customer, setCustomer],
         reloadTableC: [reloadTable, setReloadTable],
+        reloadAllC: [reloadAll, setReloadAll],
         hasCreditC: [hasCredit, setHasCredit],
+
       }}
     >
       <ItemList />
