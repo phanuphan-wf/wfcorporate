@@ -1,9 +1,9 @@
 {
     "landing": {
         "lng": "change language",
-        "show": "Furniture Fair Grand Year-End",
-        "showdate": "5-14 ธันวาคม 2568",
-        "hall": "EH 102-104",
+        "show": "Furniture Show",
+        "showdate": "10-18 มกราคม 2569",
+        "hall": "HALL 9-10",
         "time": "10.30-20.30 น.",
         "regist": "กรอกข้อมูลรับ",
         "gift": "Gift Set",
@@ -55,9 +55,9 @@
     },
     "regist": {
         "lng": "change language",
-        "show": "Furniture Fair Grand Year-End",
-        "showdate": "5-14 ธันวาคม 2568",
-        "hall": "EH 102-104",
+        "show": "Furniture Show",
+        "showdate": "10-18 มกราคม 2569",
+        "hall": "HALL 9-10",
         "time": "10.30-20.30 น.",
         "title": "ลงทะเบียนเข้าชมงาน",
         "pre": "ลงทะเบียนเข้าชมงานล่วงหน้า",

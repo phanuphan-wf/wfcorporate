@@ -1,9 +1,9 @@
 {
     "landing": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair Grand Year-End",
-        "showdate": "December 5-14, 2025",
-        "hall": "EH 102-104",
+        "show": "Furniture Show",
+        "showdate": "January 10-18, 2026",
+        "hall": "HALL 9-10",
         "time": "10.30-20.30 hrs.",
         "regist": "Register get",
         "gift": "Gift Set",
@@ -56,9 +56,9 @@
     },
     "regist": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair Grand Year-End",
-        "showdate": "December 5-14, 2025",
-        "hall": "EH 102-104",
+        "show": "Furniture Fair",
+        "showdate": "January 10-18, 2026",
+        "hall": "HALL 9-10",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
         "pre": "Preregistration Form",
