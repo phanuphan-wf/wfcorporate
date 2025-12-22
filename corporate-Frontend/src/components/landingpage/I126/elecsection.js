@@ -6,13 +6,19 @@ import { MdAvTimer } from "react-icons/md";
 export default function ElecSection() {
   const { t } = useTranslation("landing", { keyPrefix: "landing" });
   return (
-    <section id="elec-section">
-      <div className="w-2/5 md:w-1/3 max-w-[350px] mx-auto mt-7 relative z-[900] mix-blend-multiply">
+    <section id="elec-section">     
+      <div className="w-full md:w-1/3 max-w-[350px] mx-auto mt-7relative z-[900] mix-blend-multiply">
         <img
           src={require("./img/elec_logo.png")}
           alt="electronic logo"
           id="elec_logo"
-          className="w-full mx-auto max-w-[480px]"
+          className="
+            w-full            
+            md:w-[300px]        
+            lg:w-[360px]
+            mx-auto
+            object-contain
+          "
         />
       </div>
       {/*
@@ -67,9 +73,9 @@ export default function ElecSection() {
       </div>
 
       <div className="xl:container w-full bg-[#4A1E6B] flex items-center justify-evenly py-4 mb-4">
-        <div className="w-[30%] sm:w-1/3 lg:w-1/5">
+        <div className="w-[50%] sm:w-1/3 lg:w-1/5">
           <img
-            src={require("./img/elec_logo_sm.png")}
+            src={require("./img/elec_logo.png")}
             alt="elec logo white"
             id="elec_banner"
             className="mx-auto"

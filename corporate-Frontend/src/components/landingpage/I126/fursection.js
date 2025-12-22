@@ -39,7 +39,8 @@ export default function FurSection() {
         </ul>
       </div>
 
-      <div className="xl:container bg-gradient-to-b from-[#fad005] to-[#fad005] py-6">
+      <div className="xl:container bg-gradient-to-b from-[#edb615] via-[#fcec01] to-[#edb615] py-6">
+       
         <div className="relative mx-5 lg:mx-0 ">
           <div className="grid grid-cols-2 md:grid-cols-3 w-full sm:w-3/4 lg:w-[800px] gap-4 md:gap-7 place-items-center mx-auto">
             <img
@@ -86,7 +87,7 @@ export default function FurSection() {
       </div>
 */}
 
-      <div className="xl:container w-full bg-[#fad005] flex items-center justify-evenly py-4 mb-4">
+      <div className="xl:container w-full bg-[#edb615] flex items-center justify-evenly py-4 mb-4">
         <div className="w-[40%] sm:w-1/3 lg:w-1/4">
           <img
             src={require("./img/fur_logo_white.png")}
@@ -95,7 +96,7 @@ export default function FurSection() {
             className="mx-auto"
           />
         </div>
-        <div className="text-[#2e3190]">
+        <div className="text-white">
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdLocationOn className="drop-shadow-md" />
             <span className="drop-shadow-md">{t("hall")}</span>
