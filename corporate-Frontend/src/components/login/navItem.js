@@ -25,6 +25,11 @@ const NavItems = [
         show: "all",
       },
       {
+        title: "Services Receiving",
+        url: "/solution/frontdesk/servicereceive",
+        show: "all",
+      },
+      {
         title: "Visitor Survey",
         url: "/solution/frontdesk/survey",
         show: "all",

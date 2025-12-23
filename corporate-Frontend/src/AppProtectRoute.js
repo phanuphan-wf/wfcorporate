@@ -16,6 +16,7 @@ import CreateExhibition from "./components/solution/datawarehouse/createExhibiti
 import SmsNumber from "./components/solution/datawarehouse/sms/smsNumber";
 import CreateBooth from "./components/solution/datawarehouse/createBooth/createBooth";
 import CreditList from "./components/solution/datawarehouse/creditterm/creditlist";
+import ServiceReceive from "./components/solution/frontdesk/ServiceReceive";
 
 const AppProtectRoute = [
   {
@@ -37,6 +38,10 @@ const AppProtectRoute = [
   {
     path: "frontdesk/badgereceiving",
     element: <ExhibitorBadge />,
+  },
+  {
+    path: "frontdesk/servicereceive",
+    element: <ServiceReceive />,
   },
   {
     path: "frontdesk/survey",
