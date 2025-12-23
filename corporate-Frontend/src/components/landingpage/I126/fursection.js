@@ -25,7 +25,7 @@ export default function FurSection() {
           className="w-full mx-auto max-w-[540px]"
         />
       </div>
-      <div className="text-center text-2xl md:text-4xl lg:text-5xl font-medium my-4 mt-7">
+      <div className="text-center text-2xl md:text-4xl lg:text-5xl font-medium my-4 mt-5">
         {t("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
