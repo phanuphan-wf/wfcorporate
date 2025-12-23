@@ -26,8 +26,13 @@ export default function CreditList() {
 
       }}
     >
-      <ItemList />
-      <CreditDate />
+      <section id="creditList-data">
+        <div>
+          <h1 className="text-xl my-3">CreditList Data</h1>
+        </div>
+        <ItemList />
+        <CreditDate />
+      </section>
     </dataContext.Provider>
   );
 }

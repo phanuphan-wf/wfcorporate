@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Swal from "sweetalert2";
+import { IoMdClose } from "react-icons/io";
 
 export default function New_Customer({ show, onClose, onSave, customer }) {
 
@@ -88,14 +89,16 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Add Credit Customer</h3>
           <button
-            className="text-red-500 text-xl"
+            
             onClick={() => {
               resetForm();
               onClose();
             }}
-          >
-            ×
-          </button>
+            className="text-red-500 hover:text-red-500"
+            aria-label="Close">
+            <IoMdClose />         
+            
+          </button>          
         </div>
 
         {/* Form */}
@@ -111,7 +114,7 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
           </div>
 
           <div>
-            <label>งวดที่ 1</label>
+            <label>Credit 1</label>
               <input
                 className="border w-full px-2 py-1 rounded"
                 value={form.cr1}
@@ -120,7 +123,7 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
           </div>
 
           <div>
-            <label>งวดที่ 2</label>
+            <label>Credit 2</label>
             <input
               className="border w-full px-2 py-1 rounded"
               value={form.cr2}

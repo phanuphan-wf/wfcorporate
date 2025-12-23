@@ -66,29 +66,32 @@ export default function ItemList() {
 
   return (
     <section id="customer-header">
-      <div className="flex max-md:flex-col justify-between w-full 2xl:w-4/5">
-        <div className="md:max-w-[40%] flex gap-3 flex-col">
+      <div className="w-full 2xl:w-4/5">
 
-          <div className="flex max-md:flex-wrap gap-3 items-center">
-            <label htmlFor="name">Customer Name:</label>
+        {/* แถวค้นหา + ปุ่ม */}
+        <div className="flex flex-wrap items-center gap-2">
+
+          {/* กลุ่มค้นหา */}
+          <div className="flex flex-1 min-w-[240px] items-center gap-2">
+            <label htmlFor="name" className="whitespace-nowrap">
+              Customer Name:
+            </label>
 
             <input
               type="text"
               id="name"
-              className="w-72"
+              className="w-full max-w-[300px]"
               value={customer.Name}
               onChange={(e) => {
                 const val = e.target.value;
 
                 if (val.trim() === "") {
-                  
                   setCustomer({
                     customerID: "",
                     Name: "",
                     searchName: "",
                   });
                 } else {
-                  
                   setCustomer({
                     ...customer,
                     Name: val,
@@ -99,71 +102,55 @@ export default function ItemList() {
               }}
               onKeyDown={pressEnter}
             />
-            
 
             <button
               className="btn-primary px-3"
               onClick={() => setModalShow(true)}
             >
-              search
+              Search
             </button>
-          </div>      
+          </div>
 
+          {/* ปุ่ม Add Credit ชิดขวา */}
+          <div className="ml-auto">
+            <button
+              className={`btn-green px-3 ${
+                !customer.customerID || hasCredit
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
+              onClick={() => {
+                if (!customer.customerID || hasCredit) return;
+                setShowAddModal(true);
+              }}
+              disabled={!customer.customerID || hasCredit}
+            >
+              Add Credit Customer
+            </button>
+          </div>
         </div>
-
-          
-        {/* แสดงค่าที่เลือก */}
-        <div className="flex items-center gap-3 mb-3">
-
-          {/* {customer.Name && (
-            <div className="px-3 py-1 bg-blue-100 border border-blue-400 rounded text-blue-700">
-              {customer.Name}
-            </div>
-          )} */}
-
-          <button
-            className={`btn-green px-3 ${
-              !customer.customerID || hasCredit
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-            }`}
-            onClick={() => {
-              if (!customer.customerID || hasCredit) return;
-              setShowAddModal(true);
-            }}
-            disabled={!customer.customerID || hasCredit}
-          >
-            Add Credit Customer
-          </button>
-
-
-        </div>
-   
-       
-
       </div>
 
+      {/* Modal Add */}
       <AddCreditCustomer
         show={showAddModal}
         onClose={() => setShowAddModal(false)}
-        customer={customer}  
-        onSave={(data) => {
-          console.log("save customer", data);
-          setReloadTable((x) => !x);  
+        customer={customer}
+        onSave={() => {
+          setReloadTable((x) => !x);
           setShowAddModal(false);
         }}
       />
 
+      {/* Modal Search */}
       <ModalSeach
         show={modalShow}
         onHide={closeModal}
         search={customer.Name}
         fill={fillCustomer}
       />
-     
-
-
 
     </section>
+
   );
 }
