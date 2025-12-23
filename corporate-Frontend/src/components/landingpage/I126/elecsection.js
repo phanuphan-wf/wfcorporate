@@ -7,18 +7,12 @@ export default function ElecSection() {
   const { t } = useTranslation("landing", { keyPrefix: "landing" });
   return (
     <section id="elec-section">     
-      <div className="w-full md:w-1/3 max-w-[350px] mx-auto mt-7relative z-[900] mix-blend-multiply">
+      <div className="w-full md:w-1/3 max-w-[350px] mx-auto mt-7 relative z-[900] mix-blend-multiply">
         <img
           src={require("./img/elec_logo.png")}
           alt="electronic logo"
           id="elec_logo"
-          className="
-            w-full            
-            md:w-[300px]        
-            lg:w-[360px]
-            mx-auto
-            object-contain
-          "
+          className="w-full mx-auto max-w-[480px]"
         />
       </div>
       {/*
@@ -37,7 +31,7 @@ export default function ElecSection() {
       </div>
       */}
 
-      <div className="elec-text container max-w-[700px] md:text-xl lg:text-2xl">
+      <div className="elec-text container max-w-[700px] mt-7 md:text-xl lg:text-2xl">
         <ul className="list-disc px-14 my-4">
           {t("elec", { returnObjects: true }).map((f, i) => (
             <li key={`elec-${i}`}>{f}</li>
@@ -45,7 +39,7 @@ export default function ElecSection() {
         </ul>
       </div>
 
-      <div className="xl:container bg-[#85b841] py-6">
+      <div className="xl:container bg-[#85b841] py-6 mt-7">
         <div className="relative mx-5 lg:mx-0 ">
           <div className="grid grid-cols-2 md:grid-cols-2 w-full sm:w-3/4 lg:w-2/5 gap-4 md:gap-7 place-items-center mx-auto">
             <img

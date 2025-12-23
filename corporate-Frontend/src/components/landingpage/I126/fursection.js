@@ -9,15 +9,23 @@ export default function FurSection() {
   const mobile = useCheckMobile();
   return (
     <section id="fur-section">
-      <div className="w-3/5 md:w-1/2 mx-auto mt-7 relative z-[900] mix-blend-multiply">
+      <div className="
+            w-full
+            md:w-1/2
+            mx-auto
+            mt-5
+            px-4 md:px-6 lg:px-8
+            relative z-[900]
+            mix-blend-multiply
+      ">
         <img
-          src={require("./img/fur_logo.png")}
+          src={require("./img/fur_logo_white.png")}
           alt="furniture logo"
           id="fur_logo"
           className="w-full mx-auto max-w-[540px]"
         />
       </div>
-      <div className="text-center text-2xl md:text-4xl lg:text-5xl font-medium my-4">
+      <div className="text-center text-2xl md:text-4xl lg:text-5xl font-medium my-4 mt-7">
         {t("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
