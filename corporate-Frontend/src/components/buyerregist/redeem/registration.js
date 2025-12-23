@@ -18,7 +18,24 @@ export default function Registration(props) {
 
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
-  const exId = "b325";
+
+
+  const [exId, setExId] = useState(null);
+
+  async function getExid() {
+    try {
+      const res = await Axios.get(url + "/GetEx");
+      setExId(res.data); 
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getExid();
+  }, []);
+
+
   const nav = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);

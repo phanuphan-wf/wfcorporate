@@ -8,7 +8,20 @@ export default function PreRegist(props) {
   const navigate = useNavigate();
   const [regDate, setRegDate] = useState([]);
 
-  const exId = "b325";
+  const [exId, setExId] = useState(null);
+
+  async function getExid() {
+    try {
+      const res = await Axios.get(url + "/GetEx");
+      setExId(res.data); 
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getExid();
+  }, []);
 
   const { cp } = useParams();
 
