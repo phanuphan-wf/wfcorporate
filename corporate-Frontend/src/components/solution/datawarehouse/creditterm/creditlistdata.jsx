@@ -225,7 +225,7 @@ export default function CreditListData() {
                     {row.term2}
                   </td>
                   <td className="border-t border-l p-2 text-center">
-                    {new Date(row.a_date).toLocaleString()}
+                    {new Date(row.a_date).toLocaleDateString("th-TH")}                  
                   </td>
                   <td className="border-t border-l p-2 text-center">
                     {row.approver}
