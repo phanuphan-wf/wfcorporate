@@ -8,20 +8,7 @@ export default function PreRegist(props) {
   const navigate = useNavigate();
   const [regDate, setRegDate] = useState([]);
 
-  const [exId, setExId] = useState(null);
-
-  async function getExid() {
-    try {
-      const res = await Axios.get(url + "/GetEx");
-      setExId(res.data); 
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    getExid();
-  }, []);
+  const exId = "i126";
 
   const { cp } = useParams();
 
@@ -55,7 +42,7 @@ export default function PreRegist(props) {
 
       if (today >= new Date(sDate) && today <= new Date(eDate)) {
       } else {
-        navigate("/" + exId + "/postregister/expire/xfmb");
+        navigate("/" + exId + "/postregister/expire/xfmb");     
       }
     }
   }, [eDate]);
