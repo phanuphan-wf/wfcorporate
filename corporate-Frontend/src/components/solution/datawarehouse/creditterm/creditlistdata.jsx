@@ -81,12 +81,12 @@ export default function CreditListData() {
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: "ยืนยันลบข้อมูลเครดิต?",
-      text: "เมื่อลบแล้วไม่สามารถกู้คืนได้",
+      title: "Confirm credit deletion?",
+      text: "This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "ลบ",
-      cancelButtonText: "ยกเลิก",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
 
       buttonsStyling: false,
       customClass: {

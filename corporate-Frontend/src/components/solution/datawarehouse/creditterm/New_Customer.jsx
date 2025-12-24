@@ -52,15 +52,16 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
 
       const res = await Axios.post(`${url}/addCredit`, payload);
 
-      // ⭐ แจ้งเตือนสำเร็จ
+     
       await Swal.fire({
         icon: "success",
-        title: "บันทึกข้อมูลสำเร็จ",
+        title: "Data successfully saved.",
+        text: "Customer credit has been successfully added.",
         confirmButtonText: "OK",
         customClass: { confirmButton: "swal2-red-btn" },
       });
 
-      // if (onSave) onSave(payload);
+      
       if (onSave) onSave();
 
       resetForm();
@@ -71,8 +72,8 @@ export default function New_Customer({ show, onClose, onSave, customer }) {
 
       Swal.fire({
         icon: "error",
-        title: "เกิดข้อผิดพลาด",
-        text: "บันทึกข้อมูลไม่สำเร็จ",
+        title: "error",
+        text: "Add Credit Error",
         confirmButtonText: "OK",
         customClass: { confirmButton: "swal2-red-btn" },
       });
