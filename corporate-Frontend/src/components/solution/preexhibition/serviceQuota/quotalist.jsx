@@ -5,6 +5,7 @@ import { dataContext } from ".";
 import { AiOutlineEdit } from "react-icons/ai";
 import { LiaUndoAltSolid } from "react-icons/lia";
 import { BsLink45Deg } from "react-icons/bs";
+import ModalEdit from "./modalEdit";
 
 export default function QuotaList() {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_squ;
@@ -126,6 +127,32 @@ export default function QuotaList() {
     );
   };
 
+  const initEdit = {
+    id: 0,
+    name: "",
+    quota: 0,
+  };
+  const [editData, setEditData] = useState(initEdit);
+  const editClick = (id) => {
+    setIsEdit(true);
+    const edit = quotaList.filter((q) => q.customerID == id)[0];
+    console.log(edit);
+    setEditData({ id: id, name: edit.name, quota: edit.quota });
+  };
+
+  const [isEdit, setIsEdit] = useState(false);
+
+  const submitQuota = async (i, q) => {
+    const res = await Axios.post(url + "/editQuota", {
+      customerID: i,
+      service: serv,
+      exID: exID,
+      quota: q,
+    });
+    setIsEdit(false);
+    getQuota();
+  };
+
   return (
     <section className="quotalist my-8">
       <div>Filter : </div>
@@ -206,7 +233,9 @@ export default function QuotaList() {
             </td>
             <td className="border-l border-gray-200 text-center py-1 px-6">
               <div className="flex gap-2 items-center">
-                <button className="bg-amber-500 rounded-lg py-1 w-16 text-white text-sm flex gap-1 items-center justify-center">
+                <button
+                  className="bg-amber-500 rounded-lg py-1 w-16 text-white text-sm flex gap-1 items-center justify-center"
+                  onClick={() => editClick(q.customerID)}>
                   <AiOutlineEdit /> Edit
                 </button>
                 {q.edit && (
@@ -226,6 +255,12 @@ export default function QuotaList() {
           </tr>
         ))}
       </table>
+      <ModalEdit
+        show={isEdit}
+        onHide={() => setIsEdit(false)}
+        data={editData}
+        edit={submitQuota}
+      />
     </section>
   );
 }

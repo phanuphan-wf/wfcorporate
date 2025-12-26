@@ -33,14 +33,14 @@ export default function Download() {
   };
 
   useEffect(() => {
-    if (quota.length > 0) {
+    if (data.length > 0) {
       getList();
     }
-  }, [data]);
+  }, [quota]);
 
   return (
     <div className="mb-16">
-      {list.length != 0 && (
+      {quota.length != 0 && (
         <CSVLink data={list} filename={exportfile} className="btn-green px-2">
           Download CSV
         </CSVLink>
