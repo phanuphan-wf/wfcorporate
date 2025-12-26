@@ -136,7 +136,6 @@ export default function QuotaList() {
   const editClick = (id) => {
     setIsEdit(true);
     const edit = quotaList.filter((q) => q.customerID == id)[0];
-    console.log(edit);
     setEditData({ id: id, name: edit.name, quota: edit.quota });
   };
 
