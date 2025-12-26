@@ -63,6 +63,15 @@ const NavItems = [
           { dept: 3, acc: 2 },
         ],
       },
+      {
+        title: "Services Quota",
+        url: "/solution/preexhibition/servicequota",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },
+          { dept: 3, acc: 2 },
+        ],
+      },
     ],
   },
   {

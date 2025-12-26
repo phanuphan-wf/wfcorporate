@@ -1,0 +1,7 @@
+# Ignore C# files
+*.cs
+*.csx
+
+# .NET folders
+bin/
+obj/

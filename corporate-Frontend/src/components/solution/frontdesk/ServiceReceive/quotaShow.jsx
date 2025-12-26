@@ -2,6 +2,8 @@ import { useState, useEffect, useContext, useRef } from "react";
 import Axios from "axios";
 import { dataContext } from "./index";
 
+import ModalSeach from "./modalSearch";
+
 export default function QuotaShow() {
   const { serv, show, modalTextC, cidC } = useContext(dataContext);
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_squ;
@@ -12,6 +14,8 @@ export default function QuotaShow() {
 
   const [isShow, setIsShow] = show;
   const [modalText, setModalText] = modalTextC;
+
+  const [isSearch, setIsSearch] = useState(false);
 
   const getUser = async () => {
     try {
@@ -55,6 +59,11 @@ export default function QuotaShow() {
         return;
       }
       getUser();
+    } else {
+      setUser({});
+      setOnsubmit(false);
+      setCid(0);
+      document.getElementById("qrcode").focus();
     }
   };
 
@@ -76,7 +85,10 @@ export default function QuotaShow() {
           setModalText({
             header: "Success",
             hcolor: "green",
-            body: "Confirm use coupon already",
+            body:
+              "Confirm use coupon already<br/><font style={{color:red}}>{Remain : " +
+              r.data.remain +
+              " }</font>",
             bcolor: "",
             button: "Ok",
             btncolor: "",
@@ -113,12 +125,23 @@ export default function QuotaShow() {
     setQrcode("");
     setUser({});
     setOnsubmit(false);
+    setCid(0);
     document.getElementById("qrcode").focus();
   };
 
   useEffect(() => {
     qrInput();
   }, [qrcode]);
+
+  const closeModal = () => {
+    setIsSearch(false);
+  };
+
+  const searchCustomer = (id, cus) => {
+    setCid(id);
+    setUser({ ...user, customerName: cus });
+    setIsSearch(false);
+  };
 
   return (
     <section className="quotashow mt-8">
@@ -128,22 +151,35 @@ export default function QuotaShow() {
           id="qrcode"
           maxLength={8}
           onChange={(e) => setQrcode(e.target.value)}
+          value={qrcode}
         />
       </div>
-      <div className="mt-4">
+      <div className="mt-4" style={{ width: boxWidth }}>
         <label htmlFor="c_name" className="block">
           Company Name :{" "}
         </label>
-        <span className="px-20 text-red-500">
-          {Object.keys(user).length ? user.customerName : ""}
-        </span>
+        <div className="flex max-lg:flex-col justify-start lg:justify-between">
+          <span className="px-20 text-red-500">
+            {Object.keys(user).length ? user.customerName : ""}
+          </span>
+
+          <button
+            className="text-white bg-amber-500 rounded-lg min-w-24 px-4 py-1 hover:bg-amber-600"
+            onClick={() => setIsSearch(true)}>
+            Search
+          </button>
+        </div>
       </div>
       <div className="mt-4">
         <label htmlFor="name" className="block">
           Exhibitor Name :{" "}
         </label>
         <span className="px-20 text-red-500">
-          {Object.keys(user).length ? user.name + " " + user.surname : ""}
+          {Object.keys(user).length
+            ? user.name == undefined
+              ? ""
+              : user.name + " " + user.surname
+            : ""}
         </span>
       </div>
       <div className="flex mt-4 justify-end" style={{ width: boxWidth }}>
@@ -165,7 +201,9 @@ export default function QuotaShow() {
           <div>Remain</div>
           <div className="flex w-full justify-center text-7xl text-emerald-500">
             {Object.keys(user).length
-              ? Number(user.quota) - Number(user.used)
+              ? user.quota == undefined
+                ? ""
+                : Number(user.quota) - Number(user.used)
               : ""}
           </div>
           <div className="flex w-full justify-end">coupon</div>
@@ -173,18 +211,27 @@ export default function QuotaShow() {
         <div className="w-full h-52 lg:size-52 border-4 border-amber-600 rounded-xl flex flex-col justify-between p-4">
           <div>Total Used</div>
           <div className="flex w-full justify-center text-7xl text-amber-500">
-            {Object.keys(user).length ? Number(user.used) : ""}
+            {Object.keys(user).length
+              ? user.used == undefined
+                ? ""
+                : Number(user.used)
+              : ""}
           </div>
           <div className="flex w-full justify-end">coupon</div>
         </div>
         <div className="w-full h-52 lg:size-52 border-4 border-indigo-600 rounded-xl flex flex-col justify-between p-4">
           <div>Today Used</div>
           <div className="flex w-full justify-center text-7xl text-indigo-500">
-            {Object.keys(user).length ? Number(user.today) : ""}
+            {Object.keys(user).length
+              ? user.today == undefined
+                ? ""
+                : Number(user.today)
+              : ""}
           </div>
           <div className="flex w-full justify-end">coupon</div>
         </div>
       </div>
+      <ModalSeach show={isSearch} onHide={closeModal} fill={searchCustomer} />
     </section>
   );
 }

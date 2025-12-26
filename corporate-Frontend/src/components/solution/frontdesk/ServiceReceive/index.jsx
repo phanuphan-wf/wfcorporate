@@ -13,11 +13,16 @@ export default function ServiceReceive() {
   const [service, setService] = useState(0);
   const [serviceList, setServiceList] = useState([]);
   const getServiceList = async () => {
-    const res = await Axios.get(url + "/getService").then((r) => {
-      if (r.status == 200) {
-        setServiceList(r.data);
-      }
-    });
+    try {
+      const res = await Axios.get(url + "/getService").then((r) => {
+        if (r.status == 200) {
+          setServiceList(r.data);
+        }
+      });
+    } catch (err) {
+      alert("Error - " + err);
+      setServiceList([]);
+    }
   };
 
   useEffect(() => {
@@ -45,6 +50,10 @@ export default function ServiceReceive() {
   }, [isShow]);
 
   const [cid, setCid] = useState(0);
+
+  useEffect(() => {
+    console.log(cid);
+  }, [cid]);
 
   return (
     <dataContext.Provider

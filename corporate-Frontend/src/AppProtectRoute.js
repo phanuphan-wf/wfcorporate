@@ -17,6 +17,7 @@ import SmsNumber from "./components/solution/datawarehouse/sms/smsNumber";
 import CreateBooth from "./components/solution/datawarehouse/createBooth/createBooth";
 import CreditList from "./components/solution/datawarehouse/creditterm/creditlist";
 import ServiceReceive from "./components/solution/frontdesk/ServiceReceive";
+import ServiceQuota from "./components/solution/preexhibition/serviceQuota";
 
 const AppProtectRoute = [
   {
@@ -75,6 +76,15 @@ const AppProtectRoute = [
       { dept: 1, acc: 1 },
       { dept: 3, acc: 1 },
       { dept: 1, acc: 2 },
+      { dept: 3, acc: 2 },
+    ],
+  },
+  {
+    path: "preexhibition/servicequota",
+    element: <ServiceQuota />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },
       { dept: 3, acc: 2 },
     ],
   },
