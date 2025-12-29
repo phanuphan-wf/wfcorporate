@@ -231,7 +231,15 @@ const NavItems = [
     sub: [
       {
         title: "Hero Banner",
-        url: "/solution/datawarehouse/Information",
+        url: "/solution/datawarehouse/herobanner",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },         
+        ],
+      },
+      {
+        title: "Highlights EX",
+        url: "/solution/datawarehouse/highlightEx",
         show: [
           { dept: 1, acc: 1 },
           { dept: 3, acc: 1 },         

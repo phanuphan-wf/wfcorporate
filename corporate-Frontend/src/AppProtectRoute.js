@@ -16,7 +16,9 @@ import CreateExhibition from "./components/solution/datawarehouse/createExhibiti
 import SmsNumber from "./components/solution/datawarehouse/sms/smsNumber";
 import CreateBooth from "./components/solution/datawarehouse/createBooth/createBooth";
 import CreditList from "./components/solution/datawarehouse/creditterm/creditlist";
-import Information from "./components/solution/datawarehouse/Information/herobanner";
+import Herobanner from "./components/solution/datawarehouse/Information/herobanner";
+import HighlightEx from "./components/solution/datawarehouse/Information/highlight";
+
 import { path } from "d3";
 
 const AppProtectRoute = [
@@ -162,13 +164,23 @@ const AppProtectRoute = [
   },
 
   {
-    path: "datawarehouse/Information",
-    element:<Information />,
+    path: "datawarehouse/herobanner",
+    element:<Herobanner />,
     show: [
       { dept: 1, acc: 1 },
       { dept: 3, acc: 1 },     
     ],
   },
+
+  {
+    path: "datawarehouse/highlightEx",
+    element:<HighlightEx />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },     
+    ],
+  },
+
 ];
 
 export default AppProtectRoute;
