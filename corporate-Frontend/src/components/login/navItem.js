@@ -220,9 +220,28 @@ const NavItems = [
         title: "Employee List",
         url: "/solution/datawarehouse/employeelist",
         show: "all",
-      },
+      },      
     ],
   },
+    
+  {
+    title: "Information",
+    url: "",
+    show: "all",
+    sub: [
+      {
+        title: "Hero Banner",
+        url: "/solution/datawarehouse/Information",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },         
+        ],
+      },
+         
+    ],
+
+  },
+
   {
     title: "Management",
     url: "",
