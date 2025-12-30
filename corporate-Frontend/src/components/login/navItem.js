@@ -25,6 +25,11 @@ const NavItems = [
         show: "all",
       },
       {
+        title: "Services Receiving",
+        url: "/solution/frontdesk/servicereceive",
+        show: "all",
+      },
+      {
         title: "Visitor Survey",
         url: "/solution/frontdesk/survey",
         show: "all",
@@ -55,6 +60,15 @@ const NavItems = [
           { dept: 1, acc: 1 },
           { dept: 3, acc: 1 },
           { dept: 1, acc: 2 },
+          { dept: 3, acc: 2 },
+        ],
+      },
+      {
+        title: "Services Quota",
+        url: "/solution/preexhibition/servicequota",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },
           { dept: 3, acc: 2 },
         ],
       },

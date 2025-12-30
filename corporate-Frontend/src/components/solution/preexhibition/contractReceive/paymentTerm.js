@@ -38,7 +38,7 @@ function PaymentTerm() {
   };
 
   useEffect(() => {
-    if (contractDetail.CustomerID != 0 && contractDetail.Volume != 0) {
+    if (contractDetail.CustomerID != 0) {
       getPaymentTerm();
     }
   }, [contractDetail]);
