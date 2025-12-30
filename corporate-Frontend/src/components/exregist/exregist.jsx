@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 
 import ModalSeach from "./modalSearch";
+import ModalInfo from "./modalInfo";
 
 export default function Exregist() {
   const { t, i18n } = useTranslation("exhibitor", { keyPrefix: "regist" });
@@ -26,9 +27,43 @@ export default function Exregist() {
   };
   const [data, setData] = useState(initData);
 
+  const [isShow, setIsShow] = useState(false);
+
+  const initModalText = {
+    header: "",
+    hcolor: "",
+    body: "",
+    bcolor: "",
+    button: "Ok",
+    btncolor: "",
+    cancel: true,
+  };
+  const [modalText, setModalText] = useState(initModalText);
+
   const [onSubmit, setOnSubmit] = useState(false);
 
+  const message = {
+    header: { en: "Data is not sent!", th: "ไม่สามารถส่งข้อมูลได้" },
+    body: {
+      en: "Please fill all data before submit",
+      th: "กรุณากรอกข้อมูลให้ครบ ก่อนลงทะเบียน",
+    },
+  };
+
   const clickSubmit = async () => {
+    if (data.Name == "" || data.Surname == "" || data.Mobile == "") {
+      setIsShow(true);
+      setModalText({
+        header: message.header[i18n.language],
+        hcolor: "red",
+        body: message.body[i18n.language],
+        bcolor: "",
+        button: "Ok",
+        btncolor: "",
+        cancel: false,
+      });
+      return;
+    }
     let success = false;
     setOnSubmit(true);
     try {
@@ -196,6 +231,11 @@ export default function Exregist() {
       </div>
 
       <ModalSeach show={isSearch} onHide={closeModal} fill={fillCustomer} />
+      <ModalInfo
+        show={isShow}
+        onHide={() => setIsShow(false)}
+        text={modalText}
+      />
     </section>
   );
 }
