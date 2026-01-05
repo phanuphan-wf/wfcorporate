@@ -16,15 +16,15 @@ import CreateExhibition from "./components/solution/datawarehouse/createExhibiti
 import SmsNumber from "./components/solution/datawarehouse/sms/smsNumber";
 import CreateBooth from "./components/solution/datawarehouse/createBooth/createBooth";
 import CreditList from "./components/solution/datawarehouse/creditterm/creditlist";
-<<<<<<< HEAD
+
 import Herobanner from "./components/solution/datawarehouse/Information/herobanner";
 import HighlightEx from "./components/solution/datawarehouse/Information/highlight";
 
 import { path } from "d3";
-=======
+
 import ServiceReceive from "./components/solution/frontdesk/ServiceReceive";
 import ServiceQuota from "./components/solution/preexhibition/serviceQuota";
->>>>>>> main
+
 
 const AppProtectRoute = [
   {

@@ -259,6 +259,14 @@ const NavItems = [
           { dept: 3, acc: 1 },         
         ],
       },
+      {
+        title: "Calendar Expo",
+        url:"",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },         
+        ],
+      },
          
     ],
 
