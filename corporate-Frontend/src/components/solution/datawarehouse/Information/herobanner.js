@@ -179,6 +179,7 @@ export default function CreateExhibition(props) {
             )}
           </div>
         </div>
+        
       </div>
       <div className="flex justify-between">
         <button className="btn-gray px-2" onClick={clickCancel}>

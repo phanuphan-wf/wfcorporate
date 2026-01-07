@@ -261,7 +261,7 @@ const NavItems = [
       },
       {
         title: "Calendar Expo",
-        url:"",
+        url:"/solution/datawarehouse/calenderexpo",
         show: [
           { dept: 1, acc: 1 },
           { dept: 3, acc: 1 },         

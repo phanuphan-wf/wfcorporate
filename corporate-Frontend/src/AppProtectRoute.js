@@ -19,6 +19,7 @@ import CreditList from "./components/solution/datawarehouse/creditterm/creditlis
 
 import Herobanner from "./components/solution/datawarehouse/Information/herobanner";
 import HighlightEx from "./components/solution/datawarehouse/Information/highlight";
+import Calenderexpo from "./components/solution/datawarehouse/Information/calendarexpo";
 
 import { path } from "d3";
 
@@ -193,6 +194,15 @@ const AppProtectRoute = [
   {
     path: "datawarehouse/highlightEx",
     element:<HighlightEx />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },     
+    ],
+  },
+
+  {
+    path: "datawarehouse/calenderexpo",
+    element:<Calenderexpo />,
     show: [
       { dept: 1, acc: 1 },
       { dept: 3, acc: 1 },     
