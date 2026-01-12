@@ -267,6 +267,15 @@ const NavItems = [
           { dept: 3, acc: 1 },         
         ],
       },
+
+      {
+        title: "News",
+        url:"/solution/datawarehouse/news",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },         
+        ],
+      },
          
     ],
 

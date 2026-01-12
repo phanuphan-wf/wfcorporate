@@ -6,13 +6,11 @@ export default function ShowHighlightList(props) {
 
   const [highlightList, setHighlightList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]); 
-  const [addhl, setAddhl] = useState([]);
+  const [addhl, setAddhl] = useState([]);   
   
-  
-  
- // console.log(highlightList);
-  console.log(selectedIds);
-  console.log(addhl);
+  // console.log(highlightList);
+  //console.log(selectedIds);
+  //console.log(addhl);
  
   useEffect(() => {
     if (highlightList.length > 0) {
@@ -38,7 +36,7 @@ export default function ShowHighlightList(props) {
       if (res.status === 200) {
         setHighlightList(res.data);
 
-        // 👉 ดึง id ทุกตัวที่ show === true
+        // ดึง id ทุกตัวที่ show === true
         const showIds = res.data
           .filter(item => item.show === true)
           .map(item => item.id);
@@ -49,8 +47,6 @@ export default function ShowHighlightList(props) {
       console.error(err);
     }
   };
-
-
   
 
   /* โหลดข้อมูลครั้งแรก + เมื่อ reload เปลี่ยน */
@@ -65,16 +61,17 @@ export default function ShowHighlightList(props) {
 
     try {
       const res = await Axios.put(
-        url + "/HLSelect/",
-        selectedIds   // ✅ ส่ง array ตรง ๆ
+        url + "/HLSelect",
+        selectedIds   
       );
 
-      if (res.status === 200) {
-        alert("บันทึกสำเร็จ");
+      if (res.status === 200) {  
+        alert("Data successfully saved.");
+        getList();
       }
     } catch (err) {
       console.error(err);
-      alert("เกิดข้อผิดพลาด");
+      alert("error");
     }
   };
 
