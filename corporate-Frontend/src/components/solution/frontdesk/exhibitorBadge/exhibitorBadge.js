@@ -184,6 +184,7 @@ export default function ExhibitorBadge(props) {
     data.bType = type;
 
     try {
+      setReady(false);
       const res = await Axios.post(url + "/postBadgeRec", data).then((r) => {
         if (r.status == 200) {
           alert("Insert data complete");
