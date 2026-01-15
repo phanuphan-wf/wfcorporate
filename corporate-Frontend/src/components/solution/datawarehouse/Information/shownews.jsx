@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Axios from "axios";
 
-export default function ShowHighlightList(props) {
+export default function Shownews(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_web;
 
   const [NewsList, setNewsList] = useState([]); 
@@ -45,7 +45,7 @@ export default function ShowHighlightList(props) {
 
 
   return (
-    <section className="Show Highlight Exhibition">
+    <section className="Show News">
       
       <div className="flex items-center gap-4">
         <div className="font-medium text-lg">News list</div>

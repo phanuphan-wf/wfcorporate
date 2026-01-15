@@ -40,7 +40,10 @@ const AppRoutes = [
     path: "/ourservices",
     element: <OurServices />,
   },
-  
+  {
+    path: "/joinus/jobdescription/:id",
+    element: <JobDescription />,
+  },
 
 
 ];

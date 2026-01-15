@@ -21,6 +21,7 @@ import Herobanner from "./components/solution/datawarehouse/Information/herobann
 import HighlightEx from "./components/solution/datawarehouse/Information/highlight";
 import Calenderexpo from "./components/solution/datawarehouse/Information/calendarexpo";
 import News from "./components/solution/datawarehouse/Information/news";
+import Joinus from "./components/solution/datawarehouse/Information/joinus";
 
 import { path } from "d3";
 
@@ -213,6 +214,15 @@ const AppProtectRoute = [
   {
     path: "datawarehouse/news",
     element:<News />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },     
+    ],
+  },
+
+  {
+    path: "datawarehouse/joinus",
+    element:<Joinus />,
     show: [
       { dept: 1, acc: 1 },
       { dept: 3, acc: 1 },     

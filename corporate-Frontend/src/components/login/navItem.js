@@ -276,6 +276,15 @@ const NavItems = [
           { dept: 3, acc: 1 },         
         ],
       },
+
+      {
+        title: "Join us",
+        url:"/solution/datawarehouse/joinus",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },         
+        ],
+      },
          
     ],
 

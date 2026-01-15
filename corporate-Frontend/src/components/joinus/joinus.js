@@ -1,18 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function Joinus(props) {
+  const nav = useNavigate();
   const [data, setData] = useState([
     {
+      id : "1",
       title: "HR Officer",
       post: "18/6/2023",
-      urgent: false,
+      urgent: false,    
     },
     {
+      id : "2",
       title: "ผู้ช่วยผู้จัดการฝ่ายขาย",
       post: "14/6/2023",
       urgent: true,
     },
     {
+      id : "3",
       title: "เจ้าหน้าที่ฝ่ายขายพื้นที่แสดงสินค้า",
       post: "14/6/2023",
       urgent: false,
@@ -74,9 +79,16 @@ export default function Joinus(props) {
               {d.urgent && " ** ด่วน!"}
             </div>
             <div className="grid grid-cols-2 gap-4 w-1/2 sm:w-full mx-auto">
-              <div className="text-white bg-red-500 text-center h-fit py-1">
+              
+              <button
+                type="button"
+                onClick={() => nav("/joinus/jobdescription/" + d.id)}
+                className="text-white bg-red-500 text-base h-fit py-1 cursor-pointer
+                          hover:bg-red-600 transition"
+              >
                 รายละเอียด
-              </div>
+              </button>
+
               <div className="text-white bg-red-500 text-center h-fit py-1 cursor-pointer">
                 <a href="mailto:saychon.p@worldfair.co.th">ส่งใบสมัคร</a>
               </div>

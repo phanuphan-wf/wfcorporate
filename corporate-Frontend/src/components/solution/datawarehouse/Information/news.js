@@ -2,7 +2,7 @@ import { useState } from "react";
 import Axios from "axios";
 import ShowNews from "./shownews";
 
-export default function CreateExhibition() {
+export default function Createnews() {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_web;
 
   const initData = {

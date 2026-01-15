@@ -13,7 +13,7 @@ export default function Jobdescription() {
       <div className="headline mb-8">
         <div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl text-center">
-            ร่วมงานกับเรา
+            ส่งใบสมัครงาน
           </h1>
         </div>
         <div className="flex justify-center py-4 mb-5">
