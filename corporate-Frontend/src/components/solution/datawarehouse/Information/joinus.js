@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Axios from "axios";
-import { IoIosAddCircle } from "react-icons/io";
+import { IoAddCircle } from "react-icons/io5";
 import { TiDelete } from "react-icons/ti";
 
 export default function CreateJob() {
@@ -88,7 +88,7 @@ export default function CreateJob() {
      console.log("PAYLOAD =>", payload);
 
     try {
-      const res = await Axios.post(url + "/postJob/", payload);
+      const res = await Axios.post(url + "/postJob", payload);
 
       if (res.status === 200) {
         alert("Create job success");
@@ -166,17 +166,28 @@ export default function CreateJob() {
                   />
                 </div>
 
-                {index === quals.length - 1 && (
-                  <button type="button" onClick={addQualRow}>
-                    <IoIosAddCircle size={26} className="text-green-600" />
-                  </button>
-                )}
+               <div className="flex items-center gap-1">
+                  {index === quals.length - 1 && (
+                    <button
+                      type="button"
+                      onClick={addQualRow}
+                      className="flex items-center justify-center h-8 w-8"
+                    >
+                      <IoAddCircle size={26} className="text-green-600" />
+                    </button>
+                  )}
 
-                {quals.length > 1 && (
-                  <button type="button" onClick={() => removeQualRow(index)}>
-                    <TiDelete size={30} className="text-red-600" />
-                  </button>
-                )}
+                  {quals.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeQualRow(index)}
+                      className="flex items-center justify-center h-8 w-8"
+                    >
+                      <TiDelete size={30} className="text-red-600" />
+                    </button>
+                  )}
+                </div>
+
               </div>
             </div>
           ))}
@@ -207,17 +218,32 @@ export default function CreateJob() {
                   />
                 </div>
 
+              <div className="flex items-center gap-1">
                 {index === descs.length - 1 && (
-                  <button type="button" onClick={addDescRow}>
-                    <IoIosAddCircle size={26} className="text-green-600" />
+                  <button
+                    type="button"
+                    onClick={addDescRow}
+                    className="flex items-center justify-center h-8 w-8
+                              hover:bg-green-100 rounded-full transition"
+                  >
+                    <IoAddCircle size={26} className="text-green-600" />
                   </button>
                 )}
 
                 {descs.length > 1 && (
-                  <button type="button" onClick={() => removeDescRow(index)}>
+                  <button
+                    type="button"
+                    onClick={() => removeDescRow(index)}
+                    className="flex items-center justify-center h-8 w-8
+                              hover:bg-red-100 rounded-full transition"
+                  >
                     <TiDelete size={30} className="text-red-600" />
                   </button>
                 )}
+              </div>
+
+
+
               </div>
             </div>
           ))}
