@@ -42,7 +42,7 @@ export default function PreRegist(props) {
 
       if (today >= new Date(sDate) && today <= new Date(eDate)) {
       } else {
-        navigate("/" + exId + "/postregister/expire/xfmb");     
+       // navigate("/" + exId + "/postregister/expire/xfmb");     
       }
     }
   }, [eDate]);

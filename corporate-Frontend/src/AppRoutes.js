@@ -6,6 +6,7 @@ import Reservation from "./components/reservation/reservation";
 import Aboutus from "./components/ aboutus/aboutus";
 import OurServices from "./components/ourservices/ourservices";
 import JobDescription from "./components/joinus/jobdescription";
+import JobForm from "./components/joinus/jobform";
 
 const AppRoutes = [
   {
@@ -44,6 +45,11 @@ const AppRoutes = [
     path: "/joinus/jobdescription/:id",
     element: <JobDescription />,
   },
+  {
+    path: "joinus/jobform/:id",
+    element: <JobForm />
+  },
+
 
 
 ];

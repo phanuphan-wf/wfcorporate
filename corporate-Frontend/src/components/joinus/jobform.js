@@ -1,0 +1,680 @@
+import React, { useState, useRef} from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Axios from "axios";
+import { useTranslation } from "react-i18next";
+
+import { TiDelete } from "react-icons/ti";
+
+export default function Jobform() {
+  const nav = useNavigate();
+  const { id } = useParams(); // jobId จาก url
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
+
+  const url =
+    process.env.REACT_APP_API_URI +
+    process.env.REACT_APP_job +
+    "/postApply";
+
+  /* ================= STATE ================= */
+  const [form, setForm] = useState({
+    jobId: id,
+    name: "",
+    surname: "",
+    addr: "",
+    subdistrict: "",
+    district: "",
+    province: "",
+    mobile: "",
+    sex: true,
+    birthday: "",
+    accept: false,
+  });
+
+
+  const [birthday, setBirthday] = useState({
+    day: "0",
+    month: "0",
+    year: "0",
+  });
+
+  const days = Array.from({ length: 31 }, (_, i) => i + 1);
+
+  const months = [
+    { th: "มกราคม", en: "January" },
+    { th: "กุมภาพันธ์", en: "February" },
+    { th: "มีนาคม", en: "March" },
+    { th: "เมษายน", en: "April" },
+    { th: "พฤษภาคม", en: "May" },
+    { th: "มิถุนายน", en: "June" },
+    { th: "กรกฎาคม", en: "July" },
+    { th: "สิงหาคม", en: "August" },
+    { th: "กันยายน", en: "September" },
+    { th: "ตุลาคม", en: "October" },
+    { th: "พฤศจิกายน", en: "November" },
+    { th: "ธันวาคม", en: "December" },
+  ];
+
+  const getYears = () => {
+    const current = new Date().getFullYear();
+    return Array.from({ length: 60 }, (_, i) => current - i);
+  };
+
+  const fileInputRef = useRef(null);
+  const [picture, setPicture] = useState(null);
+  const [preview, setPreview] = useState(null); 
+
+  
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setPicture(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const handleRemoveImage = () => {
+    setPicture(null);
+    setPreview(null);
+
+    // reset input file
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const [resumeType, setResumeType] = useState("file"); // file | form
+  const [resume, setResume] = useState(null);
+
+
+
+
+  const [eddu, setEddu] = useState([
+    { Level: "", Institute: "", Subject: "", GYear: "" },
+  ]);
+
+  const [hist, setHist] = useState([
+    { WYear: "", Company: "", Position: "", Funct: "" },
+  ]);
+
+  /* ================= HANDLER ================= */
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  /* ================= SUBMIT ================= */
+  const submitApply = async () => {
+    if (!form.accept) {
+      alert(lang === "th" ? "กรุณายอมรับเงื่อนไข" : "Please accept condition");
+      return;
+    }
+
+    const formData = new FormData();
+
+    Object.keys(form).forEach((key) => {
+      formData.append(key, form[key]);
+    });
+
+    formData.append("picture", picture);
+    formData.append("resume", resume);
+
+    eddu.forEach((e, i) => {
+      formData.append(`Eddu[${i}].Level`, e.Level);
+      formData.append(`Eddu[${i}].Institute`, e.Institute);
+      formData.append(`Eddu[${i}].Subject`, e.Subject);
+      formData.append(`Eddu[${i}].GYear`, e.GYear);
+    });
+
+    hist.forEach((h, i) => {
+      formData.append(`Hist[${i}].WYear`, h.WYear);
+      formData.append(`Hist[${i}].Company`, h.Company);
+      formData.append(`Hist[${i}].Position`, h.Position);
+      formData.append(`Hist[${i}].Funct`, h.Funct);
+    });
+
+    try {
+      const res = await Axios.post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (res.status === 200) {
+        alert(lang === "th" ? "ส่งใบสมัครเรียบร้อย" : "Apply success");
+        nav("/joinus");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("ERROR");
+    }
+  };
+
+  /* ================= JSX ================= */
+  return (
+    <section className="jobform my-10 px-4 sm:px-10 lg:px-20">
+
+        <div className="headline mb-8">
+            <div>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl text-center">
+                    {lang === "th" ? "แบบฟอร์มสมัครงาน" : "Job Application Form"}                
+                </h1>
+            </div>          
+        </div>  
+
+        
+
+
+      {/* FORM WRAPPER */}
+    <div className="flex justify-center w-full mt-5 mb-3">
+
+        <div className="w-full sm:w-[90%] lg:w-4/5">       
+
+          <h1 className="text-2xl font-semibold mb-6">
+            {lang === "th" ? "ประวัติส่วนตัว" : "Personal information"}
+          </h1>
+
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
+            {/* PHOTO BOX (CLICKABLE) */}
+            <div
+              onClick={() => fileInputRef.current.click()}
+              className="relative w-32 h-40 border-2 border-dashed border-gray-400 bg-gray-50
+                        flex items-center justify-center cursor-pointer
+                        mx-auto sm:mx-0 hover:border-red-400 transition"
+            >
+              {preview ? (
+                <>
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="w-full h-full object-cover"
+                  />
+
+                  {/* ปุ่มลบ */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation(); // ❗ กันไม่ให้ trigger เลือกรูปอีก
+                      handleRemoveImage();
+                    }}
+                    className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    ✕
+                  </button>
+                </>
+              ) : (
+                <span className="text-gray-400 text-sm text-center px-2">
+                  {lang === "th" ? "คลิกเพื่อเลือกรูป" : "Click to upload photo"}
+                </span>
+              )}
+            </div>
+
+            {/* INPUT FILE (HIDDEN) */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+
+        </div>
+
+
+
+            {/* BASIC INFO */}
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <input
+                    name="name"
+                    placeholder={lang === "th" ? "ชื่อ" : "Name"}
+                    value={form.name}
+                    onChange={handleChange}
+                    className="border p-2 w-full"
+                />
+
+                <input
+                    name="surname"
+                    placeholder={lang === "th" ? "นามสกุล" : "Surname"}
+                    value={form.surname}
+                    onChange={handleChange}
+                    className="border p-2 w-full"
+                />                
+            
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <input
+                    name="mobile"
+                    placeholder={lang === "th" ? "เบอร์โทร" : "Mobile"}
+                    value={form.mobile}
+                    onChange={handleChange}
+                    className="border p-2 w-full"
+                />
+               
+                  {/* SEX */}                               
+                  <div className="flex border rounded-md overflow-hidden">                      
+                      {/* MALE */}
+                      <div
+                        className={`flex-1 text-center cursor-pointer py-2 transition
+                          ${form.sex === "1" ? "bg-white" : "bg-gray-100 text-gray-500"}`}
+                        onClick={() => setForm({ ...form, sex: "1" })}
+                      >
+                        <input
+                          type="radio"
+                          name="sex"
+                          value="1"
+                          checked={form.sex === "1"}
+                          onChange={() => {}}
+                          className="hidden"
+                        />
+                        {lang === "th" ? "ชาย" : "Male"}
+                      </div>
+
+                      {/* FEMALE */}
+                      <div
+                        className={`flex-1 text-center cursor-pointer py-2 transition
+                          ${form.sex === "2" ? "bg-white" : "bg-gray-100 text-gray-500"}`}
+                        onClick={() => setForm({ ...form, sex: "2" })}
+                      >
+                        <input
+                          type="radio"
+                          name="sex"
+                          value="2"
+                          checked={form.sex === "2"}
+                          onChange={() => {}}
+                          className="hidden"
+                        />
+                        {lang === "th" ? "หญิง" : "Female"}
+                      </div>
+
+                      {/* NOT SPECIFIED */}
+                      <div
+                        className={`flex-1 text-center cursor-pointer py-2 transition
+                          ${form.sex === "3" ? "bg-white" : "bg-gray-100 text-gray-500"}`}
+                        onClick={() => setForm({ ...form, sex: "3" })}
+                      >
+                        <input
+                          type="radio"
+                          name="sex"
+                          value="3"
+                          checked={form.sex === "3"}
+                          onChange={() => {}}
+                          className="hidden"
+                        />
+                        {lang === "th" ? "ไม่ระบุ" : "Not specified"}
+                      </div>
+                  </div>
+            </div>
+
+            {/* BIRTHDAY */}
+            <div className="mb-6">           
+              <div className="grid grid-cols-3 gap-3">
+
+                {/* DAY */}
+                <select
+                  className="border p-2"                  
+                  value={birthday.day}
+                  onChange={(e) =>
+                    setBirthday({ ...birthday, day: e.target.value })
+                  }
+                >
+                  <option value="0" disabled hidden>
+                    {lang === "th" ? "วันเกิด" : "Birthday"}
+                  </option>
+                  {days.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+
+                {/* MONTH */}
+                <select
+                  className="border p-2"
+                  value={birthday.month}
+                  onChange={(e) =>
+                    setBirthday({ ...birthday, month: e.target.value })
+                  }
+                >
+                  <option value="0" disabled hidden>
+                    {lang === "th" ? "เดือนเกิด" : "Birthmonth"}
+                  </option>
+                  {months.map((m, i) => (
+                    <option key={i} value={i + 1}>
+                      {lang === "th" ? m.th : m.en}
+                    </option>
+                  ))}
+                </select>
+
+                {/* YEAR */}
+                <select
+                  className="border p-2"
+                  value={birthday.year}
+                  onChange={(e) =>
+                    setBirthday({ ...birthday, year: e.target.value })
+                  }
+                >
+                  <option value="0" disabled hidden>
+                    {lang === "th" ? "ปีเกิด" : "Birth Year"}
+                  </option>
+                  {getYears().map((y) => (
+                    <option key={y} value={y}>
+                      {lang === "th" ? y + 543 : y}
+                    </option>
+                  ))}
+                </select>
+
+              </div>
+            </div>
+
+
+            <div className="mt-2">
+            {/* ADDRESS */}
+                <input
+                    name="addr"
+                    placeholder={lang === "th" ? "ที่อยู่" : "Address"}
+                    value={form.addr}
+                    onChange={handleChange}
+                    className="border p-2 w-full mb-6"
+                    rows={4}
+                />
+            </div>
+
+            <div className="mb-6">
+              <div className="grid grid-cols-3 gap-3">
+                     <input
+                        name="subdistrict"
+                        placeholder={lang === "th" ? "ตำบล" : "Subdistrict"}
+                        value={form.subdistrict}
+                        onChange={handleChange}
+                        className="border p-2 w-full"
+                    />
+
+                    <input
+                        name="district"
+                        placeholder={lang === "th" ? "อำเภอ" : "District"}
+                        value={form.district}
+                        onChange={handleChange}
+                        className="border p-2 w-full"
+                    />
+
+                    <input
+                      name="province"
+                      placeholder={lang === "th" ? "จังหวัด" : "Province"}
+                      value={form.province}
+                      onChange={handleChange}
+                      className="border p-2 w-full"
+                   />
+              </div>
+            </div>
+
+
+            <h1 className="text-2xl font-semibold mb-4">
+              {lang === "th" ? "รูปแบบการสมัคร" : "Resume Type"}
+            </h1>
+
+            <div className="flex gap-6 mb-6">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="resumeType"
+                  checked={resumeType === "file"}
+                  onChange={() => setResumeType("file")}
+                />
+                {lang === "th" ? "แนบไฟล์ Resume" : "Upload Resume"}
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="resumeType"
+                  checked={resumeType === "form"}
+                  onChange={() => setResumeType("form")}
+                />
+                {lang === "th" ? "กรอกข้อมูลด้วยตนเอง" : "Fill Information"}
+              </label>
+            </div>
+
+
+            {resumeType === "file" && (
+              <>
+                <span className="font-medium block mb-2 text-sm sm:text-base">
+                  {lang === "th" ? "แนบไฟล์ Resume" : "Upload Resume"}
+                </span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={(e) => setResume(e.target.files[0])}
+                    className="
+                      border 
+                      p-2 
+                      text-sm 
+                      sm:text-base 
+                      w-full
+                    "
+                  />
+                </div>
+              </>
+            )}
+
+
+
+            {resumeType === "form" && (
+              <>
+                {/* EDUCATION */}
+                <div className="flex items-center justify-between mb-4">
+                  <h1 className="text-2xl font-semibold">
+                    {lang === "th" ? "ประวัติการศึกษา" : "Education"}
+                  </h1>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setEddu([
+                        ...eddu,
+                        { Level: "", Institute: "", Subject: "", GYear: "" },
+                      ])
+                    }
+                     className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5"
+                  >
+                    {lang === "th" ? "เพิ่มประวัติการศึกษา" : "Add Education"}
+                  </button>
+                </div>
+
+
+                  {eddu.map((e, i) => (
+                    <div key={i} className="grid md:grid-cols-4 gap-3 mb-3">
+
+                      {/* ระดับการศึกษา */}
+                      <input
+                        placeholder={lang === "th" ? "ระดับการศึกษา" : "Level"}
+                        value={e.Level}
+                        onChange={(ev) => {
+                          const n = [...eddu];
+                          n[i].Level = ev.target.value;
+                          setEddu(n);
+                        }}
+                        className="border p-2"
+                      />
+
+                      {/* สถาบัน */}
+                      <input
+                        placeholder={lang === "th" ? "สถาบัน" : "Institute"}
+                        value={e.Institute}
+                        onChange={(ev) => {
+                          const n = [...eddu];
+                          n[i].Institute = ev.target.value;
+                          setEddu(n);
+                        }}
+                        className="border p-2"
+                      />
+
+                      {/* สาขา */}
+                      <input
+                        placeholder={lang === "th" ? "สาขา" : "Subject"}
+                        value={e.Subject}
+                        onChange={(ev) => {
+                          const n = [...eddu];
+                          n[i].Subject = ev.target.value;
+                          setEddu(n);
+                        }}
+                        className="border p-2"
+                      />
+
+                     
+                      <div className="flex gap-2">
+                        <input
+                          placeholder={lang === "th" ? "ปีที่จบ" : "Graduation Year"}
+                          value={e.GYear}
+                          onChange={(ev) => {
+                            const n = [...eddu];
+                            n[i].GYear = ev.target.value;
+                            setEddu(n);
+                          }}
+                          className="border p-2 w-full"
+                        />
+
+                    
+                        {eddu.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setEddu(eddu.filter((_, index) => index !== i))
+                            }
+                            className="px-3 text-red-500 hover:text-red-700 border rounded"
+                            title={lang === "th" ? "ลบแถวนี้" : "Remove"}
+                          >
+                            <TiDelete  size={30} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+
+
+                {/* WORK EXPERIENCE */}
+                <div className="flex items-center justify-between mb-4 mt-8">
+                  <h1 className="text-2xl font-semibold">
+                    {lang === "th" ? "ประสบการณ์การทำงาน" : "Work Experience"}
+                  </h1>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setHist([
+                        ...hist,
+                        { WYear: "", Company: "", Position: "", Funct: "" },
+                      ])
+                    }
+                    className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5"
+                  >
+                    {lang === "th" ? "เพิ่มประสบการณ์" : "Add Experience"}
+                  </button>
+                </div>
+
+
+                {hist.map((h, i) => (
+                  <div key={i} className="grid md:grid-cols-4 gap-3 mb-3">
+                    <input
+                      placeholder={lang === "th" ? "ช่วงปีที่ทำงาน" : "Working Year"}
+                      value={h.WYear}
+                      onChange={(ev) => {
+                        const n = [...hist];
+                        n[i].WYear = ev.target.value;
+                        setHist(n);
+                      }}
+                      className="border p-2"
+                    />
+
+                    <input
+                      placeholder={lang === "th" ? "บริษัท" : "Company"}
+                      value={h.Company}
+                      onChange={(ev) => {
+                        const n = [...hist];
+                        n[i].Company = ev.target.value;
+                        setHist(n);
+                      }}
+                      className="border p-2"
+                    />
+
+                    <input
+                      placeholder={lang === "th" ? "ตำแหน่ง" : "Position"}
+                      value={h.Position}
+                      onChange={(ev) => {
+                        const n = [...hist];
+                        n[i].Position = ev.target.value;
+                        setHist(n);
+                      }}
+                      className="border p-2"
+                    />
+
+                    <div className="flex gap-2">
+                      <input
+                        placeholder={lang === "th" ? "หน้าที่รับผิดชอบ" : "Function"}
+                        value={h.Funct}
+                        onChange={(ev) => {
+                          const n = [...hist];
+                          n[i].Funct = ev.target.value;
+                          setHist(n);
+                        }}
+                        className="border p-2 flex-1"
+                      />
+
+                      {hist.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setHist(hist.filter((_, index) => index !== i))
+                          }
+                          className="px-3 text-red-500 hover:text-red-700 border rounded"
+                          title={lang === "th" ? "ลบแถวนี้" : "Remove"}
+                        >
+                          <TiDelete size={30} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+              </>
+            )}
+           
+
+            {/* ACCEPT */}
+            <label className="flex items-center gap-2 my-6">
+                <input
+                  type="checkbox"
+                  name="accept"
+                  checked={form.accept}
+                  onChange={handleChange}
+                />
+                {lang === "th"
+                ? "ยินยอมให้บริษัทเก็บข้อมูลส่วนบุคคล"
+                : "I accept personal data policy"}
+            </label>
+         
+            
+
+            {/* SUBMIT */}
+            <button
+               // onClick={submitApply}
+                disabled={!form.accept}
+                className={`px-8 py-2 text-white ${
+                form.accept
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+            >
+                {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
+            </button>
+
+        </div>
+    </div>
+
+
+    </section>
+  );
+}

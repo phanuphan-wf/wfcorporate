@@ -3,10 +3,14 @@ import Axios from "axios";
 import { IoAddCircle } from "react-icons/io5";
 import { TiDelete } from "react-icons/ti";
 
+import JobList from "./showjob";
+
 export default function CreateJob() {
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_web;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;  
 
   const user = JSON.parse(localStorage.getItem("user"));
+
+  const [reloadFlag, setReloadFlag] = useState(0);
 
   /* ================== INIT DATA ================== */
   const initData = {
@@ -28,6 +32,12 @@ export default function CreateJob() {
     { descEn: "", descTh: "" },
   ]);
 
+
+  const lastQual = quals[quals.length - 1];
+  const canAddQual = lastQual.qualEn.trim() !== "" && lastQual.qualTh.trim() !== "";
+
+  const lastDesc = descs[descs.length - 1];
+  const canAddDesc = lastDesc.descEn.trim() !== "" && lastDesc.descTh.trim() !== "";
   //console.log(initData);
 
   /* ================== QUALIFICATION ================== */
@@ -85,7 +95,7 @@ export default function CreateJob() {
       })),
     };
 
-     console.log("PAYLOAD =>", payload);
+    // console.log("PAYLOAD =>", payload);
 
     try {
       const res = await Axios.post(url + "/postJob", payload);
@@ -95,6 +105,7 @@ export default function CreateJob() {
         setData(initData);
         setQuals([{ qualEn: "", qualTh: "" }]);
         setDescs([{ descEn: "", descTh: "" }]);
+        setReloadFlag((prev) => prev + 1); 
       }
     } catch (err) {
       console.error(err);
@@ -107,10 +118,12 @@ export default function CreateJob() {
     setData(initData);
     setQuals([{ qualEn: "", qualTh: "" }]);
     setDescs([{ descEn: "", descTh: "" }]);
+    setReloadFlag((prev) => prev + 1);
   };
 
   /* ================== RENDER ================== */
   return (
+
     <section className="xl:w-4/5 2xl:w-3/4">
       <div className="text-xl mb-4">Create Jobs</div>
 
@@ -140,113 +153,131 @@ export default function CreateJob() {
             />
           </div>
 
-          {/* QUALIFICATIONS */}
-          {quals.map((q, index) => (
-            <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label>Qualification Eng</label>
-                <input
-                  className="w-full"
-                  value={q.qualEn}
-                  onChange={(e) =>
-                    changeQual(index, "qualEn", e.target.value)
-                  }
-                />
-              </div>
+            {/* QUALIFICATIONS */}
+            <div className="space-y-3">
+              {quals.map((q, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end"
+                >
+                  <div>
+                    <label>Qualification Eng</label>
+                    <input
+                      className="w-full"
+                      value={q.qualEn}
+                      onChange={(e) =>
+                        changeQual(index, "qualEn", e.target.value)
+                      }
+                    />
+                  </div>
 
-              <div className="flex items-end gap-2">
-                <div className="flex-1">
-                  <label>Qualification Thai</label>
-                  <input
-                    className="w-full"
-                    value={q.qualTh}
-                    onChange={(e) =>
-                      changeQual(index, "qualTh", e.target.value)
-                    }
-                  />
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <label>Qualification Thai</label>
+                      <input
+                        className="w-full"
+                        value={q.qualTh}
+                        onChange={(e) =>
+                          changeQual(index, "qualTh", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {quals.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeQualRow(index)}
+                        className="flex items-center justify-center h-8 w-8
+                                  hover:bg-red-100 rounded-full transition"
+                      >
+                        <TiDelete size={26} className="text-red-600" />
+                      </button>
+                    )}
+                  </div>
                 </div>
+              ))}
 
-               <div className="flex items-center gap-1">
-                  {index === quals.length - 1 && (
-                    <button
-                      type="button"
-                      onClick={addQualRow}
-                      className="flex items-center justify-center h-8 w-8"
-                    >
-                      <IoAddCircle size={26} className="text-green-600" />
-                    </button>
-                  )}
+              {/* ปุ่มเพิ่มแถว (อยู่ล่างสุด) */}
+              <button
+                type="button"
+                onClick={addQualRow}
+                disabled={!canAddQual}
+                className={`flex items-center gap-1 mt-2
+                  ${canAddQual
+                    ? "text-green-600 hover:text-green-800"
+                    : "text-gray-400 cursor-not-allowed"
+                  }`}
+              >
+                <IoAddCircle size={28} />
+                <span>Add Qualification</span>
+              </button>
 
-                  {quals.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeQualRow(index)}
-                      className="flex items-center justify-center h-8 w-8"
-                    >
-                      <TiDelete size={30} className="text-red-600" />
-                    </button>
-                  )}
-                </div>
-
-              </div>
+              
             </div>
-          ))}
 
-          {/* DESCRIPTIONS */}
-          {descs.map((d, index) => (
-            <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div>
-                <label>Description Eng</label>
-                <input
-                  className="w-full"
-                  value={d.descEn}
-                  onChange={(e) =>
-                    changeDesc(index, "descEn", e.target.value)
-                  }
-                />
-              </div>
+             {/* DESCRIPTIONS */}
+            <div className="space-y-3">
+              {descs.map((d, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end"
+                >
+                  <div>
+                    <label>Description Eng</label>
+                    <input
+                      className="w-full"
+                      value={d.descEn}
+                      onChange={(e) =>
+                        changeDesc(index, "descEn", e.target.value)
+                      }
+                    />
+                  </div>
 
-              <div className="flex items-end gap-2">
-                <div className="flex-1">
-                  <label>Description Thai</label>
-                  <input
-                    className="w-full"
-                    value={d.descTh}
-                    onChange={(e) =>
-                      changeDesc(index, "descTh", e.target.value)
-                    }
-                  />
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1">
+                      <label>Description Thai</label>
+                      <input
+                        className="w-full"
+                        value={d.descTh}
+                        onChange={(e) =>
+                          changeDesc(index, "descTh", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {descs.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeDescRow(index)}
+                        className="flex items-center justify-center h-8 w-8
+                                  hover:bg-red-100 rounded-full transition"
+                      >
+                        <TiDelete size={26} className="text-red-600" />
+                      </button>
+                    )}
+                  </div>
                 </div>
+              ))}
 
-              <div className="flex items-center gap-1">
-                {index === descs.length - 1 && (
-                  <button
-                    type="button"
-                    onClick={addDescRow}
-                    className="flex items-center justify-center h-8 w-8
-                              hover:bg-green-100 rounded-full transition"
-                  >
-                    <IoAddCircle size={26} className="text-green-600" />
-                  </button>
-                )}
+            {/* ปุ่มเพิ่ม */}
+              <button
+                type="button"
+                onClick={addDescRow}
+                disabled={!canAddDesc}
+                className={`flex items-center gap-1 mt-2
+                  ${canAddDesc
+                    ? "text-green-600 hover:text-green-800"
+                    : "text-gray-400 cursor-not-allowed"
+                  }`}
+              >
+                <IoAddCircle size={28} />
+                <span>Add Description</span>
+              </button>
 
-                {descs.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeDescRow(index)}
-                    className="flex items-center justify-center h-8 w-8
-                              hover:bg-red-100 rounded-full transition"
-                  >
-                    <TiDelete size={30} className="text-red-600" />
-                  </button>
-                )}
-              </div>
-
-
-
-              </div>
             </div>
-          ))}
+
+
+
 
           {/* NEED */}
           <div className="flex gap-6 items-center">
@@ -292,6 +323,11 @@ export default function CreateJob() {
         >
           Add Job
         </button>
+      </div>
+
+      <div className="mt-10">
+        <JobList reload={reloadFlag} />
+
       </div>
     </section>
   );
