@@ -6,15 +6,12 @@ import { useTranslation } from "react-i18next";
 import { TiDelete } from "react-icons/ti";
 
 export default function Jobform() {
-  const nav = useNavigate();
+  //const nav = useNavigate();
   const { id } = useParams(); // jobId จาก url
   const { i18n } = useTranslation();
   const lang = i18n.language;
 
-  const url =
-    process.env.REACT_APP_API_URI +
-    process.env.REACT_APP_job +
-    "/postApply";
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;
 
   /* ================= STATE ================= */
   const [form, setForm] = useState({
@@ -27,7 +24,7 @@ export default function Jobform() {
     province: "",
     mobile: "",
     sex: true,
-    birthday: "",
+    //birthday: "",
     accept: false,
   });
 
@@ -56,9 +53,24 @@ export default function Jobform() {
   ];
 
   const getYears = () => {
-    const current = new Date().getFullYear();
-    return Array.from({ length: 60 }, (_, i) => current - i);
+      const current = new Date().getFullYear();
+      return Array.from({ length: 60 }, (_, i) => current - i);
+    };
+    
+
+  const formatBirthday = () => {
+
+    if (!birthday.day || !birthday.month || !birthday.year) return "";
+
+    const day = String(birthday.day).padStart(2, "0");
+    const month = String(birthday.month).padStart(2, "0");
+    const year = birthday.year; 
+
+    return `${year}-${month}-${day}`;
   };
+
+
+
 
   const fileInputRef = useRef(null);
   const [picture, setPicture] = useState(null);
@@ -66,27 +78,59 @@ export default function Jobform() {
 
   
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+      const file = e.target.files[0];
+      if (!file) return;
 
-    setPicture(file);
-    setPreview(URL.createObjectURL(file));
-  };
+      setPicture(file);
+      setPreview(URL.createObjectURL(file));
+    };
 
-  const handleRemoveImage = () => {
-    setPicture(null);
-    setPreview(null);
+    const handleRemoveImage = () => {
+      setPicture(null);
+      setPreview(null);
 
-    // reset input file
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
+      // reset input file
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    };
 
-  const [resumeType, setResumeType] = useState("file"); // file | form
-  const [resume, setResume] = useState(null);
+    const [resumeType, setResumeType] = useState("file"); // file | form
+    const [resume, setResume] = useState(null);
+    const [resumeError, setResumeError] = useState("");
+    const resumeInputRef = useRef(null);
 
+    const handleResumeChange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
 
+      // PDF only
+      if (file.type !== "application/pdf") {
+        setResume(null);
+        setResumeError("กรุณาอัปโหลดไฟล์ PDF เท่านั้น");
+        e.target.value = ""; // ⭐ reset
+        return;
+      }
+
+      // ≤ 5MB
+      if (file.size > 5 * 1024 * 1024) {
+        setResume(null);
+        setResumeError("ขนาดไฟล์ต้องไม่เกิน 5MB");
+        e.target.value = ""; // ⭐ reset
+        return;
+      }
+
+      setResume(file);
+      setResumeError("");
+    };
+
+    const handleRemoveResume = () => {
+      setResume(null);
+      setResumeError("");
+      if (resumeInputRef.current) {
+        resumeInputRef.current.value = ""; // ⭐ reset input file
+      }
+    };
 
 
   const [eddu, setEddu] = useState([
@@ -106,50 +150,57 @@ export default function Jobform() {
     }));
   };
 
-  /* ================= SUBMIT ================= */
-  const submitApply = async () => {
-    if (!form.accept) {
-      alert(lang === "th" ? "กรุณายอมรับเงื่อนไข" : "Please accept condition");
-      return;
-    }
+  /* ================= SUBMIT ================= */ 
+    const submitApply = async () => {      
 
-    const formData = new FormData();
+      const formData = new FormData();
 
-    Object.keys(form).forEach((key) => {
-      formData.append(key, form[key]);
-    });
-
-    formData.append("picture", picture);
-    formData.append("resume", resume);
-
-    eddu.forEach((e, i) => {
-      formData.append(`Eddu[${i}].Level`, e.Level);
-      formData.append(`Eddu[${i}].Institute`, e.Institute);
-      formData.append(`Eddu[${i}].Subject`, e.Subject);
-      formData.append(`Eddu[${i}].GYear`, e.GYear);
-    });
-
-    hist.forEach((h, i) => {
-      formData.append(`Hist[${i}].WYear`, h.WYear);
-      formData.append(`Hist[${i}].Company`, h.Company);
-      formData.append(`Hist[${i}].Position`, h.Position);
-      formData.append(`Hist[${i}].Funct`, h.Funct);
-    });
-
-    try {
-      const res = await Axios.post(url, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      // 🔹 basic fields
+      Object.keys(form).forEach((key) => {
+        formData.append(key, form[key]);
       });
 
-      if (res.status === 200) {
-        alert(lang === "th" ? "ส่งใบสมัครเรียบร้อย" : "Apply success");
-        nav("/joinus");
+      formData.append("birthday", formatBirthday()); 
+      // 🔹 files
+      if (picture) formData.append("picture", picture);
+      if (resume) formData.append("resume", resume);
+
+      // 🔹 education
+      eddu.forEach((e, i) => {
+        formData.append(`Eddu[${i}].Level`, e.Level);
+        formData.append(`Eddu[${i}].Institute`, e.Institute);
+        formData.append(`Eddu[${i}].Subject`, e.Subject);
+        formData.append(`Eddu[${i}].GYear`, e.GYear);
+      });
+
+      // 🔹 work experience
+      hist.forEach((h, i) => {
+        formData.append(`Hist[${i}].WYear`, h.WYear);
+        formData.append(`Hist[${i}].Company`, h.Company);
+        formData.append(`Hist[${i}].Position`, h.Position);
+        formData.append(`Hist[${i}].Funct`, h.Funct);
+      });
+
+    
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
       }
-    } catch (err) {
-      console.error(err);
-      alert("ERROR");
-    }
-  };
+
+      try {
+        const res = await Axios.post(url + "/postApply", formData);
+
+        if (res.status === 200) {
+          alert(lang === "th" ? "ส่งใบสมัครเรียบร้อย" : "Apply success");
+        }
+      } catch (err) {
+        console.error(err.response || err);        
+        alert("Submit failed");
+      }
+    };
+
+    
+
+
 
   /* ================= JSX ================= */
   return (
@@ -161,12 +212,10 @@ export default function Jobform() {
                     {lang === "th" ? "แบบฟอร์มสมัครงาน" : "Job Application Form"}                
                 </h1>
             </div>          
-        </div>  
-
-        
+        </div>        
 
 
-      {/* FORM WRAPPER */}
+    {/* FORM WRAPPER */}
     <div className="flex justify-center w-full mt-5 mb-3">
 
         <div className="w-full sm:w-[90%] lg:w-4/5">       
@@ -313,21 +362,20 @@ export default function Jobform() {
 
                 {/* DAY */}
                 <select
-                  className="border p-2"                  
-                  value={birthday.day}
-                  onChange={(e) =>
-                    setBirthday({ ...birthday, day: e.target.value })
-                  }
+                    className="border p-2"
+                    value={birthday.day}
+                    onChange={(e) =>
+                      setBirthday({ ...birthday, day: e.target.value })
+                    }                 
                 >
-                  <option value="0" disabled hidden>
-                    {lang === "th" ? "วันเกิด" : "Birthday"}
+                  <option value={0} disabled hidden>
+                    {lang === "th" ? "วันเกิด" : "Day"}
                   </option>
                   {days.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
+                    <option key={d} value={d}>{d}</option>
                   ))}
                 </select>
+
 
                 {/* MONTH */}
                 <select
@@ -335,10 +383,10 @@ export default function Jobform() {
                   value={birthday.month}
                   onChange={(e) =>
                     setBirthday({ ...birthday, month: e.target.value })
-                  }
+                  }                
                 >
-                  <option value="0" disabled hidden>
-                    {lang === "th" ? "เดือนเกิด" : "Birthmonth"}
+                  <option value={0} disabled hidden>
+                    {lang === "th" ? "เดือนเกิด" : "Month"}
                   </option>
                   {months.map((m, i) => (
                     <option key={i} value={i + 1}>
@@ -347,16 +395,18 @@ export default function Jobform() {
                   ))}
                 </select>
 
+
                 {/* YEAR */}
                 <select
                   className="border p-2"
                   value={birthday.year}
                   onChange={(e) =>
                     setBirthday({ ...birthday, year: e.target.value })
-                  }
+                  }                 
                 >
-                  <option value="0" disabled hidden>
-                    {lang === "th" ? "ปีเกิด" : "Birth Year"}
+
+                  <option value={0} disabled hidden>
+                    {lang === "th" ? "ปีเกิด" : "Year"}
                   </option>
                   {getYears().map((y) => (
                     <option key={y} value={y}>
@@ -364,6 +414,7 @@ export default function Jobform() {
                     </option>
                   ))}
                 </select>
+
 
               </div>
             </div>
@@ -438,28 +489,64 @@ export default function Jobform() {
 
 
             {resumeType === "file" && (
-              <>
-                <span className="font-medium block mb-2 text-sm sm:text-base">
-                  {lang === "th" ? "แนบไฟล์ Resume" : "Upload Resume"}
-                </span>
+              <div className="mb-6">
+                <label className="font-medium block mb-2 text-sm sm:text-base">
+                  {lang === "th" ? "แนบไฟล์ Resume (PDF)" : "Upload Resume (PDF)"}
+                </label>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <label
+                  className="
+                    block w-full 
+                    border border-dashed rounded-md 
+                    p-4 text-center cursor-pointer 
+                    text-sm sm:text-base 
+                    text-gray-600 
+                    hover:border-red-400 transition
+                    bg-gray-50
+                  "
+                >
+                  {resume ? (
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="truncate text-gray-800">
+                        📄 {resume.name}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleRemoveResume();
+                          setResume(null);
+                        }}
+                        className="text-red-500 hover:text-red-700 text-sm"
+                      >
+                        ❌
+                      </button>
+                    </div>
+                  ) : (
+                    <span>
+                      {lang === "th"
+                        ? "แตะเพื่อเลือกไฟล์ PDF"
+                        : "Tap to upload PDF"}
+                    </span>
+                  )}
+
                   <input
+                    ref={resumeInputRef}
                     type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={(e) => setResume(e.target.files[0])}
-                    className="
-                      border 
-                      p-2 
-                      text-sm 
-                      sm:text-base 
-                      w-full
-                    "
+                    accept="application/pdf"
+                    onChange={handleResumeChange}
+                    className="hidden"
                   />
-                </div>
-              </>
-            )}
+                </label>
 
+                {resumeError && (
+                  <p className="text-red-500 text-sm mt-2">
+                    ⚠️ {resumeError}
+                  </p>
+                )}
+              </div>
+            )}
 
 
             {resumeType === "form" && (
@@ -662,11 +749,12 @@ export default function Jobform() {
             <button
                // onClick={submitApply}
                 disabled={!form.accept}
-                className={`px-8 py-2 text-white ${
+                className={`mt-2 mx-auto w-full sm:w-3/4 md:w-1/4 px-8 py-2 text-white ${
                 form.accept
                     ? "bg-red-500 hover:bg-red-600"
                     : "bg-gray-400 cursor-not-allowed"
                 }`}
+                onClick={submitApply}
             >
                 {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
             </button>
