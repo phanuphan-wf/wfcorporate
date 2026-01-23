@@ -6,7 +6,7 @@ import { TiDelete } from "react-icons/ti";
 import JobList from "./showjob";
 
 export default function CreateJob() {
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;  
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -21,28 +21,32 @@ export default function CreateJob() {
     urgent: false,
   };
 
- 
   const [data, setData] = useState(initData);
 
-  const [quals, setQuals] = useState([
-    { qualEn: "", qualTh: "" },
-  ]);
+  const initQual = {
+    qualEn: "",
+    qualTh: "",
+    rank: 1,
+  };
 
-  const [descs, setDescs] = useState([
-    { descEn: "", descTh: "" },
-  ]);
+  const [quals, setQuals] = useState([initQual]);
 
+  const initDesc = { descEn: "", descTh: "", rank: 1 };
+
+  const [descs, setDescs] = useState([initDesc]);
 
   const lastQual = quals[quals.length - 1];
-  const canAddQual = lastQual.qualEn.trim() !== "" && lastQual.qualTh.trim() !== "";
+  const canAddQual =
+    lastQual.qualEn.trim() !== "" && lastQual.qualTh.trim() !== "";
 
   const lastDesc = descs[descs.length - 1];
-  const canAddDesc = lastDesc.descEn.trim() !== "" && lastDesc.descTh.trim() !== "";
+  const canAddDesc =
+    lastDesc.descEn.trim() !== "" && lastDesc.descTh.trim() !== "";
   //console.log(initData);
 
   /* ================== QUALIFICATION ================== */
   const addQualRow = () => {
-    setQuals(prev => [...prev, { qualEn: "", qualTh: "" }]);
+    setQuals((prev) => [...prev, { qualEn: "", qualTh: "" }]);
   };
 
   const changeQual = (index, field, value) => {
@@ -52,12 +56,12 @@ export default function CreateJob() {
   };
 
   const removeQualRow = (index) => {
-    setQuals(prev => prev.filter((_, i) => i !== index));
+    setQuals((prev) => prev.filter((_, i) => i !== index));
   };
 
   /* ================== DESCRIPTION ================== */
   const addDescRow = () => {
-    setDescs(prev => [...prev, { descEn: "", descTh: "" }]);
+    setDescs((prev) => [...prev, { descEn: "", descTh: "" }]);
   };
 
   const changeDesc = (index, field, value) => {
@@ -67,15 +71,15 @@ export default function CreateJob() {
   };
 
   const removeDescRow = (index) => {
-    setDescs(prev => prev.filter((_, i) => i !== index));
+    setDescs((prev) => prev.filter((_, i) => i !== index));
   };
 
   /* ================== VALIDATE ================== */
   const isFormValid =
     data.positionEn.trim() &&
     data.positionTh.trim() &&
-    quals.every(q => q.qualEn.trim() && q.qualTh.trim()) &&
-    descs.every(d => d.descEn.trim() && d.descTh.trim());
+    quals.every((q) => q.qualEn.trim() && q.qualTh.trim()) &&
+    descs.every((d) => d.descEn.trim() && d.descTh.trim());
 
   /* ================== SUBMIT ================== */
   const submitData = async () => {
@@ -105,7 +109,7 @@ export default function CreateJob() {
         setData(initData);
         setQuals([{ qualEn: "", qualTh: "" }]);
         setDescs([{ descEn: "", descTh: "" }]);
-        setReloadFlag((prev) => prev + 1); 
+        setReloadFlag((prev) => prev + 1);
       }
     } catch (err) {
       console.error(err);
@@ -123,13 +127,11 @@ export default function CreateJob() {
 
   /* ================== RENDER ================== */
   return (
-
     <section className="xl:w-4/5 2xl:w-3/4">
       <div className="text-xl mb-4">Create Jobs</div>
 
       <div className="border rounded-md p-4 border-slate-400">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
           {/* Position */}
           <div>
             <label>Position Eng</label>
@@ -137,7 +139,7 @@ export default function CreateJob() {
               className="w-full"
               value={data.positionEn}
               onChange={(e) =>
-                setData(prev => ({ ...prev, positionEn: e.target.value }))
+                setData((prev) => ({ ...prev, positionEn: e.target.value }))
               }
             />
           </div>
@@ -148,136 +150,126 @@ export default function CreateJob() {
               className="w-full"
               value={data.positionTh}
               onChange={(e) =>
-                setData(prev => ({ ...prev, positionTh: e.target.value }))
+                setData((prev) => ({ ...prev, positionTh: e.target.value }))
               }
             />
           </div>
 
-            {/* QUALIFICATIONS */}
-            <div className="space-y-3">
-              {quals.map((q, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end"
-                >
-                  <div>
-                    <label>Qualification Eng</label>
+          {/* QUALIFICATIONS */}
+          <div className="space-y-3">
+            {quals.map((q, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+                <div>
+                  <label>Qualification Eng</label>
+                  <input
+                    className="w-full"
+                    value={q.qualEn}
+                    onChange={(e) =>
+                      changeQual(index, "qualEn", e.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="flex items-end gap-2">
+                  <div className="flex-1">
+                    <label>Qualification Thai</label>
                     <input
                       className="w-full"
-                      value={q.qualEn}
+                      value={q.qualTh}
                       onChange={(e) =>
-                        changeQual(index, "qualEn", e.target.value)
+                        changeQual(index, "qualTh", e.target.value)
                       }
                     />
                   </div>
 
-                  <div className="flex items-end gap-2">
-                    <div className="flex-1">
-                      <label>Qualification Thai</label>
-                      <input
-                        className="w-full"
-                        value={q.qualTh}
-                        onChange={(e) =>
-                          changeQual(index, "qualTh", e.target.value)
-                        }
-                      />
-                    </div>
-
-                    {quals.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeQualRow(index)}
-                        className="flex items-center justify-center h-8 w-8
-                                  hover:bg-red-100 rounded-full transition"
-                      >
-                        <TiDelete size={26} className="text-red-600" />
-                      </button>
-                    )}
-                  </div>
+                  {quals.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeQualRow(index)}
+                      className="flex items-center justify-center h-8 w-8
+                                  hover:bg-red-100 rounded-full transition">
+                      <TiDelete size={26} className="text-red-600" />
+                    </button>
+                  )}
                 </div>
-              ))}
+              </div>
+            ))}
 
-              {/* ปุ่มเพิ่มแถว (อยู่ล่างสุด) */}
-              <button
-                type="button"
-                onClick={addQualRow}
-                disabled={!canAddQual}
-                className={`flex items-center gap-1 mt-2
-                  ${canAddQual
-                    ? "text-green-600 hover:text-green-800"
-                    : "text-gray-400 cursor-not-allowed"
-                  }`}
-              >
-                <IoAddCircle size={28} />
-                <span>Add Qualification</span>
-              </button>
+            {/* ปุ่มเพิ่มแถว (อยู่ล่างสุด) */}
+            <button
+              type="button"
+              onClick={addQualRow}
+              disabled={!canAddQual}
+              className={`flex items-center gap-1 mt-2
+                  ${
+                    canAddQual
+                      ? "text-green-600 hover:text-green-800"
+                      : "text-gray-400 cursor-not-allowed"
+                  }`}>
+              <IoAddCircle size={28} />
+              <span>Add Qualification</span>
+            </button>
+          </div>
 
-              
-            </div>
+          {/* DESCRIPTIONS */}
+          <div className="space-y-3">
+            {descs.map((d, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+                <div>
+                  <label>Description Eng</label>
+                  <input
+                    className="w-full"
+                    value={d.descEn}
+                    onChange={(e) =>
+                      changeDesc(index, "descEn", e.target.value)
+                    }
+                  />
+                </div>
 
-             {/* DESCRIPTIONS */}
-            <div className="space-y-3">
-              {descs.map((d, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end"
-                >
-                  <div>
-                    <label>Description Eng</label>
+                <div className="flex items-end gap-2">
+                  <div className="flex-1">
+                    <label>Description Thai</label>
                     <input
                       className="w-full"
-                      value={d.descEn}
+                      value={d.descTh}
                       onChange={(e) =>
-                        changeDesc(index, "descEn", e.target.value)
+                        changeDesc(index, "descTh", e.target.value)
                       }
                     />
                   </div>
 
-                  <div className="flex items-end gap-2">
-                    <div className="flex-1">
-                      <label>Description Thai</label>
-                      <input
-                        className="w-full"
-                        value={d.descTh}
-                        onChange={(e) =>
-                          changeDesc(index, "descTh", e.target.value)
-                        }
-                      />
-                    </div>
-
-                    {descs.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeDescRow(index)}
-                        className="flex items-center justify-center h-8 w-8
-                                  hover:bg-red-100 rounded-full transition"
-                      >
-                        <TiDelete size={26} className="text-red-600" />
-                      </button>
-                    )}
-                  </div>
+                  {descs.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeDescRow(index)}
+                      className="flex items-center justify-center h-8 w-8
+                                  hover:bg-red-100 rounded-full transition">
+                      <TiDelete size={26} className="text-red-600" />
+                    </button>
+                  )}
                 </div>
-              ))}
+              </div>
+            ))}
 
             {/* ปุ่มเพิ่ม */}
-              <button
-                type="button"
-                onClick={addDescRow}
-                disabled={!canAddDesc}
-                className={`flex items-center gap-1 mt-2
-                  ${canAddDesc
-                    ? "text-green-600 hover:text-green-800"
-                    : "text-gray-400 cursor-not-allowed"
-                  }`}
-              >
-                <IoAddCircle size={28} />
-                <span>Add Description</span>
-              </button>
-
-            </div>
-
-
-
+            <button
+              type="button"
+              onClick={addDescRow}
+              disabled={!canAddDesc}
+              className={`flex items-center gap-1 mt-2
+                  ${
+                    canAddDesc
+                      ? "text-green-600 hover:text-green-800"
+                      : "text-gray-400 cursor-not-allowed"
+                  }`}>
+              <IoAddCircle size={28} />
+              <span>Add Description</span>
+            </button>
+          </div>
 
           {/* NEED */}
           <div className="flex gap-6 items-center">
@@ -287,9 +279,7 @@ export default function CreateJob() {
               <input
                 type="radio"
                 checked={!data.urgent}
-                onChange={() =>
-                  setData(prev => ({ ...prev, urgent: false }))
-                }
+                onChange={() => setData((prev) => ({ ...prev, urgent: false }))}
               />
               normal
             </label>
@@ -298,9 +288,7 @@ export default function CreateJob() {
               <input
                 type="radio"
                 checked={data.urgent}
-                onChange={() =>
-                  setData(prev => ({ ...prev, urgent: true }))
-                }
+                onChange={() => setData((prev) => ({ ...prev, urgent: true }))}
               />
               urgent
             </label>
@@ -319,15 +307,13 @@ export default function CreateJob() {
             !isFormValid && "opacity-50 cursor-not-allowed"
           }`}
           disabled={!isFormValid}
-          onClick={submitData}
-        >
+          onClick={submitData}>
           Add Job
         </button>
       </div>
 
       <div className="mt-10">
         <JobList reload={reloadFlag} />
-
       </div>
     </section>
   );
