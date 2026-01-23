@@ -14,7 +14,7 @@ export default function Jobform() {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;
 
   /* ================= STATE ================= */
-  const [form, setForm] = useState({
+  const initData = {
     jobId: id,
     name: "",
     surname: "",
@@ -26,8 +26,11 @@ export default function Jobform() {
     sex: true,
     //birthday: "",
     accept: false,
-  });
+  };
 
+  //console.log(initData);
+
+  const [form, setForm] = useState(initData);
 
   const [birthday, setBirthday] = useState({
     day: "0",
@@ -54,8 +57,8 @@ export default function Jobform() {
 
   const getYears = () => {
       const current = new Date().getFullYear();
-      return Array.from({ length: 60 }, (_, i) => current - i);
-    };
+      return Array.from({ length: 40 }, (_, i) => current -(i + 20));
+  };
     
 
   const formatBirthday = () => {
@@ -70,13 +73,12 @@ export default function Jobform() {
   };
 
 
+  const fileInputRef = useRef();
+  const [picture, setPicture] = useState();
+  const [preview, setPreview] = useState(); 
 
+  //console.log(picture);
 
-  const fileInputRef = useRef(null);
-  const [picture, setPicture] = useState(null);
-  const [preview, setPreview] = useState(null); 
-
-  
   const handleImageChange = (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -86,8 +88,8 @@ export default function Jobform() {
     };
 
     const handleRemoveImage = () => {
-      setPicture(null);
-      setPreview(null);
+      setPicture();
+      setPreview();
 
       // reset input file
       if (fileInputRef.current) {
@@ -96,9 +98,9 @@ export default function Jobform() {
     };
 
     const [resumeType, setResumeType] = useState("file"); // file | form
-    const [resume, setResume] = useState(null);
+    const [resume, setResume] = useState();
     const [resumeError, setResumeError] = useState("");
-    const resumeInputRef = useRef(null);
+    const resumeInputRef = useRef();
 
     const handleResumeChange = (e) => {
       const file = e.target.files[0];
@@ -106,7 +108,7 @@ export default function Jobform() {
 
       // PDF only
       if (file.type !== "application/pdf") {
-        setResume(null);
+        setResume();
         setResumeError("กรุณาอัปโหลดไฟล์ PDF เท่านั้น");
         e.target.value = ""; // ⭐ reset
         return;
@@ -114,7 +116,7 @@ export default function Jobform() {
 
       // ≤ 5MB
       if (file.size > 5 * 1024 * 1024) {
-        setResume(null);
+        setResume();
         setResumeError("ขนาดไฟล์ต้องไม่เกิน 5MB");
         e.target.value = ""; // ⭐ reset
         return;
@@ -151,54 +153,61 @@ export default function Jobform() {
   };
 
   /* ================= SUBMIT ================= */ 
-    const submitApply = async () => {      
+    const submitApply = async () => {
 
       const formData = new FormData();
 
-      // 🔹 basic fields
-      Object.keys(form).forEach((key) => {
-        formData.append(key, form[key]);
-      });
+      formData.append("jobId",12);
+      formData.append("name", "Test");
+      formData.append("surname", "App");
+      formData.append("addr", "99/9 ถนนสุขุมวิท");
+      formData.append("subdistrict", "100101");
+      formData.append("district", "1001");
+      formData.append("province", "10");
+      formData.append("mobile", "0891234567");
+      formData.append("sex", true);
+      formData.append("birthday", formatBirthday());
+      formData.append("accept", true);
 
-      formData.append("birthday", formatBirthday()); 
-      // 🔹 files
-      if (picture) formData.append("picture", picture);
-      if (resume) formData.append("resume", resume);
+      if (resume) {
+        formData.append("resume", resume); // File
+      }
 
-      // 🔹 education
-      eddu.forEach((e, i) => {
-        formData.append(`Eddu[${i}].Level`, e.Level);
-        formData.append(`Eddu[${i}].Institute`, e.Institute);
-        formData.append(`Eddu[${i}].Subject`, e.Subject);
-        formData.append(`Eddu[${i}].GYear`, e.GYear);
-      });
+      if (picture) {
+        formData.append("picture", picture); // File
+      }   
+      // Eddu
+      formData.append("Eddu[0].Level", "ปริญญาตรี");
+      formData.append("Eddu[0].Institute", "Chulalongkorn University");
+      formData.append("Eddu[0].Subject", "Computer Engineering");
+      formData.append("Eddu[0].GYear", "2020");
 
-      // 🔹 work experience
-      hist.forEach((h, i) => {
-        formData.append(`Hist[${i}].WYear`, h.WYear);
-        formData.append(`Hist[${i}].Company`, h.Company);
-        formData.append(`Hist[${i}].Position`, h.Position);
-        formData.append(`Hist[${i}].Funct`, h.Funct);
-      });
+      // Hist
+      formData.append("Hist[0].WYear", "2020-2025");
+      formData.append("Hist[0].Company", "World Fair Co., Ltd.");
+      formData.append("Hist[0].Position", "Developer");
+      formData.append("Hist[0].Funct", "BuildApp");
 
-    
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
       }
+
 
       try {
         const res = await Axios.post(url + "/postApply", formData);
 
         if (res.status === 200) {
-          alert(lang === "th" ? "ส่งใบสมัครเรียบร้อย" : "Apply success");
+          alert("Apply success");
         }
       } catch (err) {
-        console.error(err.response || err);        
+        console.error(err.response || err);
         alert("Submit failed");
       }
-    };
 
-    
+
+      
+
+    };    
 
 
 
@@ -224,51 +233,51 @@ export default function Jobform() {
             {lang === "th" ? "ประวัติส่วนตัว" : "Personal information"}
           </h1>
 
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
-            {/* PHOTO BOX (CLICKABLE) */}
-            <div
-              onClick={() => fileInputRef.current.click()}
-              className="relative w-32 h-40 border-2 border-dashed border-gray-400 bg-gray-50
-                        flex items-center justify-center cursor-pointer
-                        mx-auto sm:mx-0 hover:border-red-400 transition"
-            >
-              {preview ? (
-                <>
-                  <img
-                    src={preview}
-                    alt="preview"
-                    className="w-full h-full object-cover"
-                  />
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-6">
+              {/* PHOTO BOX (CLICKABLE) */}
+              <div
+                onClick={() => fileInputRef.current.click()}
+                className="relative w-32 h-40 border-2 border-dashed border-gray-400 bg-gray-50
+                          flex items-center justify-center cursor-pointer
+                          mx-auto sm:mx-0 hover:border-red-400 transition"
+              >
+                {preview ? (
+                  <>
+                    <img
+                      src={preview}
+                      alt="preview"
+                      className="w-full h-full object-cover"
+                    />
 
-                  {/* ปุ่มลบ */}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation(); // ❗ กันไม่ให้ trigger เลือกรูปอีก
-                      handleRemoveImage();
-                    }}
-                    className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
-                  >
-                    ✕
-                  </button>
-                </>
-              ) : (
-                <span className="text-gray-400 text-sm text-center px-2">
-                  {lang === "th" ? "คลิกเพื่อเลือกรูป" : "Click to upload photo"}
-                </span>
-              )}
-            </div>
+                    {/* ปุ่มลบ */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // ❗ กันไม่ให้ trigger เลือกรูปอีก
+                        handleRemoveImage();
+                      }}
+                      className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      ✕
+                    </button>
+                  </>
+                ) : (
+                  <span className="text-gray-400 text-sm text-center px-2">
+                    {lang === "th" ? "คลิกเพื่อเลือกรูป" : "Click to upload photo"}
+                  </span>
+                )}
+              </div>
 
-            {/* INPUT FILE (HIDDEN) */}
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="hidden"
-            />
+              {/* INPUT FILE (HIDDEN) */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=""
+                onChange={handleImageChange}
+                className="hidden"
+              />
 
-        </div>
+          </div>
 
 
 
