@@ -1,4 +1,4 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef,useEffect} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -134,23 +134,22 @@ export default function Jobform() {
       }
     };
 
+    const [eddu, setEddu] = useState([
+      { Level: "", Institute: "", Subject: "", GYear: "" },
+    ]);
 
-  const [eddu, setEddu] = useState([
-    { Level: "", Institute: "", Subject: "", GYear: "" },
-  ]);
+    const [hist, setHist] = useState([
+      { WYear: "", Company: "", Position: "", Funct: "" },
+    ]);
 
-  const [hist, setHist] = useState([
-    { WYear: "", Company: "", Position: "", Funct: "" },
-  ]);
-
-  /* ================= HANDLER ================= */
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+    /* ================= HANDLER ================= */
+    const handleChange = (e) => {
+      const { name, value, type, checked } = e.target;
+      setForm((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    };
 
   /* ================= SUBMIT ================= */ 
     const submitApply = async () => {
@@ -169,24 +168,24 @@ export default function Jobform() {
       formData.append("birthday", formatBirthday());
       formData.append("accept", true);
 
-      if (resume) {
-        formData.append("resume", resume); // File
-      }
+      // if (resume) {
+      //   formData.append("resume", resume); // File
+      // }
 
-      if (picture) {
-        formData.append("picture", picture); // File
-      }   
-      // Eddu
-      formData.append("Eddu[0].Level", "ปริญญาตรี");
-      formData.append("Eddu[0].Institute", "Chulalongkorn University");
-      formData.append("Eddu[0].Subject", "Computer Engineering");
-      formData.append("Eddu[0].GYear", "2020");
+      // if (picture) {
+      //   formData.append("picture", picture); // File
+      // }   
+      // // Eddu
+      // formData.append("Eddu[0].Level", "ปริญญาตรี");
+      // formData.append("Eddu[0].Institute", "Chulalongkorn University");
+      // formData.append("Eddu[0].Subject", "Computer Engineering");
+      // formData.append("Eddu[0].GYear", "2020");
 
-      // Hist
-      formData.append("Hist[0].WYear", "2020-2025");
-      formData.append("Hist[0].Company", "World Fair Co., Ltd.");
-      formData.append("Hist[0].Position", "Developer");
-      formData.append("Hist[0].Funct", "BuildApp");
+      // // Hist
+      // formData.append("Hist[0].WYear", "2020-2025");
+      // formData.append("Hist[0].Company", "World Fair Co., Ltd.");
+      // formData.append("Hist[0].Position", "Developer");
+      // formData.append("Hist[0].Funct", "BuildApp");
 
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
@@ -203,11 +202,13 @@ export default function Jobform() {
         console.error(err.response || err);
         alert("Submit failed");
       }
-
-
       
 
     };    
+
+    useEffect(() => {
+            
+    }, []);
 
 
 
