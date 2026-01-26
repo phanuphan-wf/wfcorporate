@@ -168,24 +168,24 @@ export default function Jobform() {
       formData.append("birthday", formatBirthday());
       formData.append("accept", true);
 
-      // if (resume) {
-      //   formData.append("resume", resume); // File
-      // }
+      if (resume) {
+        formData.append("resume", resume); // File
+      }
 
-      // if (picture) {
-      //   formData.append("picture", picture); // File
-      // }   
-      // // Eddu
-      // formData.append("Eddu[0].Level", "ปริญญาตรี");
-      // formData.append("Eddu[0].Institute", "Chulalongkorn University");
-      // formData.append("Eddu[0].Subject", "Computer Engineering");
-      // formData.append("Eddu[0].GYear", "2020");
+      if (picture) {
+        formData.append("picture", picture); // File
+      }   
+      // Eddu
+      formData.append("Eddu[0].Level", "ปริญญาตรี");
+      formData.append("Eddu[0].Institute", "Chulalongkorn University");
+      formData.append("Eddu[0].Subject", "Computer Engineering");
+      formData.append("Eddu[0].GYear", "2020");
 
-      // // Hist
-      // formData.append("Hist[0].WYear", "2020-2025");
-      // formData.append("Hist[0].Company", "World Fair Co., Ltd.");
-      // formData.append("Hist[0].Position", "Developer");
-      // formData.append("Hist[0].Funct", "BuildApp");
+      // Hist
+      formData.append("Hist[0].WYear", "2020-2025");
+      formData.append("Hist[0].Company", "World Fair Co., Ltd.");
+      formData.append("Hist[0].Position", "Developer");
+      formData.append("Hist[0].Funct", "BuildApp");
 
       for (let pair of formData.entries()) {
         console.log(pair[0], pair[1]);
