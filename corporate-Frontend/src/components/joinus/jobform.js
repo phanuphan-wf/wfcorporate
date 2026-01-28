@@ -162,7 +162,7 @@ export default function Jobform() {
 
   
 
-  const fileInputRef = useRef();
+  const fileInputRef = useRef(null);
   const [picture, setPicture] = useState();
   const [preview, setPreview] = useState();
 
@@ -235,13 +235,17 @@ export default function Jobform() {
     }
   };
 
-  const [eddu, setEddu] = useState([
+  const initialEddu = [
     { Level: "", Institute: "", Subject: "", GYear: "" },
-  ]);
+  ];
 
-  const [hist, setHist] = useState([
+  const initialHist = [
     { WYear: "", Company: "", Position: "", Funct: "" },
-  ]);
+  ];
+
+  const [eddu, setEddu] = useState(initialEddu);
+  const [hist, setHist] = useState(initialHist);
+
 
   /* ================= HANDLER ================= */
   const handleChange = (e) => {
@@ -386,7 +390,7 @@ export default function Jobform() {
       return false;
     }
 
-    console.log(resumeType);
+    //console.log(resumeType);
 
 
     if (resumeType === "form") {
@@ -447,38 +451,71 @@ export default function Jobform() {
     if (picture) {
       formData.append("picture", picture); // File
     }
-    // Eddu
-    eddu.forEach((eddu, i) => {
-      formData.append(`Eddu[${i}].Level`, eddu.Level);
-      formData.append(`Eddu[${i}].Institute`, eddu.Institute);
-      formData.append(`Eddu[${i}].Subject`, eddu.Subject);
-      formData.append(`Eddu[${i}].GYear`, eddu.GYear);
-    });
+    
 
 
-    // Hist
-    hist.forEach((hist, i) => {
-      formData.append(`Hist[${i}].WYear`, hist.WYear);
-      formData.append(`Hist[${i}].Company`, hist.Company);
-      formData.append(`Hist[${i}].Position`, hist.Position);
-      formData.append(`Hist[${i}].Funct`, hist.Funct);
-    });
+    if (resumeType == "file") {
+      formData.append("Eddu[0].Level", "0");
+      formData.append("Eddu[0].Institute", "0");
+      formData.append("Eddu[0].Subject", "0");
+      formData.append("Eddu[0].GYear", 0);
 
+      formData.append("Hist[0].WYear", "0");
+      formData.append("Hist[0].Company", "0");
+      formData.append("Hist[0].Position", "0");
+      formData.append("Hist[0].Funct", "0");
+      
+      //return;
+    }else{
+      // Eddu
+      eddu.forEach((eddu, i) => {
+        formData.append(`Eddu[${i}].Level`, eddu.Level);
+        formData.append(`Eddu[${i}].Institute`, eddu.Institute);
+        formData.append(`Eddu[${i}].Subject`, eddu.Subject);
+        formData.append(`Eddu[${i}].GYear`, eddu.GYear);
+      });
+      // Hist
+      hist.forEach((hist, i) => {
+        formData.append(`Hist[${i}].WYear`, hist.WYear);
+        formData.append(`Hist[${i}].Company`, hist.Company);
+        formData.append(`Hist[${i}].Position`, hist.Position);
+        formData.append(`Hist[${i}].Funct`, hist.Funct);
+      });
+
+    }
 
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
 
-    // try {
-    //   const res = await Axios.post(url + "/postApply", formData);
 
-    //   if (res.status === 200) {
-    //     alert("Apply success");
-    //   }
-    // } catch (err) {
-    //   console.error(err.response || err);
-    //   alert("Submit failed");
-    // }
+
+    try {
+      const res = await Axios.post(url + "/postApply", formData);
+
+      if (res.status === 200) {
+        openFillModal(
+          lang === "th"
+            ? "ส่งข้อมูลสมัครงานสำเร็จ กรุณารอเจ้าหน้าที่ติดต่อกลับ"
+            : "Your job application has been submitted successfully. Please wait for our team to contact you."
+        );
+
+         setForm(initData);
+         setEddu(initialEddu);
+         setHist(initialHist);
+         setBirthday(initBirthDay);
+         
+         handleRemoveImage();
+         handleRemoveResume();
+        
+      }
+
+     
+
+    } catch (err) {
+      console.error(err.response || err);
+      alert("Submit failed");
+    }
   };
 
   useEffect(() => {
@@ -543,17 +580,17 @@ export default function Jobform() {
             </div>
 
             {/* INPUT FILE (HIDDEN) */}
-            <input
-              ref={fileInputRef}
+            <input              
               type="file"
-              accept=""
+              accept="image/*"
+              ref={fileInputRef}
               onChange={handleImageChange}
               className="hidden"
             />
           </div>
 
           {/* BASIC INFO */}
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <div className="grid md:grid-cols-2 gap-4 mb-3">
             <input
               name="name"
               placeholder={lang === "th" ? "ชื่อ" : "Name"}
@@ -571,7 +608,7 @@ export default function Jobform() {
             />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <div className="grid md:grid-cols-2 gap-4 mb-3">
             <input
               name="mobile"
               placeholder={lang === "th" ? "เบอร์โทร" : "Mobile"}
@@ -619,7 +656,7 @@ export default function Jobform() {
           </div>
 
           {/* BIRTHDAY */}
-          <div className="mb-6">
+          <div className="mb-3">
             <div className="grid grid-cols-3 gap-3">
               {/* DAY */}
               <select
@@ -684,12 +721,12 @@ export default function Jobform() {
               placeholder={lang === "th" ? "ที่อยู่" : "Address"}
               value={form.addr}
               onChange={handleChange}
-              className="border p-2 w-full mb-6"
+              className="border p-2 w-full mb-3"
               rows={4}
             />
           </div>
 
-          <div className="mb-6">
+          <div className="mb-3">
             <div className="grid grid-cols-3 gap-3">  
 
               <select
@@ -808,10 +845,10 @@ export default function Jobform() {
                   </span>
                 )}
 
-                <input
-                  ref={resumeInputRef}
+                <input                  
                   type="file"
                   accept="application/pdf"
+                  ref={resumeInputRef}
                   onChange={handleResumeChange}
                   className="hidden"
                 />
@@ -908,7 +945,7 @@ export default function Jobform() {
 
               {/* WORK EXPERIENCE */}
               <div className="flex items-center justify-between mb-4 mt-8">
-                <h1 className="text-2xl font-semibold">
+                <h1 className="text-lg font-semibold sm:text-2xl">
                   {lang === "th" ? "ประสบการณ์การทำงาน" : "Work Experience"}
                 </h1>
 
