@@ -484,6 +484,7 @@ export default function Jobform() {
 
     }
 
+
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -509,7 +510,6 @@ export default function Jobform() {
          handleRemoveResume();
         
       }
-
      
 
     } catch (err) {
@@ -1042,17 +1042,18 @@ export default function Jobform() {
           </label>
 
           {/* SUBMIT */}
-          <button        
-            disabled={!form.accept}
-            className={`mt-2 mx-auto w-full sm:w-3/4 md:w-1/4 px-8 py-2 text-white ${
-              form.accept
-                ? "text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-            onClick={submitApply}>
-            {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
-          </button>
-        
+          <div className="flex">
+              <button        
+                disabled={!form.accept}
+                className={`mt-2 w-full py-2 text-white ${
+                  form.accept
+                    ? "text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                onClick={submitApply}>
+                {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
+              </button>
+          </div>
         
           <Modal
             show={modalFillShow.show}
