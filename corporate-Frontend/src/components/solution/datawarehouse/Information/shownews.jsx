@@ -10,21 +10,21 @@ export default function Shownews(props) {
 
   /* ================== GET LIST ================== */
   const getList = async () => {
-    try {
-      const res = await Axios.get(url + "/HLShow");
-      if (res.status === 200) {
-        setNewsList(res.data);
+    // try {
+    //   const res = await Axios.get(url + "/HLShow");
+    //   if (res.status === 200) {
+    //     setNewsList(res.data);
 
-        // 👉 ดึง id ทุกตัวที่ show === true
-        const showIds = res.data
-          .filter(item => item.show === true)
-          .map(item => item.id);
+    //     // 👉 ดึง id ทุกตัวที่ show === true
+    //     const showIds = res.data
+    //       .filter(item => item.show === true)
+    //       .map(item => item.id);
 
-        //setSelectedIds(showIds);     
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    //     //setSelectedIds(showIds);     
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
 

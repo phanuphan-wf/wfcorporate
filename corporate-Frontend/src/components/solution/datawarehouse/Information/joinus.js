@@ -157,32 +157,36 @@ export default function CreateJob() {
 
           {/* QUALIFICATIONS */}
           <div className="space-y-3">
+            {/* Headers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+              <div>
+                <label>Qualification Eng</label>
+              </div>
+              <div>
+                <label>Qualification Thai</label>
+              </div>
+            </div>
+
             {quals.map((q, index) => (
               <div
                 key={index}
                 className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                <div>
-                  <label>Qualification Eng</label>
-                  <input
-                    className="w-full"
-                    value={q.qualEn}
-                    onChange={(e) =>
-                      changeQual(index, "qualEn", e.target.value)
-                    }
-                  />
-                </div>
+                <input
+                  className="w-full"
+                  value={q.qualEn}
+                  onChange={(e) =>
+                    changeQual(index, "qualEn", e.target.value)
+                  }
+                />
 
                 <div className="flex items-end gap-2">
-                  <div className="flex-1">
-                    <label>Qualification Thai</label>
-                    <input
-                      className="w-full"
-                      value={q.qualTh}
-                      onChange={(e) =>
-                        changeQual(index, "qualTh", e.target.value)
-                      }
-                    />
-                  </div>
+                  <input
+                    className="w-full flex-1"
+                    value={q.qualTh}
+                    onChange={(e) =>
+                      changeQual(index, "qualTh", e.target.value)
+                    }
+                  />
 
                   {quals.length > 1 && (
                     <button
@@ -215,32 +219,36 @@ export default function CreateJob() {
 
           {/* DESCRIPTIONS */}
           <div className="space-y-3">
+            {/* Headers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
+              <div>
+                <label>Description Eng</label>
+              </div>
+              <div>
+                <label>Description Thai</label>
+              </div>
+            </div>
+
             {descs.map((d, index) => (
               <div
                 key={index}
                 className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                <div>
-                  <label>Description Eng</label>
-                  <input
-                    className="w-full"
-                    value={d.descEn}
-                    onChange={(e) =>
-                      changeDesc(index, "descEn", e.target.value)
-                    }
-                  />
-                </div>
+                <input
+                  className="w-full"
+                  value={d.descEn}
+                  onChange={(e) =>
+                    changeDesc(index, "descEn", e.target.value)
+                  }
+                />
 
                 <div className="flex items-end gap-2">
-                  <div className="flex-1">
-                    <label>Description Thai</label>
-                    <input
-                      className="w-full"
-                      value={d.descTh}
-                      onChange={(e) =>
-                        changeDesc(index, "descTh", e.target.value)
-                      }
-                    />
-                  </div>
+                  <input
+                    className="w-full flex-1"
+                    value={d.descTh}
+                    onChange={(e) =>
+                      changeDesc(index, "descTh", e.target.value)
+                    }
+                  />
 
                   {descs.length > 1 && (
                     <button
@@ -312,7 +320,7 @@ export default function CreateJob() {
         </button>
       </div>
 
-      <div className="mt-10">
+      <div className="mt-5">
         <JobList reload={reloadFlag} />
       </div>
     </section>
