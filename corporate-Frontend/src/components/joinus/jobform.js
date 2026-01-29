@@ -159,14 +159,12 @@ export default function Jobform() {
     const d = String(b.day).padStart(2, "0");
     return `${y}-${m}-${d}`;
   };
-
   
 
   const fileInputRef = useRef(null);
   const [picture, setPicture] = useState();
   const [preview, setPreview] = useState();
-
-  //console.log(picture);
+ 
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -356,6 +354,14 @@ export default function Jobform() {
       return false;
     }
 
+    if (birthday.day === initBirthDay.day &&
+        birthday.month === initBirthDay.month &&
+        birthday.year === initBirthDay.year)
+    {
+      openFillModal(lang === "th" ? "กรุณาเลือก วัน/เดือน/ปีเกิด" : "Please select date of birth");
+      return false;
+    }
+
     if (!form.addr.trim()) {
       openFillModal(lang === "th" ? "กรุณากรอกที่อยู่" : "Please enter your address");
       return false;
@@ -374,12 +380,8 @@ export default function Jobform() {
     if (!form.subdistrict) {
       openFillModal(lang === "th" ? "กรุณาเลือกตำบล" : "Please select subdistrict");
       return false;
-    }
+    } 
    
-    // if (!birthday) {
-    //   openFillModal(lang === "th" ? "กรุณาเลือกวันเกิด" : "Please select birthday");
-    //   return false;
-    // }
 
     if (resumeType === "file" && !resume) {
       openFillModal(
@@ -389,9 +391,7 @@ export default function Jobform() {
       );
       return false;
     }
-
-    //console.log(resumeType);
-
+    
 
     if (resumeType === "form") {
       const hasValidEddu = eddu.every(isEdduComplete);
@@ -619,7 +619,7 @@ export default function Jobform() {
 
            
             {/* SEX */}
-              <div className="flex border rounded-md overflow-hidden">
+            <div className="flex border rounded-md overflow-hidden">
                 
                 {/* MALE */}
                 <label
@@ -651,13 +651,12 @@ export default function Jobform() {
                   {lang === "th" ? "หญิง" : "Female"}
                 </label>
 
-              </div>
+            </div>
 
           </div>
 
-          {/* BIRTHDAY */}
-          <div className="mb-3">
-            <div className="grid grid-cols-3 gap-3">
+          {/* BIRTHDAY */}       
+          <div className="grid grid-cols-3 gap-3 mb-3">
               {/* DAY */}
               <select
                 className="border p-2"
@@ -711,24 +710,22 @@ export default function Jobform() {
                   </option>
                 ))}
               </select>
-            </div>
           </div>
+         
 
-          <div className="mt-2">
+          <div className="flex gap-4 mb-3">
             {/* ADDRESS */}
             <input
               name="addr"
               placeholder={lang === "th" ? "ที่อยู่" : "Address"}
               value={form.addr}
               onChange={handleChange}
-              className="border p-2 w-full mb-3"
+              className="border p-2 w-full"
               rows={4}
             />
           </div>
 
-          <div className="mb-3">
-            <div className="grid grid-cols-3 gap-3">  
-
+          <div className="grid grid-cols-3 gap-3 mb-3">  
               <select
                 value={form.province}
                 onChange={onProvinceChange}
@@ -772,11 +769,10 @@ export default function Jobform() {
                     {s.name}
                   </option>
                 ))}
-              </select>
-                        
+              </select>                        
 
-            </div>
           </div>
+        
 
           <h1 className="text-2xl font-semibold mb-4">
             {lang === "th" ? "รูปแบบการสมัคร" : "Resume Type"}
@@ -1042,18 +1038,16 @@ export default function Jobform() {
           </label>
 
           {/* SUBMIT */}
-          <div className="flex">
-              <button        
-                disabled={!form.accept}
-                className={`mt-2 w-full py-2 text-white ${
-                  form.accept
-                    ? "text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-                onClick={submitApply}>
-                {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
-              </button>
-          </div>
+          <button        
+            disabled={!form.accept}
+            className={`mt-2 w-full py-2 text-white ${
+              form.accept
+                ? "text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:ring-red-300 active:ring-4 active:ring-red-300 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+            onClick={submitApply}>
+            {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
+          </button>
         
           <Modal
             show={modalFillShow.show}
