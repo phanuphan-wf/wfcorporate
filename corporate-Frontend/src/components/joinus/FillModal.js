@@ -17,7 +17,7 @@ export default function FillModal({ show, message, onClose, lang}) {
           <div className="relative bg-white rounded-lg shadow">
             {/* Header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-black">
                  {lang === "th" ? "ข้อมูลการสมัครงาน" : "Job application information"} 
               </h3>
 
@@ -32,7 +32,7 @@ export default function FillModal({ show, message, onClose, lang}) {
 
             {/* Body */}
             <div className="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
-              <p className="text-gray-900 dark:text-white font-medium">
+              <p className="text-gray-900 dark:text-black font-medium">
                 {message}
               </p>
             </div>
