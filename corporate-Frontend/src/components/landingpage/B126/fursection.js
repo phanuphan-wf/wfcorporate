@@ -103,7 +103,7 @@ export default function FurSection() {
         <div className="text-white">
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdLocationOn className="drop-shadow-md" />
-            <span className="drop-shadow-md">{t("hall")}</span>
+            <span className="drop-shadow-md">{t("sublocation")} {t("hall")}</span>
           </div>
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdAvTimer className="drop-shadow-md" />
