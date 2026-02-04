@@ -73,7 +73,7 @@ export default function Landingpage(props) {
         className="w-full absolute top-0 left-1/2 -translate-x-1/2"
         ref={bannerRef}>
         <img
-          src={require("./img/hero_banner.png")}
+          src={require("./img/hero_banner.jpg")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto"
