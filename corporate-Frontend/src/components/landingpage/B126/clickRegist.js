@@ -9,11 +9,11 @@ export default function ClickRegist(props) {
 
   return (
     <div
-      className={`flex justify-center gap-2 sm:gap-8 md:gap-2 rounded-full  text-black px-4 py-3 w-fit max-w-[800px] relative z-20 bg-gradient-to-r from-[#e90d8b] via-[#f056ae] to-[#e90d8b] hover:from-pink-700 hover:via-pink-600 hover:to-pink-700 border-[3px] border-[#f056ae]`}>
-      <div className="text-3xl md:text-5xl lg:text-6xl bg-white/30 rounded-full text-white">
+      className={`flex justify-center items-center gap-2 sm:gap-8 md:gap-2 rounded-full px-3 py-2 w-fit max-w-[800px] relative z-20 bg-gradient-to-r from-[#e90d8b] via-[#f056ae] to-[#e90d8b] hover:from-pink-700 hover:via-pink-600 hover:to-pink-700 border-[3px] border-[#f056ae]`}>
+      <div className="text-3xl md:text-5xl lg:text-6xl bg-white/30 rounded-full text-white flex justify-center items-center h-fit w-fit p-1">
         <IoIosArrowForward />
       </div>
-      <div className="text-center md:text-start text-lg md:text-3xl lg:text-4xl text-white">
+      <div className="text-center text-lg md:text-start md:text-3xl lg:text-4xl text-white">
         <a
           href={
             "/" + exId + "/preregistration" + (cp != undefined ? "/" + cp : "")
@@ -28,15 +28,16 @@ export default function ClickRegist(props) {
             </>
           ) : (
             <>
-              <span className="text-xl md:text-5xl lg:text-6xl text-[#feea04]">
+              <span className="text-xl md:text-3xl lg:text-5xl text-[#feea04]">
                 {String(t("free"))}
               </span>{" "}
               <span className="text-[#feea04]">{t("gift")}</span>
             </>
-          )}{" "}
+          )}
+          {/*
           <font className="text-xl md:text-4xl lg:text-5xl underline">
             Click
-          </font>
+          </font>*/}
         </a>
       </div>
     </div>

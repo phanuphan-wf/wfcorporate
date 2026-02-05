@@ -9,7 +9,7 @@ export default function FurSection() {
   const mobile = useCheckMobile();
   return (
     <section id="fur-section">
-      <div className="w-4/5 md:w-1/2 mx-auto mt-7 relative z-[900] mix-blend-multiply">
+      <div className="w-4/5 sm:w-1/2 mx-auto mt-7 relative z-[900] mix-blend-multiply">
         <img
           src={require("./img/fur_logo.png")}
           alt="furniture logo"
@@ -17,12 +17,14 @@ export default function FurSection() {
           className="w-full mx-auto max-w-[540px]"
         />
       </div>
-   
-      <div className="flex justify-center items-center my-4 mt-5"> 
+
+      <div className="flex justify-center items-center my-4 mt-5">
         <div className="text-black px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-2 rounded-xl">
           <MdLocationOn />
-          <span className="text-2xl md:text-4xl lg:text-4xl font-medium">{t("location")}</span>
-        </div>        
+          <span className="text-2xl md:text-4xl lg:text-4xl font-medium">
+            {t("location")}
+          </span>
+        </div>
       </div>
 
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
@@ -103,7 +105,9 @@ export default function FurSection() {
         <div className="text-white">
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdLocationOn className="drop-shadow-md" />
-            <span className="drop-shadow-md">{t("sublocation")} {t("hall")}</span>
+            <span className="drop-shadow-md">
+              {t("sublocation")} {t("hall")}
+            </span>
           </div>
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdAvTimer className="drop-shadow-md" />
