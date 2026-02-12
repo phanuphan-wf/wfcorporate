@@ -228,6 +228,14 @@ const AppProtectRoute = [
       { dept: 3, acc: 1 },     
     ],
   },
+  {
+    path: "datawarehouse/joinus/:id",
+    element:<Joinus />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },     
+    ],
+  },
 
 ];
 

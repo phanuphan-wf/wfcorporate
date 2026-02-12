@@ -12,7 +12,7 @@ export default function Jobform() {
   const watch = location.state?.watch;
 
   const [applyDetail, setApplyDetail] = useState({});
-  const [showPDF, setShowPDF] = useState(false);
+  //const [showPDF, setShowPDF] = useState(false);
 
   const getJobform = async () => {
     try {

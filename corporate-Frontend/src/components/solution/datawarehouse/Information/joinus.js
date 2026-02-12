@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+
 import { IoAddCircle } from "react-icons/io5";
 import { TiDelete } from "react-icons/ti";
 
 import JobList from "./showjob";
 
 export default function CreateJob() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;
 
   const user = JSON.parse(localStorage.getItem("user"));
 
+  const [detaildata, setDetaildata] = useState([]);
+
   const [reloadFlag, setReloadFlag] = useState(0);
+
+ 
+  console.log(id);
 
   /* ================== INIT DATA ================== */
   const initData = {
@@ -123,8 +132,32 @@ export default function CreateJob() {
     setQuals([{ qualEn: "", qualTh: "" }]);
     setDescs([{ descEn: "", descTh: "" }]);
     setReloadFlag((prev) => prev + 1);
+  }; 
+
+
+  /*============== jobDetail =================== */
+  const jobDetail = async () => {
+      if (!id) return; // เช็คว่ามี id หรือไม่
+
+      try {
+        const res = await Axios.get(url + "/jobDetail/" + id);
+          if (res.status === 200) {
+            setDetaildata(res.data);
+          }
+      } catch (err) {
+        console.error(err);      
+      }
   };
 
+  useEffect(() => {
+    if (id) {
+      jobDetail();
+    }
+  }, [id]); // ฟังก์ชันจะทำงานทุกครั้งที่ id เปลี่ยนค่า
+
+  console.log(detaildata);
+  
+ 
   /* ================== RENDER ================== */
   return (
     <section className="xl:w-4/5 2xl:w-3/4">
@@ -318,11 +351,13 @@ export default function CreateJob() {
           onClick={submitData}>
           Add Job
         </button>
-      </div>
+      </div>  
 
       <div className="mt-5">
         <JobList reload={reloadFlag} />
       </div>
+
+    
     </section>
   );
 }

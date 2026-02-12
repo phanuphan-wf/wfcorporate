@@ -252,7 +252,7 @@ const NavItems = [
         ],
       },
       {
-        title: "Highlights EX",
+        title: "Highlights Banner",
         url: "/solution/datawarehouse/highlightEx",
         show: [
           { dept: 1, acc: 1 },
@@ -260,7 +260,7 @@ const NavItems = [
         ],
       },
       {
-        title: "Calendar Expo",
+        title: "Event Calendar",
         url:"/solution/datawarehouse/calenderexpo",
         show: [
           { dept: 1, acc: 1 },
@@ -278,7 +278,7 @@ const NavItems = [
       },
 
       {
-        title: "Join us",
+        title: "Job List",
         url:"/solution/datawarehouse/joinus",
         show: [
           { dept: 1, acc: 1 },
@@ -311,7 +311,7 @@ const NavItems = [
         ],
       },
       {
-        title: "Job Application",
+        title: "New Apply",
         url: "/solution/management/jobapplication", 
         show: [
           { dept: 1, acc: 1 },
