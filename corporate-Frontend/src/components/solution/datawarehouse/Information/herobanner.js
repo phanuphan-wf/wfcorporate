@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 
 import ShowBannerList from "./showbannerlist";
@@ -15,45 +15,33 @@ export default function CreateExhibition(props) {
   };
   const [data, setData] = useState([]);
 
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
 
-  const [isFormValid, setIsFormValid] = useState(false);  
-
-
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const clickCancel = () => {
     setData(initData);
-    setFile();    
+    setFile(null);
   };
- 
 
   useEffect(() => {
-  const valid =
-    data.exID !== "" &&
-    data.title !== "" &&
-    data.showdate !== "" &&
-    data.showtime !== "" &&
-    data.venue !== "" && 
-    file;
+    const valid =
+      data.exID !== "" &&
+      data.title !== "" &&
+      data.showdate !== "" &&
+      data.showtime !== "" &&
+      data.venue !== "" &&
+      file;
 
-  setIsFormValid(valid);
-  }, [
-    data.exID,
-    data.title,
-    data.showdate,
-    data.showtime,
-    data.venue,
-    file,
-  ]);
+    setIsFormValid(valid);
+  }, [data.exID, data.title, data.showdate, data.showtime, data.venue, file]);
 
   useEffect(() => {
-  // เมื่อ refresh หน้า → reset สถานะปุ่ม
+    // เมื่อ refresh หน้า → reset สถานะปุ่ม
     setIsFormValid(false);
   }, []);
 
-
-  const submitData = async () => {    
-
+  const submitData = async () => {
     const fd = new FormData();
     Object.entries(data).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
@@ -69,13 +57,17 @@ export default function CreateExhibition(props) {
         } else {
           alert("Upload Herobaner Success");
           setData(initData);
-          setFile();
+          setFile(null);
         }
       }
     });
-
-
   };
+
+  useEffect(() => {
+    if (file == null) {
+      document.getElementById("banner").value = null;
+    }
+  }, [file]);
 
   return (
     <section id="createExhibition" className="xl:w-4/5 2xl:w-3/4">
@@ -161,8 +153,7 @@ export default function CreateExhibition(props) {
                 <button
                   className="btn-gray px-2 mt-2"
                   onClick={() => {
-                    setFile();
-                    document.getElementById("banner").value = "";
+                    setFile(null);
                   }}>
                   Cancel
                 </button>
@@ -179,21 +170,18 @@ export default function CreateExhibition(props) {
             )}
           </div>
         </div>
-        
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full md:w-2/3">
+        <button
+          className={`px-2 btn-green ${isFormValid ? "cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
+          onClick={submitData}
+          disabled={!isFormValid}>
+          Add Banner
+        </button>
+
         <button className="btn-gray px-2" onClick={clickCancel}>
           Clear Data
         </button>
-        
-        <button
-            className={`px-4 btn-green ${ isFormValid ? "cursor-pointer": "opacity-50 cursor-not-allowed" }`}
-            onClick={submitData}
-            disabled={!isFormValid}
-        >
-            Add
-        </button>
-
       </div>
       <div className="mt-10">
         <ShowBannerList reload={data.exID} />

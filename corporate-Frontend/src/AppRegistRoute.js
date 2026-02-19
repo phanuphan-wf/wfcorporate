@@ -2,9 +2,9 @@ import RegistPage from "./components/registration/I126/registration";
 import PreregistPage from "./components/registration/I126/preregistration";
 import PostPage from "./components/registration/I126/postregister";
 
-import RegistPage_dc from "./components/registration/B325/registration";
-import PreregistPage_dc from "./components/registration/B325/preregistration";
-import PostPage_dc from "./components/registration/B325/postregister";
+import RegistPage_dc from "./components/registration/B126/registration";
+import PreregistPage_dc from "./components/registration/B126/preregistration";
+import PostPage_dc from "./components/registration/B126/postregister";
 
 import Exregist from "./components/exregist/exregist";
 import Exqr from "./components/exregist/exqr";
@@ -46,19 +46,19 @@ const AppRegistRoutes = [
   },
 
   {
-    path: "b325/preregistration",
+    path: "b126/preregistration",
     element: <PreregistPage_dc />,
   },
   {
-    path: "b325/preregistration/:cp",
+    path: "b126/preregistration/:cp",
     element: <PreregistPage_dc />,
   },
   {
-    path: "b325/registration",
+    path: "b126/registration",
     element: <RegistPage_dc />,
   },
   {
-    path: "b325/postregister/:res/:key",
+    path: "b126/postregister/:res/:key",
     element: <PostPage_dc />,
   },
 
