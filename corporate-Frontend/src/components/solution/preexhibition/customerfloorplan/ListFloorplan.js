@@ -1,13 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
-//import useHeader from "../../../hook/useHeader";
+import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { RiEditLine } from "react-icons/ri";
+
 
 
 export default function ListFloorplan(props) {
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_fl;  
     const [floorplanList, setFloorplanList] = useState([]);
+
+    const bearer = useHeader();
+    Axios.defaults.headers.common = {
+        Authorization: "Bearer " + bearer,
+    };
 
   
     const fetchFloorplan = async () => {
@@ -22,20 +29,30 @@ export default function ListFloorplan(props) {
     };
 
     const handleDelete = async (id) => {
-
         if (!window.confirm("Are you sure you want to delete this item?")) return;
 
         try {
-            const res = await Axios.delete(url + "/DeleteCustomer/" + id);
-            if (res.status === 200) {
-               window.location.reload();
+            const res = await Axios.delete(url + "/DeleteCustomer/" + id, {
+                headers: {
+                    Authorization: `Bearer ${bearer}`,
+                },
+            });
+          
+            if (res.status === 204) {
+                alert("Delete FloorPlan Success");
+                fetchFloorplan();              
             }
+
         } catch (error) {
             console.error(error);
             alert("Delete failed");
         }
-        
     };
+
+    const handleEdit = async (id) => {
+
+    }
+
 
     useEffect(() => {
         fetchFloorplan();
@@ -71,15 +88,26 @@ export default function ListFloorplan(props) {
                             {data.name}
                         </td>
 
-                        <td className="border-t-2 border-l-2 border-zinc-100 p-2 text-center">
-                            <button
-                            onClick={() => handleDelete(data.id)}
-                            className="bg-red-500 hover:bg-red-50 text-white hover:text-red-600 border border-red-500 px-3 py-1 rounded-md transition-all duration-300 text-sm flex items-center gap-1 mx-auto shadow-sm hover:shadow-inner"
-                            >
-                            <RiDeleteBin6Line />
-                            Delete
-                            </button>
+                       <td className="border-t-2 border-l-2 border-zinc-100 p-2 text-center">
+                            <div className="flex justify-center gap-2">
+                                <button
+                                    onClick={() => handleEdit(data.id)}
+                                    className="bg-blue-500 hover:bg-blue-50 text-white hover:text-blue-600 border border-blue-500 px-3 py-1 rounded-md transition-all duration-300 text-sm flex items-center gap-1 shadow-sm hover:shadow-inner"
+                                >
+                                    <RiEditLine />
+                                    Edit
+                                </button>
+
+                                <button
+                                    onClick={() => handleDelete(data.id)}
+                                    className="bg-red-500 hover:bg-red-50 text-white hover:text-red-600 border border-red-500 px-3 py-1 rounded-md transition-all duration-300 text-sm flex items-center gap-1 shadow-sm hover:shadow-inner"
+                                >
+                                    <RiDeleteBin6Line />
+                                    Delete
+                                </button>
+                            </div>
                         </td>
+
                     </tr>
                 ))}
             </tbody>

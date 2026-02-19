@@ -4,7 +4,24 @@ import Axios from "axios";
 import ListFloorplan from "./ListFloorplan";
 
 export default function CustomerFloorplan(props) {
+  const urlEx = process.env.REACT_APP_API_URI + process.env.REACT_APP_squ;
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_fl;
+    const [exList, setExList] = useState([]);
+
+    const getEx = async () => {
+        try {
+            const res = await Axios.get(urlEx + "/exlist");
+            if (res.status === 200) {
+                setExList(res.data);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        getEx();
+    }, []);
+
 
     const Floorplandata = {
         Exid : "",
@@ -48,9 +65,7 @@ export default function CustomerFloorplan(props) {
         return () => URL.revokeObjectURL(objectUrl);
     }, [file]);
 
-    const isFormValid = () => {
-
-        console.log("Current file state:", file);
+    const isFormValid = () => {     
 
         if (!data.Exid.trim()) {
             alert("Please enter the Product ID (Exid).");
@@ -135,6 +150,8 @@ export default function CustomerFloorplan(props) {
             }
     };
 
+
+
     return (
         <section id="CustomerFloorplan">
              <h1 className="text-xl font-medium">Customer Floorplan</h1>
@@ -142,14 +159,27 @@ export default function CustomerFloorplan(props) {
                     <label htmlFor="txt-exid" className="w-[150px]">
                      EXID :
                     </label>
-                    <input
-                    type="text"
-                    id="txt-exid"
-                    className="w-[300px]"
-                    placeholder=""
-                    value={data.Exid}
-                    onChange={(e) => setData({ ...data, Exid: e.target.value })}
-                    />
+
+                    <select
+                        id="exhibition"
+                        className="cmb w-[300px]"
+                        value={data.Exid || ""}
+                        onChange={(e) =>
+                            setData({ ...data, Exid: e.target.value })
+                        }
+                    >
+                        <option value="" disabled hidden>
+                            Please select exhibition
+                        </option>
+
+                        {exList.map((ex, i) => (
+                            <option key={ex.id ?? i} value={ex.id}>
+                                {ex.name} ({ex.id})
+                            </option>
+                        ))}
+                    </select>
+
+                   
                  
                 </div>
 
@@ -221,7 +251,7 @@ export default function CustomerFloorplan(props) {
 
                 <div className="my-1 flex items-center">
                     <label htmlFor="txt-brow" className="w-[150px]">
-                     Brow :
+                     Row :
                     </label>
                     <input
                     type="text"
@@ -239,24 +269,24 @@ export default function CustomerFloorplan(props) {
                     <label htmlFor="txt-decpth" className="w-[150px]">
                         Decp TH :
                     </label>
-                    <input
-                        type="text"
-                        id="txt-decpth"
-                        className="w-[300px]"
+
+                    <textarea
+                        className="border border-[#b3b3b3] w-[300px] rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                        rows={3}
                         value={data.Decp_Th}
                         onChange={(e) => setData({ ...data, Decp_Th: e.target.value })}
                     />
+                    
                     </div>
                     <div className="flex items-center">
                     <label htmlFor="txt-decpen" className="w-[150px]">
                         Decp EN :
-                    </label>
-                    <input
-                        type="text"
-                        id="txt-decpen"
-                        className="w-[300px]"
+                    </label>                   
+                    <textarea
+                        className="border border-[#b3b3b3] w-[300px] rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                        rows={3}
                         value={data.Decp_En}
-                        onChange={(e) => setData({ ...data, Decp_En: e.target.value })}
+                         onChange={(e) => setData({ ...data, Decp_En: e.target.value })}
                     />
                     </div>
                 </div>
@@ -265,11 +295,11 @@ export default function CustomerFloorplan(props) {
                     <div className="flex items-center">
                     <label htmlFor="txt-productth" className="w-[150px]">
                         Product TH :
-                    </label>
-                    <input
-                        type="text"
-                        id="txt-productth"
-                        className="w-[300px]"
+                    </label>               
+
+                    <textarea
+                        className="border border-[#b3b3b3] w-[300px] rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                        rows={3}
                         value={data.Product_Th}
                         onChange={(e) => setData({ ...data, Product_Th: e.target.value })}
                     />
@@ -277,11 +307,10 @@ export default function CustomerFloorplan(props) {
                     <div className="flex items-center">
                     <label htmlFor="txt-producten" className="w-[150px]">
                         Product EN :
-                    </label>
-                    <input
-                        type="text"
-                        id="txt-producten"
-                        className="w-[300px]"
+                    </label>               
+                    <textarea
+                        className="border border-[#b3b3b3] w-[300px] rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                        rows={3}
                         value={data.Product_En}
                         onChange={(e) => setData({ ...data, Product_En: e.target.value })}
                     />
