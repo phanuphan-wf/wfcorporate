@@ -5,7 +5,7 @@ import Axios from "axios";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RiEditLine } from "react-icons/ri";
 
-
+import ModalShowCustomer from "./modalCustomer";
 
 export default function ListFloorplan(props) {
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_fl;  
@@ -39,7 +39,7 @@ export default function ListFloorplan(props) {
             });
           
             if (res.status === 204) {
-                alert("Delete FloorPlan Success");
+                // alert("Delete FloorPlan Success");
                 fetchFloorplan();              
             }
 
@@ -48,16 +48,33 @@ export default function ListFloorplan(props) {
             alert("Delete failed");
         }
     };
-
-    const handleEdit = async (id) => {
-
-    }
+   
 
 
     useEffect(() => {
         fetchFloorplan();
     }, [props.reload]);
 
+
+    const show = true;
+
+    const [isShow, setIsShow] = useState(false);
+    const [cid, setCid] = useState(0);
+
+    const closeModal = () => {
+        setIsShow(false);
+    };
+
+    const customerClick = (id) => {
+       // console.log(id);
+        setCid(id);
+        setIsShow(true);
+    };
+
+    const handleEdit = async (id) => {
+       // console.log(id);
+        props.onEdit(id); 
+    }
 
   
   return (
@@ -73,8 +90,13 @@ export default function ListFloorplan(props) {
               <th className="bg-zinc-100 border-l-2 border-white">
                  ID
               </th>
-              <th className="bg-zinc-100 border-l-2 border-white">Name</th>
-              <th className="bg-zinc-100 border-l-2 border-white"></th>             
+            
+              <th className="bg-zinc-100 border-l-2 border-white w-2/4 p-2 text-center">
+                 Name
+              </th>
+
+              <th className="bg-zinc-100 border-l-2 border-white"></th>   
+                        
             </tr>
           </thead>
             <tbody>
@@ -84,11 +106,18 @@ export default function ListFloorplan(props) {
                             {data.id}
                         </td>
 
-                        <td className="border-t-2 border-l-2 border-zinc-100">
-                            {data.name}
+                       <td 
+                            className="border-t-2 border-l-2 border-zinc-100 text-center p-2"
+                        >
+                            <button
+                                onClick={() => customerClick(data.id)}
+                                className="text-blue-600 hover:text-blue-800 hover:underline font-medium w-full h-full py-1"
+                            >
+                                {data.name}
+                            </button>
                         </td>
 
-                       <td className="border-t-2 border-l-2 border-zinc-100 p-2 text-center">
+                       <td className="border-t-2 border border-zinc-100 p-2 text-center">
                             <div className="flex justify-center gap-2">
                                 <button
                                     onClick={() => handleEdit(data.id)}
@@ -114,6 +143,8 @@ export default function ListFloorplan(props) {
 
         </table>
       </div>
+
+        <ModalShowCustomer show={isShow} id={cid} onHide={closeModal} />
     </section>
   );
 }

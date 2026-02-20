@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import Axios from "axios";
 
+
 import ListFloorplan from "./ListFloorplan";
 
 export default function CustomerFloorplan(props) {
@@ -45,25 +46,35 @@ export default function CustomerFloorplan(props) {
       setData(Floorplandata);
       setFile(null);
       document.getElementById("picture").value = "";
+      setIsEditMode(false);
     }
 
-    useEffect(() => {
-    console.log({ data});
-    }, [data]);
+    // useEffect(() => {
+    // console.log({ data});
+    // }, [data]);
 
     
     useEffect(() => {
         if (!file) {
-            setPreview(null);        
-            setData(prev => ({ ...prev, Picture: "" }));
+            setPreview(null);
             return;
-        }    
+        }
+
         const objectUrl = URL.createObjectURL(file);
-        setPreview(objectUrl);    
-        setData(prev => ({ ...prev, Picture: file.name }));
-       
+        setPreview(objectUrl);
+
+        setData(prev => ({
+            ...prev,
+            Picture: file.name
+        }));
+
         return () => URL.revokeObjectURL(objectUrl);
+
     }, [file]);
+
+    const imageUrl = preview || (data?.Picture
+        ? `https://worldfair.blob.core.windows.net/showfloorplan/${data.Picture}`
+        : null);
 
     const isFormValid = () => {     
 
@@ -150,7 +161,80 @@ export default function CustomerFloorplan(props) {
             }
     };
 
+    const [editData, setEditData] = useState(null);    
+    const [isEditMode, setIsEditMode] = useState(false);
+    const handleEditFromList = (data) => {
+        setEditData(data);       
+    };
 
+    useEffect(() => {
+        if (!editData) return;
+
+        const fetchDetail = async () => {
+            try {
+                const [resTH, resEN] = await Promise.all([
+                    Axios.get(url + "/getDetail/" + editData, {
+                        headers: { "Accept-Language": "th" },
+                    }),
+                    Axios.get(url + "/getDetail/" + editData, {
+                        headers: { "Accept-Language": "en" },
+                    }),
+                ]);
+
+                if (resTH.status === 200 && resEN.status === 200) {
+                    setData({
+                        id: resEN.data.id,
+                        Name_th: resTH.data.name,
+                        Name_en: resEN.data.name,
+                        Picture: resEN.data.picture,
+                        Brow: resEN.data.brow,
+                        Decp_Th: resTH.data.description,
+                        Decp_En: resEN.data.description,
+                        Product_Th: resTH.data.product,
+                        Product_En: resEN.data.product,
+                    });
+                }
+            } catch (error) {
+                console.error("Fetch detail error:", error);
+            }
+        };
+
+        fetchDetail();
+        setIsEditMode(true);
+
+    }, [editData]);
+
+    const editFloorplan = async () => {
+        try {
+            const formData = new FormData();
+
+            formData.append("Exid", data.Exid);
+            formData.append("Name_th", data.Name_th);
+            formData.append("Name_en", data.Name_en);           
+            formData.append("Picture", file);  
+            formData.append("Brow", data.Brow);
+            formData.append("Decp_Th", data.Decp_Th);
+            formData.append("Decp_En", data.Decp_En);
+            formData.append("Product_Th", data.Product_Th);
+            formData.append("Product_En", data.Product_En);
+
+            const res = await Axios.put(url+"/putCustomer/" + data.id,formData);
+
+            if (res.status === 204) {
+                alert("Edit FloorPlan Success");
+                setData(Floorplandata);
+                setFile(null); 
+                document.getElementById("picture").value = "";  
+                setIsEditMode(false);
+                setReloadFlag(prev => prev + 1);
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("Edit failed");
+        }
+    };
+   
 
     return (
         <section id="CustomerFloorplan">
@@ -222,28 +306,34 @@ export default function CustomerFloorplan(props) {
                             accept="image/*" 
                             className="w-[300px]"
                             onChange={(e) => { setFile(e.target.files[0]); }}
+                            
                         />
 
-                        {file && (
+                        {imageUrl && (
                             <div className="flex flex-col items-start gap-2">
-                                <button
-                                    type="button"
-                                    className="btn-gray px-3 py-1 text-sm"
-                                    onClick={() => {
-                                        setFile(null);
-                                        document.getElementById("picture").value = "";
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                                
+
+                                {file && (
+                                    <button
+                                        type="button"
+                                        className="btn-gray px-3 py-1 text-sm"
+                                        onClick={() => {
+                                            setFile(null);
+                                            setPreview(null);
+                                            document.getElementById("picture").value = "";
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                )}
+
                                 <div className="max-w-[120px] border rounded overflow-hidden bg-gray-50">
                                     <img
-                                        src={preview}
-                                        alt="preview"
+                                        src={imageUrl}
+                                        alt=""
                                         className="object-contain w-full h-auto max-h-[100px]"
                                     />
                                 </div>
+
                             </div>
                         )}
                     </div>
@@ -317,14 +407,18 @@ export default function CustomerFloorplan(props) {
                     </div>
                 </div>
 
-                <div className="flex justify-between mt-4 w-full md:w-2/3">
-                    <button
-                        className="px-2 btn-green"                       
-                        // disabled={!isFormValid}
-                        onClick={submitData}
-                    >
-                    Add 
-                    </button>
+                <div className="flex justify-between mt-4 w-full md:w-2/3">                   
+
+                    {isEditMode ? (
+                        <button className="px-2 bg-orange-500 hover:bg-orange-600 text-white rounded" onClick={editFloorplan}>
+                        Save Edit
+                        </button>
+                    ) : (
+                        <button className="px-2 btn-green" onClick={submitData}>
+                            Add 
+                        </button>
+                    )}                                   
+
 
                     <button 
                         className="btn-gray px-3" 
@@ -334,7 +428,8 @@ export default function CustomerFloorplan(props) {
                     </button>
                 </div> 
 
-               <ListFloorplan reload={reloadFlag} />
+                <ListFloorplan reload={reloadFlag} onEdit={handleEditFromList} />
+              
         </section>
 
       
