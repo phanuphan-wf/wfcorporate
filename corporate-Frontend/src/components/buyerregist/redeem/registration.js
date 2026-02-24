@@ -334,8 +334,6 @@ export default function Registration(props) {
       const res = await Axios.post(url + "/PostSMS", smsdata);
       let sms = res.data.code;
 
-      alert(`sms code = ${sms}`);
-
       if (sms == "0") {
         Swal.fire({
           icon: "success",
