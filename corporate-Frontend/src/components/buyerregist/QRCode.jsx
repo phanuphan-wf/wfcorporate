@@ -25,7 +25,7 @@ export default function Qrcode() {
       {/* โปรดนำ QR Code แสดงแก่เจ้าหน้าที่เพื่อรับของสมนาคุณ */}
       <p className="mb-6">{t("details")}</p>
       <div className="p-4 border rounded-xl shadow w-fit mx-auto">
-        <QRCodeCanvas value={qr} size={220} level={"H"} includeMargin={true} />
+        <QRCodeCanvas value={qr} size={220} level={"H"} />
         <span>{qr}</span>
       </div>
       {/* condition.map */}
