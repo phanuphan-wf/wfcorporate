@@ -19,13 +19,12 @@ export default function Registration(props) {
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_brt;
 
-
   const [exId, setExId] = useState(null);
 
   async function getExid() {
     try {
       const res = await Axios.get(url + "/GetEx");
-      setExId(res.data); 
+      setExId(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -34,7 +33,6 @@ export default function Registration(props) {
   useEffect(() => {
     getExid();
   }, []);
-
 
   const nav = useNavigate();
 
@@ -229,7 +227,7 @@ export default function Registration(props) {
 
     const getRandom = (chars, length) =>
       Array.from({ length }, () =>
-        chars.charAt(Math.floor(Math.random() * chars.length))
+        chars.charAt(Math.floor(Math.random() * chars.length)),
       ).join("");
 
     const prefix = getRandom(letters, 2);
@@ -303,113 +301,6 @@ export default function Registration(props) {
             resi.uid = vid.toString();
             postQResi(resi);
           }
-
-          const smsdata = {
-            mob: bio.mobile,
-            id: vid.toString(),
-          };
-
-          try {
-            const sms = postsms(smsdata);
-            if (sms) {
-              //alert ขอบพระคุณสำหรับการลงทะเบียน กรุณารอรับ sms และแสดง qr code กับ เจ้าหน้าที่
-              try {
-                let attempt = 0;
-                let timer = null;
-
-                const checkSMS = () => {
-                  getsms(smsdata).then((r) => {
-                    if (r.code !== -1 && r.code !== undefined) {
-                      clearInterval(timer);
-
-                      console.log("code", r.code);
-
-                      if (r.code == "0") {
-                        Swal.fire({
-                          icon: "success",
-                          title: t("success_200.title"),
-                          text: t("success_200.text"),
-                          confirmButtonText: t("success_200.confirmButtonText"),
-                          customClass: {
-                            confirmButton: "swal2-red-btn",
-                          },
-                        }).then((r) => {
-                          if (r.isConfirmed) {
-                            nav("/redeem/postregister");
-                          }
-                        });
-                      } else {
-                        Swal.fire({
-                          icon: "error",
-                          title: t("error_200.title"),
-                          text: t("error_200.text"),
-                          confirmButtonText: t("error_200.confirmButtonText"),
-                          customClass: {
-                            confirmButton: "swal2-red-btn",
-                          },
-                        });
-                      }
-                    }
-
-                    attempt++;
-
-                    if (
-                      attempt >= 3 &&
-                      (r.code === -1 || r.code === undefined)
-                    ) {
-                      clearInterval(timer);
-
-                      Swal.fire({
-                        icon: "error",
-                        title: t("sms_null.title"),
-                        text: t("sms_null.text"),
-                        confirmButtonText: t("sms_null.confirmButtonText"),
-                        customClass: {
-                          confirmButton: "swal2-red-btn",
-                        },
-                      });
-                    }
-                  });
-                };
-
-                checkSMS();
-
-                timer = setInterval(() => {
-                  checkSMS();
-                }, 1000);
-              } catch {
-                // try checkSMS
-                alert("Cannot send sms to user");
-              }
-            } else {
-              //alert ขออภัย หมายเลขโทรศัพท์ที่ลงทะเบียน ไม่ถูกต้อง โปรดตรวจสอบหมายเลขโทรศัพท์ของท่านอีกครั้ง
-              Swal.fire({
-                icon: "error",
-                title: t("error_200.title"),
-                text: t("error_200.text"),
-                confirmButtonText: t("error_200.confirmButtonText"),
-                customClass: {
-                  confirmButton: "swal2-red-btn",
-                },
-              });
-            }
-          } catch (err) {
-            if (err.response.status == 404) {
-              //alert ขออภัย ไม่พบข้อมูล QR code ในระบบ โปรดทำการตรวจสอบเบอร์โทรศัพท์ของท่านอีกครั้ง
-              Swal.fire({
-                icon: "error",
-                title: t("error_404.title"),
-                text: t("error_404.text"),
-                confirmButtonText: t("error_404.confirmButtonText"),
-                customClass: {
-                  confirmButton: "swal2-red-btn",
-                },
-              }).then(() => nav("/redeem"));
-
-              //alert("Not found visitor data");
-              nav("/redeem");
-            }
-          }
         }
       });
     } catch (err) {
@@ -429,8 +320,62 @@ export default function Registration(props) {
           code: qrcode,
         };
         const result = await Axios.post(url + "/MobileCheck", data).then(
-          (r) => r.status && nav("/redeem/" + qrcode)
+          (r) => r.status && nav("/redeem/" + qrcode),
         );
+      }
+    }
+
+    const smsdata = {
+      mob: bio.mobile,
+      id: vid.toString(),
+    };
+
+    try {
+      const res = await Axios.post(url + "/PostSMS", smsdata);
+      let sms = res.data.code;
+
+      alert(`sms code = ${sms}`);
+
+      if (sms == "0") {
+        Swal.fire({
+          icon: "success",
+          title: t("success_200.title"),
+          text: t("success_200.text"),
+          confirmButtonText: t("success_200.confirmButtonText"),
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+        }).then((r) => {
+          if (r.isConfirmed) {
+            nav("/redeem/postregister");
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: t("error_200.title"),
+          text: t("error_200.text"),
+          confirmButtonText: t("error_200.confirmButtonText"),
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+        });
+      }
+    } catch (err) {
+      if (err.response.status == 404) {
+        //alert ขออภัย ไม่พบข้อมูล QR code ในระบบ โปรดทำการตรวจสอบเบอร์โทรศัพท์ของท่านอีกครั้ง
+        Swal.fire({
+          icon: "error",
+          title: t("error_404.title"),
+          text: t("error_404.text"),
+          confirmButtonText: t("error_404.confirmButtonText"),
+          customClass: {
+            confirmButton: "swal2-red-btn",
+          },
+        }).then(() => nav("/redeem"));
+
+        //alert("Not found visitor data");
+        nav("/redeem");
       }
     }
 
@@ -440,9 +385,9 @@ export default function Registration(props) {
   const postsms = async (data) => {
     const resSMS = await Axios.post(url + "/PostSMS", data).then((r) => {
       if (r.status == 200) {
-        return true;
+        return r.data.code;
       } else {
-        return false;
+        return "error";
       }
     });
   };
