@@ -191,9 +191,45 @@ export default function CreateJob() {
   console.log(detaildata);
 
   /* ================== Save Edit ================== */
+ 
+
   const EditData = async () => {
-      alert("ok");
-  }   
+    const payload = {
+      ...data,
+      id: id,
+      descs: descs.map((d, i) => ({
+        descEn: d.descEn,
+        descTh: d.descTh,
+        rank: i + 1,
+      })),
+      quals: quals.map((q, i) => ({
+        qualEn: q.qualEn,
+        qualTh: q.qualTh,
+        rank: i + 1,
+      })),
+    };
+
+    /* ================== จุดตรวจสอบค่า (Debug Zone) ================== */
+    console.log("--- [CHECK PAYLOAD BEFORE SEND] ---");
+    console.log("Main Data:", data);
+    console.log("Target ID:", id);
+    console.log("Full Payload Object:", payload);
+    
+    // ดูค่า Quals และ Descs แบบตาราง (ดูง่ายมากใน Console)
+    console.table(payload.quals);
+    console.table(payload.descs);
+
+    try {
+      const res = await Axios.put(url + "/UpdateJob", payload);
+      if (res.status === 200) {
+        alert("Job updated successfully");
+        clickCancel(); // อย่าลืมล้างฟอร์มหลังส่งเสร็จครับ
+      }
+    } catch (err) {
+      console.error("Error updating job:", err);
+      alert("Failed to update job: " + (err.response?.data?.message || "Check API Path"));
+    }
+  };
  
   /* ================== RENDER ================== */
   return (
