@@ -8,17 +8,18 @@ import { TiDelete } from "react-icons/ti";
 import JobList from "./showjob";
 
 export default function CreateJob() {
-  const { id } = useParams();
+
   const navigate = useNavigate();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_job;
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  const [detaildata, setDetaildata] = useState([]);
-
+  const user = JSON.parse(localStorage.getItem("user"));  
   const [reloadFlag, setReloadFlag] = useState(0);
 
- 
+  const { id } = useParams();
+  const [detailid, setDetailid] = useState(null);
+  const [detaildata, setDetaildata] = useState([]);
+  
+  console.log(detailid);
   console.log(id);
 
   /* ================== INIT DATA ================== */
@@ -132,6 +133,7 @@ export default function CreateJob() {
     setQuals([{ qualEn: "", qualTh: "" }]);
     setDescs([{ descEn: "", descTh: "" }]);
     setReloadFlag((prev) => prev + 1);
+    navigate("/solution/datawarehouse/joinus");
   }; 
 
 
@@ -142,7 +144,32 @@ export default function CreateJob() {
       try {
         const res = await Axios.get(url + "/jobDetail/" + id);
           if (res.status === 200) {
-            setDetaildata(res.data);
+            const fetchedData = res.data; // ข้อมูลที่ได้จาก API
+            console.log("Data loaded:", fetchedData);
+
+            // 1. Set ข้อมูลหลักลงใน data
+            setData({
+              id: fetchedData.id, // เก็บ id ไว้เพื่อใช้ตอน Update (PUT)
+              positionEn: fetchedData.positionEn || "",
+              positionTh: fetchedData.positionTh || "",
+              createBy: fetchedData.createBy || user.name,
+              show: fetchedData.show,
+              urgent: fetchedData.urgent || false,
+            });
+
+            // 2. Set ข้อมูล Qualifications (ตรวจสอบว่ามีข้อมูลไหม ถ้าไม่มีให้ใช้ค่าเริ่มต้น)
+            if (fetchedData.quals && fetchedData.quals.length > 0) {
+              setQuals(fetchedData.quals);
+            } else {
+              setQuals([initQual]); // ถ้าว่างให้โชว์ 1 แถวว่างๆ
+            }
+
+            // 3. Set ข้อมูล Descriptions
+            if (fetchedData.descs && fetchedData.descs.length > 0) {
+              setDescs(fetchedData.descs);
+            } else {
+              setDescs([initDesc]);
+            }
           }
       } catch (err) {
         console.error(err);      
@@ -152,11 +179,21 @@ export default function CreateJob() {
   useEffect(() => {
     if (id) {
       jobDetail();
+      setDetailid(id);
+    } else {
+      // ถ้า URL ไม่มี id ให้มั่นใจว่าฟอร์มว่างเปล่า
+      setData(initData);
+      setQuals([{ qualEn: "", qualTh: "", rank: 1 }]);
+      setDetailid(null);
     }
-  }, [id]); // ฟังก์ชันจะทำงานทุกครั้งที่ id เปลี่ยนค่า
+  }, [id]); // เฝ้าดูการเปลี่ยนแปลงของ URL id
 
   console.log(detaildata);
-  
+
+  /* ================== Save Edit ================== */
+  const EditData = async () => {
+      alert("ok");
+  }   
  
   /* ================== RENDER ================== */
   return (
@@ -203,23 +240,26 @@ export default function CreateJob() {
             {quals.map((q, index) => (
               <div
                 key={index}
-                className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                <input
-                  className="w-full"
+                className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">              
+
+                <textarea
+                  className="border border-[#b3b3b3] w-65 rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                  rows={3}
                   value={q.qualEn}
                   onChange={(e) =>
                     changeQual(index, "qualEn", e.target.value)
                   }
                 />
-
                 <div className="flex items-end gap-2">
-                  <input
-                    className="w-full flex-1"
+
+                  <textarea
+                    className="border border-[#b3b3b3] w-full rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                    rows={3}
                     value={q.qualTh}
                     onChange={(e) =>
                       changeQual(index, "qualTh", e.target.value)
                     }
-                  />
+                  />                  
 
                   {quals.length > 1 && (
                     <button
@@ -262,12 +302,15 @@ export default function CreateJob() {
               </div>
             </div>
 
+
             {descs.map((d, index) => (
               <div
                 key={index}
-                className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                <input
-                  className="w-full"
+                className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">  
+                  
+                <textarea
+                  className="border border-[#b3b3b3] w-65 rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                  rows={3}
                   value={d.descEn}
                   onChange={(e) =>
                     changeDesc(index, "descEn", e.target.value)
@@ -275,8 +318,9 @@ export default function CreateJob() {
                 />
 
                 <div className="flex items-end gap-2">
-                  <input
-                    className="w-full flex-1"
+                  <textarea
+                    className="border border-[#b3b3b3] w-full rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+                    rows={3}
                     value={d.descTh}
                     onChange={(e) =>
                       changeDesc(index, "descTh", e.target.value)
@@ -343,14 +387,26 @@ export default function CreateJob() {
           Clear Data
         </button>
 
-        <button
-          className={`btn-green px-4 ${
-            !isFormValid && "opacity-50 cursor-not-allowed"
-          }`}
-          disabled={!isFormValid}
-          onClick={submitData}>
-          Add Job
-        </button>
+        {id ? (            
+            <button
+              className="btn-green px-4"
+              onClick={EditData}
+            >
+              Save Edit
+            </button>
+          ) : (
+           
+            <button
+              className={`btn-green px-4 ${
+                !isFormValid && "opacity-50 cursor-not-allowed"
+              }`}
+              disabled={!isFormValid}
+              onClick={submitData}
+            >
+              Add Job
+            </button>
+          )}
+       
       </div>  
 
       <div className="mt-5">
