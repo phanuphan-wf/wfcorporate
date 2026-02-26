@@ -16,10 +16,9 @@ export default function CreateJob() {
   const [reloadFlag, setReloadFlag] = useState(0);
 
   const { id } = useParams();
-  const [detailid, setDetailid] = useState(null);
- 
+  const pageTitle = id ? "Edit Jobs" : "Create Jobs"; 
   
-  //console.log(detailid);
+  
   //console.log(id);
 
   /* ================== INIT DATA ================== */
@@ -150,7 +149,7 @@ export default function CreateJob() {
         const res = await Axios.get(url + "/jobDetail/" + id);
           if (res.status === 200) {
             const fetchedData = res.data; // ข้อมูลที่ได้จาก API
-            console.log("Data loaded:", fetchedData);
+            //console.log("Data loaded:", fetchedData);
 
             // 1. Set ข้อมูลหลักลงใน data
             setData({
@@ -183,13 +182,11 @@ export default function CreateJob() {
 
   useEffect(() => {
     if (id) {
-      jobDetail();
-      setDetailid(id);
+      jobDetail();    
     } else {
       // ถ้า URL ไม่มี id ให้มั่นใจว่าฟอร์มว่างเปล่า
       setData(initData);
-      setQuals([{ qualEn: "", qualTh: "", rank: 1 }]);
-      setDetailid(null);
+      setQuals([{ qualEn: "", qualTh: "", rank: 1 }]);     
     }
   }, [id]); // เฝ้าดูการเปลี่ยนแปลงของ URL id
 
@@ -218,7 +215,7 @@ export default function CreateJob() {
         }))
       };
 
-      console.log("Data PUT =>", testData);
+      //console.log("Data PUT =>", testData);
 
       try {
         const res = await Axios.put(url + "/UpdateJob", testData);
@@ -248,7 +245,9 @@ export default function CreateJob() {
   /* ================== RENDER ================== */
   return (
     <section className="xl:w-4/5 2xl:w-3/4">
-      <div className="text-xl mb-4">Create Jobs</div>
+      <div className="text-xl mb-4">
+        {pageTitle}
+      </div>
 
       <div className="border rounded-md p-4 border-slate-400">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
