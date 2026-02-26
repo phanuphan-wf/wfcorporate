@@ -142,7 +142,7 @@ export default function CreateExhibition() {
       </div>
 
       <div className="mt-10">
-        <ShowHighlight reload={reloadFlag} />
+        <ShowHighlight reload={reloadFlag}/>
       </div>
     </section>
   );

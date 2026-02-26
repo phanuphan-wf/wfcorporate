@@ -98,7 +98,7 @@ export default function Jobdescription() {
               </ul>
 
               {/* ACTION BUTTON */}
-              <div className="flex">
+              <div className="flex flex-col md:flex-row gap-2 md:gap-4">
                 <button
                   type="button"
                   onClick={() => nav("/joinus/jobform/" + jobdescription.id)}
@@ -107,6 +107,16 @@ export default function Jobdescription() {
                 >
                   {lang === "th" ? "ส่งใบสมัคร" : "Apply"}
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => nav(-1)}
+                  className="w-full py-2 text-gray-700 bg-gray-300
+                            hover:bg-gray-400 transition"
+                >
+                  {lang === "th" ? "ย้อนกลับ" : "Back"}
+                </button>
+
               </div>
             </div>
           </div>

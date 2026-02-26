@@ -13,6 +13,7 @@ import BuyerRegist from "./components/buyerregist/BuyerRegist";
 import QRCode from "./components/buyerregist/QRCode";
 import FormRegister from "./components/buyerregist/redeem/registration";
 import PostRedeem from "./components/buyerregist/redeem/postregister";
+import Floorplan from "./components/floorplan/floorplan";
 
 const AppRegistRoutes = [
   {
@@ -78,6 +79,14 @@ const AppRegistRoutes = [
   {
     path: "redeem/postregister",
     element: <PostRedeem />,
+  },
+  {
+    path: "floorplan/",
+    element: <Floorplan />,
+  },
+  {
+    path: "floorplan/:pos",
+    element: <Floorplan />,
   },
 ];
 

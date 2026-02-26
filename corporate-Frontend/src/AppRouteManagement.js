@@ -1,6 +1,8 @@
 import EmployeeList from "./components/solution/Employee/EmployeeList/employeelist";
 import NewEmployee from "./components/solution/Employee/newEmployee/newemployee";
 import EditEmployee from "./components/solution/Employee/editEmployee/editemployee";
+import JobApplication from "./components/solution/Employee/Jobapplication/ApplyList";
+import Jobform  from "./components/solution/Employee/Jobapplication/jobform";
 
 const AppRouteManagement = [
   {
@@ -21,6 +23,26 @@ const AppRouteManagement = [
   {
     path: "management/editemployee/:eid",
     element: <EditEmployee />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 6, acc: 1 },
+      { dept: 7, acc: 1 },
+      { dept: 7, acc: 2 },
+    ],
+  },
+  {
+    path: "management/jobapplication",
+    element: <JobApplication />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 6, acc: 1 },
+      { dept: 7, acc: 1 },
+      { dept: 7, acc: 2 },
+    ],
+  },
+  {
+    path: "management/jobapplication/jobform/:id",
+    element: <Jobform />,
     show: [
       { dept: 1, acc: 1 },
       { dept: 6, acc: 1 },

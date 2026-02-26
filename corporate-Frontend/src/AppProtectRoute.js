@@ -28,6 +28,9 @@ import { path } from "d3";
 import ServiceReceive from "./components/solution/frontdesk/ServiceReceive";
 import ServiceQuota from "./components/solution/preexhibition/serviceQuota";
 
+import CustomerFloorplan from "./components/solution/preexhibition/customerfloorplan/CustomerFloorplan";
+import { shiftX } from "@observablehq/plot";
+
 
 const AppProtectRoute = [
   {
@@ -92,6 +95,15 @@ const AppProtectRoute = [
   {
     path: "preexhibition/servicequota",
     element: <ServiceQuota />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },
+      { dept: 3, acc: 2 },
+    ],
+  },
+  {
+    path: "preexhibition/customerfloorplan",
+    element: <CustomerFloorplan />,
     show: [
       { dept: 1, acc: 1 },
       { dept: 3, acc: 1 },
