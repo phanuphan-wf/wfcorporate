@@ -137,6 +137,14 @@ const NavItems = [
           { dept: 6, acc: 1 },
         ],
       },
+      {
+        title: "Sale Report",
+        url: "/solution/finance/salereport",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 6, acc: 1 },
+        ],
+      },
     ],
   },
   {

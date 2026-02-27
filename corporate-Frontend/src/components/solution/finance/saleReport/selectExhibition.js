@@ -1,18 +1,19 @@
 import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-import { dataContext } from "./report";
 import CorrectDate from "../../../hook/correctDate";
 
+
 export default function SelectExhibition() {
-  const { filterC, eventC } = useContext(dataContext);
-  const [filter, setFilter] = filterC;
-  const [event, setEvent] = eventC;
-
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
-
   const [exhibition, setExhibtion] = useState([]);
   const [past, setPast] = useState(false);
-  const [show, setShow] = useState({});
+  const [exid, setExid] = useState("");   
+
+  const [filter, setFilter] = useState({
+    exID: "",
+    venue: "",
+    during: "",
+  });
 
   const getExhibition = async () => {
     try {
@@ -25,22 +26,43 @@ export default function SelectExhibition() {
     }
   };
 
- 
+  // โหลดรายชื่อนิทรรศการใหม่เมื่อเปลี่ยนสถานะ past
   useEffect(() => {
     getExhibition();
   }, [past]);
 
-
   useEffect(() => {
-    if (filter.exID && filter.exID !== "0") {
-      const selected = exhibition.find((x) => x.code === filter.exID);
-      setShow(selected);
-      setEvent(selected); 
-    } else {
-      setShow({});
-      setEvent({});
+    
+    if (exid && exid !== "0") {  
+      const selected = exhibition.find((item) => item.code === exid);
+      if (selected) {       
+        setFilter({
+          exID: selected.code,
+          venue: selected.venue,          
+          during:  CorrectDate(selected.sDate) + " - " + CorrectDate(selected.eDate)
+         
+        });
+      }
+    } else {      
+      setFilter({
+        exID: "",
+        venue: "",
+        during: "",
+      });
     }
-  }, [filter.exID, exhibition]);
+  }, [exid, exhibition]); // ใส่ exhibition เผื่อไว้ในกรณีที่ data โหลดมาทีหลัง 
+
+  //console.log(exhibition);
+
+  // useEffect(() => {  
+  //   console.log(filter); 
+  // }, [filter]);
+
+
+  // useEffect(() => {
+  //  // console.log("ค่า exid ปัจจุบันคือ:", exid);
+  // }, [exid]);
+    
 
   return (
     <section id="select-exhibition">
@@ -58,13 +80,13 @@ export default function SelectExhibition() {
             <select
               id="eName"
               className="cmb"
-              onChange={(e) => setFilter({ ...filter, exID: e.target.value })}
+              onChange={(e) => setExid(e.target.value)}
             >
               <option value="0">----</option>
               {exhibition.length > 0 &&
-                exhibition.map((d) => (
-                  <option key={d.code} value={d.code}>
-                    {d.name + " (" + d.code + ")"}
+                exhibition.map((data) => (
+                  <option key={data.code} value={data.code}>
+                    {data.name + " (" + data.code + ")"}
                   </option>
                 ))}
             </select>
@@ -75,7 +97,10 @@ export default function SelectExhibition() {
             <label htmlFor="vName" className="w-[140px]">
               Venue
             </label>
-            <span>{show?.venue ?? "-"}</span>
+            <span>
+              {filter.venue || "-"}
+            </span>
+           
           </div>
 
           {/* During */}
@@ -84,9 +109,7 @@ export default function SelectExhibition() {
               During
             </label>
             <span>
-              {show?.sDate && show?.eDate
-                ? CorrectDate(show.sDate) + " - " + CorrectDate(show.eDate)
-                : "-"}
+               {filter.during || "-"}
             </span>
           </div>
 
@@ -96,7 +119,14 @@ export default function SelectExhibition() {
               type="checkbox"
               id="eFinish"
               className="accent-red-500 size-4"
-              onChange={() => setPast(!past)}
+              onChange={() => {
+                setPast(!past);
+                setFilter({
+                  exID: "",
+                  venue: "",
+                  during: "",
+                });   
+              }}
             />
             <label htmlFor="eFinish" className="ml-2">
               Show Finished Exhibition
@@ -107,3 +137,5 @@ export default function SelectExhibition() {
     </section>
   );
 }
+
+
