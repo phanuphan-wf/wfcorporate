@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
+import { dataContext } from "./salereport";
 
 export default function PrintOptions() {
+
+  const { filterC } = useContext(dataContext);
+  const [filter, setFilter] = filterC;
+
   const [print, setPrint] = useState({
     Print_all: true,
     Without_Zones: false,
   });
 
   useEffect(() => {
-    console.log("Print Options:", print);
+    //console.log("Print Options:", print);
   }, [print]);
 
   // ฟังก์ชันช่วยจัดการการเปลี่ยนค่า
@@ -27,6 +31,16 @@ export default function PrintOptions() {
     }   
     
   };
+
+
+  useEffect(() => {
+    setFilter((prev) => ({
+      ...prev,
+       Print_all: print.Print_all,
+       Without_Zones: print.Without_Zones,   
+    }));
+  },[print, setFilter]);
+ 
 
   return (
     <section id="print-options">

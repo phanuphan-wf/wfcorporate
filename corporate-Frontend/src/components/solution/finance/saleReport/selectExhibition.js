@@ -1,15 +1,19 @@
 import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import CorrectDate from "../../../hook/correctDate";
+import { dataContext } from "./salereport";
 
-
-export default function SelectExhibition() {
+export default function SelectExhibition() { 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
+  
+
+  const { filterC } = useContext(dataContext);
+  const [filter, setFilter] = filterC;
+
   const [exhibition, setExhibtion] = useState([]);
   const [past, setPast] = useState(false);
-  const [exid, setExid] = useState("");   
-
-  const [filter, setFilter] = useState({
+  const [exid, setExid] = useState(""); 
+  const [exdata, setExdata] = useState({
     exID: "",
     venue: "",
     during: "",
@@ -26,43 +30,39 @@ export default function SelectExhibition() {
     }
   };
 
-  // โหลดรายชื่อนิทรรศการใหม่เมื่อเปลี่ยนสถานะ past
   useEffect(() => {
     getExhibition();
   }, [past]);
 
+
+  // useEffect(() => {
+  //   console.log(exdata);
+  // }, [exdata]);
+
+
+
   useEffect(() => {
-    
     if (exid && exid !== "0") {  
       const selected = exhibition.find((item) => item.code === exid);
       if (selected) {       
-        setFilter({
+        setExdata({
           exID: selected.code,
           venue: selected.venue,          
-          during:  CorrectDate(selected.sDate) + " - " + CorrectDate(selected.eDate)
-         
+          during: CorrectDate(selected.sDate) + " - " + CorrectDate(selected.eDate)
         });
       }
     } else {      
-      setFilter({
-        exID: "",
-        venue: "",
-        during: "",
-      });
+      setExdata({ exID: "", venue: "", during: "" });
     }
-  }, [exid, exhibition]); // ใส่ exhibition เผื่อไว้ในกรณีที่ data โหลดมาทีหลัง 
-
-  //console.log(exhibition);
-
-  // useEffect(() => {  
-  //   console.log(filter); 
-  // }, [filter]);
+  }, [exid, exhibition]);
 
 
-  // useEffect(() => {
-  //  // console.log("ค่า exid ปัจจุบันคือ:", exid);
-  // }, [exid]);
-    
+  useEffect(() => {
+    setFilter((prev) => ({
+      ...prev,
+      exID: exdata.exID,      
+    }));
+  }, [exdata, setFilter]);
 
   return (
     <section id="select-exhibition">
@@ -72,63 +72,47 @@ export default function SelectExhibition() {
         </div>
 
         <div className="flex flex-col gap-2 px-3 py-4">
-          {/* Exhibition Name */}
           <div className="flex items-center">
-            <label htmlFor="eName" className="w-[140px]">
-              Exhibition Name
-            </label>
+            <label htmlFor="eName" className="w-[140px]">Exhibition Name</label>
             <select
               id="eName"
               className="cmb"
+              value={exid} // ผูกค่าไว้เพื่อให้ Reset ได้
               onChange={(e) => setExid(e.target.value)}
             >
               <option value="0">----</option>
-              {exhibition.length > 0 &&
-                exhibition.map((data) => (
-                  <option key={data.code} value={data.code}>
-                    {data.name + " (" + data.code + ")"}
-                  </option>
-                ))}
+              {exhibition.map((data) => (
+                <option key={data.code} value={data.code}>
+                  {data.name} ({data.code})
+                </option>
+              ))}
             </select>
           </div>
 
-          {/* Venue */}
           <div className="flex items-center">
-            <label htmlFor="vName" className="w-[140px]">
-              Venue
-            </label>
-            <span>
-              {filter.venue || "-"}
-            </span>
-           
+            <label className="w-[140px]">Venue</label>
+            <span>{exdata.venue || "-"}</span>
           </div>
 
-          {/* During */}
           <div className="flex items-center">
-            <label htmlFor="during" className="w-[140px]">
-              During
-            </label>
-            <span>
-               {filter.during || "-"}
-            </span>
+            <label className="w-[140px]">During</label>
+            <span>{exdata.during || "-"}</span>
           </div>
 
-          {/* Checkbox */}
           <div className="flex w-full justify-end items-center">
             <input
               type="checkbox"
               id="eFinish"
               className="accent-red-500 size-4"
-              onChange={() => {
+              checked={past}
+              onChange={() => {               
                 setPast(!past);
-                setFilter({
-                  exID: "",
-                  venue: "",
-                  during: "",
-                });   
+                // Reset ค่าเมื่อมีการเปลี่ยนโหมด
+                setExid("");
+                setExdata({ exID: "", venue: "", during: "" });
               }}
             />
-            <label htmlFor="eFinish" className="ml-2">
+            <label htmlFor="eFinish" className="ml-2 cursor-pointer">
               Show Finished Exhibition
             </label>
           </div>
@@ -137,5 +121,3 @@ export default function SelectExhibition() {
     </section>
   );
 }
-
-
