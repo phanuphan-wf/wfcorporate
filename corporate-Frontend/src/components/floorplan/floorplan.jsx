@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ModalShowCustomer from "./modalCustomer";
 
+import Uhere from "./uhere";
+import { Loc } from "./ExhibitorLoc";
+
 export default function Floorplan() {
   const { pos } = useParams();
   const { i18n } = useTranslation();
@@ -23,13 +26,8 @@ export default function Floorplan() {
   }, []);
 
   useEffect(() => {
-    //console.log(customer);
+    console.log(customer);
   }, [customer]);
-
-  const loc = {
-    1: "bottom-[50px] left-[800px] w-[50px] h-[120px]",
-    2: "bottom-[200px] left-[500px] w-[50px] h-[80px]",
-  };
 
   const show = true;
 
@@ -46,22 +44,46 @@ export default function Floorplan() {
     setIsShow(true);
   };
 
+  const loc = Loc;
+
+  const ploc = {
+    entrance: "bottom-[580px] left-[770px]",
+    inside: "bottom-[640px] left-[500px]",
+    standee1: "top-[160px] left-[190px]",
+    standee2: "top-[160px] left-[775px]",
+    standee3: "bottom-[580px] left-[245px]",
+    standee4: "bottom-[520px] left-[860px]",
+  };
+
   return (
     <section className="floorplan">
-      <h1 className="font-bold text-2xl">floorplan</h1>
+      <div className="mx-auto w-fit my-4">
+        <img
+          src={require("./img/fur_logo.png")}
+          alt="furniture fair"
+          className="w-[200px] mx-auto"
+        />
+        <p>7-15 March 2026, Bitec Bangna</p>
+      </div>
       <div className="w-full h-screen overflow-auto">
-        <div className="w-[1200px] h-[1200px] border-2 border-yellow-600 bg-yellow-50 relative">
-          {customer.length &&
+        <div className="w-[1000px] h-fit border-2 border-pink-600 relative">
+          <img src={require("./img/b126_floorplan.jpg")} alt="show-floorplan" />
+          {customer.length != 0 &&
             customer.map((c) => (
               <div
                 key={`customer-${c.id}`}
-                className={`${show ? "border border-red-400" : ""} absolute text-sm text-center ${loc[c.id]} cursor-pointer`}
+                className={`${show ? "border border-red-400" : ""} absolute text-sm text-center ${loc[c.id]} cursor-pointer overflow-hidden`}
                 onClick={() => customerClick(c.id)}>
                 {show ? c.name : ""}
               </div>
             ))}
+          <div
+            className={`absolute ${pos != undefined ? ploc[pos] : "hidden"}`}>
+            <Uhere />
+          </div>
         </div>
       </div>
+
       <ModalShowCustomer show={isShow} id={cid} onHide={closeModal} />
     </section>
   );

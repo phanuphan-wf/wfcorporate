@@ -48,6 +48,11 @@ export default function ModalShowCustomer(props) {
     }
   };
 
+  const closeClick = () => {
+    props.onHide();
+    setData({});
+  };
+
   return (
     <section
       className="w-full h-screen fixed bg-black/20 z-30 top-0 left-0"
@@ -78,8 +83,8 @@ export default function ModalShowCustomer(props) {
         <div className="w-full max-w-[450px] mx-auto my-4 max-h-[300px] overflow-hidden">
           <img
             src={`https://worldfair.blob.core.windows.net/showfloorplan/${data?.picture}`}
-            alt=""
-            className="object-cover"
+            alt={data?.name}
+            className="object-cover w-3/4 h-1/4"
           />
         </div>
         <div className="flex items-center gap-4 mb-3">
@@ -100,7 +105,7 @@ export default function ModalShowCustomer(props) {
           </label>
           <div className="pl-6">{data?.product}</div>
         </div>
-        <div className="flex justify-end" onClick={props.onHide}>
+        <div className="flex justify-end" onClick={closeClick}>
           <button className="btn-gray px-4">
             {isTh ? "ปิดหน้าต่าง" : "close"}
           </button>
