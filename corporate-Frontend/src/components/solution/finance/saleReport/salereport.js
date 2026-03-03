@@ -2,6 +2,8 @@ import React, { useState, useEffect, createContext} from "react";
 import SelectExhibition from "./selectExhibition";
 import PrintOptions from "./printOptions";
 import Filter from "./filter";
+import Print_all from "./Print_all";
+
 
 import { CgMoreO } from "react-icons/cg";
 
@@ -52,6 +54,8 @@ export default function SaleReport() {
 
    
         {showFilter && <Filter />}
+
+        <Print_all/>
         
       </dataContext.Provider>
 
