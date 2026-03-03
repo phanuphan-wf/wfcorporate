@@ -29,7 +29,7 @@ export default function Floorplan() {
     console.log(customer);
   }, [customer]);
 
-  const show = true;
+  const show = false;
 
   const [isShow, setIsShow] = useState(false);
   const [cid, setCid] = useState(0);
@@ -67,7 +67,7 @@ export default function Floorplan() {
       </div>
       <div className="w-full h-screen overflow-auto">
         <div className="w-[1000px] h-fit border-2 border-pink-600 relative">
-          <img src={require("./img/b126_floorplan.jpg")} alt="show-floorplan" />
+          <img src={require("./img/b126_floorplan.png")} alt="show-floorplan" />
           {customer.length != 0 &&
             customer.map((c) => (
               <div
