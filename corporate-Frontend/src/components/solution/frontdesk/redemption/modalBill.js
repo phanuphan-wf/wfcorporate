@@ -45,16 +45,16 @@ export default function ModalBill(props) {
                 </div>
             </div>
 
-            {/*-- Modal footer --*/}
-<div className="flex items-center justify-end p-4 border-t border-gray-200 rounded-b">
-  <button
-    type="button"
-    className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-lg px-10 py-1.5 text-center"
-    onClick={props.onHide}
-  >
-    OK
-  </button>
-</div>
+          
+            <div className="flex items-center justify-end p-4 border-t border-gray-200 rounded-b">
+              <button
+                type="button"
+                className="text-white bg-red-500 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-lg px-10 py-1.5 text-center"
+                onClick={props.onHide}
+              >
+                OK
+              </button>
+            </div>
 
           </div>
         </div>
