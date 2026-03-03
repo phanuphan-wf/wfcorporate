@@ -127,15 +127,10 @@ export default function BillDetail(props) {
    
     if (billData.CustomerID != 12444) {
       if (deposit > halfVolumn) {
-            //alert(`รายการนี้มียอดมัดจำมากกว่ายอดรวม 50 %`);   
+        //alert(`รายการนี้มียอดมัดจำมากกว่ายอดรวม 50 %`);   
         setModalBillShow(true);         
       } 
-    }
-
-    
-   
-
-    
+    }        
 
       setBillList([...billList, billData]);
       getProduct();
@@ -174,10 +169,6 @@ export default function BillDetail(props) {
     document.getElementById("bproduct").selectedIndex = "0";
   }, [props.reset]);  
 
-  useEffect(() => {
-     console.log(billData);
-  },[billData]);
-  
   
   return (
     <section>
