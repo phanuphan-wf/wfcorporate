@@ -13,7 +13,7 @@ export default function ModalBill(props) {
           props.show ? "" : "hidden"
         }`}
       >
-         <div className="absolute w-full max-w-3xl md:max-w-xl lg:max-w-3xl max-h-full top-[100px] left-1/2 -translate-x-1/2">
+         <div className="absolute w-full max-w-3xl md:max-w-xl lg:max-w-3xl max-h-full top-[200px] left-1/2 -translate-x-1/2">
  
           <div className="relative bg-white rounded-lg shadow-xl border-t-4">
             

@@ -124,14 +124,18 @@ export default function BillDetail(props) {
     const volumn = parseFloat(billData.Volumn);
     const deposit = parseFloat(billData.deposit);
     const halfVolumn = volumn * 0.5;
-    if (deposit >= halfVolumn) {
-        //alert(`รายการนี้มียอดมัดจำมากกว่ายอดรวม 50 %`);   
-        setModalBillShow(true);
-        setBillList([...billList, billData]);
-        getProduct();
-        setBill({ ...billData, Product: "", deposit: "", Volumn: "" });
-        document.getElementById("bproduct").selectedIndex = "0";
-    }   
+   
+    if (billData.CustomerID != 12444) {
+      if (deposit > halfVolumn) {
+            //alert(`รายการนี้มียอดมัดจำมากกว่ายอดรวม 50 %`);   
+        setModalBillShow(true);         
+      } 
+    }
+
+    
+   
+
+    
 
       setBillList([...billList, billData]);
       getProduct();
@@ -169,6 +173,10 @@ export default function BillDetail(props) {
     document.getElementById("bbank").selectedIndex = "0";
     document.getElementById("bproduct").selectedIndex = "0";
   }, [props.reset]);  
+
+  useEffect(() => {
+     console.log(billData);
+  },[billData]);
   
   
   return (
