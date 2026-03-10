@@ -25,6 +25,16 @@ export default function Floorplan() {
     getCustomer();
   }, []);
 
+  const postPos = async () => {
+    const res = await Axios.post(url + "/PostScan", { Loc: pos });
+  };
+
+  useEffect(() => {
+    if (pos != undefined && pos != "") {
+      postPos();
+    }
+  }, [pos]);
+
   useEffect(() => {
     console.log(customer);
   }, [customer]);
@@ -63,7 +73,12 @@ export default function Floorplan() {
           alt="furniture fair"
           className="w-[200px] mx-auto"
         />
-        <p>7-15 March 2026, Bitec Bangna</p>
+        <p className="text-center">7-15 March 2026, Bitec Bangna</p>
+        <p className="text-sm text-center border-t text-red-400">
+          ท่านสามารถแตะที่โลโก้เพื่อดูข้อมูลร้านค้าได้
+          <br />
+          touch on logo for watching more information
+        </p>
       </div>
       <div className="w-full h-screen overflow-auto">
         <div className="w-[1000px] h-fit border-2 border-pink-600 relative">
