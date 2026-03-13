@@ -14,7 +14,7 @@ import useCheckMobile from "../../hook/useCheckMobile";
 
 export default function Postregister(props) {
   const { t, i18n } = useTranslation("landing", { keyPrefix: "regist.post" });
-  const { t: tr } = useTranslation("landing", { keyPrefix: "regist" });
+  const { t: tr } = useTranslation("landing", { keyPrefix: "regist2" });
   const mobile = useCheckMobile();
   var CryptoJS = require("crypto-js");
 
@@ -138,11 +138,11 @@ export default function Postregister(props) {
         {tr("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#e90d8b] text-white px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
+        <div className="bg-[#f3d743] text-black px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
           <MdLocationOn />
           {tr("hall")}
         </div>
-        <div className="bg-[#e90d8b] text-white px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
+        <div className="bg-[#f3d743] text-black px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
           <MdAvTimer />
           {tr("time")}
         </div>

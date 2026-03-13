@@ -40,7 +40,7 @@ export default function PreRegist(props) {
     if (sDate !== "" && eDate !== "") {
       const today = new Date();
 
-      if (today >= new Date(sDate) && today <= new Date(eDate)) {
+      if (today >= new Date(sDate) && today <= new Date(eDate)) {      
       } else {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }

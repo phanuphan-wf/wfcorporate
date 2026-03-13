@@ -13,7 +13,7 @@ import ElecSection from "./elecsection";
 import ClickRegist from "./clickRegist";
 
 export default function Landingpage(props) {
-  const { t } = useTranslation("landing", { keyPrefix: "landing" });
+  const { t } = useTranslation("landing", { keyPrefix: "landing2" });
   const mobile = useCheckMobile();
   const [bannerLoaded, setBannerLoaded] = useState(false);
 
@@ -73,7 +73,7 @@ export default function Landingpage(props) {
         className="w-full absolute top-0 left-1/2 -translate-x-1/2"
         ref={bannerRef}>
         <img
-          src={require("./img/hero_banner.jpg")}
+          src={require("./img/hero_banner.png")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto"

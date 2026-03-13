@@ -28,11 +28,11 @@ export default function FurSection() {
       </div>
 
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#ff6d00] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#f3d743] text-[#293c8d] px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdLocationOn />
           {t("hall")}
         </div>
-        <div className="bg-[#ff6d00] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#f3d743] text-[#293c8d] px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdAvTimer />
           {t("time")}
         </div>
@@ -46,7 +46,7 @@ export default function FurSection() {
         </ul>
       </div>
 
-      <div className="xl:container bg-gradient-to-b from-[#ff6d00] to-[#ff6d00] py-6">
+      <div className="xl:container bg-gradient-to-b from-[#f3d743] to-[#f3d743] py-6">
         <div className="relative mx-5 lg:mx-0 ">
           <div className="grid grid-cols-2 md:grid-cols-3 w-full sm:w-3/4 lg:w-[800px] gap-4 md:gap-7 place-items-center mx-auto">
             <img
@@ -93,16 +93,16 @@ export default function FurSection() {
       </div>
 */}
 
-      <div className="xl:container w-full bg-[#ff6d00] flex items-center justify-evenly py-4 mb-4">
+      <div className="xl:container w-full bg-[#f3d743] flex items-center justify-evenly py-4 mb-4">
         <div className="w-[40%] sm:w-1/3 lg:w-1/4 mb-5">
           <img
-            src={require("./img/fur_logo_white.png")}
+            src={require("./img/fur_logo.png")}
             alt="furniture logo white"
             id="fur_banner"
             className="mx-auto"
           />
         </div>
-        <div className="text-white">
+        <div className="text-black">
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdLocationOn className="drop-shadow-md" />
             <span className="drop-shadow-md">
