@@ -94,12 +94,12 @@ export default function FurSection() {
 */}
 
       <div className="xl:container w-full bg-[#f3d743] flex items-center justify-evenly py-4 mb-4">
-        <div className="w-[40%] sm:w-1/3 lg:w-1/4 mb-5">
+        <div className="w-[40%] sm:w-1/3 lg:w-1/4">
           <img
             src={require("./img/fur_logo.png")}
             alt="furniture logo white"
             id="fur_banner"
-            className="mx-auto"
+            className="object-contain w-full h-full"
           />
         </div>
         <div className="text-black">

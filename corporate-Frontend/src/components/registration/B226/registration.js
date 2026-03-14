@@ -405,7 +405,7 @@ export default function Registration(props) {
           </label>
         </div>
         <div
-          className="mt-3 mx-auto w-full sm:w-3/4 md:w-1/2 bg-gradient-to-r from-[#0C6C37] from-[50%] to-[#0F8444] bg-[size:200%] bg-[position:_0%_0%] hover:bg-[position:_100%_100%] text-white rounded-lg text-center py-1 transition-all duration-300 max-md:text-lg"
+          className="mt-3 mx-auto w-full sm:w-3/4 md:w-1/2 bg-gradient-to-r from-red-600 from-[50%] to-red-400 bg-[size:200%] bg-[position:_0%_0%] hover:bg-[position:_100%_100%] text-white rounded-lg text-center py-1 transition-all duration-300 max-md:text-lg"
           onClick={submitData}
           disabled={submiting}>
           {!submiting ? t("submit") : t("saving")}
