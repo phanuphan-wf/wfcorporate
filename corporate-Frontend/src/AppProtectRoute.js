@@ -225,7 +225,10 @@ const AppProtectRoute = [
     element:<Joinus />,
     show: [
       { dept: 1, acc: 1 },
-      { dept: 3, acc: 1 },     
+      { dept: 3, acc: 1 }, 
+      { dept: 7, acc: 3 },
+      { dept: 7, acc: 1 },
+      { dept: 7, acc: 2 },    
     ],
   },
   {
@@ -233,7 +236,11 @@ const AppProtectRoute = [
     element:<Joinus />,
     show: [
       { dept: 1, acc: 1 },
-      { dept: 3, acc: 1 },     
+      { dept: 3, acc: 1 }, 
+      { dept: 7, acc: 3 },  
+      { dept: 7, acc: 1 },
+      { dept: 7, acc: 2 }, 
+          
     ],
   },
 
