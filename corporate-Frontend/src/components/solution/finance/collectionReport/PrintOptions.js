@@ -1,89 +1,83 @@
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useEffect, useState } from "react";
 import { dataContext } from "./report";
 
 export default function PrintOptions() {
-  const { filterC } = useContext(dataContext);
-  const [filter, setFilter] = filterC;
+  const { PrintOptionsC} = useContext(dataContext);
+  const [printOption, setPrintOption] = PrintOptionsC;
 
   // ✅ กำหนดค่าเริ่มต้น
-  const safeFilter = {
-    printall: true,
+  const [print, setPrint] = useState({
+    printAll: true,
     wSale:  false,
     wZone: false,
-    sumReport: false,
-    order: [],
-    userInteracted: false,
-    ...filter,
-  };
-
-  const setMode = (mode) => {
-    setFilter((prev) => {
-      const newFilter = { ...prev };
-      const newValue = !prev[mode]; // ค่าใหม่ที่จะเป็น (True หรือ False)
-
-      // 1. ตั้งค่าพื้นฐาน
-      newFilter[mode] = newValue;
-      newFilter.userInteracted = true; // บอกว่า User เริ่มกดแล้ว
-
-      // 2. ดึง Order เดิมมาเตรียมแก้ไข
-      let newOrder = [...(prev.order || [])];
-
-      // ----------------------------------------------------------
-      // 💡 LOGIC การจัดการความสัมพันธ์ (Exclusive Logic)
-      // ----------------------------------------------------------
-      
-      if (newValue === true) {
-        // ✅ กรณี: กำลัง "ติ๊กเลือก" (Turning ON)
-        
-        // เพิ่มตัวปัจจุบันเข้าไปใน Order (ถ้ายังไม่มี)
-        if (!newOrder.includes(mode)) {
-          newOrder.push(mode);
-        }
-
-        if (mode === "printall") {
-          // 🟢 ถ้าเลือก Print All -> ล้างทุกอย่าง
-          newFilter.wSale = false;
-          newFilter.wZone = false;
-          newFilter.sumReport = false;
-          
-          // Order เหลือแค่ printall ตัวเดียว
-          newOrder = ["printall"];
-        } 
-        else if (mode === "sumReport") {
-          // 🟡 ถ้าเลือก Summary -> ล้างทุกอย่าง (ตามเงื่อนไข else เดิมของคุณ)
-          newFilter.printall = false;
-          newFilter.wSale = false;
-          newFilter.wZone = false;
-
-          // Order เหลือแค่ sumReport ตัวเดียว
-          newOrder = ["sumReport"];
-        } 
-        else if (mode === "wSale" || mode === "wZone") {
-          // 🔵 ถ้าเลือก Without... -> ล้าง PrintAll และ Summary แต่ "ไม่ล้างกันเอง"
-          newFilter.printall = false;
-          newFilter.sumReport = false;
-
-          // ลบ printall และ sumReport ออกจาก Order (ถ้ามี)
-          newOrder = newOrder.filter(item => item !== "printall" && item !== "sumReport");
-        }
-
-      } else {
-        // ❌ กรณี: กำลัง "เอาติ๊กออก" (Turning OFF)
-        // ลบตัวนั้นออกจาก Order
-        newOrder = newOrder.filter((item) => item !== mode);
-      }
-
-      // 3. บันทึก Order กลับเข้าไป
-      newFilter.order = newOrder;
-
-      return newFilter;
-    });
-  };
+    sumReport: false   
+  });  
 
   
+  const [nameCheckbox, setNameCheckbox] = useState([]);  
+
+  //console.log(nameCheckbox);
+
+  const handleCheckbox = (name) => {
+    setNameCheckbox((prev) => {
+      
+      if (name === "printAll") return ["printAll"];
+      if (name === "sumReport") return ["sumReport"];
+
+      
+      if (name === "wSale" || name === "wZone") {
+       
+        const filtered = prev.filter(item => item !== "printAll" && item !== "sumReport");
+
+        if (filtered.includes(name)) {          
+          const updated = filtered.filter(item => item !== name);       
+          return updated.length === 0 ? ["printAll"] : updated;
+        } else {
+         
+          return [...filtered, name];
+        }
+      }
+
+      return prev;
+    });
+  };
+  
   useEffect(() => {
-     console.log("✅ filter:", safeFilter);
-  }, [safeFilter]);
+    const printAll = nameCheckbox.includes("printAll");
+    const wSale = nameCheckbox.includes("wSale");
+    const wZone = nameCheckbox.includes("wZone");
+    const sumReport = nameCheckbox.includes("sumReport");
+
+    if (sumReport) {        
+        setPrint({ printAll: false, 
+                     wSale: false,
+                     wZone: false,
+                     sumReport: true 
+                  });
+      
+    }else if (wSale || wZone) {
+        setPrint({ printAll: false, 
+                     wSale: wSale,
+                     wZone: wZone,
+                     sumReport: false
+                  });
+
+    }else{
+        setPrint({ printAll: true, 
+                     wSale: false,
+                     wZone: false,
+                     sumReport: false 
+                });
+    }
+  }, [nameCheckbox]);
+
+   
+  useEffect(() => {
+      setPrintOption((prev) => ({
+        ...prev,
+        printOption : print
+      }));
+  }, [print, setPrintOption]);
 
   return (
     <section id="print-options">
@@ -101,8 +95,8 @@ export default function PrintOptions() {
               <input
                 type="checkbox"
                 className="accent-red-500 w-4 h-4"
-                checked={safeFilter.printall}
-                onChange={() => setMode("printall")}
+                checked={print.printAll}
+                onChange={() => handleCheckbox("printAll")}
               />
               Print all
             </label>
@@ -112,8 +106,8 @@ export default function PrintOptions() {
               <input
                 type="checkbox"
                 className="accent-red-500 w-4 h-4"
-                checked={safeFilter.wSale}
-                onChange={() => setMode("wSale")}
+                checked={print.wSale}
+                onChange={() => handleCheckbox("wSale")}
               />
               Without Sales
             </label>
@@ -123,8 +117,8 @@ export default function PrintOptions() {
               <input
                 type="checkbox"
                 className="accent-red-500 w-4 h-4"
-                checked={safeFilter.wZone}
-                onChange={() => setMode("wZone")}
+                checked={print.wZone}
+                onChange={() => handleCheckbox("wZone")}
               />
               Without Zones
             </label>
@@ -135,8 +129,8 @@ export default function PrintOptions() {
             <input
               type="checkbox"
               className="accent-red-500 w-4 h-4"
-              checked={safeFilter.sumReport}
-              onChange={() => setMode("sumReport")}
+              checked={print.sumReport}
+              onChange={() => handleCheckbox("sumReport")}
             />
             Summary Report
           </label>
