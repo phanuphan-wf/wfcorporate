@@ -14,18 +14,28 @@ export default function VisCheck(props) {
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const [playgame, setPlaygame] = useState(false);
   const [visID, setVisID] = useState();
+
+  const [visitorName, setVisitorName] = useState("");
 
   const initModal = { header: "", body: "" };
   const [modalText, setMtext] = useState(initModal);
 
   async function vischeck() {
+
+    setPlaygame(false);
+   
     const res = await Axios.put(url + "/vischeck/" + visID);
     console.log(res.data);
+    
+    
     if (res.data.code === 200) {
       var receive = res.data.message;
       var name = receive.substring(2, receive.search(","));
       var mobile = receive.substring(receive.search(",") + 3);
+
+      setVisitorName(name);
 
       setMtext({
         header: "Visitor Info",
@@ -40,10 +50,12 @@ export default function VisCheck(props) {
             <p>
               mobile: <font className="text-success"> {mobile} </font>
             </p>
+
           </div>
         ),
       });
       setIsOpen(true);
+      setPlaygame(true);
     }
 
     if (res.data.code === 201) {
@@ -55,9 +67,17 @@ export default function VisCheck(props) {
       );
       var campaign = receive.substring(receive.search(",c:") + 3);
 
+      setVisitorName(name);
+
       //pixel send only online regist and present, not neccessary for onsite registration
 
       SendPixelVis({ mob: mobile });
+
+      if (campaign !== "1" && campaign !== "2") {
+          setPlaygame(true);
+      } else {
+          setPlaygame(false); 
+      }
 
       setMtext({
         header: "Visitor Info",
@@ -84,6 +104,7 @@ export default function VisCheck(props) {
         ),
       });
       setIsOpen(true);
+ 
     }
 
     if (res.data.code === 302) {
@@ -125,7 +146,6 @@ export default function VisCheck(props) {
       });
       setIsOpen(true);
     }
-
     if (res.data.code === 400) {
       setMtext({
         header: "Save error",
@@ -144,6 +164,8 @@ export default function VisCheck(props) {
   function closeModal() {
     setIsOpen(false);
     setVisID("");
+    setPlaygame(false);  
+    setVisitorName("");
     props.reset();
   }
 
@@ -171,6 +193,8 @@ export default function VisCheck(props) {
         header={modalText.header}
         body={modalText.body}
         onHide={closeModal}
+        playgame={playgame}
+        visitorName={visitorName}
       />
     </div>
   );

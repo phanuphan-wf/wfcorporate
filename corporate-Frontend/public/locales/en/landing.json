@@ -1,12 +1,14 @@
 {
     "landing": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Show",
+        "show": "Furniture Fair",
         "showdate": "January 10-18, 2026",
-        "hall": "HALL 9-10",
+        "location": "BITEC BANGNA",
+        "sublocation": "BITEC",
+        "hall": "HALL 103-104",
         "time": "10.30-20.30 hrs.",
         "regist": "Register get",
-        "gift": "Gift Set",
+        "gift": "Shopping Bag",
         "free": "Free!",
         "click": "Click",
         "fur": [
@@ -29,9 +31,13 @@
     },
     "landing2": {
         "show": "Furniture Fair",
-        "showdate": "September 6-14, 2025",
-        "hall": "Hall 9-10",
+        "showdate": "March 28 - April 6, 2026",
+        "hall":  "HALL 103-104",
         "time": "10.30-20.30 hrs.",
+        "regist": "Register get",
+        "gift": "Gift",
+        "free": "Free!",
+        "click": "Click",
         "fur": [
             "Living room furniture such as sofa, chair, coffee table, recliner, carpet",
             "Bedroom furniture such as bed, mattress, bedding set, wardrobe, pillow, lamp",
@@ -49,17 +55,20 @@
             "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
         ]
     },
-    "regist2": {
-        "show": "Furniture Fair",
-        "showdate": "September 6-14, 2025",
-        "hall": "Hall 9-10",
+    "regist2": {  
+        "lng": "เปลี่ยนภาษา",    
+        "show": "Furniture Show",
+        "showdate": "March 28 - April 6, 2026",       
+        "hall": "HALL 103-104",
         "time": "10.30-20.30 hrs."
     },
+
+    
     "regist": {
         "lng": "เปลี่ยนภาษา",
         "show": "Furniture Fair",
-        "showdate": "January 10-18, 2026",
-        "hall": "HALL 9-10",
+        "showdate": "March 7-15, 2026",
+        "hall": "HALL 103-104",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
         "pre": "Preregistration Form",

@@ -72,6 +72,15 @@ const NavItems = [
           { dept: 3, acc: 2 },
         ],
       },
+      {
+        title: "Customer Floorplan",
+        url: "solution/preexhibition/customerfloorplan",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },
+          { dept: 3, acc: 2 },
+        ],
+      },
     ],
   },
   {
