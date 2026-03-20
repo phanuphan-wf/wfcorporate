@@ -9,7 +9,7 @@ import Filter from "./Filter";
 // import Without_Sales from "./Without_Sales";
 // import Summary_Report from "./Summary_Report";
 
-import { CgMoreO } from "react-icons/cg";
+
 //import Print_PDF from "./Print_PDF";
 
 
@@ -30,9 +30,29 @@ function CollectionReport() {
   const [printOption, setPrintOption] = useState([]);
   //console.log(filter);
   //console.log(printOption);
-
-  const [showFilter, setShowFilter] = useState(false);   
-
+  const [reportlist, setReportlist] = useState([]);
+  
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
+  const pdfRef = useRef(null);
+  
+  const getReport = async (params) => {
+    try {     
+      const res = await Axios.post(url + "/getReport",params);  
+      if (res.status === 200) {
+        setReportlist(res.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }; 
+  useEffect(() => {
+    // เช็คว่าต้องมี exID ก่อนเสมอถึงจะยิง API
+    if (filter.exID && filter.exID !== "0" && filter.exID !== "") {
+      getReport(filter);
+    } else {
+      setReportlist([]); // ล้างข้อมูลถ้าไม่ได้เลือก Exhibition
+    }
+  }, [filter]); // <--- เปลี่ยนจาก filter.exID เป็น filter ทั้งก้อนilter.exID]);
 
   // ================== 🧾 ส่วนแสดงผล ==================
   return (
@@ -44,44 +64,19 @@ function CollectionReport() {
           }}
       >
 
-      <section className="2xl:container pt-1 pb-5 px-5">
+        <section className="2xl:container pt-1 pb-5 px-5">
+          
+          <h1 className="text-xl font-semibold mb-2">Collection Report</h1>
+
+          <SelectExhibition/>
         
-        <h1 className="text-xl font-semibold mb-2">Collection Report</h1>
+          <PrintOptions/>
+        
+          <Filter/>    
 
-        <SelectExhibition/>
-      
-        <PrintOptions/>
+        </section>
 
-        {/* Filter Button */}
-        <button
-          className={`rounded-md py-1 px-3 text-white mt-4 flex items-center gap-2 transition-colors ${
-            showFilter ? "bg-red-500" : "bg-green-600"
-          }`}
-          onClick={() => setShowFilter(!showFilter)}
-        >
-          {showFilter ? (
-            <>
-              <CgMoreO /> 
-              <span>Close panel</span>
-            </>
-          ) : (
-            <>
-              <CgMoreO />
-              <span>Filter</span>
-            </>
-          )}
-        </button>
-
-        {/* Filter Section */}
-        {showFilter && (
-          <div className="mt-4 p-4 border rounded-lg bg-gray-50 shadow-sm animate-fade-in">
-            {/* <Filter /> */}
-          </div>
-        )}
-
-
-      </section>
-    </dataContext.Provider>
+      </dataContext.Provider>
   );
 }
 

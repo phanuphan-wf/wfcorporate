@@ -2,8 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { dataContext } from "./report";
 
 export default function PrintOptions() {
-  const { PrintOptionsC} = useContext(dataContext);
+  const {filterC,PrintOptionsC} = useContext(dataContext);
+  const [filter] = filterC;
   const [printOption, setPrintOption] = PrintOptionsC;
+
+  const isDisabled = !filter.exID || filter.exID === "";
 
   // ✅ กำหนดค่าเริ่มต้น
   const [print, setPrint] = useState({
@@ -80,7 +83,7 @@ export default function PrintOptions() {
   }, [print, setPrintOption]);
 
   return (
-    <section id="print-options">
+    <section id="print-options" className={isDisabled ? "opacity-50 pointer-events-none" : "opacity-100"}>
       <div className="border border-zinc-300 rounded-md relative mt-6 p-4 bg-white">
         {/* Header */}
         <div className="absolute bg-white px-2 py-1 -top-3 left-4 text-red-600 font-semibold">
