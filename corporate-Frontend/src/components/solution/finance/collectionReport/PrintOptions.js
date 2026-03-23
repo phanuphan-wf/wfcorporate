@@ -6,16 +6,18 @@ export default function PrintOptions() {
   const [filter] = filterC;
   const [printOption, setPrintOption] = PrintOptionsC;
 
-  const isDisabled = !filter.exID || filter.exID === "";
+  const isDisabled = !filter.exID || filter.exID === "";  
 
-  // ✅ กำหนดค่าเริ่มต้น
-  const [print, setPrint] = useState({
+  //console.log(filter); 
+
+  const initialData = {
     printAll: true,
-    wSale:  false,
+    wSale: false,
     wZone: false,
     sumReport: false   
-  });  
+  }; 
 
+  const [print, setPrint] = useState(initialData);
   
   const [nameCheckbox, setNameCheckbox] = useState([]);  
 
@@ -63,8 +65,20 @@ export default function PrintOptions() {
                      wSale: wSale,
                      wZone: wZone,
                      sumReport: false
-                  });
+                  });                 
 
+    }else if (wSale) {
+        setPrint({ printAll: false, 
+                     wSale: true,
+                     wZone: false,
+                     sumReport: false
+                });   
+    }else if (wZone) {
+        setPrint({ printAll: false, 
+                     wSale: false,
+                     wZone: true,
+                     sumReport: false
+                });   
     }else{
         setPrint({ printAll: true, 
                      wSale: false,
@@ -81,6 +95,17 @@ export default function PrintOptions() {
         printOption : print
       }));
   }, [print, setPrintOption]);
+
+
+  useEffect(() => {
+    if (isDisabled) {     
+      setPrint(initialData);
+    }
+  }, [isDisabled]);
+
+  useEffect(() => {
+    setPrint(initialData);    
+  }, [filter.exID]);
 
   return (
     <section id="print-options" className={isDisabled ? "opacity-50 pointer-events-none" : "opacity-100"}>

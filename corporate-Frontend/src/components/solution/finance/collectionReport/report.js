@@ -18,22 +18,22 @@ export const dataContext = createContext();
 function CollectionReport() {
   const initFilter = {
     exID: "",
-    sales: "",
-    customerid: "",
-    customername: "",
-    zone: "",
-    payment: "", 
+    sales: "0",  
+    zone: "0",
+    customer: "0",
+    payment: "0", 
   };
 
 
   const [filter, setFilter] = useState(initFilter);
   const [printOption, setPrintOption] = useState([]);
-  //console.log(filter);
+ 
+   console.log(filter);
   //console.log(printOption);
   const [reportlist, setReportlist] = useState([]);
+  //console.log(reportlist);
   
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
-  const pdfRef = useRef(null);
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;  
   
   const getReport = async (params) => {
     try {     
@@ -45,14 +45,14 @@ function CollectionReport() {
       console.error(err);
     }
   }; 
-  useEffect(() => {
-    // เช็คว่าต้องมี exID ก่อนเสมอถึงจะยิง API
-    if (filter.exID && filter.exID !== "0" && filter.exID !== "") {
+
+  useEffect(() => {  
+    if (filter.exID !== "") {
       getReport(filter);
     } else {
-      setReportlist([]); // ล้างข้อมูลถ้าไม่ได้เลือก Exhibition
+      setReportlist([]); 
     }
-  }, [filter]); // <--- เปลี่ยนจาก filter.exID เป็น filter ทั้งก้อนilter.exID]);
+  }, [filter.exID]); 
 
   // ================== 🧾 ส่วนแสดงผล ==================
   return (
@@ -60,7 +60,8 @@ function CollectionReport() {
       <dataContext.Provider
           value={{
             filterC: [filter, setFilter],
-            PrintOptionsC: [printOption, setPrintOption]
+            PrintOptionsC: [printOption, setPrintOption],
+            reportC: [reportlist, setReportlist],
           }}
       >
 
