@@ -33,27 +33,17 @@ export default function SaleReport() {
     <section className="2xl:container pt-1 pb-5 px-5">
       <h1 className="text-xl font-semibold mb-2">Sale Report</h1>         
 
-      <dataContext.Provider value={{ filterC: [filter, setFilter] }}>        
+      <dataContext.Provider 
+           value={{ 
+              filterC: [filter, setFilter]
+           }}      
+      >        
        
         <SelectExhibition/>
        
         <PrintOptions />
      
-        <button
-            className={`rounded-md py-0.5 text-white mt-4 ${
-              !showFilter ? "bg-green-600 px-2" : "bg-red-500 px-3"
-            } flex items-center gap-2`}
-            onClick={() => setShowFilter(!showFilter)}
-          >
-            {!showFilter ? (
-              <><CgMoreO /> <span>Filter</span></>
-            ) : (
-              <span>Close panel</span>
-            )}
-        </button>
-
-   
-        {showFilter && <Filter />}
+        <Filter />
 
         <Print_all/>
         

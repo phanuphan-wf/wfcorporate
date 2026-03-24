@@ -4,7 +4,7 @@ import CorrectDate from "../../../hook/correctDate";
 import { dataContext } from "./salereport";
 
 export default function SelectExhibition() { 
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_srp;
   
 
   const { filterC } = useContext(dataContext);
@@ -19,9 +19,11 @@ export default function SelectExhibition() {
     during: "",
   });
 
+  //console.log(exdata);
+
   const getExhibition = async () => {
     try {
-      const res = await Axios.get(url + "/getExhibition/" + past);
+      const res = await Axios.get(url + "/getShowname/" + past);
       if (res.status === 200) {
         setExhibtion(res.data);
       }
