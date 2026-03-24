@@ -23,9 +23,9 @@ export default function SaleReport() {
   const [showFilter, setShowFilter] = useState(false);  
   
   
-  useEffect(() => {
-     console.log(filter);
-  }, [filter]);
+  // useEffect(() => {
+  //    console.log(filter);
+  // }, [filter]);
 
   
 
@@ -39,13 +39,13 @@ export default function SaleReport() {
            }}      
       >        
        
-        <SelectExhibition/>
-       
-        <PrintOptions />
-     
-        <Filter />
+          <SelectExhibition/>
+        
+          <PrintOptions />
+      
+          <Filter />
 
-        <Print_all/>
+          <Print_all/>
         
       </dataContext.Provider>
 
