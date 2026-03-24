@@ -253,7 +253,7 @@ export default function Filter() {
                       id="exname"
                       className ="w-full md:w-100 border rounded px-2 py-1 pr-8" // ✅ เพิ่ม padding ขวาให้เว้นที่สำหรับปุ่ม ✕
                       placeholder ="----- Search Customer -----"
-                      value={selectedCustomer}
+                      //value={selectedCustomer}
                      // onChange={(e) =>
                      //   setSelectedCustomer({ ...selectedCustomer, name: e.target.value })
                      // }
