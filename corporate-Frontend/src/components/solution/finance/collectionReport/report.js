@@ -27,8 +27,9 @@ function CollectionReport() {
 
   const [filter, setFilter] = useState(initFilter);
   const [printOption, setPrintOption] = useState([]);
- 
-   console.log(filter);
+  
+  const [filterBy, setFilterBy] = useState([]);
+  //console.log(filter);
   //console.log(printOption);
   const [reportlist, setReportlist] = useState([]);
   //console.log(reportlist);
@@ -61,6 +62,7 @@ function CollectionReport() {
           value={{
             filterC: [filter, setFilter],
             PrintOptionsC: [printOption, setPrintOption],
+            filterByC: [filterBy, setFilterBy],
             reportC: [reportlist, setReportlist],
           }}
       >

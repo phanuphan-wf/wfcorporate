@@ -3,11 +3,15 @@ import { dataContext } from "./report";
 import { CgMoreO, CgCloseO } from "react-icons/cg";
 
 export default function Filter() {
-  const { filterC,reportC } = useContext(dataContext);
-  const [filter, setFilter] = filterC;
+  const { filterC,filterByC,reportC } = useContext(dataContext);
+
+  const [filter] = filterC;
+  const [filterBy, setFilterBy] = filterByC;
+
   const [report] = reportC;
 
   //console.log(report);
+  //console.log(filterByC);
 
   const [showFilter, setShowFilter] = useState(false);
 
@@ -27,7 +31,10 @@ export default function Filter() {
   const [zones, setZones] = useState([]);  
   const [customerName, setCustomerName] = useState([]);   
   
- 
+
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState("");
+
   useEffect(() => {
     if (report && report.length > 0) {
 
@@ -54,33 +61,33 @@ export default function Filter() {
     setFilterData((prev) => ({ 
       ...prev, 
       bySale: e.target.value
-    }));
-    setFilter((prev) => ({
+    })); 
+    setFilterBy((prev) => ({
       ...prev,
-      sales: e.target.value
-    }))
+      bySale: e.target.value
+    }));  
   };
 
   const zoneChange = (e) => {
     setFilterData((prev) => ({
       ...prev,
       byZone: e.target.value
-    }));
-    setFilter((prev) => ({
+    })); 
+    setFilterBy((prev) => ({
       ...prev,
-      zone: e.target.value
-    }))
+      byZone: e.target.value
+    }))  
   };
 
   const customerChange = (e) =>{
     setFilterData((prev) =>({
       ...prev,
       byCustomer: e.target.value
-    }));
-    setFilter((prev) => ({
+    }));  
+    setFilterBy((prev) => ({
       ...prev,
-      customer: e.target.value
-    }))
+      byCustomer: e.target.value
+    })); 
   }; 
 
 
@@ -99,20 +106,20 @@ export default function Filter() {
         ...prev,
          byPayment: "0" 
       }));
-      setFilter((prev) => ({
+      setFilterBy((prev) => ({
         ...prev,
-        payment: "0"
-      }));
+        byPayment: "0"
+      }));      
     }
     else{
       setFilterData((prev) => ({
         ...prev,
          byPayment: "1" 
-      }));      
-      setFilter((prev) => ({
-        ...prev,
-        payment: "1"
       }));
+      setFilterBy((prev) => ({
+        ...prev,
+        byPayment: "1"
+      }));     
     }
     
   }, [filterData.byPayment, setFilterData]);
@@ -204,7 +211,7 @@ export default function Filter() {
               </div>   
               
               {/* By Customer */}
-              <div className="flex items-center gap-3">
+              {/* <div className="flex items-center gap-3">
                 <label
                   htmlFor="byCustomer"
                   className="flex items-center font-medium gap-2 w-36"
@@ -219,8 +226,7 @@ export default function Filter() {
                     value={filterData.byCustomer}
                     onChange={customerChange}                
                 >
-                    <option value="0">----- All Customer -----</option>
-                    
+                    <option value="0">----- All Customer -----</option>                    
                     {customerName.map((name, index) => (
                       <option key={index} value={name}>
                         {name} 
@@ -228,6 +234,54 @@ export default function Filter() {
                     ))}
 
                 </select>
+              </div> */}
+
+
+               {/* By Customer */}
+              <div className="flex items-center gap-3">
+                <label
+                  htmlFor="exname"
+                  className="flex items-center font-medium gap-2 w-36"
+                >
+                  By Customer :
+                </label>
+
+                {/* กล่องครอบช่องค้นหา */}
+                <div className="flex w-full gap-2 items-center">
+                  <div className="relative w-full">
+                    <input
+                      id="exname"
+                      className ="w-full md:w-100 border rounded px-2 py-1 pr-8" // ✅ เพิ่ม padding ขวาให้เว้นที่สำหรับปุ่ม ✕
+                      placeholder ="----- Search Customer -----"
+                      value={selectedCustomer}
+                     // onChange={(e) =>
+                     //   setSelectedCustomer({ ...selectedCustomer, name: e.target.value })
+                     // }
+                     // onKeyDown={(e) => {
+                        //if (e.key === "Enter") handleSearchCustomer();
+                      //}}
+                    />
+
+                    {/* ✅ ปุ่มกากบาทอยู่ภายในช่อง input */}
+                    {/* {selectedCustomer.name && (
+                      <button
+                        type="button"                      
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500"
+                        title="ล้างชื่อ"
+                      >
+                        ✕
+                      </button>
+                    )} */}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="btn-primary px-3"
+                    //onClick={handleSearchCustomer}
+                  >
+                    Search
+                  </button>
+                </div>
               </div>
 
               {/* By Debt */}
@@ -264,6 +318,7 @@ export default function Filter() {
                   </label>
                 </div>
               </div>
+              
           </div>
 
         </div>
