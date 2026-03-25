@@ -5,9 +5,8 @@ import Axios from "axios";
 
 export default function Filter() {
   
-  const { filterC} = useContext(dataContext);
-  const [filter] = filterC;
-
+  const {filterC} = useContext(dataContext);
+  const [filter, setFilter] = filterC;
  
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_srp;
@@ -24,26 +23,20 @@ export default function Filter() {
   const [filterData, setFilterData] =  useState(data);
   const [zoneList, setZoneList] = useState([]);  
   const [salesList, setSalesList] = useState([]);
-  const [reportData, setReportData] = useState([]);
+  //const [reportData, setReportData] = useState([]);
 
   //console.log(filterData);
-  console.log(salesList);
-  console.log(reportData);
+  // console.log(salesList);
+  // console.log(reportData);
   
 
-
-  const getReport = async () =>{
-    const exID = {exID: filter.exID};
-    try {
-          const res = await Axios.post(url + "/getReport/",exID); 
-          if (res.status === 200) {
-             setReportData(res.data);
-          }
-    } catch (err) {
-        console.error(err);
-    }
-    
-  }; 
+ 
+  const salesChange = (e) => {
+    setFilterData({
+      ...filterData, 
+      bySale: e.target.value 
+    });
+  };
 
   const getSales = async () => {
 
@@ -89,12 +82,19 @@ export default function Filter() {
 
   useEffect(() => {
       if (isDisabled == false) {
-         getZone();
-         getReport();
+         getZone();         
          getSales();
          setFilterData(data);
       }
   },[filter.exID]);
+
+  useEffect(() => {
+    setFilter((prev) => ({
+      ...prev,
+      sales: filterData.bySale,
+      zone: filterData.byZone
+    }));
+  },[filterData],[setFilter]);
   
   
   return (
@@ -141,16 +141,16 @@ export default function Filter() {
                   id="bySales"                 
                   className="border rounded-md p-1.5 w-full md:w-100 bg-white outline-none focus:ring-2 focus:ring-red-500 transition-all"
                   value={filterData.bySale}
-                  //onChange={salesChange}
+                  onChange={salesChange}
                   >
-                <option value="0">----- All Sales -----</option>
+                <option value="">----- All Sales -----</option>
 
-                {/* {sales.map((sales, index) => (
-                   <option key={index} value={sales}>
-                      {sales} 
+                {salesList.map((sales) => (
+                   <option key={sales.eid} value={sales.eid}>
+                      {sales.name} 
                    </option>                  
                 
-                ))} */}
+                ))}
                 
                 </select>
               </div>
@@ -168,7 +168,7 @@ export default function Filter() {
                   value={filterData.byZone}
                   onChange={zoneChange}                
                 >
-                  <option value="0">----- All Zone -----</option>
+                  <option value="">----- All Zone -----</option>
                   {zoneList.map((item) => (
                       <option key={item.id} value={item.id}>
                         {item.zone}

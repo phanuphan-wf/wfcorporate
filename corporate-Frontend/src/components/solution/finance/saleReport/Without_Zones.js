@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { dataContext } from "./salereport";
 import Axios from "axios";
 
-export default function Print_all() {
+export default function Without_Zones() {
 
     const {filterC} = useContext(dataContext);
     const [filter] = filterC;

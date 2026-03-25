@@ -2,10 +2,9 @@ import React, { useState, useEffect, createContext} from "react";
 import SelectExhibition from "./selectExhibition";
 import PrintOptions from "./printOptions";
 import Filter from "./filter";
+
 import Print_all from "./Print_all";
-
-
-import { CgMoreO } from "react-icons/cg";
+import Without_Zones from "./Without_Zones";
 
 export const dataContext = createContext();
 
@@ -20,14 +19,34 @@ export default function SaleReport() {
   };
 
   const [filter, setFilter] = useState(initFilter);
-  const [showFilter, setShowFilter] = useState(false);  
-  
-  
-  // useEffect(() => {
-  //    console.log(filter);
-  // }, [filter]);
+ 
+  const [showPreview, setShowPreview] = useState(false);
+
+
+  const handlePreview = () =>{
+    setShowPreview(true);
+  }
+
+  const isDisabled =!filter.exID || filter.exID === ""; 
+
+  useEffect(() => {
+    if (isDisabled) {
+      setShowPreview(false);
+    }   
+  },[isDisabled]);
 
   
+  useEffect(() =>{
+    if (filter.exID) {
+       setShowPreview(false);
+    }
+  },[filter]);
+
+  useEffect(() => {
+     console.log(filter);
+  }, [filter]);
+
+
 
  return (
     <section className="2xl:container pt-1 pb-5 px-5">
@@ -45,7 +64,39 @@ export default function SaleReport() {
       
           <Filter />
 
-          <Print_all/>
+         <div className="flex justify-end mt-4 gap-2"> 
+
+            <button
+              disabled={isDisabled}
+              onClick={handlePreview}
+              className={`px-4 py-1.5 rounded-md transition-colors font-medium ${
+                isDisabled 
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
+                  : "btn-primary active:scale-95"
+              }`}
+            >
+              Preview
+            </button> 
+
+            <button
+              disabled={isDisabled}
+             // onClick={handlePreview}
+              className={`px-4 py-1.5 rounded-md transition-colors font-medium ${
+                isDisabled 
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
+                  : "btn-primary active:scale-95"
+              }`}
+            >
+                 Print Report
+            </button> 
+            
+
+          </div>
+
+          {showPreview && (
+            filter.Print_all ? <Print_all /> : <Without_Zones />
+          )}
+          
         
       </dataContext.Provider>
 
