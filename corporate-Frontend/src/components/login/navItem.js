@@ -291,7 +291,9 @@ const NavItems = [
         url:"/solution/datawarehouse/joinus",
         show: [
           { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },         
+          { dept: 3, acc: 1 },  
+          { dept: 7, acc: 1 },
+          { dept: 7, acc: 2 },       
         ],
       },
          
