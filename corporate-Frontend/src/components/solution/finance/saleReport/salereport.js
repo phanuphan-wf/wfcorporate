@@ -42,9 +42,9 @@ export default function SaleReport() {
     }
   },[filter]);
 
-  useEffect(() => {
-     console.log(filter);
-  }, [filter]);
+  // useEffect(() => {
+  //    console.log(filter);
+  // }, [filter]);
 
 
 

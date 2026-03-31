@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
 import { dataContext } from "./salereport";
+import All_Chart from "./All_Chart";
+
+
 import Axios from "axios";
 
 export default function Print_all() {
 
     const {filterC} = useContext(dataContext);
     const [filter] = filterC;
-
-   // console.log(filter);
+    //const { data } = useContext(DataContext);
+    // console.log(filter);
 
     const isDisabled = !filter.exID || filter.exID === "";  
 
@@ -95,6 +98,21 @@ export default function Print_all() {
     return result;
     }, [reportList]);
 
+
+  
+    const { totalBooth, totalVolume } = useMemo(() => {
+    
+        if (reportList.length === 0) return { totalBooth: 0, totalVolume: 0 };
+
+        return reportList.reduce((acc, item) => {
+            // ใช้ Number() เพื่อแปลงค่า (เช่น 1.5) และป้องกัน Error หากค่ามาเป็น String
+            acc.totalBooth += Number(item.booth || 0);
+            acc.totalVolume += Number(item.volume || 0);
+            return acc;
+        }, { totalBooth: 0, totalVolume: 0 });
+    }, [reportList]);
+
+    
     return(
 
        <section className="mt-5 space-y-5">
@@ -111,59 +129,68 @@ export default function Print_all() {
                         <div key={zoneName} className="mb-8 last:mb-0">
                             {/* หัวข้อชื่อโซน */}
                             <div className="relative flex items-center mb-2">
-                            <h3 className="flex-1 text-left font-bold text text-zinc-800">
-                                โซนแสดงสินค้า : {zoneName}
-                            </h3>
+                                <h3 className="flex-1 text-left font-bold text text-zinc-800">
+                                    โซนแสดงสินค้า : {zoneName}
+                                </h3>
                             </div>
 
                             <table className="w-full border-collapse border border-zinc-400 shadow-sm">
-                            <thead>
-                                <tr className="bg-gray-100 text-black">
-                                <th className="border border-zinc-400 px-2 py-1 w-16" rowSpan={2}>ลำดับ</th>
-                                <th className="border border-zinc-400 px-2 py-1 " rowSpan={2}>ชื่อฝ่ายขาย</th>
-                                <th colSpan={3} className="border border-zinc-400 px-2 py-1 text-center">ยอดขาย</th>
-                                </tr>
-                                <tr className="bg-gray-100">
-                                <th className="border border-zinc-400 px-2 py-1 text-black text-center w-28">จำนวนลูกค้า</th>
-                                <th className="border border-zinc-400 px-2 py-1 text-black text-center w-28">จำนวนบูธ</th>
-                                <th className="border border-zinc-400 px-2 py-1 text-black text-center w-1/5">ยอดเงิน</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* วนลูปรายชื่อฝ่ายขายในโซนนี้ */}
-                                {salesInZone.map((sale, index) => (
-                                <tr key={`${zoneName}-${sale.salesName}`} className="hover:bg-gray-50">
-                                    <td className="border border-zinc-400 px-2 py-1 text-center">{index + 1}</td>
-                                    <td className="border border-zinc-400 px-2 py-1">{sale.salesName}</td>
-                                    <td className="border border-zinc-400 px-2 py-1 text-center">
-                                    {sale.customerCount}
-                                    </td>
-                                    <td className="border border-zinc-400 px-2 py-1 text-right">
-                                    {sale.totalBooth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                    </td>
-                                    <td className="border border-zinc-400 px-2 py-1 text-right">
-                                    {sale.totalVolume.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                    </td>
-                                </tr>
-                                ))}
+                                <thead>
+                                    <tr className="bg-gray-100 text-black">
+                                    <th className="border border-zinc-400 px-2 py-1 w-16" rowSpan={2}>ลำดับ</th>
+                                    <th className="border border-zinc-400 px-2 py-1 " rowSpan={2}>ชื่อฝ่ายขาย</th>
+                                    <th colSpan={3} className="border border-zinc-400 px-2 py-1 text-center">ยอดขาย</th>
+                                    </tr>
+                                    <tr className="bg-gray-100">
+                                    <th className="border border-zinc-400 px-2 py-1 text-black text-center w-28">จำนวนลูกค้า</th>
+                                    <th className="border border-zinc-400 px-2 py-1 text-black text-center w-28">จำนวนบูธ</th>
+                                    <th className="border border-zinc-400 px-2 py-1 text-black text-center w-1/5">ยอดเงิน</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {/* วนลูปรายชื่อฝ่ายขายในโซนนี้ */}
+                                    {salesInZone.map((sale, index) => (
+                                    <tr key={`${zoneName}-${sale.salesName}`} className="hover:bg-gray-50">
+                                        <td className="border border-zinc-400 px-2 py-1 text-center">{index + 1}</td>
+                                        <td className="border border-zinc-400 px-2 py-1">{sale.salesName}</td>
+                                        <td className="border border-zinc-400 px-2 py-1 text-center">
+                                        {sale.customerCount}
+                                        </td>
+                                        <td className="border border-zinc-400 px-2 py-1 text-right">
+                                        {sale.totalBooth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </td>
+                                        <td className="border border-zinc-400 px-2 py-1 text-right">
+                                        {sale.totalVolume.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </td>
+                                    </tr>
+                                    ))}
 
-                                {/* แถวสรุปยอดรวมของโซนนี้ */}
-                                <tr className="bg-blue-50 font-semibold">
-                                <td colSpan={2} className="border border-zinc-400 px-2 py-1 text-left text-blue-800">
-                                    ยอดรวมทั้งสิ้น 
-                                </td>
-                                <td className="border border-zinc-400 px-2 py-1 text-center text-blue-800">
-                                    {subTotalCustomers} ราย
-                                </td>
-                                <td className="border border-zinc-400 px-2 py-1 text-right text-blue-800">
-                                    {subTotalBooths.toLocaleString(undefined, { minimumFractionDigits: 2 })} บูธ
-                                </td>
-                                <td className="border border-zinc-400 px-2 py-1 text-right text-blue-800">
-                                    {subTotalVolume.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท
-                                </td>
-                                </tr>
-                            </tbody>
+                                    {/* แถวสรุปยอดรวมของโซนนี้ */}
+                                    <tr className="bg-blue-50 font-semibold">
+                                        <td colSpan={2} className="border border-zinc-400 px-2 py-1 text-left text-blue-800">
+                                            ยอดรวมทั้งสิ้น 
+                                        </td>
+                                        <td className="border border-zinc-400 px-2 py-1 text-center text-blue-800">
+                                            {subTotalCustomers} ราย
+                                        </td>
+                                        <td className="border border-zinc-400 px-2 py-1 text-right text-blue-800">
+                                            {subTotalBooths.toLocaleString(undefined, { minimumFractionDigits: 2 })} บูธ
+                                        </td>
+                                        <td className="border border-zinc-400 px-2 py-1 text-right text-blue-800">
+                                            {subTotalVolume.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
+
+                            <div className="p-4 border border-zinc-200 shadow-inner">
+                                <All_Chart 
+                                     data={salesInZone}
+                                     zoneName={zoneName} 
+                                     totalBooth={totalBooth}
+                                     totalVolume={totalVolume}
+                                />
+                            </div>
                         </div>
                         );
                     })
@@ -172,8 +199,14 @@ export default function Print_all() {
                     -- No information found.--
                 </div>
                 )}
-            </div>
-       </section>
+            </div>    
+
+            
+
+       </section>              
+
+
+
     );
 
 }
