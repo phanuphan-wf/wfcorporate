@@ -135,8 +135,8 @@ export default function RegistInfo(props) {
             !verify && bio.name == ""
               ? "bg-red-100 border-gray-400 "
               : bio.name != ""
-              ? "bg-white border-gray-400"
-              : "bg-[#bfbfbf] border-white"
+                ? "bg-white border-gray-400"
+                : "bg-[#bfbfbf] border-white"
           } border-2`}
           onChange={(e) => setBio({ ...bio, name: e.target.value })}
         />
@@ -153,8 +153,8 @@ export default function RegistInfo(props) {
             !verify && bio.surname == ""
               ? "bg-red-100 border-gray-400 "
               : bio.surname != ""
-              ? "bg-white border-gray-400"
-              : "bg-[#bfbfbf] border-white"
+                ? "bg-white border-gray-400"
+                : "bg-[#bfbfbf] border-white"
           } border-2`}
           onChange={(e) => setBio({ ...bio, surname: e.target.value })}
         />
@@ -171,8 +171,8 @@ export default function RegistInfo(props) {
             !verify && bio.mobile == ""
               ? "bg-red-100 border-gray-400 "
               : bio.mobile != ""
-              ? "bg-white border-gray-400"
-              : "bg-[#bfbfbf] border-white"
+                ? "bg-white border-gray-400"
+                : "bg-[#bfbfbf] border-white"
           } border-2`}
           onChange={(e) => setBio({ ...bio, mobile: e.target.value })}
         />
@@ -211,13 +211,11 @@ export default function RegistInfo(props) {
             !verify && bio.sex == "0"
               ? "bg-red-100 border-gray-400"
               : "bg-[#bfbfbf]"
-          }`}
-        >
+          }`}>
           <div
             className={`flex basis-1/3 justify-center border-r rounded-l-md ${
               bio.sex == "1" ? "bg-white" : "bg-transparent text-gray-500"
-            }`}
-          >
+            }`}>
             <input
               id="male"
               type="radio"
@@ -232,8 +230,7 @@ export default function RegistInfo(props) {
           <div
             className={`flex basis-1/3 justify-center border-r ${
               bio.sex == "2" ? "bg-white" : "bg-transparent text-gray-500"
-            }`}
-          >
+            }`}>
             <input
               id="female"
               type="radio"
@@ -248,8 +245,7 @@ export default function RegistInfo(props) {
           <div
             className={`flex basis-1/3 justify-center rounded-r-md ${
               bio.sex == "3" ? "bg-white" : "bg-transparent text-gray-500"
-            }`}
-          >
+            }`}>
             <input
               id="na"
               type="radio"
@@ -265,8 +261,7 @@ export default function RegistInfo(props) {
         <label
           className={`absolute text-gray-500
            px-[10px] transition-all duration-200 -z-10`}
-          style={{ top: `${bio.sex != "0" ? "-15px" : "10px"}` }}
-        >
+          style={{ top: `${bio.sex != "0" ? "-15px" : "10px"}` }}>
           {t("sex")}
         </label>
       </div>
@@ -280,8 +275,7 @@ export default function RegistInfo(props) {
                 ? `${style.form_field} border-gray-400 bg-white`
                 : `${style.beforeselect} border-white bg-[#bfbfbf]`
             } border-2`}
-            onChange={(e) => setBio({ ...bio, month: e.target.value })}
-          >
+            onChange={(e) => setBio({ ...bio, month: e.target.value })}>
             <option value="0" disabled selected hidden></option>
             {month.map((m, id) => (
               <option value={id + 1} key={id}>
@@ -293,8 +287,7 @@ export default function RegistInfo(props) {
             for="month"
             className={`${
               bio.month != "0" ? style.selected_label : style.form_label
-            }`}
-          >
+            }`}>
             {t("month")}
           </label>
         </div>
@@ -306,11 +299,10 @@ export default function RegistInfo(props) {
               bio.year != "0"
                 ? `${style.form_field} border-gray-400 bg-white`
                 : !verify && bio.year == "0"
-                ? `bg-red-100 border-gray-400 ${style.beforeselect} `
-                : `border-white bg-[#bfbfbf] ${style.beforeselect}`
+                  ? `bg-red-100 border-gray-400 ${style.beforeselect} `
+                  : `border-white bg-[#bfbfbf] ${style.beforeselect}`
             } border-2`}
-            onChange={(e) => setBio({ ...bio, year: e.target.value })}
-          >
+            onChange={(e) => setBio({ ...bio, year: e.target.value })}>
             <option value="0" disabled selected hidden></option>
             {getYear().map((y, i) => (
               <option value={y} key={i}>
@@ -322,8 +314,7 @@ export default function RegistInfo(props) {
             for="year"
             className={`${
               bio.year != "0" ? style.selected_label : style.form_label
-            }`}
-          >
+            }`}>
             {t("year")}
           </label>
         </div>
@@ -337,8 +328,7 @@ export default function RegistInfo(props) {
               ? `${style.form_field} border-gray-400 bg-white`
               : `${style.beforeselect} border-white bg-[#bfbfbf]`
           } border-2`}
-          onChange={(e) => setBio({ ...bio, income: e.target.value })}
-        >
+          onChange={(e) => setBio({ ...bio, income: e.target.value })}>
           <option value="0" disabled selected hidden></option>
           {[
             { id: "10", val: t("less") + " 15,000" },
@@ -358,8 +348,7 @@ export default function RegistInfo(props) {
           for="income"
           className={`${
             bio.income != "0" ? style.selected_label : style.form_label
-          }`}
-        >
+          }`}>
           {t("income")}
         </label>
       </div>
@@ -372,8 +361,7 @@ export default function RegistInfo(props) {
               ? `${style.form_field} border-gray-400 bg-white`
               : `${style.beforeselect} border-white bg-[#bfbfbf]`
           } border-2`}
-          onChange={(e) => setBio({ ...bio, occupation: e.target.value })}
-        >
+          onChange={(e) => setBio({ ...bio, occupation: e.target.value })}>
           <option value="0" disabled selected hidden></option>
           {occupation.map((d, i) => (
             <option value={d.id} key={i}>
@@ -385,8 +373,7 @@ export default function RegistInfo(props) {
           for="occupation"
           className={`${
             bio.occupation != "0" ? style.selected_label : style.form_label
-          }`}
-        >
+          }`}>
           {t("occupation")}
         </label>
       </div>
@@ -398,11 +385,10 @@ export default function RegistInfo(props) {
             bio.province != "0"
               ? `${style.form_field} border-gray-400 bg-white`
               : !verify && bio.province == "0"
-              ? `bg-red-100 border-gray-400 ${style.beforeselect} `
-              : `border-white bg-[#bfbfbf] ${style.beforeselect}`
+                ? `bg-red-100 border-gray-400 ${style.beforeselect} `
+                : `border-white bg-[#bfbfbf] ${style.beforeselect}`
           } border-2`}
-          onChange={(e) => onProvinceChange(e)}
-        >
+          onChange={(e) => onProvinceChange(e)}>
           <option value="0" disabled selected hidden></option>
           {province.map((p, i) => (
             <option value={p.id} key={i}>
@@ -414,8 +400,7 @@ export default function RegistInfo(props) {
           for="province"
           className={`${
             bio.province != "0" ? style.selected_label : style.form_label
-          }`}
-        >
+          }`}>
           {t("province")}
         </label>
       </div>
@@ -427,24 +412,32 @@ export default function RegistInfo(props) {
             bio.district != "0"
               ? `${style.form_field} border-gray-400 bg-white`
               : !verify && bio.district == "0"
-              ? `bg-red-100 border-gray-400 ${style.beforeselect} `
-              : `border-white bg-[#bfbfbf] ${style.beforeselect}`
+                ? `bg-red-100 border-gray-400 ${style.beforeselect} `
+                : `border-white bg-[#bfbfbf] ${style.beforeselect}`
           } border-2`}
-          onChange={(e) => setBio({ ...bio, district: e.target.value })}
-        >
+          onChange={(e) => setBio({ ...bio, district: e.target.value })}>
           <option value="0" disabled selected></option>
-          {district.map((d, i) => (
-            <option value={d.id} key={i}>
-              {i18n.language == "th" ? d.name_th : d.name_en}
-            </option>
-          ))}
+          {[...district]
+            .sort((a, b) => {
+              const nameA = i18n.language === "th" ? a.name_th : a.name_en;
+              const nameB = i18n.language === "th" ? b.name_th : b.name_en;
+
+              return nameA.localeCompare(
+                nameB,
+                i18n.language === "th" ? "th" : "en",
+              );
+            })
+            .map((d, i) => (
+              <option value={d.id} key={i}>
+                {i18n.language == "th" ? d.name_th : d.name_en}
+              </option>
+            ))}
         </select>
         <label
           for="district"
           className={`${
             bio.district != "0" ? style.selected_label : style.form_label
-          }`}
-        >
+          }`}>
           {t("district")}
         </label>
       </div>
