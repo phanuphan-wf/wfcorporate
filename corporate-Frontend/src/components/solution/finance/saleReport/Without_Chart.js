@@ -7,16 +7,16 @@ export default function Without_Chart({ data, salesName, totalBooth, totalVolume
 
   // 2. คำนวณยอดที่ Sales คนนี้ขายได้จริง (จากทุกโซนที่ส่งมาใน data)
   const totalVolumeSoldBySales = data.reduce((sum, s) => sum + (Number(s.totalVolume) || 0), 0);
-  const totalBoothSoldBySales = data.reduce((sum, s) => sum + (Number(s.totalBooth) || 0), 0);
+  
 
   // 3. เป้าหมายรวมของงาน
   const totalBoothCapacity = totalBooth; 
   const totalVolumeTarget = totalVolume; 
 
   // คำนวณ % ความสำเร็จของ Sales คนนี้เทียบกับเป้างาน
-  const salesPercentage = totalVolumeTarget > 0 
-    ? ((totalVolumeSoldBySales / totalVolumeTarget) * 100).toFixed(2) 
-    : 0;
+  // const salesPercentage = totalVolumeTarget > 0 
+  //   ? ((totalVolumeSoldBySales / totalVolumeTarget) * 100).toFixed(2) 
+  //   : 0;
 
   const chartData = [
     ["โซน", "ยอดเงิน"],
@@ -102,42 +102,21 @@ export default function Without_Chart({ data, salesName, totalBooth, totalVolume
                 <tr className="hover:bg-zinc-50">
                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">ยอดบูธขายรวม</td>
                   <td className="px-3 py-2.5 text-right font-bold text-blue-600 bg-white">
-                     {totalBoothSoldBySales.toLocaleString()} บูธ
+                      {totalBoothCapacity.toLocaleString()} บูธ
                   </td>
                 </tr>
 
                 <tr className="hover:bg-zinc-50">
                    <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">ยอดเงินขายรวม</td>
                   <td className="px-3 py-2.5 text-right font-bold text-emerald-600 bg-white">
-                     {totalVolumeSoldBySales.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                  </td>
-                </tr>
-
-                <tr className="hover:bg-zinc-50">
-                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/20 w-1/2 border-r border-zinc-200 text-xs">ยอดรวมบูธเต็ม</td>
-                  <td className="px-3 py-2.5 text-right text-zinc-500 bg-white">
-                     {totalBoothCapacity.toLocaleString()} บูธ
-                  </td>
-                </tr>
-
-                <tr className="hover:bg-zinc-50">
-                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/20 w-1/2 border-r border-zinc-200 text-xs">ยอดเงินเต็ม</td>
-                  <td className="px-3 py-2.5 text-right text-zinc-500 bg-white">
                      {totalVolumeTarget.toLocaleString()}
                   </td>
-                </tr>
-
-                <tr className="bg-blue-50/50">
-                  <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200">คิดเป็นยอดขาย</td>
-                  <td className="px-3 py-3 text-right text-blue-800 text-lg">
-                    {salesPercentage}% <span className="text-[10px]">จากยอดเต็ม</span>
-                  </td>
-                </tr>
+                </tr>                              
 
               </tbody>
             </table>
           </div>
-          <p className="text-[9px] text-zinc-400 mt-2 italic text-right">* ข้อมูลรายบุคคล: {salesName}</p>
+          
         </div>
 
       </div>

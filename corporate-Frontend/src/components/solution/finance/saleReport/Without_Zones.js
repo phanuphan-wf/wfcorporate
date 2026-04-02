@@ -176,7 +176,7 @@ export default function Without_Zones() {
                             </tbody>
                         </table>
 
-                        <div className="p-4 border border-zinc-200 shadow-inner">
+                        <div>
                             <Without_Chart 
                                 data={zonesForThisSale} 
                                 salesName={salesName} 

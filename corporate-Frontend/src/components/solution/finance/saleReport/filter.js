@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { dataContext } from "./salereport";
-import { CgMoreO, CgCloseO } from "react-icons/cg";
+//import { CgMoreO, CgCloseO } from "react-icons/cg";
 import Axios from "axios";
 
 export default function Filter() {
@@ -98,31 +98,7 @@ export default function Filter() {
   
   
   return (
-    <>
-      <button
-        disabled={isDisabled}
-        className={`rounded-md py-1 px-3 text-white mt-4 flex items-center gap-2 transition-all ${
-          isDisabled 
-            ? "bg-gray-300 cursor-not-allowed" 
-            : showFilter ? "bg-red-500" : "bg-green-600"
-        }`}
-        onClick={() => setShowFilter(!showFilter)}
-      >
-        {showFilter ? (
-          <>
-            <CgCloseO />
-            <span>Close panel</span>
-          </>
-        ) : (
-          <>
-            <CgMoreO />
-            <span>Filter</span>
-          </>
-        )}
-      </button>
-
-      {/* Filter Section */}
-      {showFilter && (
+     
         <div className="border border-zinc-300 rounded-md relative mt-6">
           
           <div className="absolute bg-white px-2 py-1 -top-4 left-3 text-red-600">
@@ -179,7 +155,7 @@ export default function Filter() {
           </div>
 
         </div>
-      )}
-    </>
+      
+    
   );
 }

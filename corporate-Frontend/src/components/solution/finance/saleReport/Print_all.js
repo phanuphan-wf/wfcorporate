@@ -183,7 +183,7 @@ export default function Print_all() {
                                 </tbody>
                             </table>
 
-                            <div className="p-4 border border-zinc-200 shadow-inner">
+                            <div>
                                 <All_Chart 
                                      data={salesInZone}
                                      zoneName={zoneName} 
