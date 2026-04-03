@@ -1,10 +1,11 @@
-import React, { useState, useEffect, createContext} from "react";
+import React, { useState, useEffect, createContext, useRef} from "react";
 import SelectExhibition from "./selectExhibition";
 import PrintOptions from "./printOptions";
 import Filter from "./filter";
 
 import Print_all from "./Print_all";
 import Without_Zones from "./Without_Zones";
+import PrintReport from "./PrintReport";
 
 export const dataContext = createContext();
 
@@ -46,6 +47,23 @@ export default function SaleReport() {
   //    console.log(filter);
   // }, [filter]);
 
+  const pdfRef = useRef(null);
+
+  const eventData = {
+    exName:"",
+    exDate:"",
+    venue:"",    
+    date: "",
+  }
+
+  const [event, setEvent] = useState(eventData);
+
+  //console.log(event);
+
+  useEffect(() => {
+     console.log(event);
+  }, [event]);
+
 
 
  return (
@@ -54,7 +72,8 @@ export default function SaleReport() {
 
       <dataContext.Provider 
            value={{ 
-              filterC: [filter, setFilter]
+              filterC: [filter, setFilter],
+              eventC: [event, setEvent],
            }}      
       >        
        
@@ -78,24 +97,16 @@ export default function SaleReport() {
               Preview
             </button> 
 
-            <button
-              disabled={isDisabled}
-             // onClick={handlePreview}
-              className={`px-4 py-1.5 rounded-md transition-colors font-medium ${
-                isDisabled 
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
-                  : "btn-primary active:scale-95"
-              }`}
-            >
-                 Print Report
-            </button> 
+            <PrintReport pdfRef={pdfRef}/>
             
 
-          </div>
+          </div>           
+          
 
-          {showPreview && (
-            filter.Print_all ? <Print_all /> : <Without_Zones />
-          )}
+            {showPreview && (
+              filter.Print_all ? <Print_all ref={pdfRef}/> : <Without_Zones ref={pdfRef}/>
+            )}           
+      
           
         
       </dataContext.Provider>

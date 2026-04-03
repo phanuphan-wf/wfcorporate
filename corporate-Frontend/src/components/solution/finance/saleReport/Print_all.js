@@ -98,19 +98,35 @@ export default function Print_all() {
     return result;
     }, [reportList]);
 
+      
+    const [totalBooth, setTotalBooth] = useState(0);
+    const [totalVolume, setTotalVolume] = useState(0);
 
-  
-    const { totalBooth, totalVolume } = useMemo(() => {
     
-        if (reportList.length === 0) return { totalBooth: 0, totalVolume: 0 };
+    const getSum = async () => {
 
-        return reportList.reduce((acc, item) => {
-            // ใช้ Number() เพื่อแปลงค่า (เช่น 1.5) และป้องกัน Error หากค่ามาเป็น String
-            acc.totalBooth += Number(item.booth || 0);
-            acc.totalVolume += Number(item.volume || 0);
-            return acc;
-        }, { totalBooth: 0, totalVolume: 0 });
-    }, [reportList]);
+        if (!filter.exID) return;
+
+        try {
+
+            const res = await Axios.get(url + "/getSum/" + filter.exID);
+            
+            if (res.status === 200) {             
+                setTotalBooth(Number(res.data.booth) || 0);
+                setTotalVolume(Number(res.data.volume) || 0);
+            }
+        } catch (err) {
+            console.error("Fetch Sum Error:", err);
+        }
+    };
+
+    useEffect(() => {
+        if (!isDisabled) {
+            getSum();      
+        }
+    }, [filter.exID]);
+
+        
 
     
     return(
