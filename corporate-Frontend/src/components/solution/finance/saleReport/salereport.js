@@ -46,8 +46,7 @@ export default function SaleReport() {
   // useEffect(() => {
   //    console.log(filter);
   // }, [filter]);
-
-  const pdfRef = useRef(null);
+  
 
   const eventData = {
     exName:"",
@@ -60,11 +59,12 @@ export default function SaleReport() {
 
   //console.log(event);
 
-  useEffect(() => {
-     console.log(event);
-  }, [event]);
+  // useEffect(() => {
+  //    console.log(event);
+  // }, [event]);
 
 
+  const pdfRef = useRef(null);
 
  return (
     <section className="2xl:container pt-1 pb-5 px-5">
@@ -102,11 +102,13 @@ export default function SaleReport() {
 
           </div>           
           
+          <div ref={pdfRef}>
 
             {showPreview && (
-              filter.Print_all ? <Print_all ref={pdfRef}/> : <Without_Zones ref={pdfRef}/>
-            )}           
-      
+              filter.Print_all ? <Print_all/> : <Without_Zones/>
+            )}  
+
+          </div>
           
         
       </dataContext.Provider>

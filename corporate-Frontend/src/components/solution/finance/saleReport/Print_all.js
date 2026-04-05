@@ -215,9 +215,7 @@ export default function Print_all() {
                     -- No information found.--
                 </div>
                 )}
-            </div>    
-
-            
+            </div>              
 
        </section>              
 
