@@ -1,14 +1,14 @@
 import BI from "./components/landingpage/B126/landingpage";
 
-import IM from "./components/landingpage/I126/landingpage";
+import IM from "./components/landingpage/B226/landingpage";
 
 const AppLandingRoutes = [
   {
-    path: "/i126",
+    path: "/b226",
     element: <IM />,
   },
   {
-    path: "/i126/:cp",
+    path: "/b226/:cp",
     element: <IM />,
   },
   {

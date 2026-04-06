@@ -7,6 +7,8 @@ import { NumericFormat } from "react-number-format";
 import ModalSeach from "./modalSearch";
 import ModalAddProduct from "./modalAddProduct";
 
+import ModalBill from "./modalBill";
+
 export default function BillDetail(props) {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_Coupon_api;
   const bearer = useHeader();
@@ -96,7 +98,15 @@ export default function BillDetail(props) {
     getProduct();
   };
 
-  const addBill = () => {
+  const [modalBillShow, setModalBillShow] = useState(false);
+  
+  const onModalBillClose = () => {
+    setModalBillShow(false);  
+  };
+
+
+  const addBill = () => {    
+
     if (
       billData.CustomerID == "" ||
       billData.Bank == "" ||
@@ -108,11 +118,25 @@ export default function BillDetail(props) {
     if (Number(billData.Volumn) < Number(billData.deposit)) {
       alert("Warning! - Volume cannot less than deposit");
       return;
-    }
-    setBillList([...billList, billData]);
-    getProduct();
-    setBill({ ...billData, Product: "", deposit: "", Volumn: "" });
-    document.getElementById("bproduct").selectedIndex = "0";
+    }    
+
+
+    const volumn = parseFloat(billData.Volumn);
+    const deposit = parseFloat(billData.deposit);
+    const halfVolumn = volumn * 0.5;
+   
+    if (billData.CustomerID != 12444) {
+      if (deposit > halfVolumn) {
+        //alert(`รายการนี้มียอดมัดจำมากกว่ายอดรวม 50 %`);   
+        setModalBillShow(true);         
+      } 
+    }        
+
+      setBillList([...billList, billData]);
+      getProduct();
+      setBill({ ...billData, Product: "", deposit: "", Volumn: "" });
+      document.getElementById("bproduct").selectedIndex = "0";
+   
   };
 
   const deleteItem = (id) => {
@@ -143,8 +167,9 @@ export default function BillDetail(props) {
     setSum(initSum);
     document.getElementById("bbank").selectedIndex = "0";
     document.getElementById("bproduct").selectedIndex = "0";
-  }, [props.reset]);
+  }, [props.reset]);  
 
+  
   return (
     <section>
       <div className="border rounded-md p-3 mt-8 mb-2 border-slate-400 relative">
@@ -359,6 +384,10 @@ export default function BillDetail(props) {
         fill={fillCustomer}
       />
       <ModalAddProduct show={modalAddShow} onHide={onModalAddClose} />
+     
+      <ModalBill show={modalBillShow} onHide={onModalBillClose}/>
+ 
+
     </section>
   );
 }

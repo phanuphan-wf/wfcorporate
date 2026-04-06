@@ -1,6 +1,10 @@
 import React from "react";
+import PlayButton from "./PlayButton";
 
 export default function ModalResult(props) {
+
+  if (!props.show) return null;
+
   return (
     <div>
       <div
@@ -45,7 +49,7 @@ export default function ModalResult(props) {
               {props.body}
             </div>
             {/*-- Modal footer --*/}
-            <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
+            <div className="flex items-center justify-between p-6 border-t border-gray-200 rounded-b">
               <button
                 data-modal-hide="staticModal"
                 type="button"
@@ -54,7 +58,15 @@ export default function ModalResult(props) {
               >
                 Ok
               </button>
-            </div>
+
+              {props.playgame && (
+                  <PlayButton 
+                      visitorName={props.visitorName}
+                      onSuccess={props.onHide}      
+                  />
+              )}
+            </div>      
+
           </div>
         </div>
       </div>

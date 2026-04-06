@@ -65,6 +65,8 @@ export default function ShowJob(props) {
     }
   };
 
+  
+
   return (
     <section className="Show Job">
       <div className="flex items-center gap-2">
@@ -117,7 +119,16 @@ export default function ShowJob(props) {
         </tbody>
       </table>
 
-      <ModalJob jobId={activeJob?.id} isOpen={modalOpen} onClose={(saved) => closeModal(!!saved)} />
+      <ModalJob 
+        jobId={activeJob?.id} 
+        isOpen={modalOpen} 
+        onClose={(result) => {
+            closeModal(result);
+            setModalOpen(false);    
+          } 
+        }
+        
+      />
     </section>
   );
 }
