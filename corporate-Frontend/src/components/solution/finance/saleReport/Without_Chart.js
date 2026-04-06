@@ -19,8 +19,8 @@ export default function Without_Chart({ data, salesName, totalBooth, totalVolume
     is3D: true,
     fontName: "Tahoma",
     chartArea: {
-      width: "100%", 
-      height: "100%",
+      width: "80%", 
+      height: "80%",
       top: 1,
     },
     legend: {

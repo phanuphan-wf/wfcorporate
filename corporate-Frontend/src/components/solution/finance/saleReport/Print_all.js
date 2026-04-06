@@ -131,7 +131,7 @@ export default function Print_all() {
     
     return(
 
-       <section className="mt-5 space-y-5">
+       <section className="mt-3 space-y-5">
             <div className="border border-zinc-300 rounded-md p-4 bg-white mb-4">
                 {Object.keys(groupedData).length > 0 ? (
                     Object.keys(groupedData).map((zoneName) => {
@@ -217,9 +217,7 @@ export default function Print_all() {
                 )}
             </div>              
 
-       </section>              
-
-
+       </section>  
 
     );
 

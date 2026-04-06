@@ -176,8 +176,7 @@ export default function Without_Zones() {
                 <div className="mt-8 border-t pt-6">
                     <Without_Chart 
                     // ส่งข้อมูลฝ่ายขายแต่ละคนไปทำสัดส่วนในกราฟ Pie
-                    data={groupedData.map(s => ({ zoneName: s.salesName, totalVolume: s.totalVolume }))} 
-                    salesName="สรุปยอดขายแยกตามรายชื่อ" 
+                    data={groupedData.map(s => ({ zoneName: s.salesName, totalVolume: s.totalVolume }))}
                     totalBooth={totalBooth} 
                     totalVolume={totalVolume}
                     />

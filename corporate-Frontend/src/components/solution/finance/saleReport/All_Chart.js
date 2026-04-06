@@ -16,7 +16,7 @@ export default function All_Chart ({ data, zoneName,totalBooth,totalVolume }){
       chartArea: { 
         width: "100%",   
         height: "100%",  
-        top: 5          
+        top: 1,          
       },    
      
       legend: { 

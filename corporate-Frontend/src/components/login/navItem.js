@@ -143,6 +143,7 @@ const NavItems = [
         show: [
           { dept: 1, acc: 1 },
           { dept: 6, acc: 1 },
+          { dept: 2, acc: 1 },
         ],
       },
     ],
