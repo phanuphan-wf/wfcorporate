@@ -97,7 +97,7 @@ export default function SaleReport() {
               Preview
             </button> 
 
-            <PrintReport pdfRef={pdfRef}/>
+            <PrintReport pdfRef={pdfRef} showPreview={showPreview}/>
             
 
           </div>           

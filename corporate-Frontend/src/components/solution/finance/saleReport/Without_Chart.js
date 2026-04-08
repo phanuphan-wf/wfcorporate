@@ -1,17 +1,13 @@
 import React from "react";
 import { Chart } from "react-google-charts";
 
-export default function Without_Chart({ data, salesName, totalBooth, totalVolume }) {
+export default function Without_Chart({ data,totalBooth, totalVolume }) {
   
   // ✅ เตรียมข้อมูลกราฟ (แยกตาม Zone ของ Sale คนนั้นๆ)
   const chartData = [
     ["zoneName", "totalVolume"],
     ...data.map((item) => [
-      item.zoneName, 
-      { 
-        v: Number(item.totalVolume), 
-        f: Number(item.totalVolume).toLocaleString(undefined, { minimumFractionDigits: 2 }) 
-      }
+      item.zoneName,item.totalVolume,
     ]),
   ];
 
@@ -19,8 +15,8 @@ export default function Without_Chart({ data, salesName, totalBooth, totalVolume
     is3D: true,
     fontName: "Tahoma",
     chartArea: {
-      width: "80%", 
-      height: "80%",
+      width: "100%", 
+      height: "100%",
       top: 1,
     },
     legend: {
@@ -48,44 +44,35 @@ export default function Without_Chart({ data, salesName, totalBooth, totalVolume
 
       <div className="flex flex-col md:flex-row items-center gap-4"> 
         {/* ฝั่งซ้าย: กราฟ (55%) */}
-        <div className="w-full md:w-[55%] h-[280px]">
+        <div className="w-full md:w-[50%]">
           <Chart
             chartType="PieChart"
             data={chartData}
-            options={options}
-            width="100%"
-            height="100%"
-            loader={<div className="text-center py-20 text-zinc-400">กำลังประมวลผล...</div>}
-            formatColumns={[
-              {
-                column: 1,
-                format: { fractionDigits: 2 },
-              },
-            ]}
+            options={options}          
+            loader={<div>กำลังโหลดกราฟ...</div>}      
           />
         </div>
 
-        {/* ฝั่งขวา: ตารางสรุปยอด (45%) */}
-        <div className="w-full md:w-[45%] print:w-[40%] print:ml-auto">
+     
+        <div className="w-full md:w-[50%] pl-2">
           <div className="border border-zinc-200 overflow-hidden shadow-sm">
             <table className="w-full text-sm font-tahoma">
-              <tbody className="divide-y divide-zinc-100">
+              <tbody className="divide-y divide-zinc-100 text-sm">
+
                 <tr className="hover:bg-zinc-50">
-                  <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs print:text-[10px]">
-                    ยอดบูธขายรวม
-                  </td>
-                  <td className="px-3 py-2.5 text-right font-bold text-blue-600 bg-white print:text-[10px]">
+                  <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">ยอดบูธขายรวม</td>
+                     <td className="px-3 py-2.5 text-right font-bold text-blue-600 bg-white">
                     {totalBooth.toLocaleString()} บูธ
                   </td>
                 </tr>
+
                 <tr className="hover:bg-zinc-50">
-                  <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs print:text-[10px]">
-                    ยอดเงินขายรวม
+                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">ยอดเงินขายรวม</td>
+                  <td className="px-3 py-2.5 text-right font-bold text-emerald-600 bg-white">
+                     {totalVolume.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท
                   </td>
-                  <td className="px-3 py-2.5 text-right font-bold text-emerald-600 bg-white print:text-[10px]">
-                    {totalVolume.toLocaleString(undefined, { minimumFractionDigits: 2 })} บาท
-                  </td>
-                </tr>
+                </tr>      
+
               </tbody>
             </table>
           </div>

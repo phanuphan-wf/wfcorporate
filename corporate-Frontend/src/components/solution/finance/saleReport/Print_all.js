@@ -21,6 +21,9 @@ export default function Print_all() {
 
     //console.log(reportList);
 
+    const [saleName, setSaleName] = useState("");
+    
+
 
     const getReport = async () => {
        
