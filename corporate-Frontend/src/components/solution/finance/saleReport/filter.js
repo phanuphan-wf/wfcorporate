@@ -5,9 +5,12 @@ import Axios from "axios";
 
 export default function Filter() {
   
-  const {filterC} = useContext(dataContext);
+  const {filterC,salesC} = useContext(dataContext);
   const [filter, setFilter] = filterC;
- 
+  const [sales, setSales] = salesC; 
+
+  //console.log(filter);
+  //console.log(sales);
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_srp;
 
@@ -26,8 +29,8 @@ export default function Filter() {
   //const [reportData, setReportData] = useState([]);
 
   //console.log(filterData);
-  // console.log(salesList);
-  // console.log(reportData);
+  //console.log(salesList);
+  //console.log(reportData);
   
 
  
@@ -95,8 +98,33 @@ export default function Filter() {
       zone: filterData.byZone
     }));
   },[filterData],[setFilter]);
-  
-  
+
+
+  useEffect(() => {
+   
+    if (sales.salesName && salesList.length > 0) {
+     
+      const found = salesList.find(item => item.name === sales.salesName);
+
+      if (found) {
+      
+        if (sales.salesID !== found.eid) {
+          setSales(prev => ({
+            ...prev,
+            salesID: found.eid,    
+            salesName: found.name  
+          }));
+
+          setFilterData({
+          ...filterData, 
+          bySale: found.eid
+        });
+        }
+      }
+    }
+  }, [sales.salesName]);
+    
+    
   return (
      
         <div className="border border-zinc-300 rounded-md relative mt-6">

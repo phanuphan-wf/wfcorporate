@@ -1,11 +1,11 @@
 import React, { useCallback, useContext } from "react";
 import { dataContext } from "./salereport";
 
-export default function PrintReport({ pdfRef, showPreview}) {
+export default function PrintReport({ pdfRef}) {
   const {eventC } = useContext(dataContext); 
   const [event] = eventC;
 
-  const isDisabled = !showPreview;
+  const isDisabled = false;
 
   const handlePrint = useCallback(() => {
     if (!pdfRef?.current) return;
