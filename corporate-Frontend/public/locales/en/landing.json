@@ -2,13 +2,13 @@
     "landing": {
         "lng": "เปลี่ยนภาษา",
         "show": "Furniture Fair",
-        "showdate": "January 10-18, 2026",
+        "showdate": "May 23 - 31, 2026",
         "location": "BITEC BANGNA",
         "sublocation": "BITEC",
         "hall": "HALL 103-104",
         "time": "10.30-20.30 hrs.",
         "regist": "Register get",
-        "gift": "Shopping Bag",
+        "gift": "Gift",
         "free": "Free!",
         "click": "Click",
         "fur": [
@@ -67,7 +67,7 @@
     "regist": {
         "lng": "เปลี่ยนภาษา",
         "show": "Furniture Fair",
-        "showdate": "March 7-15, 2026",
+        "showdate": "May 23 - 31, 2026",
         "hall": "HALL 103-104",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
