@@ -30,6 +30,7 @@ function CollectionReport() {
   
   const [filterBy, setFilterBy] = useState([]);
   //console.log(filter);
+
   //console.log(printOption);
   const [reportlist, setReportlist] = useState([]);
   //console.log(reportlist);

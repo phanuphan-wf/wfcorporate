@@ -1,5 +1,8 @@
 import { useState, useEffect, useContext } from "react";
+import Axios from "axios";
 import { dataContext } from "./report";
+import ModalSeach from "./modalSearch";
+
 import { CgMoreO, CgCloseO } from "react-icons/cg";
 
 export default function Filter() {
@@ -7,9 +10,9 @@ export default function Filter() {
 
   const [filter] = filterC;
   const [filterBy, setFilterBy] = filterByC;
-
   const [report] = reportC;
 
+  //console.log(filter);
   //console.log(report);
   //console.log(filterByC);
 
@@ -18,9 +21,9 @@ export default function Filter() {
   const isDisabled = !filter.exID || filter.exID === "";  
 
   const data = {
-      bySale: "",
-      byZone: "",
-      byCustomer: "",
+      bySale: "0",
+      byZone: "0",
+      byCustomer: "0",
       byPayment:"0"
   };
   const [filterData, setFilterData] =  useState(data);
@@ -32,30 +35,56 @@ export default function Filter() {
   const [customerName, setCustomerName] = useState([]);   
   
 
-  const [modalShow, setModalShow] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState("");
-
-  useEffect(() => {
-    if (report && report.length > 0) {
-
-      const uniqueSales = [...new Set(report.map(item => item.sales))];
-      uniqueSales.sort((a,b) => a.localeCompare(b, 'th'));
-      setSales(uniqueSales);
-
-      const uniqueZone = [...new Set(report.map(item => item.zone))];
-      uniqueZone.sort((a,b) => a.localeCompare(b, 'th'));
-      setZones(uniqueZone);
-
-      const uniqueCustomerName = [...new Set(report.map(item => item.name))];
-      uniqueCustomerName.sort((a,b) => a.localeCompare(b, 'th'));
-      setCustomerName(uniqueCustomerName);
-
-    }else{
-      setSales([]);
-      setZones([]);
-      setCustomerName([]);
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
+  
+  
+  const getSales = async () => {
+    try {      
+      const res = await Axios.get(url + "/getSales"); 
+      if (res.status === 200) {
+        setSales(res.data);
+      }      
+    } catch (error) {
+      console.error("Error fetching sales data:", error);
     }
-  }, [report]);
+  };
+
+
+  const getZones = async (exID) => {
+    if (!exID || exID === "0") return;
+    try {
+      const res = await Axios.get(url + `/getZone/${exID}`); 
+      if (res.status === 200) {
+        setZones(res.data);
+      }
+    } catch (error) {
+      console.error("Error fetching zones data:", error);
+    } 
+  };
+
+ 
+
+  const [modalShow, setModalShow] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState({ id: "", name: "" });
+
+  const SelectCustomer = (selected) => {
+    // 1. อัปเดตข้อมูลลูกค้าที่เลือก
+    setSelectedCustomer(selected); 
+
+    // 2. ✅ สำคัญ: อัปเดตคำค้นหาใน Input ให้เป็นชื่อเต็มของลูกค้าที่เลือก
+    setSearch(selected.name); 
+
+    // 3. อัปเดต State สำหรับใช้กรองข้อมูล (Filter)
+    setFilterData((prev) => ({
+      ...prev,
+      byCustomer: selected.id
+    }));
+
+    // 4. ปิด Modal
+    setIsSearch(false); 
+  };
+
+  console.log(selectedCustomer); 
 
   const salesChange = (e) => {  
     setFilterData((prev) => ({ 
@@ -124,9 +153,38 @@ export default function Filter() {
     
   }, [filterData.byPayment, setFilterData]);
 
-  useEffect(() => {
+   useEffect(() => {  
+
+    setShowFilter(false);
     setFilterData(data);
-  },[filter.exID])
+
+    const exID = filter.exID;   
+    if (filter.exID !== "") {
+      getSales();
+      getZones(exID);
+    }else {     
+      setShowFilter(false);
+    }
+  }, [filter.exID]);
+
+  //console.log(sales);
+  //console.log(zones);
+
+    const [isSearch, setIsSearch] = useState(false);  
+
+    const searchCustomer = (e) => {
+      // ถ้าเป็นการกดปุ่ม (ไม่มี e.key) หรือ เป็นการกดปุ่ม Enter
+      if (!e.key || e.key === "Enter") {
+        setIsSearch(true);
+      }
+    };
+  
+    const closeSearch = () => {
+      setIsSearch(false);
+    };
+    const [search, setSearch] = useState("");
+
+    console.log(search);
 
   return (
     <>
@@ -171,14 +229,14 @@ export default function Filter() {
                 <select
                   id="bySales"                 
                   className="border rounded-md p-1.5 w-full md:w-100 bg-white outline-none focus:ring-2 focus:ring-red-500 transition-all"
-                  value={filterData.bySale}
+                  value={sales.eid}
                   onChange={salesChange}
                   >
                 <option value="0">----- All Sales -----</option>
 
                 {sales.map((sales, index) => (
-                   <option key={index} value={sales}>
-                      {sales} 
+                   <option key={index} value={sales.eid}>
+                      {sales.name} 
                    </option>                  
                 
                 ))}
@@ -196,48 +254,21 @@ export default function Filter() {
                 <select
                   id="byZone"
                   className="border rounded-md p-1.5 w-full md:w-100 bg-white outline-none focus:ring-2 focus:ring-red-500 transition-all"
-                  value={filterData.byZone}
+                  value={zones.zid}
                   onChange={zoneChange}                
                 >
                   <option value="0">----- All Zone -----</option>
                   
                   {zones.map((zone, index) => (
-                    <option key={index} value={zone}>
-                      {zone} 
+                    <option key={index} value={zone.zid}>
+                      {zone.zone} 
                     </option>
                   ))}
 
                 </select>
-              </div>   
-              
-              {/* By Customer */}
-              {/* <div className="flex items-center gap-3">
-                <label
-                  htmlFor="byCustomer"
-                  className="flex items-center font-medium gap-2 w-36"
-                >
-                  By Customer :
-                </label>
+              </div>  
 
-             
-                <select
-                    id="byCustomer"
-                    className="border rounded-md p-1.5 w-full md:w-100 bg-white outline-none focus:ring-2 focus:ring-red-500 transition-all"
-                    value={filterData.byCustomer}
-                    onChange={customerChange}                
-                >
-                    <option value="0">----- All Customer -----</option>                    
-                    {customerName.map((name, index) => (
-                      <option key={index} value={name}>
-                        {name} 
-                      </option>
-                    ))}
-
-                </select>
-              </div> */}
-
-
-               {/* By Customer */}
+              {/* By Customer */}              
               <div className="flex items-center gap-3">
                 <label
                   htmlFor="exname"
@@ -251,38 +282,40 @@ export default function Filter() {
                   <div className="relative w-full">
                     <input
                       id="exname"
-                      className ="w-full md:w-100 border rounded px-2 py-1 pr-8" // ✅ เพิ่ม padding ขวาให้เว้นที่สำหรับปุ่ม ✕
-                      placeholder ="----- Search Customer -----"
-                      //value={selectedCustomer}
-                     // onChange={(e) =>
-                     //   setSelectedCustomer({ ...selectedCustomer, name: e.target.value })
-                     // }
-                     // onKeyDown={(e) => {
-                        //if (e.key === "Enter") handleSearchCustomer();
-                      //}}
+                      className="w-full md:w-100 border rounded px-2 py-1 pr-8" // ✅ เพิ่ม padding ขวาให้เว้นที่สำหรับปุ่ม ✕
+                      placeholder="customers name"
+                      onKeyDown={(e) => searchCustomer(e)}
+                      onChange={(e) => setSearch(e.target.value)}
+                      value={search}
                     />
 
-                    {/* ✅ ปุ่มกากบาทอยู่ภายในช่อง input */}
-                    {/* {selectedCustomer.name && (
+                    {/* ปุ่มล้างข้อมูล เมื่อมีค่าในช่อง */}
+                    {search && (
                       <button
-                        type="button"                      
+                        onClick={() => {
+                          setSearch("");
+                          setSelectedCustomer({ id: "", name: "" });
+                        // setFilter({ ...filter, customer: "0", customername: "0" });
+                        }}
                         className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500"
-                        title="ล้างชื่อ"
                       >
                         ✕
                       </button>
-                    )} */}
+                    )}
+
                   </div>
 
                   <button
                     type="button"
                     className="btn-primary px-3"
-                    //onClick={handleSearchCustomer}
+                    onClick={(e) => searchCustomer(e)}
                   >
                     Search
                   </button>
                 </div>
               </div>
+
+             
 
               {/* By Debt */}
               <div className="flex items-center gap-3">
@@ -322,7 +355,17 @@ export default function Filter() {
           </div>
 
         </div>
+
+        
       )}
+
+      <ModalSeach
+          show={isSearch}
+          onHide={closeSearch}
+          exid={filter.exID}   
+          search={search} 
+          fill={SelectCustomer}     
+      />
     </>
   );
 }
