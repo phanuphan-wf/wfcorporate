@@ -6,11 +6,8 @@ import ModalSeach from "./modalSearch";
 import { CgMoreO, CgCloseO } from "react-icons/cg";
 
 export default function Filter() {
-  const { filterC,filterByC,reportC } = useContext(dataContext);
-
-  const [filter] = filterC;
-  const [filterBy, setFilterBy] = filterByC;
-  const [report] = reportC;
+  const {filterC} = useContext(dataContext);
+  const [filter, setFilter] = filterC; 
 
   //console.log(filter);
   //console.log(report);
@@ -24,11 +21,11 @@ export default function Filter() {
       bySale: "0",
       byZone: "0",
       byCustomer: "0",
-      byPayment:"0"
+      byPayment: "0"
   };
   const [filterData, setFilterData] =  useState(data);
   
-  //console.log(filterData);
+  console.log(filterData);
 
   const [sales, setSales] = useState([]);
   const [zones, setZones] = useState([]);  
@@ -48,8 +45,6 @@ export default function Filter() {
       console.error("Error fetching sales data:", error);
     }
   };
-
-
   const getZones = async (exID) => {
     if (!exID || exID === "0") return;
     try {
@@ -60,65 +55,49 @@ export default function Filter() {
     } catch (error) {
       console.error("Error fetching zones data:", error);
     } 
-  };
-
- 
+  }; 
 
   const [modalShow, setModalShow] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState({ id: "", name: "" });
 
-  const SelectCustomer = (selected) => {
-    // 1. อัปเดตข้อมูลลูกค้าที่เลือก
+  const SelectCustomer = (selected) => {  
     setSelectedCustomer(selected); 
-
-    // 2. ✅ สำคัญ: อัปเดตคำค้นหาใน Input ให้เป็นชื่อเต็มของลูกค้าที่เลือก
-    setSearch(selected.name); 
-
-    // 3. อัปเดต State สำหรับใช้กรองข้อมูล (Filter)
+    setSearch(selected.name);   
     setFilterData((prev) => ({
       ...prev,
       byCustomer: selected.id
     }));
-
-    // 4. ปิด Modal
+    setFilter((prev) => ({
+      ...prev,
+      customer: selected.id
+    }));  
     setIsSearch(false); 
   };
 
-  console.log(selectedCustomer); 
+ console.log(selectedCustomer); 
 
   const salesChange = (e) => {  
     setFilterData((prev) => ({ 
       ...prev, 
       bySale: e.target.value
     })); 
-    setFilterBy((prev) => ({
+    setFilter((prev) => ({
       ...prev,
-      bySale: e.target.value
-    }));  
+      sales : e.target.value
+    }));   
   };
 
   const zoneChange = (e) => {
     setFilterData((prev) => ({
       ...prev,
       byZone: e.target.value
-    })); 
-    setFilterBy((prev) => ({
-      ...prev,
-      byZone: e.target.value
-    }))  
-  };
-
-  const customerChange = (e) =>{
-    setFilterData((prev) =>({
-      ...prev,
-      byCustomer: e.target.value
     }));  
-    setFilterBy((prev) => ({
+    setFilter((prev) => ({
       ...prev,
-      byCustomer: e.target.value
-    })); 
-  }; 
-
+      zone: e.target.value
+    }));   
+  };
+ 
 
   useEffect(() => {
     if (isDisabled == true) {
@@ -128,35 +107,35 @@ export default function Filter() {
   }, [isDisabled]);
 
 
-  useEffect(() => {
+  // useEffect(() => {
  
-    if (filterData.byPayment === "0" ) {
-      setFilterData((prev) => ({
-        ...prev,
-         byPayment: "0" 
-      }));
-      setFilterBy((prev) => ({
-        ...prev,
-        byPayment: "0"
-      }));      
-    }
-    else{
-      setFilterData((prev) => ({
-        ...prev,
-         byPayment: "1" 
-      }));
-      setFilterBy((prev) => ({
-        ...prev,
-        byPayment: "1"
-      }));     
-    }
+  //   if (filterData.byPayment === "0" ) {
+  //     setFilterData((prev) => ({
+  //       ...prev,
+  //        byPayment: "0" 
+  //     }));
+  //     setFilter((prev) => ({
+  //       ...prev,
+  //       payment: "0"
+  //     }));      
+  //   }
+  //   else{
+  //     setFilterData((prev) => ({
+  //       ...prev,
+  //        byPayment: "1" 
+  //     }));
+  //     setFilter((prev) => ({
+  //       ...prev,
+  //       payment: "1"
+  //     }));     
+  //   }
     
-  }, [filterData.byPayment, setFilterData]);
+  // }, [filterData.byPayment, setFilterData]);
 
    useEffect(() => {  
 
     setShowFilter(false);
-    setFilterData(data);
+    //setFilterData(data);
 
     const exID = filter.exID;   
     if (filter.exID !== "") {
@@ -173,8 +152,15 @@ export default function Filter() {
     const [isSearch, setIsSearch] = useState(false);  
 
     const searchCustomer = (e) => {
-      // ถ้าเป็นการกดปุ่ม (ไม่มี e.key) หรือ เป็นการกดปุ่ม Enter
-      if (!e.key || e.key === "Enter") {
+      if (e.key === "Enter") {
+        setIsSearch(true);
+      }else {
+        setIsSearch(false);
+      }
+    };
+
+    const searchtext = (e) => {
+      if (search) {
         setIsSearch(true);
       }
     };
@@ -184,7 +170,7 @@ export default function Filter() {
     };
     const [search, setSearch] = useState("");
 
-    console.log(search);
+    //console.log(search);   
 
   return (
     <>
@@ -277,42 +263,44 @@ export default function Filter() {
                   By Customer :
                 </label>
 
-                {/* กล่องครอบช่องค้นหา */}
-                <div className="flex w-full gap-2 items-center">
-                  <div className="relative w-full">
-                    <input
-                      id="exname"
-                      className="w-full md:w-100 border rounded px-2 py-1 pr-8" // ✅ เพิ่ม padding ขวาให้เว้นที่สำหรับปุ่ม ✕
-                      placeholder="customers name"
-                      onKeyDown={(e) => searchCustomer(e)}
-                      onChange={(e) => setSearch(e.target.value)}
-                      value={search}
-                    />
+               <div className="flex w-full gap-2 items-center">
+                <div className="relative w-full">
+                  <input
+                    id="exname"
+                    className="w-full md:w-100 border rounded px-2 py-1 pr-8 outline-none focus:ring-2 focus:ring-red-500"
+                    placeholder="Type customer name..."
+                    onKeyDown={searchCustomer} // รับ Event จากคีย์บอร์ด
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
+                  />
 
-                    {/* ปุ่มล้างข้อมูล เมื่อมีค่าในช่อง */}
-                    {search && (
-                      <button
-                        onClick={() => {
-                          setSearch("");
-                          setSelectedCustomer({ id: "", name: "" });
-                        // setFilter({ ...filter, customer: "0", customername: "0" });
-                        }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500"
-                      >
-                        ✕
-                      </button>
-                    )}
-
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn-primary px-3"
-                    onClick={(e) => searchCustomer(e)}
-                  >
-                    Search
-                  </button>
+                  {/* ปุ่มล้างข้อมูล */}
+                  {search && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearch("");
+                        setSelectedCustomer({ id: "", name: "" });
+                        setFilterData(prev => ({ ...prev, byCustomer: "0" }));
+                        setFilter(prev => ({ ...prev, customer: "0" }));
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                      <CgCloseO /> {/* หรือใช้ตัวอักษร ✕ ตามที่คุณสะดวก */}
+                    </button>
+                  )}
                 </div>
+
+                <button
+                  type="button"
+                  className="btn-primary px-3 h-[34px]"
+                  onClick={(e) => searchtext(e)} 
+                >
+                  Search
+                </button>
+              </div>
+
+
               </div>
 
              

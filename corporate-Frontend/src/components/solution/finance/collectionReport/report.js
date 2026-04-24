@@ -26,35 +26,38 @@ function CollectionReport() {
 
 
   const [filter, setFilter] = useState(initFilter);
-  const [printOption, setPrintOption] = useState([]);
-  
-  const [filterBy, setFilterBy] = useState([]);
-  //console.log(filter);
+  const [printOption, setPrintOption] = useState([]);  
+ 
+ 
 
   //console.log(printOption);
-  const [reportlist, setReportlist] = useState([]);
+  //const [reportlist, setReportlist] = useState([]);
   //console.log(reportlist);
   
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;  
   
-  const getReport = async (params) => {
-    try {     
-      const res = await Axios.post(url + "/getReport",params);  
-      if (res.status === 200) {
-        setReportlist(res.data);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }; 
+  // const getReport = async (params) => {
+  //   try {     
+  //     const res = await Axios.post(url + "/getReport",params);  
+  //     if (res.status === 200) {
+  //       setReportlist(res.data);
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }; 
 
-  useEffect(() => {  
-    if (filter.exID !== "") {
-      getReport(filter);
-    } else {
-      setReportlist([]); 
-    }
-  }, [filter.exID]); 
+  // useEffect(() => {  
+  //   if (filter.exID !== "") {
+  //     getReport(filter);
+  //   } else {
+  //     setReportlist([]); 
+  //   }
+  // }, [filter.exID]); 
+
+   useEffect(() => {
+     console.log(filter);
+   }, [filter]);
 
   // ================== 🧾 ส่วนแสดงผล ==================
   return (
@@ -62,9 +65,8 @@ function CollectionReport() {
       <dataContext.Provider
           value={{
             filterC: [filter, setFilter],
-            PrintOptionsC: [printOption, setPrintOption],
-            filterByC: [filterBy, setFilterBy],
-            reportC: [reportlist, setReportlist],
+            PrintOptionsC: [printOption, setPrintOption],            
+           
           }}
       >
 

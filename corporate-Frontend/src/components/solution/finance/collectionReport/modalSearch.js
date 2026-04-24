@@ -10,39 +10,56 @@ export default function ModalSeach(props) {
     Authorization: "Bearer " + bearer,
   };
 
-  const [search, setSearch] = useState({ exid: "", name: "" });
+
+  // const dataModal = {
+  //   exid: "",
+  //   name: "",
+  // };
+
+ //const [modal, setModal] = useState(dataModal);
   const [customer, setCustomer] = useState([]);
 
+  const [search, setSearch] = useState({exid: "", name: "" });
+
+  //console.log(customer);
+  //console.log(search);
+
   useEffect(() => {
-    setSearch({ ...search, exid: props.exid });
-  }, [props.exid]);
+    setSearch({ ...search, exid: props.exid , name: props.search });    
+  }, [props.search]);  
+
 
   const searchClick = async () => {
     const res = await Axios.post(url + "/getCustomer", search).then((res) => {
-      setCustomer(res.data);
+     if (res.status === 200)  {
+        setCustomer(res.data);
+     } else {
+        setCustomer([]);         
+     }      
     });
   };
-
-  useEffect(() => {
-    setSearch({ ...search, name: props.search });
-  }, [props.search]);
+ 
+  //console.log(props.show);
 
   useEffect(() => {
     if (props.show) {
       if (search.name != "") {
         searchClick();
       } else {
-        setCustomer([]);
+       setCustomer([]);        
       }
+    }else {  
+        setSearch({ ...search, exid: "", name: ""});
     }
+    
   }, [props.show]);
 
-  const nameClick = (customerObj) => {
+  const nameClick = (customer) => {
     // ส่งทั้งก้อนกลับไป (เช่น { cid: "123", name: "Siam Bed" })
     props.fill({ 
-      id: customerObj.cid, 
-      name: customerObj.name 
-    }); 
+      id: customer.cid, 
+      name: customer.name 
+    });        
     props.onHide(); // ปิด Modal ทันทีเมื่อเลือกเสร็จ
   };
 
@@ -55,6 +72,8 @@ export default function ModalSeach(props) {
   useEffect(() => {
     //console.log(customer);
   }, [customer]);
+
+ 
 
   return (
     <div>
@@ -102,9 +121,10 @@ export default function ModalSeach(props) {
                   id="searchtxt"
                   className="w-1/2"
                   onChange={(e) =>
-                    setSearch({ ...search, Name: e.target.value })
+                    setSearch({ ...search, name: e.target.value })
+                    
                   }
-                  value={search.Name}
+                  value={search.name}
                   onKeyDown={(e) => pressEnter(e)}
                 />
                 <div className="btn-primary px-2" onClick={searchClick}>
