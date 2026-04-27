@@ -10,57 +10,39 @@ export default function ModalSeach(props) {
     Authorization: "Bearer " + bearer,
   };
 
-
-  // const dataModal = {
-  //   exid: "",
-  //   name: "",
-  // };
-
- //const [modal, setModal] = useState(dataModal);
+  const [search, setSearch] = useState({ exid: "", name: "" });
   const [customer, setCustomer] = useState([]);
 
-  const [search, setSearch] = useState({exid: "", name: "" });
-
-  //console.log(customer);
-  //console.log(search);
-
   useEffect(() => {
-    setSearch({ ...search, exid: props.exid , name: props.search });    
-  }, [props.search]);  
-
+    setSearch({ ...search, exid: props.exid });
+  }, [props.exid]);
 
   const searchClick = async () => {
     const res = await Axios.post(url + "/getCustomer", search).then((res) => {
-     if (res.status === 200)  {
-        setCustomer(res.data);
-     } else {
-        setCustomer([]);         
-     }      
+      setCustomer(res.data);
     });
   };
- 
-  //console.log(props.show);
+
+  useEffect(() => {
+    setSearch({ ...search, name: props.search });
+  }, [props.search]);
 
   useEffect(() => {
     if (props.show) {
       if (search.name != "") {
         searchClick();
       } else {
-       setCustomer([]);        
+        setCustomer([]);
       }
-    }else {  
-        setSearch({ ...search, exid: "", name: ""});
     }
-    
   }, [props.show]);
 
   const nameClick = (customer) => {
-    // ส่งทั้งก้อนกลับไป (เช่น { cid: "123", name: "Siam Bed" })
-    props.fill({ 
-      id: customer.cid, 
-      name: customer.name 
-    });        
-    props.onHide(); // ปิด Modal ทันทีเมื่อเลือกเสร็จ
+  // ส่ง Object ที่มีทั้ง id และ name กลับไปที่ฟังก์ชัน SelectCustomer ในหน้าหลัก
+    props.fill({
+      id: customer.cid,
+      name: customer.name
+    });
   };
 
   const pressEnter = (e) => {
@@ -121,10 +103,10 @@ export default function ModalSeach(props) {
                   id="searchtxt"
                   className="w-1/2"
                   onChange={(e) =>
-                    setSearch({ ...search, name: e.target.value })
+                    setSearch({ ...search, Name: e.target.value })
                     
                   }
-                  value={search.name}
+                  value={search.Name}
                   onKeyDown={(e) => pressEnter(e)}
                 />
                 <div className="btn-primary px-2" onClick={searchClick}>
@@ -139,7 +121,7 @@ export default function ModalSeach(props) {
                 {customer.map((c) => (
                   <li
                     key={c.cid}
-                    onClick={() => nameClick(c)} // ส่ง object c เข้าไป
+                    onClick={() => nameClick(c)}// ส่ง object c เข้าไป
                     className="cursor-pointer p-2 hover:bg-gray-100 rounded-md transition-all border-b border-gray-50"
                   >
                     {c.name}

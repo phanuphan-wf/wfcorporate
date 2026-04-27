@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
+import useHeader from "../../../hook/useHeader";
 import { dataContext } from "./report";
 import ModalSeach from "./modalSearch";
 
@@ -25,7 +26,7 @@ export default function Filter() {
   };
   const [filterData, setFilterData] =  useState(data);
   
-  console.log(filterData);
+  //console.log(filterData);
 
   const [sales, setSales] = useState([]);
   const [zones, setZones] = useState([]);  
@@ -33,7 +34,11 @@ export default function Filter() {
   
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
-  
+  const bearer = useHeader();
+
+  Axios.defaults.headers.common = {
+    Authorization: "Bearer " + bearer,
+  };
   
   const getSales = async () => {
     try {      
@@ -62,6 +67,10 @@ export default function Filter() {
 
   const SelectCustomer = (selected) => {  
     setSelectedCustomer(selected); 
+    setSearch(selected.name);
+
+    //console.log(selected);
+
     setSearch(selected.name);   
     setFilterData((prev) => ({
       ...prev,
@@ -74,7 +83,7 @@ export default function Filter() {
     setIsSearch(false); 
   };
 
- console.log(selectedCustomer); 
+  //console.log(selectedCustomer); 
 
   const salesChange = (e) => {  
     setFilterData((prev) => ({ 
@@ -107,30 +116,30 @@ export default function Filter() {
   }, [isDisabled]);
 
 
-  // useEffect(() => {
+  useEffect(() => {
  
-  //   if (filterData.byPayment === "0" ) {
-  //     setFilterData((prev) => ({
-  //       ...prev,
-  //        byPayment: "0" 
-  //     }));
-  //     setFilter((prev) => ({
-  //       ...prev,
-  //       payment: "0"
-  //     }));      
-  //   }
-  //   else{
-  //     setFilterData((prev) => ({
-  //       ...prev,
-  //        byPayment: "1" 
-  //     }));
-  //     setFilter((prev) => ({
-  //       ...prev,
-  //       payment: "1"
-  //     }));     
-  //   }
+    if (filterData.byPayment === "0" ) {
+      setFilterData((prev) => ({
+        ...prev,
+         byPayment: "0" 
+      }));
+      setFilter((prev) => ({
+        ...prev,
+        payment: "0"
+      }));      
+    }
+    else{
+      setFilterData((prev) => ({
+        ...prev,
+         byPayment: "1" 
+      }));
+      setFilter((prev) => ({
+        ...prev,
+        payment: "1"
+      }));     
+    }
     
-  // }, [filterData.byPayment, setFilterData]);
+  }, [filterData.byPayment, setFilterData]);
 
    useEffect(() => {  
 
@@ -154,16 +163,12 @@ export default function Filter() {
     const searchCustomer = (e) => {
       if (e.key === "Enter") {
         setIsSearch(true);
-      }else {
-        setIsSearch(false);
-      }
+      }        
     };
 
-    const searchtext = (e) => {
-      if (search) {
-        setIsSearch(true);
-      }
-    };
+    const searchData = (e) => {
+      setIsSearch(true);
+    }
   
     const closeSearch = () => {
       setIsSearch(false);
@@ -269,7 +274,7 @@ export default function Filter() {
                     id="exname"
                     className="w-full md:w-100 border rounded px-2 py-1 pr-8 outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="Type customer name..."
-                    onKeyDown={searchCustomer} // รับ Event จากคีย์บอร์ด
+                    onKeyDown={(e) => searchCustomer(e)}
                     onChange={(e) => setSearch(e.target.value)}
                     value={search}
                   />
@@ -294,7 +299,7 @@ export default function Filter() {
                 <button
                   type="button"
                   className="btn-primary px-3 h-[34px]"
-                  onClick={(e) => searchtext(e)} 
+                  onClick={(e) => searchData(e)} 
                 >
                   Search
                 </button>
