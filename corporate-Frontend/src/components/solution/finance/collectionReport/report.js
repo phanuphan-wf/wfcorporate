@@ -4,9 +4,9 @@ import Axios from "axios";
 import SelectExhibition from "./selectExhibition";
 import PrintOptions from "./PrintOptions";
 import Filter from "./Filter";
-// import Print_all from "./Print_all";
-// import Without_Zones from "./Without_Zones";
-// import Without_Sales from "./Without_Sales";
+import Print_all from "./Print_all";
+import Without_Zones from "./Without_Zones";
+import Without_Sales from "./Without_Sales";
 // import Summary_Report from "./Summary_Report";
 
 
@@ -28,45 +28,71 @@ function CollectionReport() {
   const [filter, setFilter] = useState(initFilter);
   const [printOption, setPrintOption] = useState([]);  
  
- 
+  const [showPreview, setShowPreview] = useState(false);
+  const [preview, setPreview] = useState(0);
 
-  //console.log(printOption);
+  const handlePreview = () => {
+    setShowPreview(true);
+    setPreview((prev) => prev + 1); 
+  };
+
+  const [payment,setPayment] = useState(0);  
+  
   //const [reportlist, setReportlist] = useState([]);
-  //console.log(reportlist);
-  
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;  
-  
-  // const getReport = async (params) => {
-  //   try {     
-  //     const res = await Axios.post(url + "/getReport",params);  
-  //     if (res.status === 200) {
-  //       setReportlist(res.data);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }; 
+  //console.log(reportlist);   
+  const [reportlist, setReportlist] = useState([]);
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
 
-  // useEffect(() => {  
-  //   if (filter.exID !== "") {
-  //     getReport(filter);
-  //   } else {
-  //     setReportlist([]); 
-  //   }
-  // }, [filter.exID]); 
+  // 1. ฟังก์ชันดึงข้อมูลจาก API
+  const getReport = async (params) => {
+    if (!filter.exID) return;
+    try {
+      const res = await Axios.post(url + "/getReport", params);
+      if (res.status === 200) {
+        setReportlist(res.data);
+      }
+    } catch (err) {
+      console.error("API Error:", err);
+    }
+  };
+
+  // เรียก API เมื่อกดปุ่ม Preview
+  useEffect(() => {
+    if (preview) {
+      getReport(filter);
+    }
+  }, [preview]); // ทำงานเมื่อ preview เปลี่ยนเป็น true
+
+
+  useEffect(() => {
+    if(filter.exID == "") {     
+      setFilter(initFilter); 
+      setReportlist([]);
+      setPayment(0);
+    }
+  }, [filter.exID]);
 
    useEffect(() => {
-     console.log(filter);
+     //console.log(filter);
    }, [filter]);
+
+   useEffect(() => {
+     //console.log(printOption);
+   }, [printOption]);
+
+   useEffect(() => {
+     //console.log(payment);
+   }, [payment]);
 
   // ================== 🧾 ส่วนแสดงผล ==================
   return (
 
       <dataContext.Provider
           value={{
+            reportC: [reportlist, setReportlist],
             filterC: [filter, setFilter],
-            PrintOptionsC: [printOption, setPrintOption],            
-           
+            PrintOptionsC: [printOption, setPrintOption],  
+            paymentC: [payment, setPayment],
           }}
       >
 
@@ -78,7 +104,39 @@ function CollectionReport() {
         
           <PrintOptions/>
         
-          <Filter/>    
+          <Filter/>   
+
+          <div className="flex justify-end mt-4 gap-2">
+              <button
+                className="btn-primary px-3 py-1 rounded"
+                onClick={handlePreview}
+              >
+               Preview
+              </button>
+
+            <button
+              className="btn-primary px-3 py-1 rounded"
+              //onClick={handlePrint}
+            >
+              Print Report
+            </button>
+          </div>
+
+          <div className="mt-4">
+
+            {(printOption?.printOption?.printAll === true) && (
+              <Print_all preview={preview} />
+            )}
+
+            {(printOption?.printOption?.wSale === true) && (
+              <Without_Sales/>
+            )}
+                    
+            {/* <Print_all  preview={preview}/>    */}
+            {/* <Without_Zones preview={preview}/> */}
+           
+          </div>
+          
 
         </section>
 

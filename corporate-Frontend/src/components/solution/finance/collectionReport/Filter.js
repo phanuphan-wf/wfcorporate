@@ -7,8 +7,9 @@ import ModalSeach from "./modalSearch";
 import { CgMoreO, CgCloseO } from "react-icons/cg";
 
 export default function Filter() {
-  const {filterC} = useContext(dataContext);
+  const {filterC, paymentC} = useContext(dataContext);
   const [filter, setFilter] = filterC; 
+  const [payment, setPayment] = paymentC;
 
   //console.log(filter);
   //console.log(report);
@@ -123,25 +124,25 @@ export default function Filter() {
         ...prev,
          byPayment: "0" 
       }));
-      setFilter((prev) => ({
-        ...prev,
-        payment: "0"
-      }));      
+      setPayment(0);     
     }
-    else{
+    else if (filterData.byPayment === "1") {
       setFilterData((prev) => ({
         ...prev,
          byPayment: "1" 
       }));
-      setFilter((prev) => ({
-        ...prev,
-        payment: "1"
-      }));     
+      setPayment(1);       
+    }else {
+      setFilterData((prev) => ({
+        ...prev,       
+        byPayment: "2" 
+      }));
+      setPayment(2); 
     }
     
   }, [filterData.byPayment, setFilterData]);
 
-   useEffect(() => {  
+  useEffect(() => { 
 
     setShowFilter(false);
     //setFilterData(data);
@@ -153,6 +154,8 @@ export default function Filter() {
     }else {     
       setShowFilter(false);
     }
+
+
   }, [filter.exID]);
 
   //console.log(sales);
@@ -176,6 +179,10 @@ export default function Filter() {
     const [search, setSearch] = useState("");
 
     //console.log(search);   
+
+    useEffect(() => {
+      setSearch("");
+    }, [filter.exID]);
 
   return (
     <>
@@ -322,8 +329,8 @@ export default function Filter() {
                     <input
                       type="radio"
                       name="paymentStatus"   
-                      value="0"   
-                      checked={filterData.byPayment === "0"}
+                      value="1"   
+                      checked={filterData.byPayment === "1"}
                       onChange={(e) => setFilterData({...filterData, byPayment: e.target.value})}
                       className="accent-red-500 w-4 h-4"
                     />
@@ -334,8 +341,8 @@ export default function Filter() {
                     <input
                       type="radio"
                       name="paymentStatus" 
-                      value="1"        
-                      checked={filterData.byPayment === "1"}
+                      value="2"        
+                      checked={filterData.byPayment === "2"}
                       onChange={(e) => setFilterData({...filterData, byPayment: e.target.value})}
                       className="accent-red-500 w-4 h-4"                
                     />
