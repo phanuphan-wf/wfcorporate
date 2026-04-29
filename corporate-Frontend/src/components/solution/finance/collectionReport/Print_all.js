@@ -1,7 +1,6 @@
 import { useState, useContext, useMemo, useEffect } from "react";
 import Axios from "axios";
 import { dataContext } from "./report";
-import PrintButton from "./PrintButton";
 
 export default function Print_all({ preview }) {
   const {reportC ,filterC, paymentC} = useContext(dataContext);
@@ -12,8 +11,6 @@ export default function Print_all({ preview }) {
   useEffect(() => {
      //console.log(filter);
    }, [filter]);
-
-
  
   const normalizedList = useMemo(() => {
     if (!reportlist || reportlist.length === 0) return [];
@@ -39,7 +36,7 @@ export default function Print_all({ preview }) {
       }
     });
 
-  const calculatedResult = list.map((row, idx) => {
+    const calculatedResult = list.map((row, idx) => {
       const company = row?.name ?? "ไม่ระบุบริษัท";
       const firstIndex = seen.get(company);
       // คำนวณ balance เฉพาะแถวแรกของบริษัท
@@ -184,7 +181,7 @@ export default function Print_all({ preview }) {
                     ))}
                   </tbody>
               
-                  {/* 📊 ส่วนสรุปยอดที่คุณต้องการ */}
+                  
                   <tfoot className="font-semibold text-sm">
                     <tr className=" border-l-0 bg-gray-50">
                       <td colSpan="4" className="border border-l-0  p-2 text-center">

@@ -7,10 +7,10 @@ import Filter from "./Filter";
 import Print_all from "./Print_all";
 import Without_Zones from "./Without_Zones";
 import Without_Sales from "./Without_Sales";
-// import Summary_Report from "./Summary_Report";
+import Summary_Report from "./Summary_Report";
 
 
-//import Print_PDF from "./Print_PDF";
+import PrintReport from "./PrintReport";
 
 
 export const dataContext = createContext();
@@ -42,6 +42,8 @@ function CollectionReport() {
   //console.log(reportlist);   
   const [reportlist, setReportlist] = useState([]);
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
+  const pdfRef = useRef(null);
+
 
   // 1. ฟังก์ชันดึงข้อมูลจาก API
   const getReport = async (params) => {
@@ -112,28 +114,29 @@ function CollectionReport() {
                 onClick={handlePreview}
               >
                Preview
-              </button>
+              </button>            
 
-            <button
-              className="btn-primary px-3 py-1 rounded"
-              //onClick={handlePrint}
-            >
-              Print Report
-            </button>
+              <PrintReport pdfRef={pdfRef}/>
+
           </div>
 
-          <div className="mt-4">
+          <div ref={pdfRef} className="mt-4">
 
             {(printOption?.printOption?.printAll === true) && (
               <Print_all preview={preview} />
             )}
 
             {(printOption?.printOption?.wSale === true) && (
-              <Without_Sales/>
+              <Without_Sales preview={preview} />
+            )}                    
+                        
+            {(printOption?.printOption?.wZone === true) && (
+              <Without_Zones preview={preview} />
+            )}            
+
+            {(printOption?.printOption?.sumReport === true) && (
+              <Summary_Report preview={preview} />
             )}
-                    
-            {/* <Print_all  preview={preview}/>    */}
-            {/* <Without_Zones preview={preview}/> */}
            
           </div>
           
