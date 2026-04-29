@@ -4,8 +4,8 @@ import { dataContext } from "./report";
 
 export default function PrintReport({pdfRef}) {
 
-    const { filterC } = useContext(dataContext);
-    //const [selectedEvent] = eventC;
+    const { filterC,eventC } = useContext(dataContext);
+    const [event] = eventC;
     const [filter] = filterC;
   
 
@@ -37,7 +37,11 @@ export default function PrintReport({pdfRef}) {
   
       const printContents = content.innerHTML;
     
-  
+      const thaiDate = event.date;
+      const eventName = event.exName;
+      const eventVenue = event.venue;
+      const eventDateRange = event.exDate;
+    
       // ✅ เปิดหน้าต่างใหม่สำหรับพิมพ์
       const printWindow = window.open("", "_blank");
   
@@ -74,17 +78,16 @@ export default function PrintReport({pdfRef}) {
   
               body {
                 font-family: 'Sarabun', sans-serif;
-                font-size: 12px;
+                font-size: 10px;
                 margin: 10px;
                 color: #000;
               }
   
               .event-info {
-                  text-align: center;
-                  margin-top: 5px;
+                  text-align: center;               
                   line-height: 1.4;
                   font-size: 12px;
-                  font-weight: bold; /* ✅ ทำตัวอักษรหนา */
+                  font-weight: bold;
               }
   
               .header {
@@ -92,14 +95,14 @@ export default function PrintReport({pdfRef}) {
                 justify-content: space-between;
                 align-items: center;
                 position: relative;
-                margin-bottom: 10px;
+                margin-bottom: 4px;
               }
-  
+
               .header img {
                 width: 70px;
                 height: 70px;
               }
-  
+
               .header-title {
                 position: absolute;
                 left: 50%;
@@ -108,31 +111,36 @@ export default function PrintReport({pdfRef}) {
                 font-size: 16px;
                 font-weight: bold;
               }
-  
+
               .event-info {
                 text-align: center;
-                margin-top: 8px;
-                line-height: 1.5;
+                margin-top: 1px;
+                line-height: 1.3;
+                margin-top: 1px;
               }
   
-              table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 10px;
+              .print-contents table {
+                font-size: 10px;
               }
-  
-              th {
+
+              .print-contents th,
+              .print-contents td {
                   border: 1px solid #000;
+                  padding: 3px 5px;
+                  text-align: center;
+              }
+
+              .print-contents th {
                   font-weight: 700; /* หนากว่า td */
-                  text-align: center;
-                  padding: 4px 6px;
+              }
+
+              .print-contents td {
+                  font-weight: 400; /* ตัวอักษรบางกว่า th */
               }
   
-              td {
-                  border: 1px solid #000;
-                  font-weight: 400; /* ตัวอักษรบางกว่า th */
-                  text-align: center;
-                  padding: 4px 6px;
+              .print-contents {
+                font-size: 10px;
+                line-height: 1.25;
               }
   
               hr {
@@ -146,23 +154,29 @@ export default function PrintReport({pdfRef}) {
                 margin-top: 10px;
               }
   
-              @media print {
-                @page {
-                  size: A4 landscape;
-                  margin: 5mm;
-                }
+              @page {
+                size: A4 portrait;
+                margin: 10mm;
               }
             </style>
           </head>
           <body>
-            <div class="header">
-              <img src="/android-chrome-192x192.png" alt="Logo" />
-              <div class="header-title">** รายงานการเก็บเงิน **</div>
-             
-  
           
+              <div class="header">
+                <img src="/android-chrome-192x192.png" />
+                <div class="header-title">**รายงานการเก็บเงิน**</div>
+                <div>ณ วันที่ ${thaiDate}</div>
+              </div>
+
+              <div class="event-info">
+                <div>${eventName}</div>
+                <div>${eventDateRange}</div>
+                <div>${eventVenue}</div>
+              </div>
   
-            ${printContents}
+            <div class="print-contents">
+              ${printContents}
+            </div>
   
            
   
@@ -177,7 +191,7 @@ export default function PrintReport({pdfRef}) {
       `);
   
       printWindow.document.close();
-    }, [pdfRef, filter]);
+    }, [pdfRef,event]);
   
   
   return(
