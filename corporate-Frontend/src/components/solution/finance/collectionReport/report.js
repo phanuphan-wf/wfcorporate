@@ -26,8 +26,21 @@ function CollectionReport() {
 
 
   const [filter, setFilter] = useState(initFilter);
-  const [printOption, setPrintOption] = useState([]);  
- 
+
+  const exdata = {   
+    exName:"",      
+    exDate: "",
+    venue: "", 
+    data: "",
+  };
+
+  const [event, setEvent] = useState(exdata); 
+
+  useEffect(() =>{
+    console.log(event);    
+  },[event]);
+
+  const [printOption, setPrintOption] = useState([]);   
   const [showPreview, setShowPreview] = useState(false);
   const [preview, setPreview] = useState(0);
 
@@ -92,6 +105,7 @@ function CollectionReport() {
       <dataContext.Provider
           value={{
             reportC: [reportlist, setReportlist],
+            eventC: [event, setEvent],
             filterC: [filter, setFilter],
             PrintOptionsC: [printOption, setPrintOption],  
             paymentC: [payment, setPayment],

@@ -9,18 +9,45 @@ export default function SelectExhibition() {
  
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_clr;
 
-  const {filterC} = useContext(dataContext);
+  const {filterC, eventC} = useContext(dataContext);
   const [filter, setFilter] = filterC;
-
+  const [event, setEvent] = eventC;
 
   const [exhibition, setExhibtion] = useState([]);
   const [past, setPast] = useState(false);
   const [exid, setExid] = useState("");
   const [exdata, setExdata] = useState({
       exID: "",
+      exName:"",
       venue: "",
       during: "",
   });
+
+  const formatThaiDate = (isoString) => {
+    if (!isoString) {
+      return "";
+    }
+    const dateObj = new Date(isoString);  
+    if (isNaN(dateObj.getTime())) {
+      return isoString;
+    }
+
+    return dateObj.toLocaleDateString("th-TH", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const getThaiDateNow = () => {
+    const now = new Date();
+    return now.toLocaleDateString("th-TH", {
+      day: "numeric",
+      month: "numeric",
+      year:"numeric",
+    });
+  };
+
 
   const getExhibition = async () => {
     try {
@@ -44,15 +71,24 @@ export default function SelectExhibition() {
       if (selected) {
         setExdata({
           exID: selected.code,
+          exName: selected.name,
           venue: selected.venue,
           during: CorrectDate(selected.sDate) + " - " + CorrectDate(selected.eDate)
         });
          
         setFilter((prev) => ({ ...prev, exID: selected.code}));
+
+        setEvent((prev) => ({ ...prev,
+          exName:selected.name,
+          exDate: formatThaiDate(selected.sDate) + " - " + formatThaiDate(selected.eDate),   
+          venue:selected.venue, 
+          date: getThaiDateNow()
+        }));
       }
     }else{
       setExdata({ exID: "", venue: "", during: ""});
       setFilter((prev) => ({ ...prev, exID: "" }));
+      setEvent((prev) => ({ exName:"", exDate:"", venue:"", date:"" }));
     }
    },[exid, exhibition, setFilter]);
 
@@ -61,7 +97,7 @@ export default function SelectExhibition() {
       ...prev,
       exID: exdata.exID,
      }));
-   },[exdata. setFilter]);
+   },[exdata.setFilter]);
 
 
   return (
