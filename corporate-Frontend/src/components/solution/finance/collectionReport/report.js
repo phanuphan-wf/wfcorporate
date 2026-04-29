@@ -36,9 +36,9 @@ function CollectionReport() {
 
   const [event, setEvent] = useState(exdata); 
 
-  useEffect(() =>{
-    console.log(event);    
-  },[event]);
+  // useEffect(() =>{
+  //   console.log(event);    
+  // },[event]);
 
   const [printOption, setPrintOption] = useState([]);   
   const [showPreview, setShowPreview] = useState(false);

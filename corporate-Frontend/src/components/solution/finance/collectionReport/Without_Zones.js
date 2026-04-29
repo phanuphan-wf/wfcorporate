@@ -167,9 +167,9 @@ export default function Without_Zones({preview}) {
                       <td className="border px-2 py-1 text-right">
                         {totals.volume.toLocaleString()}
                       </td>                     
-                      <td className="border p-1 text-right">{totals.amount.toLocaleString()}</td>
-                      <td className="border p-1 text-right">{totals.balance.toLocaleString()}</td>                   
-                      <td className="border px-2 py-1"></td>
+                      <td className="border px-2 py-2 text-right">{totals.amount.toLocaleString()}</td>
+                      <td className="border px-2 py-2 text-right">{totals.balance.toLocaleString()}</td>                   
+                      <td className="border px-2 py-2" colSpan={2}></td>
                     </tr>
                   </tfoot>
               </table>

@@ -1,26 +1,43 @@
-import { useCallback,useContext } from "react";
+import { useCallback,useContext, useEffect } from "react";
 import { dataContext } from "./report";
 
 
 export default function PrintReport({pdfRef}) {
 
-    const { filterC,eventC } = useContext(dataContext);
-    const [event] = eventC;
-    const [filter] = filterC;
-  
+  const {reportC, eventC} = useContext(dataContext); 
+  const [reportlist] = reportC;
+  const [event] = eventC;    
 
-   const handlePrint = useCallback(() => {
-      if (!filter || filter.exID === "0") {
-        alert("กรุณาเลือกงานจัดแสดง (Exhibition)");
-        return;
-      }
+  // ถ้า reportlist เป็น Array ว่าง [] หรือ String ว่าง "" ค่า isDisabled จะเป็น true
+  const isDisabled = !reportlist || reportlist.length === 0;
+  
+  // console.log(reportlist);
+
+  // useEffect(() => {
+  //     console.log(isDisabled);
+  // },[isDisabled]);
+
+  const handlePrint = useCallback(() => {     
       if (!pdfRef?.current) return;
   
       // ✅ ดึงเนื้อหาหลักจากหน้าแสดงผล
       let content = pdfRef.current.cloneNode(true);
   
       // ✅ ซ่อนส่วนที่ไม่ต้องการพิมพ์ เช่น ปุ่ม
-      content.querySelectorAll("button, .no-print").forEach((el) => el.remove());
+      content.querySelectorAll("button, .no-print").forEach((el) => el.remove());   
+      
+      
+      // โค้ดส่วนนี้ใส่ไว้ก่อนบรรทัด const printContents = content.innerHTML;
+
+      content.querySelectorAll(".relative.flex.items-center.mb-2").forEach((el) => {
+          // ใส่ class สำหรับหน้าพิมพ์ที่เราเขียน CSS รอไว้
+          el.className = "sales-row"; 
+          
+          // จัดการลูกๆ ข้างใน
+          const children = el.querySelectorAll("h3");
+          if (children[0]) children[0].className = "sales-name";
+          if (children[1]) children[1].className = "zone-name";        
+      });
   
       // ✅ ปรับสไตล์ตารางให้กว้างเท่ากัน
       content.querySelectorAll("table").forEach((table) => {
@@ -49,31 +66,16 @@ export default function PrintReport({pdfRef}) {
         <html>
           <head>
             <title>รายงานการเก็บเงิน</title>
-            <style>
-              
+            <style>              
               @font-face {
-                  font-family: "Sarabun";
-                  src: url("/fonts/Sarabun-Regular.ttf") format("truetype");
-                  font-weight: 400;
-                  font-style: normal;
+                font-family: "Sarabun";
+                src: url("/fonts/Sarabun-Regular.ttf");
               }
+
               @font-face {
-                  font-family: "Sarabun";
-                  src: url("/fonts/Sarabun-Bold.ttf") format("truetype");
-                  font-weight: 700;
-                  font-style: normal;
-              }
-              @font-face {
-                  font-family: "Sarabun";
-                  src: url("/fonts/Sarabun-Italic.ttf") format("truetype");
-                  font-weight: 400;
-                  font-style: italic;
-              }
-              @font-face {
-                  font-family: "Sarabun";
-                  src: url("/fonts/Sarabun-ThinItalic.ttf") format("truetype");
-                  font-weight: 100;
-                  font-style: italic;
+                font-family: "Sarabun";
+                src: url("/fonts/Sarabun-Bold.ttf");
+                font-weight: bold;
               }
   
               body {
@@ -82,25 +84,16 @@ export default function PrintReport({pdfRef}) {
                 margin: 10px;
                 color: #000;
               }
-  
-              .event-info {
-                  text-align: center;               
-                  line-height: 1.4;
-                  font-size: 12px;
-                  font-weight: bold;
-              }
-  
+
               .header {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 position: relative;
-                margin-bottom: 4px;
-              }
-
+              }  
               .header img {
-                width: 70px;
-                height: 70px;
+                width: 60px;
+                height: 60px;
               }
 
               .header-title {
@@ -111,13 +104,12 @@ export default function PrintReport({pdfRef}) {
                 font-size: 16px;
                 font-weight: bold;
               }
-
               .event-info {
-                text-align: center;
-                margin-top: 1px;
-                line-height: 1.3;
-                margin-top: 1px;
-              }
+                  text-align: center;               
+                  line-height: 1.4;
+                  font-size: 12px;
+                  font-weight: bold;
+              }             
   
               .print-contents table {
                 font-size: 10px;
@@ -147,17 +139,44 @@ export default function PrintReport({pdfRef}) {
                 border-top: 1px dashed #aaa;
                 margin: 15px 0;
               }
-  
-              footer {
-                text-align: right;
-                font-size: 12px;
-                margin-top: 10px;
+
+            
+              .sales-row {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  width: 100%;
+                  margin-bottom: 2px;
+                  position: relative; /* รองรับการทำ absolute ของโซน */  
               }
-  
-              @page {
-                size: A4 portrait;
-                margin: 10mm;
+
+              .sales-name {
+                  flex: 1;
+                  text-align: left;
+                  font-weight: bold;
               }
+
+              .zone-name {
+                  position: absolute;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  text-align: center;
+                  font-weight: bold;  
+              }
+
+              .duty-name {
+                  flex: 1;
+                  text-align: right;
+              }
+           
+                
+              @media print {
+                @page {
+                  size: A4 portrait;
+                  margin: 5mm;
+                }
+              }
+
             </style>
           </head>
           <body>
@@ -191,12 +210,17 @@ export default function PrintReport({pdfRef}) {
       `);
   
       printWindow.document.close();
-    }, [pdfRef,event]);
+  }, [pdfRef,event]);
   
   
   return(
             <button
-              className="btn-primary px-3 py-1 rounded"
+              disabled={isDisabled}
+              className={`px-3 py-1 rounded ${
+                isDisabled 
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
+                  : "btn-primary"
+              }`}
               onClick={handlePrint}
             >
               Print Report

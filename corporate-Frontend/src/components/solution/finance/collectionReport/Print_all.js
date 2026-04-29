@@ -122,7 +122,7 @@ export default function Print_all({ preview }) {
       {Object.entries(groupedData).map(([zoneName, salesGroup]) => (
         <div key={zoneName} className="border border-zinc-300 rounded-md p-4 bg-white mb-4">
         
-          <h4 className="font-semibold text-green-600 mb-2 ml-4">Zone: {zoneName}</h4>
+          <h4 className="font-semibold text-green-600 mb-2 ml-4 no-print">Zone: {zoneName}</h4>
         
           {Object.entries(salesGroup).map(([salesName, items]) => {
             const totals = calcTotals(items); 
