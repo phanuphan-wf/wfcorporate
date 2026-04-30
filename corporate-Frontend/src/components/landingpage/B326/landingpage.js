@@ -11,6 +11,7 @@ import FurSection from "./fursection";
 import ElecSection from "./elecsection";
 
 import ClickRegist from "./clickRegist";
+import ClickRegist_PB from "./clickRegistPB";
 
 export default function Landingpage(props) {
   const { t } = useTranslation("landing", { keyPrefix: "landing" });
@@ -102,7 +103,7 @@ export default function Landingpage(props) {
       {bannerLoaded && (
         <>
           <FurSection />
-          {/* <ElecSection /> */}
+          <ElecSection />
         </>
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
@@ -113,36 +114,31 @@ export default function Landingpage(props) {
               src={require("./img/sponsor.png")}
               alt="premium bag"
               id="premium"
-              className="mx-auto w-4/5 lg:w-1/3 xl:w-3/4"
+              className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
             />
           ) : (
             <img
               src={require("./img/sponsor.png")}
               alt="premium bag"
               id="premium"
-              className="mx-auto w-4/5 lg:w-1/3 xl:w-3/4"
+              className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
             />
           )}
         </div>
       )}
 
-      {bannerLoaded && (
-        <div
-          ref={clickBottom}
-          className="flex justify-center md:gap-4 md:items-center mx-5 lg:mx-0 mb-4 sm:mb-6 md:mb-10">
+   
+      <div
+        ref={clickBottom}
+        className="flex justify-center md:gap-4 md:items-center mx-5 lg:mx-0 mb-4 sm:mb-6 md:mb-10">
           {/*--------แก้ hidden เป็น flex เพื่อเปิด register----*/}
-          <ClickRegist cp={cp} exId={exId} />
-
-          {/* -------- น่าจะไม่ต้องใช้ เพราะมี footer อยู่แล้ว ---------
-        <div className="flex justify-center gap-4 sm:gap-8 md:gap-2 bg-red-500 rounded-3xl md:rounded-xl text-white py-4 md:w-1/2 max-w-[800px] hover:bg-red-800 max-md:mt-4">
-          <div className="text-center md:text-xl lg:text-2xl">
-            <a href="/">กลับไปที่ World Fair เว็บไซต์</a>
-          </div>
-        </div>
-        */}
+        <ClickRegist_PB cp={cp} exId={exId} />        
         
-        </div>
-      )}
+      </div>        
+
+
+
+    
     </section>
   );
 }

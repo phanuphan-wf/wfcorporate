@@ -50,33 +50,33 @@ export default function FurSection() {
         <div className="relative mx-5 lg:mx-0 ">
           <div className="grid grid-cols-2 md:grid-cols-3 w-full sm:w-3/4 lg:w-[800px] gap-4 md:gap-7 place-items-center mx-auto">
             <img
-              src={require("./img/fur_img1.png")}
+              src={require("./img/fur_img1.jpg")}
               alt="fur-img"
               className="rounded-lg object-cover aspect-square"
             />
 
             <img
-              src={require("./img/fur_img2.png")}
+              src={require("./img/fur_img2.jpg")}
               alt="fur-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/fur_img3.png")}
+              src={require("./img/fur_img3.jpg")}
               alt="fur-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/fur_img4.png")}
+              src={require("./img/fur_img4.jpg")}
               alt="fur-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/fur_img5.png")}
+              src={require("./img/fur_img5.jpg")}
               alt="fur-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/fur_img6.png")}
+              src={require("./img/fur_img6.jpg")}
               alt="fur-img"
               className="rounded-lg object-cover aspect-square"
             />

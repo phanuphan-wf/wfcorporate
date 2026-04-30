@@ -7,9 +7,9 @@ export default function ElecSection() {
   const { t } = useTranslation("landing", { keyPrefix: "landing" });
   return (
     <section id="elec-section">
-      <div className="w-2/5 md:w-1/3 max-w-[350px] mx-auto mt-7 relative z-[900] mix-blend-multiply">
+      <div className="w-11/12 md:w-2/5 max-w-[750px] mx-auto mt-5 relative z-[900] mix-blend-multiply">
         <img
-          src={require("./img/elec_logo.png")}
+          src={require("./img/elec_logo.jpg")}
           alt="electronic logo"
           id="elec_logo"
           className="w-full mx-auto max-w-[480px]"
@@ -43,22 +43,22 @@ export default function ElecSection() {
         <div className="relative mx-5 lg:mx-0 ">
           <div className="grid grid-cols-2 md:grid-cols-2 w-full sm:w-3/4 lg:w-2/5 gap-4 md:gap-7 place-items-center mx-auto">
             <img
-              src={require("./img/elec_img1.png")}
+              src={require("./img/elec_img1.jpg")}
               alt="elec-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/elec_img2.png")}
+              src={require("./img/elec_img2.jpg")}
               alt="elec-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/elec_img3.png")}
+              src={require("./img/elec_img3.jpg")}
               alt="elec-img"
               className="rounded-lg object-cover aspect-square"
             />
             <img
-              src={require("./img/elec_img4.png")}
+              src={require("./img/elec_img4.jpg")}
               alt="elec-img"
               className="rounded-lg object-cover aspect-square"
             />
@@ -66,16 +66,16 @@ export default function ElecSection() {
         </div>
       </div>
 
-      <div className="xl:container w-full bg-[#4A1E6B] flex items-center justify-evenly py-4 mb-4">
-        <div className="w-[30%] sm:w-1/3 lg:w-1/5">
+      <div className="xl:container w-full bg-[#4A1E6B] flex items-center justify-evenly py-2  mb-4">
+        <div className="w-[50%] sm:w-1/3 lg:w-1/5 mb-6">
           <img
-            src={require("./img/elec_logo_sm.png")}
+            src={require("./img/elec_logo_sm.jpg")}
             alt="elec logo white"
             id="elec_banner"
             className="mx-auto"
           />
         </div>
-        <div className="text-white">
+        <div className="text-white mb-4">
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdLocationOn className="drop-shadow-md" />
             <span className="drop-shadow-md">{t("hall")}</span>
