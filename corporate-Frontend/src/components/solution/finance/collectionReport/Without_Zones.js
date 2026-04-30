@@ -87,7 +87,7 @@ export default function Without_Zones({preview}) {
 
   if(!preview) return null;
 
-   if (reportlist.length === 0) {
+  if (!reportlist || reportlist.length === 0 || normalizedList.length === 0) {
     return (
       <div className="mt-8 p-10 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-center">
         <div className="flex flex-col items-center justify-center">             
@@ -136,15 +136,25 @@ export default function Without_Zones({preview}) {
                           {Number(row.qty).toFixed(2)}
                         </td>
                         <td className="border px-2 py-1 text-right">
-                          {Number(row.volume ?? 0).toLocaleString()}
+                          {Number(row.volume ?? 0).toLocaleString(undefined,{
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </td>
                         <td className="border px-2 py-1 text-right">
                           {Number(row?.amount ?? 0) === 0 
                           ? "---------"
-                          : Number(row?.amount).toLocaleString()}
+                          : Number(row?.amount).toLocaleString(undefined,{
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </td>
                         <td className="border px-2 py-1 text-right">
-                          {row.balance === 0 ? "---------" : row.balance.toLocaleString()}
+                          {row.balance === 0 ? "---------" 
+                          : row.balance.toLocaleString(undefined,{
+                             minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
                         </td>
                         <td className="border px-2 py-1">
                           {row?.tel || "-"}
@@ -165,10 +175,23 @@ export default function Without_Zones({preview}) {
                         {totals.qty.toFixed(2)}
                       </td>
                       <td className="border px-2 py-1 text-right">
-                        {totals.volume.toLocaleString()}
+                        {totals.volume.toLocaleString(undefined,{
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </td>                     
-                      <td className="border px-2 py-2 text-right">{totals.amount.toLocaleString()}</td>
-                      <td className="border px-2 py-2 text-right">{totals.balance.toLocaleString()}</td>                   
+                      <td className="border px-2 py-2 text-right">
+                        {totals.amount.toLocaleString(undefined,{
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>
+                      <td className="border px-2 py-2 text-right">
+                        {totals.balance.toLocaleString(undefined,{
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </td>                   
                       <td className="border px-2 py-2" colSpan={2}></td>
                     </tr>
                   </tfoot>

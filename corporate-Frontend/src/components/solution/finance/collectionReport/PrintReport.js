@@ -200,11 +200,17 @@ export default function PrintReport({pdfRef}) {
            
   
             <script>
-              window.onload = function() {
-                window.print();
-                window.onafterprint = function() { window.close(); };
+              window.onload = function() {            
+                setTimeout(() => {
+                  window.print();
+                }, 500);
+              
+                window.onafterprint = function() {
+                  window.close(); // ปิด Tab อัตโนมัติ
+                };
               }
             </script>
+
           </body>
         </html>
       `);
