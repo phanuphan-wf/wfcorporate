@@ -68,7 +68,7 @@ export default function All_Chart ({ data, zoneName,totalBooth,totalVolume }){
                 </tr>
 
                 <tr className="hover:bg-zinc-50">
-                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200">ยอดเงินขายรวม</td>
+                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">ยอดเงินขายรวม</td>
                   <td className="px-3 py-2.5 text-right font-bold text-emerald-600 bg-white">
                     {totalVolume.toLocaleString()} บาท
                   </td>

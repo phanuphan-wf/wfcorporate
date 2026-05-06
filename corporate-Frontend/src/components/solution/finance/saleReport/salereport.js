@@ -19,34 +19,15 @@ export default function SaleReport() {
     zone: "",   
   };
 
-  const [filter, setFilter] = useState(initFilter);
- 
-  const [showPreview, setShowPreview] = useState(false);
-
-
-  const handlePreview = () =>{
-    setShowPreview(true);
-  }
+  const [filter, setFilter] = useState(initFilter); 
 
   const isDisabled =!filter.exID || filter.exID === ""; 
+  
 
   useEffect(() => {
-    if (isDisabled) {
-      setShowPreview(false);
-    }   
-  },[isDisabled]);
+     console.log(filter);
+  }, [filter]); 
 
-  
-  useEffect(() =>{
-    if (filter.exID) {
-       setShowPreview(false);
-    }
-  },[filter]);
-
-  // useEffect(() => {
-  //    console.log(filter);
-  // }, [filter]);
-  
 
   const eventData = {
     exName:"",
@@ -63,8 +44,30 @@ export default function SaleReport() {
   //    console.log(event);
   // }, [event]);
 
+  const salesData = {
+    salesID:"",
+    salesName:"",
+  }
+
+  const [sales, setSales] = useState(salesData);
+
+  
+  // useEffect(() => {  
+    
+  //   console.log(sales.salesID + sales.salesName);
+    
+
+  //   if (sales.salesID) {  
+  //      handlePreview();
+  //   }
+   
+
+  // }, [sales.salesID, sales.salesName]);
+
 
   const pdfRef = useRef(null);
+
+
 
  return (
     <section className="2xl:container pt-1 pb-5 px-5">
@@ -74,6 +77,7 @@ export default function SaleReport() {
            value={{ 
               filterC: [filter, setFilter],
               eventC: [event, setEvent],
+              salesC: [sales, setSales], 
            }}      
       >        
        
@@ -83,31 +87,19 @@ export default function SaleReport() {
       
           <Filter />
 
-         <div className="flex justify-end mt-4 gap-2"> 
+          <div className="flex justify-end mt-4 gap-2">         
 
-            <button
-              disabled={isDisabled}
-              onClick={handlePreview}
-              className={`px-4 py-1.5 rounded-md transition-colors font-medium ${
-                isDisabled 
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed" 
-                  : "btn-primary active:scale-95"
-              }`}
-            >
-              Preview
-            </button> 
-
-            <PrintReport pdfRef={pdfRef}/>
-            
+            {filter.exID && <PrintReport pdfRef={pdfRef}/>}                
 
           </div>           
           
           <div ref={pdfRef}>
 
-            {showPreview && (
-              filter.Print_all ? <Print_all/> : <Without_Zones/>
-            )}  
+              {filter.exID && (
+                filter.Print_all ? <Print_all /> : <Without_Zones />
+              )}  
 
+            
           </div>
           
         

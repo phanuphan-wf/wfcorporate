@@ -7,10 +7,11 @@ import Axios from "axios";
 
 export default function Print_all() {
 
-    const {filterC} = useContext(dataContext);
+    const {filterC, salesC} = useContext(dataContext);
     const [filter] = filterC;
+    const [sales, setSales] = salesC; 
     //const { data } = useContext(DataContext);
-    // console.log(filter);
+    //console.log(sales);
 
     const isDisabled = !filter.exID || filter.exID === "";  
 
@@ -20,6 +21,9 @@ export default function Print_all() {
     const [reportList, setReportList] = useState([]);
 
     //console.log(reportList);
+
+    const [saleName, setSaleName] = useState("");
+    
 
 
     const getReport = async () => {
@@ -49,15 +53,8 @@ export default function Print_all() {
             console.error("Fetch Report Error:", err);
         }
     };
-
-
-    useEffect (() => {
-        if (!isDisabled) {
-             getReport();
-        }       
-    }, [isDisabled]);
-
     
+        
 
     const groupedData = useMemo(() => {
 
@@ -68,13 +65,13 @@ export default function Print_all() {
         const salesName = item.sales?.trim() || "ไม่ระบุชื่อขาย";
 
         if (!acc[zoneName]) acc[zoneName] = {};
-            if (!acc[zoneName][salesName]) {
-            acc[zoneName][salesName] = {
-                salesName: salesName,
-                customerCount: 0,
-                totalBooth: 0,
-                totalVolume: 0
-            };
+        if (!acc[zoneName][salesName]) {
+                acc[zoneName][salesName] = {
+                    salesName: salesName,
+                    customerCount: 0,
+                    totalBooth: 0,
+                    totalVolume: 0
+                };
         }
 
         // 1. บวกค่าเข้าไปเป็นตัวเลขก่อน (Number)
@@ -100,9 +97,9 @@ export default function Print_all() {
 
       
     const [totalBooth, setTotalBooth] = useState(0);
-    const [totalVolume, setTotalVolume] = useState(0);
+    const [totalVolume, setTotalVolume] = useState(0);    
 
-    
+
     const getSum = async () => {
 
         if (!filter.exID) return;
@@ -122,12 +119,12 @@ export default function Print_all() {
 
     useEffect(() => {
         if (!isDisabled) {
-            getSum();      
+            getReport();
+            getSum();
         }
-    }, [filter.exID]);
+    }, [filter.exID, filter.sales, filter.zone, sales.salesID]);
 
-        
-
+   
     
     return(
 
@@ -168,7 +165,16 @@ export default function Print_all() {
                                     {salesInZone.map((sale, index) => (
                                     <tr key={`${zoneName}-${sale.salesName}`} className="hover:bg-gray-50">
                                         <td className="border border-zinc-400 px-2 py-1 text-center">{index + 1}</td>
-                                        <td className="border border-zinc-400 px-2 py-1">{sale.salesName}</td>
+                                        <td
+                                            className="border border-zinc-400 px-2 py-1 font-medium cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 underline-offset-4 hover:underline"
+                                            onClick={() => {                                               
+                                                setSales(prev => ({
+                                                ...prev,
+                                                salesName: sale.salesName
+                                                }));                                              
+                                            }}
+                                            
+                                        >{sale.salesName}</td>
                                         <td className="border border-zinc-400 px-2 py-1 text-center">
                                         {sale.customerCount}
                                         </td>

@@ -6,8 +6,9 @@ import Without_Chart from "./Without_Chart";
 
 export default function Without_Zones() {
 
-    const {filterC} = useContext(dataContext);
+    const {filterC, salesC} = useContext(dataContext);
     const [filter] = filterC;
+    const [sales, setSales] = salesC; 
 
    // console.log(filter);
 
@@ -20,6 +21,7 @@ export default function Without_Zones() {
 
     //console.log(reportList);
 
+   
 
     const getReport = async () => {
        
@@ -48,14 +50,6 @@ export default function Without_Zones() {
             console.error("Fetch Report Error:", err);
         }
     };
-
-
-    useEffect (() => {
-        if (!isDisabled) {
-             getReport();
-        }       
-    }, [isDisabled]);
-
     
 
     const groupedData = useMemo(() => {
@@ -112,11 +106,12 @@ export default function Without_Zones() {
         }
     };
 
-    useEffect(() => {
-        if (!isDisabled) {
-            getSum();      
-        }
-    }, [filter.exID]);
+     useEffect(() => {
+            if (!isDisabled) {
+                getReport();
+                getSum();
+            }
+    }, [filter.exID, filter.sales, filter.zone, sales.salesID]);
 
     return (
         <section className="mt-5 space-y-5">
@@ -141,7 +136,14 @@ export default function Without_Zones() {
                         {groupedData.map((sale, index) => (
                             <tr key={index} className="hover:bg-zinc-50 text-sm">
                                 <td className="border border-zinc-400 px-2 py-1 text-center">{index + 1}</td>
-                                <td className="border border-zinc-400 px-2 py-1 font-medium">{sale.salesName}</td>
+                                <td 
+                                    className="border border-zinc-400 px-2 py-1 font-medium cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 underline-offset-4 hover:underline"
+                                    onClick={() => {
+                                        setSales(prev => ({ ...prev, salesName: sale.salesName }));
+                                    }}
+                                >
+                                {sale.salesName}
+                                </td>
                                 <td className="border border-zinc-400 px-2 py-1 text-center">
                                     {sale.customerCount}
                                 </td>
