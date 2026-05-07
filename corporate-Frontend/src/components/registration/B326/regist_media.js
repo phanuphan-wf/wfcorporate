@@ -20,7 +20,7 @@ export default function Media(props) {
       col_en: "Roadside Cutout",
       id: "cutout",
     },
-
+    /*
     {
       col_th: "วิทยุ",
       col_en: "Radio",
@@ -31,6 +31,7 @@ export default function Media(props) {
       col_en: "Sky Train Media",
       id: "bts",
     },
+    */
     {
       col_th: "Facebook/Instagram",
       col_en: "Facebook/Instagram",
