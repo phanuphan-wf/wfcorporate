@@ -111,14 +111,14 @@ export default function Landingpage(props) {
         <div className="premium my-6 mb-10 mt-10">
           {new Date() < new Date("2025-08-10T00:00:00Z") ? (
             <img
-              src={require("./img/sponsor.png")}
+              src={require("./img/sponsor.jpg")}
               alt="premium bag"
               id="premium"
               className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
             />
           ) : (
             <img
-              src={require("./img/sponsor.png")}
+              src={require("./img/sponsor.jpg")}
               alt="premium bag"
               id="premium"
               className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
