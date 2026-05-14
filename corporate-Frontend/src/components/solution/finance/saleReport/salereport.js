@@ -24,9 +24,9 @@ export default function SaleReport() {
   const isDisabled =!filter.exID || filter.exID === ""; 
   
 
-  useEffect(() => {
-     console.log(filter);
-  }, [filter]); 
+  // useEffect(() => {
+  //    console.log(filter);
+  // }, [filter]); 
 
 
   const eventData = {
