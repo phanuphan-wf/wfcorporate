@@ -2,8 +2,9 @@ import React, { useCallback, useContext } from "react";
 import { dataContext } from "./salereport";
 
 export default function PrintReport({ pdfRef}) {
-  const {eventC } = useContext(dataContext); 
+  const {eventC,filterC} = useContext(dataContext); 
   const [event] = eventC;
+  const [filter] = filterC;
 
   const isDisabled = false;
 
@@ -75,106 +76,308 @@ export default function PrintReport({ pdfRef}) {
     const eventName = event.exName;
     const eventVenue = event.venue;
     const eventDateRange = event.exDate;
+    const Exid = filter.exID;
 
     const printWindow = window.open("", "_blank");
 
     printWindow.document.write(`
-      <html>
-        <head>
-          <title>รายงานยอดขายงานแสดงสินค้า</title>
-          <style>
-            @font-face {
-              font-family: "Sarabun";
-              src: url("/fonts/Sarabun-Regular.ttf");
-            }
-            @font-face {
-              font-family: "Sarabun";
-              src: url("/fonts/Sarabun-Bold.ttf");
-              font-weight: bold;
-            }
+  <html>
+    <head>
+      <title>รายงานยอดขายงานแสดงสินค้า</title>
 
-            body {
-              font-family: 'Sarabun', sans-serif;
-              font-size: 12px;
-              margin: 10px;
-            }
+      <style>
+        @font-face {
+          font-family: "Sarabun";
+          src: url("/fonts/Sarabun-Regular.ttf");
+        }
 
-            .header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              position: relative;
-            }
+        @font-face {
+          font-family: "Sarabun";
+          src: url("/fonts/Sarabun-Bold.ttf");
+          font-weight: bold;
+        }
 
-            .header img {
-              width: 60px;
-            }
+        body {
+          font-family: 'Sarabun', sans-serif;
+          font-size: 12px;
+          margin: 0;
+          padding: 0;
+          color: #000;
+        }
 
-            .header-title {
-              position: absolute;
-              left: 50%;
-              transform: translateX(-50%);
-              font-weight: bold;
-              font-size: 16px;
-            }
+        /* =========================
+           HEADER
+        ========================== */
 
-            .event-info {
-              text-align: center;
-              font-weight: bold;
-              margin-top: 10px;
-            }
+        .print-header {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
 
-            table {
-              width: 100%;
-              border-collapse: collapse;
-              font-size: 11px;
-            }
+          background: #fff;
+          z-index: 9999;
 
-            th, td {
-              border: 1px solid #000;
-              padding: 4px;
-              text-align: center;
-            }
+          padding: 10px 15px 5px 15px;
+          border-bottom: 1px solid #ccc;
+        }
 
-            th {
-              font-weight: bold;
-            }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          position: relative;
+        }
 
-            @media print {
-              @page {
-                size: A4 portrait;
-                margin: 5mm;
-              }
-            }
-          </style>
-        </head>
-        <body>
+        .header img {
+          width: 60px;
+          height: 60px;
+        }
 
-          <div class="header">
-            <img src="/android-chrome-192x192.png" />
-            <div class="header-title">รายงานยอดขายงานแสดงสินค้า</div>
-            <div>${thaiDate}</div>
+        .header-title {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          font-weight: bold;
+          font-size: 16px;
+          white-space: nowrap;
+        }
+
+        .event-info {
+          text-align: center;
+          font-weight: bold;
+          margin-top: 8px;
+          line-height: 1.5;
+        }
+
+        /* =========================
+           CONTENT
+        ========================== */
+
+        .print-wrapper {
+          width: 100%;
+          margin-top: 130px; 
+          padding: 0 10px 10px 10px;
+          box-sizing: border-box;
+        }
+
+        /* =========================
+           TABLE
+        ========================== */
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 11px;
+          margin-top: 10px;
+        }
+
+        th,
+        td {
+          border: 1px solid #000;
+          padding: 4px 6px;
+          vertical-align: middle;
+        }
+
+        th {
+          font-weight: bold;
+          text-align: center;
+        }
+
+        /* =========================
+           ALIGN
+        ========================== */
+
+        .text-left {
+          text-align: left !important;
+        }
+
+        .text-right {
+          text-align: right !important;
+        }
+
+        .text-center {
+          text-align: center !important;
+        }
+
+        /* =========================
+           ZONE PAGE BREAK
+        ========================== */
+
+        .print-zone-block {
+          page-break-inside: avoid;
+          break-inside: avoid;
+          margin-bottom: 20px;
+        }
+
+        /* ✅ โซนใหม่ขึ้นหน้าใหม่ */
+        .print-zone-block:not(:first-child) {
+            page-break-before: always;
+            break-before: page;
+            padding-top: 140px;
+        }
+
+        /* =========================
+           CHART
+        ========================== */
+
+        canvas,
+        svg {
+          page-break-inside: avoid !important;
+          break-inside: avoid !important;
+        }
+
+        /* =========================
+           SALES HEADER
+        ========================== */
+
+        .sales-row {
+          position: relative;
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+          min-height: 24px;
+        }
+
+        .sales-left {
+          flex: 1;
+          text-align: left;
+          font-weight: bold;
+        }
+
+        .sales-center {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          font-weight: bold;
+          white-space: nowrap;
+        }
+
+        /* =========================
+           PRINT
+        ========================== */
+
+        @media print {
+
+          @page {
+            size: A4 portrait;
+            margin: 5mm;
+          }
+
+          body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+
+          .print-hide {
+            display: none !important;
+          }
+
+          .print-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            background: #fff;
+            z-index: 9999;
+
+            padding: 10px 15px 5px 15px;
+
+            border-bottom: none;
+          }
+
+          .print-wrapper {
+              margin-top: 140px;
+          }
+        }
+
+      </style>
+    </head>
+
+    <body>
+
+      <!-- =========================
+           HEADER
+      ========================== -->
+
+      <div class="print-header">
+
+        <div class="header">
+
+          <img src="/android-chrome-192x192.png" />
+
+          <div class="header-title">
+            รายงานยอดขายงานแสดงสินค้า
           </div>
 
-          <div class="event-info">
-            <div>${eventName}</div>
-            <div>${eventDateRange}</div>
-            <div>${eventVenue}</div>
+          <div>
+            ${thaiDate}
           </div>
 
-          ${printContents}
+        </div>
 
-          <script>
-            window.onload = function() {
-              window.print();
-              window.onafterprint = function() { window.close(); };
-            }
-          </script>
+        <div class="event-info">
+          <div>${eventName} (${Exid})</div>
+          <div>${eventDateRange}</div>
+          <div>${eventVenue}</div>
+        </div>
 
-        </body>
-      </html>
-    `);
+      </div>
 
+      <!-- =========================
+           CONTENT
+      ========================== -->
+
+      <div class="print-wrapper">
+        ${printContents}
+      </div>
+
+      <!-- =========================
+           SCRIPT
+      ========================== -->
+
+      <script>
+
+        window.onload = function() {
+
+          // ✅ text align จาก class React/Tailwind
+          document.querySelectorAll(".text-left").forEach(el => {
+            el.style.textAlign = "left";
+          });
+
+          document.querySelectorAll(".text-right").forEach(el => {
+            el.style.textAlign = "right";
+          });
+
+          document.querySelectorAll(".text-center").forEach(el => {
+            el.style.textAlign = "center";
+          });
+
+          // ✅ sales row
+          document.querySelectorAll("[data-sales]").forEach(el => {
+            el.classList.add("sales-left");
+          });
+
+          document.querySelectorAll("[data-zone]").forEach(el => {
+            el.classList.add("sales-center");
+          });
+
+          setTimeout(() => {
+            window.print();
+          }, 500);
+
+          window.onafterprint = function() {
+            window.close();
+          };
+
+        };
+
+      </script>
+
+    </body>
+  </html>
+`);
     printWindow.document.close();
   }, [pdfRef, event]);
 

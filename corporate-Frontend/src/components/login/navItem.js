@@ -177,7 +177,7 @@ const NavItems = [
         title: "Sale Report",
         url: "/solution/finance/salereport",
         show: [
-          { dept: 1, acc: 1 },        
+          { dept: 1, acc: 1 },      
           { dept: 2, acc: 1 },
         ],
       },
