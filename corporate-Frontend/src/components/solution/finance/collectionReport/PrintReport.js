@@ -4,9 +4,10 @@ import { dataContext } from "./report";
 
 export default function PrintReport({pdfRef}) {
 
-  const {reportC, eventC} = useContext(dataContext); 
+  const {reportC, eventC, filterC} = useContext(dataContext); 
   const [reportlist] = reportC;
   const [event] = eventC;    
+  const [filter] = filterC;
 
   // ถ้า reportlist เป็น Array ว่าง [] หรือ String ว่าง "" ค่า isDisabled จะเป็น true
   const isDisabled = !reportlist || reportlist.length === 0;
@@ -35,8 +36,10 @@ export default function PrintReport({pdfRef}) {
           
           // จัดการลูกๆ ข้างใน
           const children = el.querySelectorAll("h3");
+
           if (children[0]) children[0].className = "sales-name";
-          if (children[1]) children[1].className = "zone-name";        
+          if (children[1]) children[1].className = "zone-name";
+          if (children[2]) children[2].className = "duty-name";     
       });
   
       // ✅ ปรับสไตล์ตารางให้กว้างเท่ากัน
@@ -58,7 +61,7 @@ export default function PrintReport({pdfRef}) {
       const eventName = event.exName;
       const eventVenue = event.venue;
       const eventDateRange = event.exDate;
-    
+      const Exid = filter.exID;
       // ✅ เปิดหน้าต่างใหม่สำหรับพิมพ์
       const printWindow = window.open("", "_blank");
   
@@ -81,8 +84,22 @@ export default function PrintReport({pdfRef}) {
               body {
                 font-family: 'Sarabun', sans-serif;
                 font-size: 10px;
-                margin: 10px;
+                margin: 0;
+                padding: 10mm 5mm 5mm 5mm;
                 color: #000;
+                box-sizing: border-box;
+              }
+
+              .print-fixed-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: #fff;
+                padding: 10mm 5mm 0 5mm;
+                z-index: 9999;
+                border-bottom: none;
+                box-sizing: border-box;
               }
 
               .header {
@@ -90,7 +107,7 @@ export default function PrintReport({pdfRef}) {
                 justify-content: space-between;
                 align-items: center;
                 position: relative;
-              }  
+              }
               .header img {
                 width: 60px;
                 height: 60px;
@@ -104,99 +121,202 @@ export default function PrintReport({pdfRef}) {
                 font-size: 16px;
                 font-weight: bold;
               }
+
               .event-info {
-                  text-align: center;               
-                  line-height: 1.4;
-                  font-size: 12px;
-                  font-weight: bold;
-              }             
-  
+                text-align: center;
+                line-height: 1.4;
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 3px;
+              }
+
               .print-contents table {
                 font-size: 10px;
               }
 
               .print-contents th,
               .print-contents td {
-                  border: 1px solid #000;
-                  padding: 3px 5px;
-                  text-align: center;
+                border: 1px solid #000;
+                padding: 3px 5px;
+                text-align: center;
               }
 
               .print-contents th {
-                  font-weight: 700; /* หนากว่า td */
+                font-weight: 700;
               }
 
               .print-contents td {
-                  font-weight: 400; /* ตัวอักษรบางกว่า th */
+                font-weight: 400;
               }
-  
+
               .print-contents {
+                padding-top: 0;
                 font-size: 10px;
                 line-height: 1.25;
               }
-  
+
               hr {
                 border-top: 1px dashed #aaa;
                 margin: 15px 0;
               }
 
-            
               .sales-row {
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  width: 100%;
-                  margin-bottom: 2px;
-                  position: relative; /* รองรับการทำ absolute ของโซน */  
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                margin-bottom: 2px;
+                position: relative;
               }
 
               .sales-name {
-                  flex: 1;
-                  text-align: left;
-                  font-weight: bold;
+                flex: 1;
+                text-align: left;
+                font-weight: bold;
               }
 
               .zone-name {
-                  position: absolute;
-                  left: 50%;
-                  transform: translateX(-50%);
-                  text-align: center;
-                  font-weight: bold;  
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                font-weight: bold;
               }
 
               .duty-name {
-                  flex: 1;
-                  text-align: right;
+                flex: 1;
+                text-align: right;
               }
-           
-                
+
+              .print-page {
+                page-break-after: always;
+                break-after: page;
+                padding-top: 180px;
+              }
+
+              .print-page:not(:first-child) {
+                page-break-before: always;
+                break-before: page;
+                padding-top: 180px;
+              }
+
+              .print-page:last-child {
+                page-break-after: auto;
+              }
+
+              .print-hide {
+                display: block;
+              }
+
+              .print-only {
+                display: none;
+              }
+
+              @media print {
+                .print-hide {
+                  display: none !important;
+                }
+                .print-only {
+                  display: table-row !important;
+                }
+              }
+
+              table {
+                page-break-inside: avoid;
+                break-inside: avoid;
+              }
+
+              .print-header {
+                width: 100%;
+                margin-bottom: 10px;
+              }
+
+              .sales-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                margin-bottom: 5px;
+                position: relative;
+              }
+
+              .sales-name {
+                flex: 1;
+                text-align: left;
+                font-weight: bold;
+              }
+
+              .zone-name {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+                font-weight: bold;
+                white-space: nowrap;
+              }
+
+              .duty-name {
+                flex: 1;
+                text-align: right;
+                font-weight: bold;
+              }
+
+              .print-zone-page {
+                page-break-before: always;
+                break-before: page;
+              }
+
+              .print-zone-page:first-child {
+                page-break-before: auto;
+                break-before: auto;
+              }
+
               @media print {
                 @page {
                   size: A4 portrait;
-                  margin: 5mm;
+                  margin: 0;
+                }
+
+                body {
+                  padding: 10mm 5mm 5mm 5mm;
+                }
+
+                .print-fixed-header {
+                  position: fixed;
+                  top: 0;
                 }
               }
 
             </style>
           </head>
           <body>
-          
-              <div class="header">
-                <img src="/android-chrome-192x192.png" />
-                <div class="header-title">**รายงานการเก็บเงิน**</div>
-                <div>ณ วันที่ ${thaiDate}</div>
+            <!-- ✅ HEADER FIXED -->
+              <div class="print-fixed-header">
+
+                <div class="header">
+                  <img src="/android-chrome-192x192.png" />
+
+                  <div class="header-title">
+                    **รายงานการเก็บเงิน**
+                  </div>
+
+                  <div>
+                    ณ วันที่ ${thaiDate}
+                  </div>
+                </div>
+
+                <div class="event-info">
+                  <div>${eventName} (${Exid})</div>
+                  <div>${eventDateRange}</div>
+                  <div>${eventVenue}</div>
+                </div>
+
               </div>
 
-              <div class="event-info">
-                <div>${eventName}</div>
-                <div>${eventDateRange}</div>
-                <div>${eventVenue}</div>
+              <!-- ✅ CONTENT -->
+              <div class="print-contents">
+                ${printContents}
               </div>
-  
-            <div class="print-contents">
-              ${printContents}
-            </div>
-  
            
   
             <script>

@@ -129,26 +129,37 @@ export default function Print_all({ preview }) {
   return (
     <section className="mt-6 space-y-8">
       {Object.entries(groupedData).map(([zoneName, salesGroup]) => (
-        <div key={zoneName} className="border border-zinc-300 rounded-md p-4 bg-white mb-4">
+        <div key={zoneName} className="border border-zinc-300 rounded-md p-4 bg-white mb-4 print-zone-page">
         
           <h4 className="font-semibold text-green-600 mb-2 ml-4 no-print">Zone: {zoneName}</h4>
         
-          {Object.entries(salesGroup).map(([salesName, items]) => {
+          {Object.entries(salesGroup).map(([salesName, items], salesIndex) => {
             const totals = calcTotals(items); 
 
             return (
-              <div key={salesName} className="mb-8 ml-4">
+              <div key={salesName} className="mb-8 ml-4 print-page">
                 {/* 👤 แสดงชื่อ Sales */}
-                <div className="relative flex items-center mb-2">
+                <div className="relative flex items-center mb-2 print-hide">
                   <h3 className="flex-1 text-left">พนักงานขาย : {salesName}</h3>
                   <h3 className="absolute left-1/2 -translate-x-1/2 text-center">
                     โซน : {zoneName}
                   </h3>
-                  {/* <h3 className="flex-1 text-right">หน้าที่ : </h3> */}
+                  <h3 className="flex-1 text-right">
+                    หน้าที่ : {salesIndex + 1}
+                  </h3>
                 </div>
 
                 <table className="w-full border-collapse border">
                   <thead>
+                    <tr className="print-only" style={{ display: "none" }}>
+                      <th colSpan="9" className="border px-2 py-1 text-left">
+                        <div className="flex justify-between">
+                          <span className="font-semibold">พนักงานขาย : {salesName}</span>
+                          <span className="font-semibold">โซน : {zoneName}</span>
+                          <span className="font-semibold">หน้าที่ : {salesIndex + 1}</span>
+                        </div>
+                      </th>
+                    </tr>
                      <tr className="bg-gray-100">
                       <th className="border px-2 py-1">ลำดับ</th>
                       <th className="border px-2 py-1">ชื่อลูกค้า</th>
