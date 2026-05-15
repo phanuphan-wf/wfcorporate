@@ -139,7 +139,7 @@ export default function Without_Zones() {
                                 <td 
                                     className="border border-zinc-400 px-2 py-1 font-medium cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 underline-offset-4 hover:underline"
                                     onClick={() => {
-                                        setSales(prev => ({ ...prev, salesName: sale.salesName }));
+                                        setSales(prev => ({ ...prev, salesName: sale.salesName?.trim() || "" }));
                                     }}
                                 >
                                 {sale.salesName}

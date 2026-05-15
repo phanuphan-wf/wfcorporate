@@ -97,32 +97,24 @@ export default function Filter() {
       sales: filterData.bySale,
       zone: filterData.byZone
     }));
-  },[filterData],[setFilter]);
+  }, [filterData, setFilter]);
 
 
   useEffect(() => {
-   
     if (sales.salesName && salesList.length > 0) {
-     
-      const found = salesList.find(item => item.name === sales.salesName);
+      const found = [...salesList].reverse().find((item) =>
+        item.name?.trim() === sales.salesName.trim()
+      );
 
-      if (found) {
-      
-        if (sales.salesID !== found.eid) {
-          setSales(prev => ({
-            ...prev,
-            salesID: found.eid,    
-            salesName: found.name  
-          }));
-
-          setFilterData({
-          ...filterData, 
-          bySale: found.eid
-        });
-        }
+      if (found && sales.salesID !== found.eid) {
+        setSales((prev) => ({
+          ...prev,
+          salesID: found.eid,
+          salesName: found.name.trim()
+        }));
       }
     }
-  }, [sales.salesName]);
+  }, [sales.salesName, salesList, setSales]);
     
     
   return (

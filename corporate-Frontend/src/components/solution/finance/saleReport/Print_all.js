@@ -170,7 +170,7 @@ export default function Print_all() {
                                             onClick={() => {                                               
                                                 setSales(prev => ({
                                                 ...prev,
-                                                salesName: sale.salesName
+                                                salesName: sale.salesName?.trim() || ""
                                                 }));                                              
                                             }}
                                             

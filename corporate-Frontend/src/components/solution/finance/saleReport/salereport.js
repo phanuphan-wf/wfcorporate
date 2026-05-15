@@ -7,6 +7,9 @@ import Print_all from "./Print_all";
 import Without_Zones from "./Without_Zones";
 import PrintReport from "./PrintReport";
 
+import SumSale from "./SaleSum";
+import SaleSum from "./SaleSum";
+
 export const dataContext = createContext();
 
 export default function SaleReport() { 
@@ -52,17 +55,9 @@ export default function SaleReport() {
   const [sales, setSales] = useState(salesData);
 
   
-  // useEffect(() => {  
-    
-  //   console.log(sales.salesID + sales.salesName);
-    
-
-  //   if (sales.salesID) {  
-  //      handlePreview();
-  //   }
-   
-
-  // }, [sales.salesID, sales.salesName]);
+  // useEffect(() => {     
+  //   console.log(sales); 
+  // }, [sales]);
 
 
   const pdfRef = useRef(null);
@@ -99,7 +94,8 @@ export default function SaleReport() {
                 filter.Print_all ? <Print_all /> : <Without_Zones />
               )}  
 
-            
+             <SaleSum />
+              
           </div>
           
         
