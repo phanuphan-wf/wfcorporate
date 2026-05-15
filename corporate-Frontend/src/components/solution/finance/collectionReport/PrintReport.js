@@ -150,7 +150,7 @@ export default function PrintReport({pdfRef}) {
               }
 
               .print-contents {
-                padding-top: 0;
+                
                 font-size: 10px;
                 line-height: 1.25;
               }
@@ -222,8 +222,8 @@ export default function PrintReport({pdfRef}) {
               }
 
               table {
-                page-break-inside: avoid;
-                break-inside: avoid;
+                page-break-inside: auto;
+                break-inside: auto;
               }
 
               .print-header {
@@ -264,6 +264,8 @@ export default function PrintReport({pdfRef}) {
               .print-zone-page {
                 page-break-before: always;
                 break-before: page;
+                page-break-inside: auto;
+                break-inside: auto;
               }
 
               .print-zone-page:first-child {

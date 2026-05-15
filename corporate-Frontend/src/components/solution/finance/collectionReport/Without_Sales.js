@@ -115,13 +115,19 @@ export default function Without_Sales({preview}) {
         const totals = calcTotals(items);
         
         return (
-          <div key={zone} className="border rounded-lg bg-white shadow p-4">
+          <div key={zone} className="border rounded-lg bg-white shadow p-4 print-zone-page">
           
-            <h4 className="font-semibold text-green-600 mb-2 ml-4">
+            <h4 className="font-semibold text-green-600 mb-2 ml-4 no-print">
               Zone: {zone}
             </h4>
 
-            <div className="overflow-x-auto">
+            <div className="mb-8 ml-4 print-page">
+                <div className="relative flex items-center mb-2 print-hide">
+                      <h3 className="flex-1 text-left">พนักงานขาย : โดยไม่แยกฝ่ายขาย</h3>
+                      <h3 className="absolute left-1/2 -translate-x-1/2 text-center">
+                        โซน : {zone}
+                      </h3>
+                </div>           
                 <table className="w-full border-collapse border">
                   <thead>
                     <tr className="bg-gray-100">
