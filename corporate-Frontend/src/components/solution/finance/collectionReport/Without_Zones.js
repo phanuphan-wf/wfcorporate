@@ -85,6 +85,14 @@ export default function Without_Zones({preview}) {
     }, { qty: 0, volume: 0, amount: 0, balance: 0 });
   };
 
+  const paginateItems = (items, pageSize = 20 ) => {
+    const pages = [];
+    for (let i = 0; i < items.length; i += pageSize) {
+      pages.push(items.slice(i, i + pageSize));
+    }
+    return pages;
+  };
+
   if(!preview) return null;
 
   if (!reportlist || reportlist.length === 0 || normalizedList.length === 0) {
@@ -101,15 +109,35 @@ export default function Without_Zones({preview}) {
     <section className="mt-6 space-y-8">
       {Object.entries(groupedBySale).map(([sale, items]) => {
         const totals = calcTotals(items);
-        return (
-          <div key={sale} className="border rounded-lg bg-white shadow p-4">
+        const pages = paginateItems(items, 20);
 
-            <h4 className="font-semibold text-green-600 mb-2 ml-4">
+        return (
+          <div key={sale} className="border rounded-lg bg-white shadow p-4 print-zone-page">
+
+            <h4 className="font-semibold text-green-600 mb-2 ml-4 no-print">
              พนักงานขาย : {sale}
             </h4>
 
-            <div className="overflow-x-auto">
-              <table className="min-w-full border-collapse">
+            {pages.map((pageItems, pageIndex) => {
+               const pageNumber = pageIndex + 1;
+               const isLastPage = pageIndex === pages.length - 1;
+            
+
+              return (
+            <div key={`page-${pageNumber}`} className="mb-8 ml-4 print-page">
+
+              <div className="relative flex items-center mb-2 print-hide">
+                    <h3 className="flex-1 text-left">พนักงานขาย : {sale}</h3>
+                    <h3 className="absolute left-1/2 -translate-x-1/2 text-center">
+                      โซน : โดยไม่แยกโซน
+                    </h3>
+                    <h3 className="flex-1 text-right">
+                      หน้าที่ : {pageNumber}
+                    </h3>
+                  </div>
+
+
+              <table className="min-w-full border-collapse border">
                 <thead>
                   <tr className="bg-gray-100">
                     <th className="border px-2 py-1">ลำดับ</th>
@@ -126,11 +154,11 @@ export default function Without_Zones({preview}) {
                 </thead>
 
                 <tbody className="text-sm">
-                    {items.map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50 border-b">
-                        <td className="border border-l-0  p-2 text-center">{i + 1}</td>
+                    {pageItems.map((row, i) => (
+                      <tr key={`row-${pageNumber}-${i}-${row?.name ?? ""}`} className="hover:bg-gray-50 border-b">
+                        <td className="border border-l-0  p-2 text-center">{pageIndex * 20 + i + 1}</td>
                         <td className="border px-2 py-1">{row.name}</td>
-                        <td className="border px-2 py-1 text-center">-</td>
+                        <td className="border px-2 py-1 text-center">{pageNumber}</td>
                         <td className="border px-2 py-1 text-center">{row.booth}</td>
                         <td className="border px-2 py-1 text-right">
                           {Number(row.qty).toFixed(2)}
@@ -166,40 +194,44 @@ export default function Without_Zones({preview}) {
                     ))}
                   </tbody>
 
-                   <tfoot className="font-semibold text-sm">
-                    <tr className=" border-l-0 bg-gray-50">
-                      <td colSpan="4" className="border border-l-0  p-2 text-center">
-                         รวมยอดทั้งสิ้น 
-                      </td>
-                      <td className="border px-2 py-1 text-right">
-                        {totals.qty.toFixed(2)}
-                      </td>
-                      <td className="border px-2 py-1 text-right">
-                        {totals.volume.toLocaleString(undefined,{
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>                     
-                      <td className="border px-2 py-2 text-right">
-                        {totals.amount.toLocaleString(undefined,{
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                      <td className="border px-2 py-2 text-right">
-                        {totals.balance.toLocaleString(undefined,{
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>                   
-                      <td className="border px-2 py-2" colSpan={2}></td>
-                    </tr>
-                  </tfoot>
+                   {isLastPage && (
+                     <tfoot className="font-semibold text-sm">
+                      <tr className=" border-l-0 bg-gray-50">
+                        <td colSpan="4" className="border border-l-0  p-2 text-center">
+                           รวมยอดทั้งสิ้น 
+                        </td>
+                        <td className="border px-2 py-1 text-right">
+                          {totals.qty.toFixed(2)}
+                        </td>
+                        <td className="border px-2 py-1 text-right">
+                          {totals.volume.toLocaleString(undefined,{
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </td>                     
+                        <td className="border px-2 py-2 text-right">
+                          {totals.amount.toLocaleString(undefined,{
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </td>
+                        <td className="border px-2 py-2 text-right">
+                          {totals.balance.toLocaleString(undefined,{
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </td>                   
+                        <td className="border px-2 py-2" colSpan={2}></td>
+                      </tr>
+                    </tfoot>
+                   )}
               </table>
             </div>
-          </div>
-        );
-      })}
+          );
+          })}
+        </div>
+      );
+    })}
     </section>
   );
 }

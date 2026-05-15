@@ -185,33 +185,8 @@ export default function Filter() {
     }, [filter.exID]);
 
   return (
-    <>
-      <button
-        disabled={isDisabled}
-        className={`rounded-md py-1 px-3 text-white mt-4 flex items-center gap-2 transition-all ${
-          isDisabled 
-            ? "bg-gray-300 cursor-not-allowed" 
-            : showFilter ? "bg-red-500" : "bg-green-600"
-        }`}
-        onClick={() => setShowFilter(!showFilter)}
-      >
-        {showFilter ? (
-          <>
-            <CgCloseO />
-            <span>Close panel</span>
-          </>
-        ) : (
-          <>
-            <CgMoreO />
-            <span>Filter</span>
-          </>
-        )}
-      </button>
-
-      {/* Filter Section */}
-      {showFilter && (
-        <div className="border border-zinc-300 rounded-md relative mt-6">
-          
+      <section id = "filter" className={isDisabled ? "pointer-events-none opacity-50" : "opacity-100"}>      
+        <div className="border border-zinc-300 rounded-md relative mt-6 p-4 bg-white">          
           <div className="absolute bg-white px-2 py-1 -top-4 left-3 text-red-600">
             Filter
           </div>
@@ -355,9 +330,7 @@ export default function Filter() {
           </div>
 
         </div>
-
-        
-      )}
+     
 
       <ModalSeach
           show={isSearch}
@@ -366,6 +339,7 @@ export default function Filter() {
           search={search} 
           fill={SelectCustomer}     
       />
-    </>
+
+    </section>
   );
 }
