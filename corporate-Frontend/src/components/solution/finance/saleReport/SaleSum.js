@@ -81,7 +81,7 @@ export default function SaleSum() {
         <section className="SaleSum mt-4">
             <div className="border border-zinc-300 reunded-md p-4 bg-white mb-2">
                 <div className="relative flex items-center mb-2">
-                    <h3 className="flex-1 text-left font-bold text text-zinc-800">
+                    <h3 className="flex-1 text-left font-bold text-sm text-zinc-800">
                         ชื่อฝ่ายขาย : {sales.salesName}
                     </h3>
                 </div>

@@ -139,7 +139,7 @@ export default function PrintReport({ pdfRef}) {
           left: 50%;
           transform: translateX(-50%);
           font-weight: bold;
-          font-size: 16px;
+          font-size: 14px;
           white-space: nowrap;
         }
 
@@ -156,7 +156,7 @@ export default function PrintReport({ pdfRef}) {
 
         .print-wrapper {
           width: 100%;
-          margin-top: 130px; 
+          margin-top: 100px; 
           padding: 0 10px 10px 10px;
           box-sizing: border-box;
         }

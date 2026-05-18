@@ -9,7 +9,7 @@ export default function Sale_Chart({ data, boothCount = 0, totalAmount = 0 }) {
 
   const options = {
     is3D: true,
-    fontName: "Tahoma",
+    fontName: "Sarabun",
 
     chartArea: {
       width: "100%",

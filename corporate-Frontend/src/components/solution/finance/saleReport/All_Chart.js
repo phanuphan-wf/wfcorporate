@@ -9,7 +9,7 @@ export default function All_Chart({ data, zoneName, totalBooth, totalVolume }) {
 
   const options = {
     is3D: true,
-    fontName: "Tahoma",
+    fontName: "Sarabun",
 
     chartArea: {
       width: "100%",

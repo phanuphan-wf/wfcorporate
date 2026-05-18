@@ -10,6 +10,9 @@ import PrintReport from "./PrintReport";
 import SumSale from "./SaleSum";
 import SaleSum from "./SaleSum";
 
+
+import { IoChevronBackOutline } from "react-icons/io5";
+
 export const dataContext = createContext();
 
 export default function SaleReport() { 
@@ -84,17 +87,28 @@ export default function SaleReport() {
 
           <div className="flex justify-end mt-4 gap-2">         
 
+             {sales.salesID && (
+                <button
+                  onClick={() => setSales(salesData)}
+                  className="px-4 py-1.5 rounded-md font-medium btn-primary active:scale-95 inline-flex items-center gap-1"
+                > <IoChevronBackOutline /> Back
+                </button>
+             )}
+
+           
             {filter.exID && <PrintReport pdfRef={pdfRef}/>}                
 
           </div>           
           
           <div ref={pdfRef}>
 
-              {filter.exID && (
+              {filter.exID && !sales.salesID && (
                 filter.Print_all ? <Print_all /> : <Without_Zones />
               )}  
 
-             <SaleSum />
+              {sales.salesID && <SaleSum />}
+
+        
               
           </div>
           
