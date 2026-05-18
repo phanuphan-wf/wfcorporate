@@ -16,6 +16,7 @@ import CreateExhibition from "./components/solution/datawarehouse/createExhibiti
 import SmsNumber from "./components/solution/datawarehouse/sms/smsNumber";
 import CreateBooth from "./components/solution/datawarehouse/createBooth/createBooth";
 import CreditList from "./components/solution/datawarehouse/creditterm/creditlist";
+import CreateZone from "./components/solution/datawarehouse/createZone/createZone";
 
 import Herobanner from "./components/solution/datawarehouse/Information/herobanner";
 import HighlightEx from "./components/solution/datawarehouse/Information/highlight";
@@ -174,6 +175,16 @@ const AppProtectRoute = [
       { dept: 1, acc: 2 },
       { dept: 3, acc: 2 },
       { dept: 6, acc: 2 },
+    ],
+  },
+  {
+    path: "datawarehouse/createzone",
+    element: <CreateZone />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },    
+      { dept: 1, acc: 2 },
+      { dept: 3, acc: 2 },      
     ],
   },
   {

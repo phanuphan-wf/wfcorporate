@@ -58,7 +58,7 @@ export default function Sale_Chart({ data, boothCount = 0, totalAmount = 0 }) {
               <tbody className="divide-y divide-zinc-100 text-sm">
                 <tr className="hover:bg-zinc-50">
                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">
-                    ยอดขายบูธรวม
+                    ยอดบูธขายรวม
                   </td>
                   <td className="px-3 py-2.5 text-right font-bold text-blue-600 bg-white">
                     {boothCount.toLocaleString()} บูธ
@@ -67,7 +67,7 @@ export default function Sale_Chart({ data, boothCount = 0, totalAmount = 0 }) {
 
                 <tr className="hover:bg-zinc-50">
                   <td className="px-3 py-2.5 text-zinc-600 bg-zinc-50/50 w-1/2 border-r border-zinc-200 text-xs">
-                    ยอดขายเป็นเงินรวม
+                    ยอดเงินขายรวม
                   </td>
                   <td className="px-3 py-2.5 text-right font-bold text-emerald-600 bg-white">
                     {totalAmount.toLocaleString()} บาท

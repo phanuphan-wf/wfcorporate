@@ -141,9 +141,16 @@ const NavItems = [
         title: "Sale Report",
         url: "/solution/finance/salereport",
         show: [
+          { dept: 1, acc: 1 },         
+          { dept: 6, acc: 1 },
+        ],
+      },
+      {
+        title: "Credit List",
+        url: "/solution/datawarehouse/creditlist",
+        show: [
           { dept: 1, acc: 1 },
           { dept: 6, acc: 1 },
-          { dept: 2, acc: 1 },
         ],
       },
     ],
@@ -212,41 +219,7 @@ const NavItems = [
           { dept: 3, acc: 2 },
           { dept: 6, acc: 2 },
         ],
-      },
-      {
-        title: "Create Exhibition",
-        url: "/solution/datawarehouse/createexhibition",
-        show: [
-          { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },
-          { dept: 6, acc: 1 },
-          { dept: 1, acc: 2 },
-          { dept: 3, acc: 2 },
-          { dept: 6, acc: 2 },
-        ],
-      },
-      {
-        title: "Create Booth",
-        url: "/solution/datawarehouse/createbooth",
-        show: [
-          { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },
-          { dept: 6, acc: 1 },
-          { dept: 1, acc: 2 },
-          { dept: 3, acc: 2 },
-          { dept: 6, acc: 2 },
-        ],
-      },
-      {
-        title: "Credit List",
-        url: "/solution/datawarehouse/creditlist",
-        show: [
-          { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },
-          { dept: 6, acc: 1 },
-          { dept: 3, acc: 2 },
-        ],
-      },
+      },           
       {
         title: "SMS Number",
         url: "/solution/datawarehouse/sms",
@@ -348,6 +321,40 @@ const NavItems = [
           { dept: 7, acc: 2 },
         ],
       },
+      {
+        title: "Create Exhibition",
+        url: "/solution/datawarehouse/createexhibition",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },
+          { dept: 6, acc: 1 },
+          { dept: 1, acc: 2 },
+          { dept: 3, acc: 2 },
+          { dept: 6, acc: 2 },
+        ],
+      },
+      {
+        title: "Create Booth",
+        url: "/solution/datawarehouse/createbooth",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },
+          { dept: 6, acc: 1 },
+          { dept: 1, acc: 2 },
+          { dept: 3, acc: 2 },
+          { dept: 6, acc: 2 },
+        ],
+      },
+      {
+        title: "Create Zone",
+        url: "/solution/datawarehouse/createzone",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 3, acc: 1 },       
+          { dept: 1, acc: 2 },
+          { dept: 3, acc: 2 },       
+        ],
+      }, 
     ],
   },
 ];
