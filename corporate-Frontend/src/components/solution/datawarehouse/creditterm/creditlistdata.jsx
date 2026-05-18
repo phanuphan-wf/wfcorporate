@@ -77,30 +77,16 @@ export default function CreditListData() {
       //setListCredit([]);
     }
   };
-
-  useEffect(() => {    
-    console.log("🔥 reloadAll changed:", reloadAll);
-    if (reloadAll == true) {
-      loadCreditAll(""); // โหลดทั้งหมด
-    }else{
-      setHisfilter([]);
-    }       
-  }, [reloadAll]);
-
-
-  // useEffect(() => {
-  //   loadCreditAll(""); // ✅ เรียกจริง
-  // }, []); // ✅ run แค่ครั้งเดียว
-   
+  
 
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: "ยืนยันลบข้อมูลเครดิต?",
-      text: "เมื่อลบแล้วไม่สามารถกู้คืนได้",
+      title: "Confirm credit deletion?",
+      text: "This action cannot be undone.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "ลบ",
-      cancelButtonText: "ยกเลิก",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
 
       buttonsStyling: false,
       customClass: {
@@ -121,16 +107,23 @@ export default function CreditListData() {
         headers: {
           Authorization: `Bearer ${bearer}`,
         },
-      });
-
-      //console.log("DELETE RESPONSE:", res.data);
-
-      setReloadTable((x) => !x);
+      });   
+    
+      loadCreditAll();
     } catch (error) {
       console.error("DELETE ERROR:", error);
       alert("ลบข้อมูลไม่สำเร็จ");
     }
   };
+
+  useEffect(() => {    
+    //console.log("🔥 reloadAll changed:", reloadAll);
+    if (reloadAll == true) {
+      loadCreditAll(""); // โหลดทั้งหมด
+    }else{
+      setHisfilter([]);
+    }       
+  }, [reloadAll]);
 
   
 
@@ -202,21 +195,20 @@ export default function CreditListData() {
   
 
   return (
-    <section id="customer-history-list">
-      <div className="w-full 2xl:w-4/5 mb-8">
+    <section id="credit-list-data">
+      <div className="flex justify-end w-full 2xl:w-4/5 my-4">
         <table className="w-full">
           <thead>
-            <tr>
-              <th className="bg-zinc-100 rounded-tl-md">no#</th>
+            <tr>             
               <th className="bg-zinc-100 border-l-2 border-white">Customer</th>
-              <th className="bg-zinc-100 border-l-2 border-white">งวดที่ 1</th>
-              <th className="bg-zinc-100 border-l-2 border-white">งวดที่ 2</th>
+              <th className="bg-zinc-100 border-l-2 border-white">Credit 1</th>
+              <th className="bg-zinc-100 border-l-2 border-white">Credit 2</th>
               <th className="bg-zinc-100 border-l-2 border-white">
                 Date Approval
               </th>
               <th className="bg-zinc-100 border-l-2 border-white">Approver</th>
               <th className="w-[20%] bg-zinc-100 border-l-2 border-white rounded-tr-md">
-                จัดการ
+                Manage Credit
               </th>
             </tr>
           </thead>
@@ -224,9 +216,7 @@ export default function CreditListData() {
           <tbody>
             {hisfilter.length > 0 ? (
               hisfilter.map((row, index) => (
-                <tr key={row.id} className="border-b">
-                  <td className="border-t p-2 text-center">{index + 1}</td>
-                  {/* <td className="border-t border-l p-2">{row.id}</td> */}
+                <tr key={row.id} className="border-b">    
                   <td className="border-t border-l p-2">{row.name}</td>
                   <td className="border-t border-l p-2 text-center">
                     {row.term1}
@@ -235,7 +225,7 @@ export default function CreditListData() {
                     {row.term2}
                   </td>
                   <td className="border-t border-l p-2 text-center">
-                    {new Date(row.a_date).toLocaleString()}
+                    {new Date(row.a_date).toLocaleDateString("th-TH")}                  
                   </td>
                   <td className="border-t border-l p-2 text-center">
                     {row.approver}
@@ -259,12 +249,12 @@ export default function CreditListData() {
                       <span>Edit</span>
                     </button>
 
-                    {/* <button
-                      className="btn-primary"
+                    <button
+                      className="btn-primary ml-2"
                       onClick={() => handleDelete(row.id)}
                     >
-                      <i className="fas fa-trash mr-1"></i> ลบ
-                    </button> */}
+                      <i className="fas fa-trash mr-1"></i> Cancel Credit
+                    </button>
                   </td>
                 </tr>
               ))
@@ -289,7 +279,7 @@ export default function CreditListData() {
           <div className="bg-white rounded-lg w-[400px] p-4 shadow-lg">
             {/* Header */}
             <div className="flex justify-between items-center mb-3">
-              <h3 className="font-semibold text-lg">แก้ไขข้อมูล</h3>
+              <h3 className="font-semibold text-lg">Edit Credit</h3>
               <button
                 onClick={() => setShowModal(false)}
                 className="text-red-500 hover:text-red-500"
@@ -315,7 +305,7 @@ export default function CreditListData() {
               </div>
 
               <div>
-                <label>งวดที่ 1</label>
+                <label>Credit 1</label>
                 <input
                   type="number"
                   className="border w-full px-2 py-1 rounded"
@@ -327,7 +317,7 @@ export default function CreditListData() {
               </div>
 
               <div>
-                <label>งวดที่ 2</label>
+                <label>Credit 2</label>
                 <input
                   type="number"
                   className="border w-full px-2 py-1 rounded"
@@ -343,9 +333,9 @@ export default function CreditListData() {
             <div className="flex justify-between items-center mt-4">
               <button
                 className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                onClick={() => handleDelete(editData.id)}>
-                ยกเลิก Credit
-              </button>
+                onClick={() => setShowModal(false)}>
+                Cancel
+              </button>             
 
               <button
                 className={`btn-green ${
@@ -387,7 +377,7 @@ export default function CreditListData() {
                     alert("บันทึกข้อมูลไม่สำเร็จ");
                   }
                 }}>
-                อนุมัติ เครดิต
+                Approved Credit
               </button>
             </div>
           </div>
