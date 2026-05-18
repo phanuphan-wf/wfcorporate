@@ -142,7 +142,7 @@ export default function Print_all() {
                         <div key={zoneName} className="mb-8 last:mb-0 print-zone-block">
                             {/* หัวข้อชื่อโซน */}
                             <div className="relative flex items-center mb-2">
-                                <h3 className="flex-1 text-left font-bold text text-zinc-800">
+                                <h3 className="flex-1 text-left font-bold text-sm text-zinc-800">
                                     โซนแสดงสินค้า : {zoneName}
                                 </h3>
                             </div>
