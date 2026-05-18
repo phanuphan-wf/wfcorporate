@@ -199,15 +199,15 @@ export default function CreditListData() {
       <div className="flex justify-end w-full 2xl:w-4/5 my-4">
         <table className="w-full">
           <thead>
-            <tr>             
-              <th className="bg-zinc-100 border-l-2 border-white">Customer</th>
-              <th className="bg-zinc-100 border-l-2 border-white">Credit 1</th>
-              <th className="bg-zinc-100 border-l-2 border-white">Credit 2</th>
-              <th className="bg-zinc-100 border-l-2 border-white">
+            <tr className="border-l border-b border-r border-t border-black">             
+              <th className="bg-zinc-100 border-l border-b border-r border-black">Customer</th>
+              <th className="bg-zinc-100 border-l border-b border-r border-black">Credit 1</th>
+              <th className="bg-zinc-100 border-l border-b border-r border-black">Credit 2</th>
+              <th className="bg-zinc-100 border-l border-b border-r border-black">
                 Date Approval
               </th>
-              <th className="bg-zinc-100 border-l-2 border-white">Approver</th>
-              <th className="w-[20%] bg-zinc-100 border-l-2 border-white rounded-tr-md">
+              <th className="bg-zinc-100 border-l border-b border-r border-black">Approver</th>
+              <th className="w-[20%] bg-zinc-100 border-l border-b border-r border-black rounded-tr-md">
                 Manage Credit
               </th>
             </tr>
@@ -216,18 +216,18 @@ export default function CreditListData() {
           <tbody>
             {hisfilter.length > 0 ? (
               hisfilter.map((row, index) => (
-                <tr key={row.id} className="border-b">    
-                  <td className="border-t border-l p-2">{row.name}</td>
-                  <td className="border-t border-l p-2 text-center">
+                <tr key={row.id} className="border-l border-b border-r border-black">    
+                  <td className="border-t border-l border-r border-black p-2">{row.name}</td>
+                  <td className="border-t border-l border-r border-black p-2 text-center">
                     {row.term1}
                   </td>
-                  <td className="border-t border-l p-2 text-center">
+                  <td className="border-t border-l border-r border-black p-2 text-center">
                     {row.term2}
                   </td>
-                  <td className="border-t border-l p-2 text-center">
+                  <td className="border-t border-l border-black p-2 text-center">
                     {new Date(row.a_date).toLocaleDateString("th-TH")}                  
                   </td>
-                  <td className="border-t border-l p-2 text-center">
+                  <td className="border-t border-l border-black p-2 text-center">
                     {row.approver}
                   </td>
 
@@ -259,11 +259,11 @@ export default function CreditListData() {
                 </tr>
               ))
             ) : (
-              <tr>
+              <tr className="border-l border-b border-r border-black">
                 <td
                   colSpan="7"
                   className="text-center py-5 text-gray-400 border-t">
-                  ไม่มีข้อมูลเครดิตสำหรับลูกค้ารายนี้
+                  No credit data found for this customer.
                 </td>
               </tr>
             )}
