@@ -51,7 +51,7 @@ export default function PreRegist(props) {
     if (cp == "D3B97D" || cp == "5CCC32") {
       const today = new Date();
 
-      if (today >= new Date("2026-05-23")) {
+      if (today >= new Date("2026-06-14")) {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }

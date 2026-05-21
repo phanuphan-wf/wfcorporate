@@ -62,7 +62,16 @@
         "show": "Home Living Expo",
         "showdate": "June 6 - 14, 2026",  
         "hall": "HALL 9-10",
-        "time": "10.30-20.30 hrs."
+        "time": "10.30-20.30 hrs.",
+        "title": "Registration Form",
+        "pre": "Preregistration Form",
+        "newsaccept": "I agree to receive news from World Fair",
+        "acceptterm": "I agree to the terms and conditions of",
+        "policy": "Privacy Policy",
+        "submit": "Submit",
+        "saving": "Saving data...",
+        "dup": "Sorry, you have already registered",
+        "unsuccess": "Failed to add data. Please try again"
     },
 
     

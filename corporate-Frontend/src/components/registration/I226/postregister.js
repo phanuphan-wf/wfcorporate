@@ -126,7 +126,7 @@ export default function Postregister(props) {
     <div className="lg:container">
       <div className="w-full flex justify-center my-3">
         <img
-          src={require("../../landingpage/B326/img/fur_logo.png")}
+          src={require("../../landingpage/I226/img/fur_logo.png")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto w-2/3 md:w-1/3"
@@ -138,11 +138,11 @@ export default function Postregister(props) {
         {tr("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#e90d8b] text-white px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
+        <div className="bg-[#0f6b39] text-white px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
           <MdLocationOn />
           {tr("hall")}
         </div>
-        <div className="bg-[#e90d8b] text-white px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
+        <div className="bg-[#0f6b39] text-white px-3 py-1 text-sm md:text-xl lg:text-2xl flex items-center gap-1 rounded-full">
           <MdAvTimer />
           {tr("time")}
         </div>
