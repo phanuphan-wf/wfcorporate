@@ -31,8 +31,10 @@
     },
     "landing2": {
         "show": "Furniture Fair",
-        "showdate": "March 28 - April 6, 2026",
-        "hall":  "HALL 103-104",
+        "showdate": "June 6 - 14, 2026",
+        "location": "IMPACT , Muang Thong Thani",
+        "sublocation": "IMPACT",
+        "hall": "HALL 9-10",
         "time": "10.30-20.30 hrs.",
         "regist": "Register get",
         "gift": "Gift",
@@ -48,25 +50,32 @@
             "Home decor items"
         ],
         "elec": [
-            "Massive Year-End Deals on Top Electrical & IT Products!",
-            "Big Savings, Big Choices — Huge Discounts + 0% Installments Across the Event!",
+            "Up to 70% Off + Extra 12.5% Off for The 1 Members",
+            "Get Cashback Up to 30,000 Baht*",
             "Featuring must-have home appliances: TVs, Refrigerators, Air Conditioners and more",
             "Washer-Dryers, Vacuum Cleaners, Air Purifiers, Water Heaters — All at Special Prices!",
             "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
         ]
     },
-    "regist2": {  
-        "lng": "เปลี่ยนภาษา",    
-        "show": "Furniture Show",
-        "showdate": "March 28 - April 6, 2026",       
-        "hall": "HALL 103-104",
-        "time": "10.30-20.30 hrs."
+    "regist2": {
+        "lng": "เปลี่ยนภาษา",
+        "show": "Home Living Expo",
+        "showdate": "June 6 - 14, 2026",
+        "hall": "HALL 9-10",
+        "time": "10.30-20.30 hrs.",
+        "title": "Registration Form",
+        "pre": "Preregistration Form",
+        "newsaccept": "I agree to receive news from World Fair",
+        "acceptterm": "I agree to the terms and conditions of",
+        "policy": "Privacy Policy",
+        "submit": "Submit",
+        "saving": "Saving data...",
+        "dup": "Sorry, you have already registered",
+        "unsuccess": "Failed to add data. Please try again"
     },
-
-    
     "regist": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair",
+        "show": "Home Living Expo",
         "showdate": "May 23 - 31, 2026",
         "hall": "HALL 103-104",
         "time": "10.30-20.30 hrs.",

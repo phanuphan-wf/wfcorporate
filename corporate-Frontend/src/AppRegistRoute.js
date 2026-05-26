@@ -1,6 +1,6 @@
-import RegistPage from "./components/registration/B226/registration";
-import PreregistPage from "./components/registration/B226/preregistration";
-import PostPage from "./components/registration/B226/postregister";
+import RegistPage from "./components/registration/I226/registration";
+import PreregistPage from "./components/registration/I226/preregistration";
+import PostPage from "./components/registration/I226/postregister";
 
 import RegistPage_dc from "./components/registration/B326/registration";
 import PreregistPage_dc from "./components/registration/B326/preregistration";
@@ -29,19 +29,19 @@ const AppRegistRoutes = [
     element: <Exqr />,
   },
   {
-    path: "b226/preregistration",
+    path: "i226/preregistration",
     element: <PreregistPage />,
   },
   {
-    path: "b226/preregistration/:cp",
+    path: "i226/preregistration/:cp",
     element: <PreregistPage />,
   },
   {
-    path: "b226/registration",
+    path: "i226/registration",
     element: <RegistPage />,
   },
   {
-    path: "b226/postregister/:res/:key",
+    path: "i226/postregister/:res/:key",
     element: <PostPage />,
   },
 
