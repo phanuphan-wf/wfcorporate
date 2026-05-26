@@ -8,7 +8,7 @@ export default function PreRegist(props) {
   const navigate = useNavigate();
   const [regDate, setRegDate] = useState([]);
 
-  const exId = "b326";
+  const exId = "i226";
 
   const { cp } = useParams();
 
@@ -47,6 +47,8 @@ export default function PreRegist(props) {
     }
   }, [eDate]);
 
+  /*กรณีเลือก campaign เพื่อ expire */
+  /*
   useEffect(() => {
     if (cp == "D3B97D" || cp == "5CCC32") {
       const today = new Date();
@@ -56,6 +58,7 @@ export default function PreRegist(props) {
       }
     }
   }, [cp]);
+  */
 
   return <Regist preregister={true} campaign={cp != undefined ? cp : ""} />;
 }

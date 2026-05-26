@@ -21,7 +21,7 @@ export default function Registration(props) {
   const { t, i18n } = useTranslation("landing", { keyPrefix: "regist2" });
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
-  const exId = "b326";
+  const exId = "i226";
   const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);

@@ -46,7 +46,8 @@ export default function App(props) {
 
   TagManager.initialize({ gtmId: "GTM-TNXV5QG" });
   TagManager.initialize({ gtmId: "GTM-KNX9WC4" });
-  TagManager.initialize({ gtmId: "GTM-WJDXZ9PC" });
+  TagManager.initialize({ gtmId: "GTM-WJDXZ9PC" }); //venuee
+  TagManager.initialize({ gtmId: "GTM-WF82RCBH" }); //BrandStrom
 
   return (
     <Routes>
