@@ -116,13 +116,12 @@ export default function Landingpage(props) {
               id="premium"
               className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
             />
-            
           ) : (
             <img
               src={require("./img/sponsor.png")}
               alt="premium bag"
               id="premium"
-              className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
+              className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4 max-w-[800px]"
             />
           )}
           {/* <img
@@ -133,18 +132,12 @@ export default function Landingpage(props) {
         </div>
       )}
 
-   
       <div
         ref={clickBottom}
         className="flex justify-center md:gap-4 md:items-center mx-5 lg:mx-0 mb-4 sm:mb-6 md:mb-10">
-          {/*--------แก้ hidden เป็น flex เพื่อเปิด register----*/}
-        <ClickRegist_PB cp={cp} exId={exId} />        
-        
-      </div>        
-
-
-
-    
+        {/*--------แก้ hidden เป็น flex เพื่อเปิด register----*/}
+        <ClickRegist_PB cp={cp} exId={exId} />
+      </div>
     </section>
   );
 }
