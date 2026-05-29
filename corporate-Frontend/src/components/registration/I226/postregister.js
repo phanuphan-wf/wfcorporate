@@ -14,7 +14,7 @@ import useCheckMobile from "../../hook/useCheckMobile";
 
 export default function Postregister(props) {
   const { t, i18n } = useTranslation("landing", { keyPrefix: "regist.post" });
-  const { t: tr } = useTranslation("landing", { keyPrefix: "regist" });
+  const { t: tr } = useTranslation("landing", { keyPrefix: "regist2" });
   const mobile = useCheckMobile();
   var CryptoJS = require("crypto-js");
 
