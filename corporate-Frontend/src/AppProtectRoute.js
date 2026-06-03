@@ -125,7 +125,7 @@ const AppProtectRoute = [
   },
   {
     path: "datawarehouse/addnewsign/:cid",
-    element: <AddNewSign />,
+    element: <AddNewSign />, 
   },
   {
     path: "datawarehouse/addnewproduct/:cid",
