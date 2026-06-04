@@ -91,17 +91,12 @@ export default function AddNewCus(props) {
     }
 
     try {
-      // const res = await Axios.post(url + "/addNewCus", customerName).then(
-      //   (r) => {
-      //     submitAddr(r.data);
-      //   }
-      // );
 
-      console.log("--- MOCK SUBMIT DATA ---");
-      console.log("Customer Name Payload:", customerName);
-      
-      const mockReturnedId = "CUS-" + Math.floor(Math.random() * 10000); // จำลอง ID ที่ได้จาก DB
-      submitAddr(mockReturnedId); // ส่ง ID สมมติต่อไปให้ฟังก์ชันถัดไป
+      const res = await Axios.post(url + "/addNewCus", customerName).then(
+        (r) => {
+          submitAddr(r.data);
+        }
+      );      
 
     } catch (err) {
       alert("Error! - cannot add new customer, please contact administrator");
@@ -117,10 +112,10 @@ export default function AddNewCus(props) {
   const submitAddr = async (id) => {
     try {
      
-      // const res = await Axios.post(url + "/addAddr/" + id, customerA);
+      const res = await Axios.post(url + "/addAddr/" + id, customerA);
 
-      console.log("Customer Address:", customerA);
-      console.log("Customer ID for Address:", id);
+      // console.log("Customer Address:", customerA);
+      // console.log("Customer ID for Address:", id);
       setTxtInfo({
         header: "Add customer data",
         body: (
@@ -164,9 +159,7 @@ export default function AddNewCus(props) {
           
           {/* Body */}
           <div className="my-6 text-center text-lg text-black">
-            Would you like to 
-            <span className="text-lg text-red-500 "> add </span>
-            new Zone.
+             Would you like to Customer Sign Person now?
           </div>
           
           {/* Footer Buttons */}
@@ -200,7 +193,7 @@ export default function AddNewCus(props) {
   const NextChoice = (choice) => {
     setModalNextOpen(false);
     if (choice && cusID) {
-      nav("/solution/preexhibition/addnewsign/" + cusID);
+      nav("/solution/datawarehouse/addnewsign/" + cusID);
     }
   };
 
