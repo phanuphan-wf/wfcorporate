@@ -46,8 +46,8 @@ export default function Print_all({ preview }) {
       // คำนวณ balance เฉพาะแถวแรกของบริษัท
       const balance = idx === firstIndex ? balanceMap.get(company) - row.tempAmount : 0;
       
-      // ✅ เพิ่ม flag พิเศษเพื่อบอกว่าบริษัทนี้ "มียอดค้าง" หรือไม่ (ใช้สำหรับ Filter)
-      const isTotalDebt = (balanceMap.get(company) - Number(row?.amount ?? 0)) > 0;
+      // ✅ เพิ่ม flag พิเศษเพื่อบอกว่าบริษัทนี้ "มียอดค้าง" หรือไม่ (ใช้สำหรับ Filter) - รวมค่าบวกและลบ
+      const isTotalDebt = (balanceMap.get(company) - Number(row?.amount ?? 0)) !== 0;
 
       return { 
         ...row, 

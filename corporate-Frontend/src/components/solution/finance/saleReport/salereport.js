@@ -69,7 +69,7 @@ export default function SaleReport() {
 
  return (
     <section className="2xl:container pt-1 pb-5 px-5">
-      <h1 className="text-xl font-semibold mb-2">Sale Report</h1>         
+      <h1 className="text-xl font-semibold mb-2">Sales Report</h1>         
 
       <dataContext.Provider 
            value={{ 
