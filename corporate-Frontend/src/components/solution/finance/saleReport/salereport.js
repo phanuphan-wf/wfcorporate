@@ -9,13 +9,14 @@ import PrintReport from "./PrintReport";
 
 import SumSale from "./SaleSum";
 import SaleSum from "./SaleSum";
+import Sales_Data from "./Sales_Data";
 
-
+import { useLocation } from "react-router-dom";
 import { IoChevronBackOutline } from "react-icons/io5";
 
 export const dataContext = createContext();
 
-export default function SaleReport() { 
+export default function SaleReport() {   
   
   const initFilter = {
     exID: "",
@@ -58,6 +59,7 @@ export default function SaleReport() {
   const [sales, setSales] = useState(salesData);
 
   
+  
   // useEffect(() => {     
   //   console.log(sales); 
   // }, [sales]);
@@ -65,7 +67,7 @@ export default function SaleReport() {
 
   const pdfRef = useRef(null);
 
-
+ 
 
  return (
     <section className="2xl:container pt-1 pb-5 px-5">
@@ -75,7 +77,7 @@ export default function SaleReport() {
            value={{ 
               filterC: [filter, setFilter],
               eventC: [event, setEvent],
-              salesC: [sales, setSales], 
+              salesC: [sales, setSales],           
            }}      
       >        
        
@@ -106,8 +108,8 @@ export default function SaleReport() {
                 filter.Print_all ? <Print_all /> : <Without_Zones />
               )}  
 
-              {sales.salesID && <SaleSum />}
-
+              {/* {sales.salesID && <SaleSum />} */}
+              {sales.salesID && <Sales_Data/>}  
         
               
           </div>
