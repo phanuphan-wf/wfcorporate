@@ -125,12 +125,20 @@ export default function Sales_Data() {
           className="mt-5 p-4 bg-white border border-gray-200 rounded-md shadow-sm"
         >
 
-          <div className="relative flex flex-wrap items-center mb-3 gap-2 border-b border-gray-100 pb-2">
-            <h3 className="flex-1 text-left font-bold text-base text-zinc-800">
+          <div className="pdf-table-header" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', alignItems: 'center', width: '100%', borderBottom: '1px solid #f3f4f6', paddingBottom: '8px', marginBottom: '12px' }}>
+      
+            <h3 style={{ width: '25%', textAlign: 'left', fontWeight: 'bold'}}>
               ชื่อฝ่ายขาย : {sales.salesName}
             </h3>
-            <h3 className="flex-1 text-right font-bold text-base text-zinc-800">
+            
+        
+            <h3 style={{ width: '50%', textAlign: 'center', fontWeight: 'bold'}}>
               โซนแสดงสินค้า : {zoneItem.zone}
+            </h3>
+
+           
+            <h3 style={{ width: '25%', textAlign: 'right', fontWeight: 'bold'}}>
+              หน้า : {zoneIndex + 1}
             </h3>
           </div>
 
@@ -191,7 +199,8 @@ export default function Sales_Data() {
         </div>
       )}
 
-      <div>
+      {/* เพิ่มคลาส chart-page-block และ no-break เอาไว้ดักจับตอนพิมพ์ */}
+      <div className="mt-5 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
         <Sale_Chart
           data={groupZone}
           boothCount={groupZone.reduce((sum, z) => sum + z.boothCount, 0)}
