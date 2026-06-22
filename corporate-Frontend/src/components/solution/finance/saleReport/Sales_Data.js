@@ -94,6 +94,7 @@ export default function Sales_Data() {
 
       // บวกยอดสะสมของร้านค้านั้นๆ
       acc[zone].customerMap[customerName].booth += boothValue;
+      acc[zone].customerMap[customerName].volume += volumeValue;
 
 
       return acc;
@@ -137,7 +138,7 @@ export default function Sales_Data() {
   };
 
   useEffect(() => {
-    if (groupZone !== "") {
+    if (groupZone && groupZone.length > 0) {
       getSum();
     }
     // console.log(totalBooth);

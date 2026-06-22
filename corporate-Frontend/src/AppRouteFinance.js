@@ -5,7 +5,6 @@ import Cheque from "./components/solution/finance/chequeReport/report";
 import Receiving from "./components/solution/finance/receivingReport/report";
 import CollectionReport from "./components/solution/finance/collectionReport/report";
 import SaleReport from "./components/solution/finance/saleReport/salereport";
-import Sales_Data from "./components/solution/finance/saleReport/Sales_Data";
 
 const AppRouteFinance = [
   {
@@ -61,15 +60,6 @@ const AppRouteFinance = [
       { dept: 2, acc: 1 },
     ],
   },
-  {
-    path: "finance/salereport/saledata",
-    element: <Sales_Data />,
-    show: [
-      { dept: 1, acc: 1 },
-      { dept: 6, acc: 1 },
-      { dept: 2, acc: 1 },
-    ],
-  }
 ];
 
 export default AppRouteFinance;
