@@ -83,19 +83,18 @@ export default function Sales_Data() {
       acc[zone].totalAmount += volumeValue;
 
       // 3. จัดกลุ่มร้านค้าภายในโซน (เช็คซ้ำอีกชั้นเพื่อความปลอดภัยสูงสุด)
-      if (acc[zone] && acc[zone].customerMap) {
-        if (!acc[zone].customerMap[customerName]) {
-          acc[zone].customerMap[customerName] = {
-            customer: customerName,
-            booth: 0,
-            volume: 0
-          };
-        }
 
-        // บวกยอดสะสมของร้านค้านั้นๆ
-        acc[zone].customerMap[customerName].booth += boothValue;
-        acc[zone].customerMap[customerName].volume += volumeValue;
+      if (!acc[zone].customerMap[customerName]) {
+        acc[zone].customerMap[customerName] = {
+          customer: customerName,
+          booth: 0,
+          volume: 0
+        };
       }
+
+      // บวกยอดสะสมของร้านค้านั้นๆ
+      acc[zone].customerMap[customerName].booth += boothValue;
+
 
       return acc;
     }, {});
@@ -116,6 +115,35 @@ export default function Sales_Data() {
   //   console.log(groupZone);
   // }, [groupZone]);
 
+  const [totalBooth, setTotalBooth] = useState(0);
+  const [totalVolume, setTotalVolume] = useState(0);
+
+
+  const getSum = async () => {
+
+    if (!filter.exID) return;
+
+    try {
+
+      const res = await Axios.get(url + "/getSum/" + filter.exID);
+
+      if (res.status === 200) {
+        setTotalBooth(Number(res.data.booth) || 0);
+        setTotalVolume(Number(res.data.volume) || 0);
+      }
+    } catch (err) {
+      console.error("Fetch Sum Error:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (groupZone !== "") {
+      getSum();
+    }
+    // console.log(totalBooth);
+    // console.log(totalVolume);
+  }, [groupZone]);
+
   return (
     <section className="Sale-report">
       {/* วนลูปสร้างกลุ่มข้อมูลแยกตามโซน (1 โซน = 1 บล็อกตาราง) */}
@@ -126,18 +154,18 @@ export default function Sales_Data() {
         >
 
           <div className="pdf-table-header" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', alignItems: 'center', width: '100%', borderBottom: '1px solid #f3f4f6', paddingBottom: '8px', marginBottom: '12px' }}>
-      
-            <h3 style={{ width: '25%', textAlign: 'left', fontWeight: 'bold'}}>
+
+            <h3 style={{ width: '25%', textAlign: 'left', fontWeight: 'bold' }}>
               ชื่อฝ่ายขาย : {sales.salesName}
             </h3>
-            
-        
-            <h3 style={{ width: '50%', textAlign: 'center', fontWeight: 'bold'}}>
+
+
+            <h3 style={{ width: '50%', textAlign: 'center', fontWeight: 'bold' }}>
               โซนแสดงสินค้า : {zoneItem.zone}
             </h3>
 
-           
-            <h3 style={{ width: '25%', textAlign: 'right', fontWeight: 'bold'}}>
+
+            <h3 style={{ width: '25%', textAlign: 'right', fontWeight: 'bold' }}>
               หน้า : {zoneIndex + 1}
             </h3>
           </div>
@@ -203,8 +231,8 @@ export default function Sales_Data() {
       <div className="mt-5 p-4 bg-white border border-gray-200 rounded-md shadow-sm">
         <Sale_Chart
           data={groupZone}
-          boothCount={groupZone.reduce((sum, z) => sum + z.boothCount, 0)}
-          totalAmount={groupZone.reduce((sum, z) => sum + z.totalAmount, 0)}
+          boothCount={totalBooth}
+          totalAmount={totalVolume}
         />
       </div>
 
