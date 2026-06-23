@@ -42,7 +42,7 @@ export default function PreRegist(props) {
 
       if (today >= new Date(sDate) && today <= new Date(eDate)) {
       } else {
-        navigate("/" + exId + "/postregister/expire/xfmb");
+        //navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }
   }, [eDate]);
@@ -50,12 +50,13 @@ export default function PreRegist(props) {
   useEffect(() => {
     if (cp == "D3B97D" || cp == "5CCC32") {
       const today = new Date();
-
+      
       if (today >= new Date("2026-06-26")) {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }
   }, [cp]);
+  
 
   return <Regist preregister={true} campaign={cp != undefined ? cp : ""} />;
 }

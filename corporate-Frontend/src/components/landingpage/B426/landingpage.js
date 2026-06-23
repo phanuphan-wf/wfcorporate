@@ -109,7 +109,7 @@ export default function Landingpage(props) {
       {/*----------------- ส่วนของ sponsor -----------------*/}
       {bannerLoaded && (
         <div className="premium my-6 mb-10 mt-10">
-          {new Date() < new Date("2025-08-10T00:00:00Z") ? (
+          {new Date() < new Date("2026-08-10T00:00:00Z") ? (
             <img
               src={require("./img/sponsor.jpg")}
               alt="premium bag"
