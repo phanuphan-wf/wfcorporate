@@ -126,21 +126,37 @@ export default function ContractInfo() {
       setContract({ ...contract, costtext: "", pay1: "", pay2: "" });
     }
     if (contract.cost && payAuto) {
-      setContract((prev) => ({
-        ...prev,
-        pay1: Number(contract.cost) - Number(contract.deposit) / 2,
-        pay2: Number(contract.cost) - Number(contract.deposit) / 2,
-      }));
+      setContract((prev) => {
+ 
+        const costNum = Number(prev.cost) || 0;
+        const depositNum = Number(prev.deposit) || 0;        
+     
+        const calculatedPay = (costNum - depositNum) / 2;
+
+        return {
+          ...prev,
+          pay1: Number(calculatedPay),
+          pay2: Number(calculatedPay),
+        };
+      });
     }
   }, [contract.cost]);
+ 
 
   useEffect(() => {
-    if (contract.cost && payAuto) {
-      setContract((prev) => ({
-        ...prev,
-        pay1: Number(contract.cost) - Number(contract.deposit) / 2,
-        pay2: Number(contract.cost) - Number(contract.deposit) / 2,
-      }));
+    if (contract.deposit && payAuto) {
+      setContract((prev) => {
+    
+        const costNum = Number(prev.cost) || 0;
+        const depositNum = Number(prev.deposit) || 0;               
+        const calculatedPay = (costNum - depositNum) / 2;
+
+        return {
+          ...prev,
+          pay1: Number(calculatedPay),
+          pay2: Number(calculatedPay),
+        };
+      });
     }
   }, [contract.deposit]);
 
