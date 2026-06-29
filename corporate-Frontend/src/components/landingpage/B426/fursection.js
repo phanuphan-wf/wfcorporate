@@ -28,11 +28,11 @@ export default function FurSection() {
       </div>
 
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#ea098b] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#eb008b] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdLocationOn />
           {t("hall")}
         </div>
-        <div className="bg-[#ea098b] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#eb008b] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdAvTimer />
           {t("time")}
         </div>

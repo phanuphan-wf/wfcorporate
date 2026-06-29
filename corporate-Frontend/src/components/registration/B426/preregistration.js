@@ -39,10 +39,9 @@ export default function PreRegist(props) {
   useEffect(() => {
     if (sDate !== "" && eDate !== "") {
       const today = new Date();
-
-      if (today >= new Date(sDate) && today <= new Date(eDate)) {
+      if (today >= new Date(sDate) && today <= new Date(eDate)) {        
       } else {
-        //navigate("/" + exId + "/postregister/expire/xfmb");
+        navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }
   }, [eDate]);
@@ -51,7 +50,7 @@ export default function PreRegist(props) {
     if (cp == "D3B97D" || cp == "5CCC32") {
       const today = new Date();
       
-      if (today >= new Date("2026-06-26")) {
+      if (today >= new Date("2026-07-26")) {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }

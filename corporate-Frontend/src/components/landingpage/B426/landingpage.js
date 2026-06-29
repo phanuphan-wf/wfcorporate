@@ -107,7 +107,7 @@ export default function Landingpage(props) {
         </>
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
-      {bannerLoaded && (
+      {/* {bannerLoaded && (
         <div className="premium my-6 mb-10 mt-10">
           {new Date() < new Date("2026-08-10T00:00:00Z") ? (
             <img
@@ -131,7 +131,7 @@ export default function Landingpage(props) {
             className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
           />
         </div>
-      )}
+      )} */}
 
    
       <div

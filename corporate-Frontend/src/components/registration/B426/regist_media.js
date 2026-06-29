@@ -38,7 +38,7 @@ export default function Media(props) {
       id: "facebook",
     },
     {
-      col_th: "โฆษณาบนเวปไซต์/ค้นหา Google",
+      col_th: "โฆษณาบนเว็บไซต์/ค้นหา Google",
       col_en: "Google Search/Website Ads",
       id: "google",
     },

@@ -358,11 +358,11 @@ export default function Registration(props) {
         {tr("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#e90d8b] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#eb008b] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdLocationOn />
           {tr("hall")}
         </div>
-        <div className="bg-[#e90d8b] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#eb008b] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdAvTimer />
           {tr("time")}
         </div>

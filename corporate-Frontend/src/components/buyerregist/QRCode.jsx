@@ -24,9 +24,18 @@ export default function Qrcode() {
       <h1 className="text-2xl font-semibold mb-3">{t("header")}</h1>
       {/* โปรดนำ QR Code แสดงแก่เจ้าหน้าที่เพื่อรับของสมนาคุณ */}
       <p className="mb-6">{t("details")}</p>
-      <div className="p-4 border rounded-xl shadow w-fit mx-auto">
-        <QRCodeCanvas value={qr} size={220} level={"H"} />
-        <span>{qr}</span>
+  
+      <div className="p-4 border border-gray-200 rounded-xl shadow w-fit mx-auto bg-white text-black dark:bg-white dark:text-black">
+        <QRCodeCanvas 
+          value={qr} 
+          size={220} 
+          level={"H"} 
+          bgColor={"#FFFFFF"}
+          fgColor={"#000000"}
+        />     
+        <span className="block mt-2 font-mono text-sm text-gray-800 dark:text-gray-800">
+          {qr}
+        </span>
       </div>
       {/* condition.map */}
       {/* QR Code นี้ สามารถใช้ซ้ำได้ตลอดการจัดแสดงงาน โดยท่านสามารถบันทึกภาพหน้าจอนี้ไว้ได้*/}

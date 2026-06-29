@@ -10,13 +10,13 @@ export default function ClickRegist(props) {
   return (
     <div
       className={`flex justify-center items-center gap-2 sm:gap-8 md:gap-2 rounded-full px-3 py-2 w-fit max-w-[800px]
-                  relative z-20 bg-gradient-to-t from-[#8f0054] to-[#ea088b] 
+                  relative z-20 bg-gradient-to-t from-[#eb008b] to-[#eb008b] 
                   hover:from-pink-600 hover:to-pink-400 
                   border-[3px] border-[#ea088b]                
       `}
     >
 
-      <div className="text-3xl md:text-5xl lg:text-6xl bg-[#fff100] rounded-full text-[#ea088b] flex justify-center items-center h-fit w-fit p-1">
+      <div className="text-3xl md:text-5xl lg:text-6xl bg-[#612366] rounded-full text-white flex justify-center items-center h-fit w-fit p-1">
         <IoIosArrowForward />
       </div>
       <div className="text-center text-lg md:text-start md:text-3xl lg:text-4xl text-white">
