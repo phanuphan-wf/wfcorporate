@@ -39,7 +39,7 @@ export default function PreRegist(props) {
   useEffect(() => {
     if (sDate !== "" && eDate !== "") {
       const today = new Date();
-      if (today >= new Date(sDate) && today <= new Date(eDate)) {        
+      if (today >= new Date(sDate) && today <= new Date(eDate)) {
       } else {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }
@@ -47,15 +47,14 @@ export default function PreRegist(props) {
   }, [eDate]);
 
   useEffect(() => {
-    if (cp == "D3B97D" || cp == "5CCC32") {
+    if (cp == "7B2378" || cp == "03772B" || cp == "A878CF") {
       const today = new Date();
-      
-      if (today >= new Date("2026-07-26")) {
+
+      if (today >= new Date("2026-07-18")) {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }
   }, [cp]);
-  
 
   return <Regist preregister={true} campaign={cp != undefined ? cp : ""} />;
 }

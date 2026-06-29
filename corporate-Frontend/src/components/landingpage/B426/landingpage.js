@@ -77,7 +77,7 @@ export default function Landingpage(props) {
           src={require("./img/hero_banner.jpg")}
           alt="landing hero"
           id="hero_banner"
-          className="mx-auto"
+          className="mx-auto max-w-[1040px]"
           onLoad={() => {
             setBannerH(bannerRef.current.clientHeight);
             setBannerLoaded(true);
@@ -133,18 +133,12 @@ export default function Landingpage(props) {
         </div>
       )} */}
 
-   
       <div
         ref={clickBottom}
         className="flex justify-center md:gap-4 md:items-center mx-5 lg:mx-0 mb-4 sm:mb-6 md:mb-10">
-          {/*--------แก้ hidden เป็น flex เพื่อเปิด register----*/}
-        <ClickRegist_PB cp={cp} exId={exId} />        
-        
-      </div>        
-
-
-
-    
+        {/*--------แก้ hidden เป็น flex เพื่อเปิด register----*/}
+        <ClickRegist_PB cp={cp} exId={exId} />
+      </div>
     </section>
   );
 }
