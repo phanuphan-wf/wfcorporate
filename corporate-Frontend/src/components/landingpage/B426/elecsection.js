@@ -69,7 +69,7 @@ export default function ElecSection() {
       <div className="xl:container w-full bg-[#4A1E6B] flex items-center justify-evenly py-2  mb-4">
         <div className="w-[50%] sm:w-1/3 lg:w-1/5 mb-6">
           <img
-            src={require("./img/elec_logo_sm.jpg")}
+            src={require("./img/elec_logo_sm.png")}
             alt="elec logo white"
             id="elec_banner"
             className="mx-auto"

@@ -77,7 +77,7 @@ export default function Landingpage(props) {
           src={require("./img/hero_banner.jpg")}
           alt="landing hero"
           id="hero_banner"
-          className="mx-auto max-w-[1040px]"
+          className="mx-auto w-full h-auto max-w-[1040px] object-contain"
           onLoad={() => {
             setBannerH(bannerRef.current.clientHeight);
             setBannerLoaded(true);
