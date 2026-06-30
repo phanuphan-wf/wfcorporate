@@ -118,10 +118,13 @@ export default function EditCustomer(props) {
     >
       <section id="edit-customer">
         <h1 className="text-xl">Edit Customer Data</h1>
-        <div className="flex max-md:flex-wrap gap-2 my-4">
-          <label htmlFor="customerName">Customer Name :</label>
-          <span>{customerName.name}</span>
-        </div>
+          <div className="flex max-md:flex-wrap gap-2 my-4">
+            <label htmlFor="customerName">Customer Name :</label>
+            <span>{customerName.name}</span> 
+              <button className="bg-yellow-500 px-2">
+                  edit
+              </button>             
+          </div>
         <AddrList />
         <div>
           <button
