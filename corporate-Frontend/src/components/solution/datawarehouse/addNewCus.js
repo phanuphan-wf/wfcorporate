@@ -43,13 +43,13 @@ export default function AddNewCus(props) {
   };
   const [customerName, setCustomerName] = useState(initCustomerName);
 
-  useEffect(() => {
-    console.log(customerName);
-  }, [customerName]);
+  // useEffect(() => {
+  //   console.log(customerName);
+  // }, [customerName]);
 
-  useEffect(() => {
-    console.log(customerA);
-  }, [customerA]);
+  // useEffect(() => {
+  //   console.log(customerA);
+  // }, [customerA]);
 
   const clearData = () => {
     document.getElementById("province").value = "0";
@@ -91,11 +91,13 @@ export default function AddNewCus(props) {
     }
 
     try {
+
       const res = await Axios.post(url + "/addNewCus", customerName).then(
         (r) => {
           submitAddr(r.data);
         }
-      );
+      );      
+
     } catch (err) {
       alert("Error! - cannot add new customer, please contact administrator");
     }
@@ -104,8 +106,16 @@ export default function AddNewCus(props) {
   const [added, setAdded] = useState(false);
   const [cusID, setCusID] = useState("");
 
+  const [nextstep, setNextstep] = useState(false);
+  const [modalNextOpen, setModalNextOpen] = useState(false);
+
   const submitAddr = async (id) => {
     try {
+     
+      const res = await Axios.post(url + "/addAddr/" + id, customerA);
+
+      // console.log("Customer Address:", customerA);
+      // console.log("Customer ID for Address:", id);
       setTxtInfo({
         header: "Add customer data",
         body: (
@@ -115,10 +125,11 @@ export default function AddNewCus(props) {
           </div>
         ),
       });
-      const res = await Axios.post(url + "/addAddr/" + id, customerA);
+
       clearData();
       setModalInfo(true);
       setAdded(true);
+      setNextstep(true);
       setCusID(id);
     } catch (err) {
       alert(
@@ -131,11 +142,60 @@ export default function AddNewCus(props) {
   const initTxtInfo = { header: "", body: "" };
   const [txtInfo, setTxtInfo] = useState(initTxtInfo);
 
-  useEffect(() => {
-    if (added && !modalInfo) {
-      nav("/solution/preexhibition/addnewsign/" + cusID);
+  // useEffect(() => {
+  //   if (added && !modalInfo) {
+  //     nav("/solution/preexhibition/addnewsign/" + cusID);
+  //   }
+  // }, [modalInfo]);
+
+  function ModalNextStep({ isOpen, onChoice }) {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="bg-white rounded-lg p-6 max-w-lg w-full shadow-xl animate-fade-in">
+          {/* Header */}
+          <h2 className="text-lg border-b pb-2">Next Step</h2>
+          
+          {/* Body */}
+          <div className="my-6 text-center text-lg text-black">
+             Would you like to Customer Sign Person now?
+          </div>
+          
+          {/* Footer Buttons */}
+          <div className="flex justify-center gap-4 mt-4">
+            <button
+              className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded shadow transition-colors"
+              onClick={() => onChoice(true)}
+            >
+              Yes
+            </button>
+            <button
+              className="bg-gray-400 hover:bg-gray-500 text-white font-medium py-2 px-6 rounded shadow transition-colors"
+              onClick={() => onChoice(false)}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+   
+  useEffect(() => {  
+    if (nextstep && !modalInfo) {
+      setNextstep(false);      
+      setModalNextOpen(true);  
     }
-  }, [modalInfo]);
+  }, [modalInfo, nextstep]);
+
+  const NextChoice = (choice) => {
+    setModalNextOpen(false);
+    if (choice && cusID) {
+      nav("/solution/datawarehouse/addnewsign/" + cusID);
+    }
+  };
 
   return (
     <dataContext.Provider
@@ -175,6 +235,7 @@ export default function AddNewCus(props) {
           onHide={() => setModalInfo(false)}
           txtInfo={txtInfo}
         />
+        <ModalNextStep isOpen={modalNextOpen} onChoice={NextChoice} />
       </section>
     </dataContext.Provider>
   );

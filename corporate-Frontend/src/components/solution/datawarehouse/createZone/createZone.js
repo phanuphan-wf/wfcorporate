@@ -5,7 +5,7 @@ import useHeader from "../../../hook/useHeader";
 import SelectExid from "./selectExid";
 import CreateData from "./createData";
 
-// export const BoothContext = createContext();
+export const dataContext = createContext();
 
 export default function CreateZone(props) {
 //   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cb;
@@ -18,36 +18,41 @@ export default function CreateZone(props) {
   const [exhibition, setExhibition] = useState([]);
   const [past, setPast] = useState(false);
 
-  const initBooth = {
+  const initZone = {
     exid: "0",
-    action: "",
-    row: "",
-    rowto: "",
-    num: "",
-    numto: "",
+    zoneName: "",
+    area: "",
+    price: "",
+    boothQty: "",
+    deposit: "",
+    remark: "",
   };
-  const [booth, setBooth] = useState(initBooth);
+  const [zoneData, setZoneData] = useState(initZone);
 
-    const Clear = () => {
-      setBooth(initBooth);
-    };
+  const ClearZone = () => {
+      setZoneData(initZone);
+  };
   
 
-  return (
-    
+  return (    
+
+    <dataContext.Provider 
+        value={{           
+            zoneDataC : [zoneData, setZoneData],
+
+        }}
+    >
+
       <section id="createExhibition" className="xl:w-4/5 2xl:w-3/4">
-        <div className="text-xl">Create Zone</div>
-
+        <div className="text-xl">Create Zone</div>       
+       
         <SelectExid />
-
-        <div className="mt-8">
-          <CreateData />
-        </div>
+        <CreateData />      
 
         <div className="flex justify-end gap-2 mt-2">
           <button 
             className="btn-gray px-4"
-            onClick={Clear}
+            onClick={ClearZone}
           >
             Clear
           </button>
@@ -55,13 +60,14 @@ export default function CreateZone(props) {
             className="btn-green px-4" 
             // onClick={submitClick}
           >
-            Submit
+            Add
           </button>
         </div>
         {/* <div className="mt-8">
           <ListBooth />
         </div> */}
-      </section>
-     
+      </section>   
+
+    </dataContext.Provider>     
   );
 }

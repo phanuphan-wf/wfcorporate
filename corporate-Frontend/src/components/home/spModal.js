@@ -14,14 +14,14 @@ export default function SplaseModal(props) {
         <div className="hidden md:block">
           <img
             className="w-full"
-            src={require("./simg/banner-Queen-1024.jpg")}
+            src={require("./simg/banner-Princess-1024.jpg")}
             alt="queen-banner"
           />
         </div>
         <div className="md:hidden">
           <img
             className="w-full"
-            src={require("./simg/banner-Queen-540.jpg")}
+            src={require("./simg/banner-Princess-540.jpg")}
             alt="queen-banner"
           />
         </div>

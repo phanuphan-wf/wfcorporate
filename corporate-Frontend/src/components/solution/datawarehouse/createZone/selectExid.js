@@ -1,6 +1,9 @@
 import { useState, useEffect, useContext } from "react";
+import { dataContext } from "./createZone";
 
 export default function SelectExid(){
+    const { zoneDataC } = useContext(dataContext);
+    const [zoneData, setZoneData] = zoneDataC;
     
     return(
          <div className="my-4 flex max-md:flex-col gap-2 md:items-center">
@@ -10,10 +13,10 @@ export default function SelectExid(){
           <select
             name="exname"
             className="cmb max-md:w-full"
-            // onChange={(e) => setBooth({ ...booth, exid: e.target.value })}
-            // value={booth.exid}
+            onChange={(e) => setZoneData({ ...zoneData, exid: e.target.value })}
+            value={zoneData.exid}
             >
-            <option value={0}>please select exhibition name</option>
+            <option value="0">please select exhibition name</option>
             {/* {exhibition.map((item) => (
               <option key={item.code} value={item.code}>
                 {item.name + " (" + item.code + ")"}

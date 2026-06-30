@@ -9,7 +9,7 @@ import Trust from "./trust";
 import SplaseModal from "./spModal";
 
 export default function Home() {
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setIsShow] = useState(true);
 
   const closeModal = () => {
     setIsShow(false);

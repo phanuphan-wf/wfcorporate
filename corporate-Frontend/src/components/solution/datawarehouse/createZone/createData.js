@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from "react";
-
+import { dataContext } from "./createZone";
 
 export default function CreateData() {   
-  
+  const { zoneDataC } = useContext(dataContext);
+  const [zoneData, setZoneData] = zoneDataC;
+
   return (
-    <section className="create-box">
+    <section className="create-box mt-5">
       <div className="border rounded-lg relative">
         <div className="absolute z-10 -top-[15px] left-4">
           <h3 className="bg-white px-3 py-1">Create Zone</h3>
@@ -17,6 +19,8 @@ export default function CreateData() {
               name="rowsetto"
               type="text"
               className="accent-red-500"
+              value={zoneData.zoneName}
+              onChange={(e) => setZoneData({ ...zoneData, zoneName: e.target.value })}
             />           
           </div>           
         </div>
@@ -28,8 +32,10 @@ export default function CreateData() {
               name="area"
               type="text"
               className="accent-red-500"
+              value={zoneData.area}
+              onChange={(e) => setZoneData({ ...zoneData, area: e.target.value })}
             />    
-            <span className="text-sm text-black">Sa.m</span>
+            <span className="text-sm text-black">S.m</span>
           </div>           
         </div>
 
@@ -40,6 +46,8 @@ export default function CreateData() {
               name="price"
               type="text"
               className="accent-red-500"
+              value={zoneData.price}
+              onChange={(e) => setZoneData({ ...zoneData, price: e.target.value })}
             />    
             <span className="text-sm text-black">Baht</span>
           </div>           
@@ -52,6 +60,8 @@ export default function CreateData() {
               name="boothQty"
               type="text"
               className="accent-red-500"
+              value={zoneData.boothQty}
+              onChange={(e) => setZoneData({ ...zoneData, boothQty: e.target.value })}
             />    
             <span className="text-sm text-black">Bahts</span>
           </div>           
@@ -64,6 +74,8 @@ export default function CreateData() {
               name="deposit"
               type="text"
               className="accent-red-500"
+              value={zoneData.deposit}
+              onChange={(e) => setZoneData({ ...zoneData, deposit: e.target.value })}
             />    
             <span className="text-sm text-black">Baht</span>
           </div>           
@@ -78,6 +90,8 @@ export default function CreateData() {
               name="remark"
               type="text"
               className="border border-[#b3b3b3] w-96 rounded-md px-2 py-1 focus:outline-none focus:shadow-[0_0_0_0.2rem_white,0_0_5px_0.25rem_red] focus:border-white"
+              value={zoneData.remark}
+              onChange={(e) => setZoneData({ ...zoneData, remark: e.target.value })}
             />   
             
           </div>           

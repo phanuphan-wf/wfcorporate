@@ -7,9 +7,10 @@ export default function SelectExhibition() {
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_srp;
   
 
-  const { filterC, eventC } = useContext(dataContext);
+  const { filterC, eventC} = useContext(dataContext);
   const [filter, setFilter] = filterC;
   const [event, setEvent] = eventC;
+
 
   const [exhibition, setExhibtion] = useState([]);
   const [past, setPast] = useState(false);
@@ -100,6 +101,7 @@ export default function SelectExhibition() {
     }));
   }, [exdata, setFilter, setEvent]);
 
+
   return (
     <section id="select-exhibition">
       <div className="border border-zinc-300 rounded-md relative">
@@ -146,6 +148,7 @@ export default function SelectExhibition() {
                 // Reset ค่าเมื่อมีการเปลี่ยนโหมด
                 setExid("");
                 setExdata({ exID: "", venue: "", during: "" });
+            
               }}
             />
             <label htmlFor="eFinish" className="ml-2 cursor-pointer">

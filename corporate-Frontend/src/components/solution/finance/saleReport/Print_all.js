@@ -2,11 +2,14 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import { dataContext } from "./salereport";
 import All_Chart from "./All_Chart";
 
-
 import Axios from "axios";
+
+import {useNavigate} from "react-router-dom";
 
 export default function Print_all() {
 
+    const navigate = useNavigate();
+    
     const {filterC, salesC} = useContext(dataContext);
     const [filter] = filterC;
     const [sales, setSales] = salesC; 
@@ -167,11 +170,12 @@ export default function Print_all() {
                                         <td className="border border-zinc-400 px-2 py-1 text-center">{index + 1}</td>
                                         <td
                                             className="border border-zinc-400 px-2 py-1 font-medium cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors duration-200 underline-offset-4 hover:underline"
-                                            onClick={() => {                                               
-                                                setSales(prev => ({
-                                                ...prev,
-                                                salesName: sale.salesName?.trim() || ""
-                                                }));                                              
+                                            onClick={() => {
+                                                const salesName = sale.salesName?.trim() || "";                                             
+                                                   setSales(prev => ({
+                                                    ...prev,
+                                                    salesName: salesName
+                                                }));
                                             }}
                                             
                                         >{sale.salesName}</td>

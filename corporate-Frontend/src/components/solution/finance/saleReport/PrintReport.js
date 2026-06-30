@@ -210,13 +210,23 @@ export default function PrintReport({ pdfRef}) {
           margin-bottom: 20px;
         }
 
-        /* ✅ โซนใหม่ขึ้นหน้าใหม่ */
+     
         .print-zone-block:not(:first-child) {
             page-break-before: always;
             break-before: page;
             padding-top: 140px;
         }
 
+        /* =========================
+          (ชื่อฝ่ายขาย / โซน / เลขหน้า)
+        ========================== */
+      
+        .pdf-table-header h3 {         
+          font-size: 12px;
+          font-weight: bold;       
+          margin: 0 ;
+        }      
+    
         /* =========================
            CHART
         ========================== */
@@ -278,19 +288,32 @@ export default function PrintReport({ pdfRef}) {
             top: 0;
             left: 0;
             right: 0;
-
             background: #fff;
             z-index: 9999;
-
             padding: 10px 15px 5px 15px;
-
             border-bottom: none;
           }
 
           .print-wrapper {
-              margin-top: 140px;
+             margin-top: 140px; /* หน้าแรกสุดจะใช้ระยะห่างตัวนี้ปกติ */
+          }
+
+         
+          .pdf-table-header:not(:first-of-type) {
+            margin-top: 160px !important; 
+            padding-top: 10px !important;
+          }
+
+     
+          .print-zone-block:not(:first-child), 
+          .Sale-report > div:not(:first-child) {
+            page-break-before: always !important;
+            break-before: page !important;
+            margin-top: 160px !important;
+            padding-top: 10px !important;
           }
         }
+        
 
       </style>
     </head>

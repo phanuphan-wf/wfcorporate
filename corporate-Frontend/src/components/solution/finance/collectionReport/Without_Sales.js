@@ -41,7 +41,7 @@ export default function Without_Sales({preview}) {
       const company = row?.name ?? "ไม่ระบุบริษัท";
       const firstIndex = seen.get(company);
       const balance = idx === firstIndex ? balanceMap.get(company) - row.tempAmount : 0;
-      const isTotalDebt = (balanceMap.get(company) - Number(row?.amount ?? 0)) > 0;
+      const isTotalDebt = (balanceMap.get(company) - Number(row?.amount ?? 0)) !== 0;
 
       return {
         ...row,
