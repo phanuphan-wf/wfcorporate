@@ -107,31 +107,21 @@ export default function Landingpage(props) {
         </>
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
-      {/* {bannerLoaded && (
-        <div className="premium my-6 mb-10 mt-10">
-          {new Date() < new Date("2026-08-10T00:00:00Z") ? (
-            <img
-              src={require("./img/sponsor.jpg")}
+      {bannerLoaded && (
+        <div className="premium my-6 mb-10 mt-10"> 
+          <img
+              src={require("./img/gift.png")}
               alt="premium bag"
               id="premium"
               className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
-            />
-            
-          ) : (
-            <img
-              src={require("./img/sponsor.jpg")}
-              alt="premium bag"
-              id="premium"
-              className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
-            />
-          )}
+          />     
           <img
             src={require("./img/sponsor.png")}
             alt="sponsor"
             className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
-          />
+          />         
         </div>
-      )} */}
+      )}
 
       <div
         ref={clickBottom}
