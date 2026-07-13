@@ -116,7 +116,7 @@ export default function Landingpage(props) {
               className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
           />     
           <img
-            src={require("./img/sponsor.png")}
+            src={require("./img/sponsor_B426.png")}
             alt="sponsor"
             className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
           />         
