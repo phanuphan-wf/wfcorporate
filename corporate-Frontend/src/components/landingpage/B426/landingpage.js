@@ -108,18 +108,18 @@ export default function Landingpage(props) {
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
       {bannerLoaded && (
-        <div className="premium my-6 mb-10 mt-10"> 
+        <div className="premium my-6 mb-10 mt-10">
           <img
-              src={require("./img/gift.png")}
-              alt="premium bag"
-              id="premium"
-              className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
-          />     
+            src={require("./img/gift.png")}
+            alt="premium bag"
+            id="premium"
+            className="mx-auto w-[90%] lg:w-1/3"
+          />
           <img
             src={require("./img/sponsor_B426.png")}
             alt="sponsor"
-            className="mx-auto w-[90%] lg:w-1/3 xl:w-3/4"
-          />         
+            className="mx-auto w-[90%] lg:w-1/3"
+          />
         </div>
       )}
 
