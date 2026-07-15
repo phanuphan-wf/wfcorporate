@@ -32,6 +32,11 @@ export default function CreateZone(props) {
   const ClearZone = () => {
       setZoneData(initZone);
   };
+
+  useEffect(() => {
+    console.log(zoneData);
+    // getExhibition();
+  }, [zoneData]);
   
 
   return (    
