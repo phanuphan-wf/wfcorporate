@@ -108,6 +108,26 @@ export default function EditCustomer(props) {
     }
   }, [isEdit]);
 
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempName, setTempName] = useState(customerName.name);
+
+  const handleEdit = () => {
+    setTempName(customerName.name); 
+    setIsEditing(true); 
+  };
+
+  const handleSave = async () => {
+    setCustomerName({ ...customerName, name: tempName });
+    setIsEditing(false);
+    alert("successfully updated! New name: " + tempName);
+
+  };
+
+  const handleCancel = () => {    
+    setIsEditing(false); 
+  };
+
   return (
     <dataContext.Provider
       value={{
@@ -118,10 +138,46 @@ export default function EditCustomer(props) {
     >
       <section id="edit-customer">
         <h1 className="text-xl">Edit Customer Data</h1>
-        <div className="flex max-md:flex-wrap gap-2 my-4">
-          <label htmlFor="customerName">Customer Name :</label>
-          <span>{customerName.name}</span>
-        </div>
+          <div className="flex max-md:flex-wrap gap-2 my-4">
+            <label htmlFor="customerName">Customer Name :</label>
+
+            {isEditing ? (
+              <input
+                type="text"
+                id="customerName"
+                value={tempName}
+                onChange={(e) => setTempName(e.target.value)}
+                className="border border-zinc-400 rounded-md px-2 py-1 w-1/3"
+              />
+            ) : (
+              <span>{customerName.name}</span>
+            )}
+
+            {isEditing ? (
+              <button
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold px-3 py-1 rounded shadow text-sm transition"
+                onClick={handleSave}
+               >
+                Save
+               </button>
+            ) : (   
+              <button
+                className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-3 py-1 rounded shadow text-sm transition"
+                onClick={handleEdit}
+              >
+                Edit
+              </button>
+              )}
+              {isEditing && (
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white font-semibold px-3 py-1 rounded shadow text-sm transition "                
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              )}              
+                        
+          </div>
         <AddrList />
         <div>
           <button
