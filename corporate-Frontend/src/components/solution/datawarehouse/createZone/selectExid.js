@@ -12,14 +12,7 @@ export default function SelectExid(){
     const [zoneData, setZoneData] = zoneDataC;
 
     const [exhibition, setExhibtion] = useState([]);
-    const [past, setPast] = useState(false);
-    const [exid, setExid] = useState("");
-    const [exdata, setExdata] = useState({
-        exID: "",
-        exName:"",
-        venue: "",
-        during: "",
-    });    
+    const [past, setPast] = useState(false);   
 
     const getExhibition = async () => {
         try {
@@ -37,10 +30,9 @@ export default function SelectExid(){
     }, [past]);   
 
 
-
-    useEffect(() => {
-      console.log(exhibition);
-    }, [exhibition]);
+    // useEffect(() => {
+    //   console.log(exhibition);
+    // }, [exhibition]);
 
     return(
          <div className="my-4 flex max-md:flex-col gap-2 md:items-center">
