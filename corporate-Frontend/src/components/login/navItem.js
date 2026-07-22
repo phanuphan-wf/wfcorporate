@@ -296,6 +296,8 @@ const NavItems = [
     url: "",
     show: [
       { dept: 1, acc: 1 },
+      { dept: 3, acc: 1 },
+      { dept: 3, acc: 2 },
       { dept: 6, acc: 1 },
       { dept: 7, acc: 1 },
       { dept: 7, acc: 2 },
@@ -337,21 +339,22 @@ const NavItems = [
         title: "Create Booth",
         url: "/solution/datawarehouse/createbooth",
         show: [
-          { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },
-          { dept: 6, acc: 1 },
+          { dept: 1, acc: 1 },          
           { dept: 1, acc: 2 },
+          { dept: 3, acc: 1 },          
           { dept: 3, acc: 2 },
+          { dept: 6, acc: 1 },
           { dept: 6, acc: 2 },
+          
         ],
       },
       {
         title: "Create Zone",
         url: "/solution/datawarehouse/createzone",
         show: [
-          { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },       
+          { dept: 1, acc: 1 },             
           { dept: 1, acc: 2 },
+          { dept: 3, acc: 1 },  
           { dept: 3, acc: 2 },       
         ],
       }, 
