@@ -328,10 +328,10 @@ const NavItems = [
         url: "/solution/datawarehouse/createexhibition",
         show: [
           { dept: 1, acc: 1 },
-          { dept: 3, acc: 1 },
-          { dept: 6, acc: 1 },
           { dept: 1, acc: 2 },
+          { dept: 3, acc: 1 },
           { dept: 3, acc: 2 },
+          { dept: 6, acc: 1 }, 
           { dept: 6, acc: 2 },
         ],
       },
