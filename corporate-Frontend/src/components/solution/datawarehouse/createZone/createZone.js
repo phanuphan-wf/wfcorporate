@@ -30,6 +30,24 @@ export default function CreateZone(props) {
   };
 
   const [zoneData, setZoneData] = useState(initZone);
+  const [zoneId, setZoneId] = useState("");
+
+  const [refresh, setRefresh] = useState(0);   
+  const triggerRefresh = () => setRefresh(prev => prev + 1);
+
+  
+  const isFormValid =  
+    String(zoneData.exid || "").trim() !== "0" &&
+    String(zoneData.zoneName || "").trim() !== "" &&
+    String(zoneData.area || "").trim() !== "" &&
+    String(zoneData.price || "").trim() !== "" &&
+    String(zoneData.boothQty || "").trim() !== "" &&
+    String(zoneData.deposit || "").trim() !== "" &&
+    String(zoneData.remark || "").trim() !== ""; 
+
+
+
+  console.log(isFormValid);
 
   const postZone = async () => {
     try {
@@ -54,15 +72,43 @@ export default function CreateZone(props) {
     }
   };
 
-
-
   const ClearZone = () => {
       setZoneData(initZone);
+      setZoneId("");
+  };
+
+  const editZone = async () => {
+    try {
+      const payload = {
+          PriceID: zoneId,
+          ExhibitionID : zoneData.exid,
+          Zone: zoneData.zoneName,
+          Area: Number(zoneData.area),
+          BPrice: Number(zoneData.price),
+          B_Qty: Number(zoneData.boothQty),
+          // Deposit: Number(zoneData.deposit),
+          Remark: zoneData.remark,
+      };
+
+      // console.log("Editing zone with payload:", payload); // Debugging line
+
+      const res = await Axios.put(url + "/editZone", payload);
+      if (res.status === 200) {
+        alert("Zone updated successfully");
+        
+        triggerRefresh();
+      }
+    } catch (err) {
+      console.error("Error updating zone:", err);
+      alert("Error updating zone");
+    }
   };
 
   useEffect(() => {
     //console.log(zoneData);    
   }, [zoneData]);
+
+  
   
 
   return (    
@@ -70,7 +116,7 @@ export default function CreateZone(props) {
     <dataContext.Provider 
         value={{           
             zoneDataC : [zoneData, setZoneData],
-
+            zoneIdC : [zoneId, setZoneId],
         }}
     >
 
@@ -80,23 +126,50 @@ export default function CreateZone(props) {
         <SelectExid />
         <CreateData /> 
      
+      
         <div className="flex flex-col sm:flex-row justify-end gap-2 mt-2">
+        {/* ปุ่ม Clear */}
+        <button 
+          className="btn-gray px-4 w-full sm:w-auto cursor-pointer"
+          onClick={ClearZone}
+        >
+          Clear
+        </button>
+
+        {/* เช็กว่าเป็นโหมด Add หรือ Edit */}
+        {!zoneId ? (
+          /* ===== โหมด Add ===== */
           <button 
-            className="btn-gray px-4 w-full sm:w-auto"
-            onClick={ClearZone}
-          >
-            Clear
-          </button>
-          <button 
-            className="btn-green px-4 w-full sm:w-auto" 
+            className={`px-4 w-full sm:w-auto font-medium transition-colors ${
+              isFormValid 
+                ? "btn-green cursor-pointer" 
+                : "bg-gray-300 text-gray-500 opacity-60 cursor-not-allowed" // สีเทากดไม่ได้
+            }`} 
             onClick={postZone}
+            disabled={!isFormValid} // ล็อกไม่ให้คลิกได้จริง
           >
-            Add
+            Add          
           </button>
-        </div>
+        ) : (
+          /* ===== โหมด Edit Zone ===== */
+            <button
+
+                    className="bg-yellow-500 text-black px-2 py-1 rounded hover:bg-yellow-600"
+
+                    onClick={editZone}              
+
+                  >
+
+                    Edit Zone          
+
+                  </button>
+        )}
+      </div>
+        
+
         <div className="mt-3">
-          <h3 className="text-xl mb-2">Booth List</h3>
-          <ListBooth />
+          <h3 className="text-xl mb-2">Zone List</h3>
+          <ListBooth refresh={refresh}/>
         </div>
       </section>   
 

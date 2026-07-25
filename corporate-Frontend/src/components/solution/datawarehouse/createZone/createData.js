@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from "react";
+import Axios from "axios";
 import { dataContext } from "./createZone";
 
 export default function CreateData() {   
-  const { zoneDataC } = useContext(dataContext);
+  const { zoneDataC, zoneIdC } = useContext(dataContext);
   const [zoneData, setZoneData] = zoneDataC;
+  const [zoneId, setZoneId] = zoneIdC;  
 
   return (
     <section className="create-box mt-5">

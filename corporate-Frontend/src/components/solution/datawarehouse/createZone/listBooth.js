@@ -1,15 +1,14 @@
 import {useState, useEffect, useContext} from "react";
 import Axios from "axios";
-import CorrectDate from "../../../hook/correctDate";
 
 import { dataContext } from "./createZone";
 
-export default function ListBooth() {
+export default function ListBooth({ refresh }) {
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_udz;
 
-    const { zoneDataC } = useContext(dataContext);
-    const [zoneData, setZoneData] = zoneDataC;
-
+    const { zoneDataC,zoneIdC } = useContext(dataContext);
+    const [zoneData, setZoneData] = zoneDataC;    
+    const [zoneId, setZoneId] = zoneIdC;    
 
     //console.log(zoneData);
     const [boothList, setBoothList] = useState([]);
@@ -47,9 +46,12 @@ export default function ListBooth() {
     }, [zoneData.exid]);   
 
     useEffect(() => {
-        console.log(boothList);
-    }, [boothList]);
+        //console.log(boothList);
+    }, [boothList]); 
 
+    useEffect(() => {
+        getBoothList();
+    }, [refresh]); 
    
 
     return (
@@ -78,7 +80,21 @@ export default function ListBooth() {
                         <td className="border px-2 py-1 text-center">{booth.deposit}</td>
                         <td className="border px-2 py-1 text-center">{booth.remark}</td>
                         <td className="border px-2 py-1 text-center">              
-                            <button className="bg-yellow-500 text-black px-2 py-1 rounded hover:bg-yellow-600">
+                            <button 
+                                className="bg-yellow-500 text-black px-2 py-1 rounded hover:bg-yellow-600"
+                                onClick={() => {
+                                    setZoneId(booth.priceID);
+                                    setZoneData({
+                                        ...zoneData,
+                                        zoneName: booth.zone,
+                                        area: booth.area,
+                                        price: booth.bPrice,
+                                        boothQty: booth.b_Qty,
+                                        deposit: booth.deposit,
+                                        remark: booth.remark
+                                    });
+                                }}
+                            >
                                 Edit
                             </button>                            
                             <button                             
