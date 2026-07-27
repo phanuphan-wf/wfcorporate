@@ -6,7 +6,18 @@ export default function CreateData() {
   const { zoneDataC, zoneIdC } = useContext(dataContext);
   const [zoneData, setZoneData] = zoneDataC;
   const [zoneId, setZoneId] = zoneIdC;  
+  
+  const [deposit, setDeposit] = useState(true);
 
+  useEffect (() => {
+    if (zoneId !=="") {
+      setDeposit(false);
+    }else{
+      setDeposit(true);
+    }
+  },[zoneId]);
+ 
+  
   return (
     <section className="create-box mt-5">
       <div className="border rounded-lg relative">
@@ -75,8 +86,13 @@ export default function CreateData() {
             <input
               name="deposit"
               type="text"
-              className="accent-red-500"
+              className={`border border-[#b3b3b3] rounded-md px-2 py-1 transition-colors ${
+                !deposit 
+                  ? "bg-gray-100 text-gray-500 cursor-not-allowed" 
+                  : "bg-white text-black"
+              }`}
               value={zoneData.deposit}
+              disabled={!deposit}
               onChange={(e) => setZoneData({ ...zoneData, deposit: e.target.value })}
             />    
             <span className="text-sm text-black">Baht</span>
