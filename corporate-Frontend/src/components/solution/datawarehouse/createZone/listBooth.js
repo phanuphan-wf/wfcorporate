@@ -12,6 +12,7 @@ export default function ListBooth({ refresh }) {
 
     //console.log(zoneData);
     const [boothList, setBoothList] = useState([]);
+    const [deleteTarget, setDeleteTarget] = useState(null);
 
     const getBoothList = async () => {
         try {
@@ -24,11 +25,18 @@ export default function ListBooth({ refresh }) {
         }
     };
 
-    const deleteZone = async (id) => {
+    const closeDeleteModal = () => {
+        setDeleteTarget(null);
+    };
+
+    const deleteZone = async () => {
+        if (!deleteTarget) return;
+
         try {
-            const res = await Axios.delete(url + "/DelZone/"+id);
+            const res = await Axios.delete(url + "/DelZone/" + deleteTarget.priceID);
             if (res.status === 200) {
                 alert("Zone deleted successfully");
+                closeDeleteModal();
                 getBoothList(); // Refresh the list after deletion
             }
         } catch (err) {
@@ -56,6 +64,33 @@ export default function ListBooth({ refresh }) {
 
     return (
         <div className="border rounded-lg relative">
+            {deleteTarget && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg p-5 shadow-lg w-[420px]">
+                        <h3 className="text-lg font-semibold mb-3">Confirm Delete</h3>
+                        <hr></hr>
+                        <p className="text-sm text-gray-700 mt-3">
+                            Are you sure you want to delete zone <strong>{deleteTarget.zone}</strong>?
+                        </p>
+
+                        <div className="mt-4 flex justify-end gap-2">
+                            <button
+                                className="bg-gray-300 text-gray-800 px-2 py-1 rounded hover:bg-gray-400"
+                                onClick={closeDeleteModal}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                                onClick={deleteZone}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
               <table className="w-full border-collapse border">
                   <thead>                    
                      <tr className="bg-gray-100">
@@ -99,7 +134,7 @@ export default function ListBooth({ refresh }) {
                             </button>                            
                             <button                             
                                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 ml-3"
-                                onClick={() => deleteZone(booth.priceID)}
+                                onClick={() => setDeleteTarget(booth)}
                             >
                                 Delete
                             </button>

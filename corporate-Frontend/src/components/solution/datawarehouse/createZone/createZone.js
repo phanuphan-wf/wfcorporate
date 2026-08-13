@@ -57,7 +57,7 @@ export default function CreateZone(props) {
         Area: Number(zoneData.area),
         BPrice: Number(zoneData.price),
         B_Qty: Number(zoneData.boothQty),
-        // Deposit: Number(zoneData.deposit),
+        Deposit: Number(zoneData.deposit),
         Remark: zoneData.remark,
       };
 
@@ -66,6 +66,7 @@ export default function CreateZone(props) {
         alert("Zone created successfully");
         triggerRefresh();
         // ClearZone();
+        ClearZoneData(); 
       }
     } catch (err) {
       console.error("Error creating zone:", err);
@@ -78,6 +79,18 @@ export default function CreateZone(props) {
     setZoneId("");
   };
 
+  const ClearZoneData = () => {
+    setZoneData ({
+      ...zoneData,
+      zoneName: "", 
+      area: "",
+      price: "",
+      boothQty: "",
+      deposit: "",
+      remark: ""
+    });
+  };
+
   const editZone = async () => {
     try {
       const payload = {
@@ -87,7 +100,7 @@ export default function CreateZone(props) {
         Area: Number(zoneData.area),
         BPrice: Number(zoneData.price),
         B_Qty: Number(zoneData.boothQty),
-        // Deposit: Number(zoneData.deposit),
+        Deposit: Number(zoneData.deposit),
         Remark: zoneData.remark,
       };
 
@@ -97,10 +110,12 @@ export default function CreateZone(props) {
       if (res.status === 200) {
         alert("Zone updated successfully");
         triggerRefresh();
+        ClearZoneData();
       }
     } catch (err) {
       console.error("Error updating zone:", err);
       alert("Error updating zone");
+      ClearZone();
     }
   };
 
