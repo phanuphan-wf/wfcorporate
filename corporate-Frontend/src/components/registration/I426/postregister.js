@@ -126,7 +126,7 @@ export default function Postregister(props) {
     <div className="lg:container">
       <div className="w-full flex justify-center my-3">
         <img
-          src={require("../../landingpage/I426/img/fur_logo_white.png")}
+          src={require("../../landingpage/I426/img/fur_logo.png")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto w-2/3 md:w-1/3"
