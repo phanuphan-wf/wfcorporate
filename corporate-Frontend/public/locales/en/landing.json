@@ -223,7 +223,7 @@
     },
     "landing2": {
         "show": "Furniture Fair",
-        "showdate": "June 6 - 14, 2026",
+        "showdate": "Sep 5 - 13, 2026",
         "location": "IMPACT , Muang Thong Thani",
         "sublocation": "IMPACT",
         "hall": "HALL 9-10",
@@ -242,8 +242,9 @@
             "Home decor items"
         ],
         "elec": [
-            "Up to 70% Off + Extra 12.5% Off for The 1 Members",
-            "Get Cashback Up to 30,000 Baht*",
+            "Real Discounts. Prove It. Home Appliances & IT",
+            "Up to 70% OFF + Extra 15% OFF for The 1 Members",
+            "0% Installments + Cashback up to 45,000 THB",
             "Featuring must-have home appliances: TVs, Refrigerators, Air Conditioners and more",
             "Washer-Dryers, Vacuum Cleaners, Air Purifiers, Water Heaters — All at Special Prices!",
             "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
@@ -251,8 +252,8 @@
     },
     "regist2": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Home Living Expo",
-        "showdate": "June 6 - 14, 2026",
+        "show": "Furniture Fair",
+        "showdate": "Sep 5 - 13, 2026",
         "hall": "HALL 9-10",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
