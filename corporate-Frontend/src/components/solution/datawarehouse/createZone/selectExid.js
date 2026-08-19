@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import Axios from "axios";
-import CorrectDate from "../../../hook/correctDate";
+// import CorrectDate from "../../../hook/correctDate";
 
 import { dataContext } from "./createZone";
 
@@ -10,6 +10,7 @@ export default function SelectExid(){
 
     const { zoneDataC } = useContext(dataContext);
     const [zoneData, setZoneData] = zoneDataC;
+    // const [zoneId, setZoneId] = zoneIdC;
 
     const [exhibition, setExhibtion] = useState([]);
     const [past, setPast] = useState(false);   
@@ -43,8 +44,8 @@ export default function SelectExid(){
             name="exname"
             className="cmb max-md:w-full"
             value={zoneData.exid}
-            onChange={(e) => setZoneData({ ...zoneData, exid: e.target.value })}
-           
+            onChange={(e) => 
+              setZoneData({ ...zoneData, exid: e.target.value })}           
             >
             <option value="0">please select exhibition name</option>
             {exhibition.map((data) => (

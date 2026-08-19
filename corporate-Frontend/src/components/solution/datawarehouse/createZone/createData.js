@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from "react";
+import Axios from "axios";
 import { dataContext } from "./createZone";
 
 export default function CreateData() {   
-  const { zoneDataC } = useContext(dataContext);
+  const { zoneDataC, zoneIdC } = useContext(dataContext);
   const [zoneData, setZoneData] = zoneDataC;
-
+  const [zoneId, setZoneId] = zoneIdC;    
+  
   return (
     <section className="create-box mt-5">
       <div className="border rounded-lg relative">
@@ -75,6 +77,7 @@ export default function CreateData() {
               type="text"
               className="accent-red-500"
               value={zoneData.deposit}
+              //disabled={!deposit}
               onChange={(e) => setZoneData({ ...zoneData, deposit: e.target.value })}
             />    
             <span className="text-sm text-black">Baht</span>
