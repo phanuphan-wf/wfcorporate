@@ -110,13 +110,13 @@ export default function Landingpage(props) {
       {bannerLoaded && (
         <div className="premium my-6 mb-10 mt-10">
           <img
-            src={require("./img/gift.png")}
+            src={require("./img/gift_I426.png")}
             alt="premium bag"
             id="premium"
             className="mx-auto w-[90%] lg:w-1/3"
           />
           <img
-            src={require("./img/sponsor.png")}
+            src={require("./img/sponsor_I426.png")}
             alt="sponsor"
             className="mx-auto w-[90%] lg:w-1/3"
           />
