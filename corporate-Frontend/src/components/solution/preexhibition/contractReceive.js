@@ -40,7 +40,7 @@ export default function ContractReceive(props) {
       new Date().getFullYear(),
     InputBy: CryptoJS.AES.decrypt(
       JSON.parse(localStorage.getItem("user")).EmID,
-      process.env.REACT_APP_KEY
+      process.env.REACT_APP_KEY,
     ).toString(CryptoJS.enc.Utf8),
     Recheck: false,
     CheckDate: null,
@@ -94,7 +94,7 @@ export default function ContractReceive(props) {
       d.Spaces == "" ||
       //d.Spaces == 0 ||
       d.PriceID == 0 ||
-      d.Volume == 0.0 ||
+      (d.Volume == 0.0 && d.DisOther != 0.0) ||
       d.SaleID === "0" ||
       d.ContractID == 0 ||
       d.SignID == 0 ||
@@ -134,7 +134,7 @@ export default function ContractReceive(props) {
     } catch (err) {
       if (err.response.status == 400) {
         alert(
-          "Error! - Add contract is not successful, please contract administrator"
+          "Error! - Add contract is not successful, please contract administrator",
         );
       }
     }
@@ -169,7 +169,7 @@ export default function ContractReceive(props) {
     } catch (err) {
       if (err.response.status == 400) {
         alert(
-          "Error! - Add history discount is not successful, please contract administrator"
+          "Error! - Add history discount is not successful, please contract administrator",
         );
       }
     }
