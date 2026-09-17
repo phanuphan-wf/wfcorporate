@@ -15,6 +15,9 @@ import FormRegister from "./components/buyerregist/redeem/registration";
 import PostRedeem from "./components/buyerregist/redeem/postregister";
 import Floorplan from "./components/floorplan/floorplan";
 
+import HomeMegashow from "./components/homemegashow";
+import { path } from "d3";
+
 const AppRegistRoutes = [
   {
     path: "exregist",
@@ -88,6 +91,12 @@ const AppRegistRoutes = [
     path: "floorplan/:pos",
     element: <Floorplan />,
   },
+
+  {
+    path: "homemegashow",
+    element: <HomeMegashow />,
+  },
+  
 ];
 
 export default AppRegistRoutes;
