@@ -1,8 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
+import Axios from "axios";
 import useCheckMobile from "../hook/useCheckMobile";
 import Footer from "../layout/Footer";
 
 export default function HomeMegaShow(props) {
+
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_hms;
+
   const mobile = useCheckMobile();
 
   const interestedRef = useRef(null);
@@ -13,46 +17,84 @@ export default function HomeMegaShow(props) {
     }
   };
 
-  const Cotegory = [
-    "Furniture & Home Décor",
-    "Home Builder & Prefab",
-    "Solar & Smart Home",
-    "Tools & DIY",
-    "Garden & Outdoor Living",
-    "Electronics & Home Appliances",
-    "Craft & Lifestyle",
-    "Food & Beverage",
-    "อื่น ๆ",
+  const product = [
+    { key: "1", name: "Furniture & Home Décor" },
+    { key: "2", name: "Home Builder & Prefab" },
+    { key: "3", name: "Solar & Smart Home" },
+    { key: "4", name: "Tools & DIY" },
+    { key: "5", name: "Garden & Outdoor Living" },
+    { key: "6", name: "Electronics & Home Appliances" },
+    { key: "7", name: "Craft & Lifestyle" },
+    { key: "8", name: "Food & Beverage" },
+    { key: "9", name: "อื่น ๆ" },
   ];
 
-  const Floor_Area = [
-    "3 × 3 ม.",
-    "3 × 6 ม.",
-    "6 × 6 ม. ขึ้นไป",
-    "ยังไม่แน่ใจ ต้องการคำแนะนำ",
+  const space = [
+    { key: "1", name:"3 x 3 ม."},
+    { key: "2", name:"3 x 6 ม."},
+    { key: "3", name:"6 x 6 ม. ขึ้นไป"},
+    { key: "4", name:"ยังไม่แน่ใจ ต้องการคำแนะนำ"},
   ];
 
-  const Contact_Back = [
-    "09.00 - 12.00 น.",
-    "12.00 - 15.00 น.",
-    "15.00 - 18.00 น.",
-    "หลัง 18.00 น.",
-    "ติดต่อได้ทุกช่วงเวลา",
+  const con_time = [
+    { key: "1", name: "09.00 - 12.00 น."},
+    { key: "2", name: "12.00 - 15.00 น."},
+    { key: "3", name:"15.00 - 18.00 น."},
+    { key: "4", name:"หลัง 18.00 น."},
+    { key: "5", name:"ติดต่อได้ทุกช่วงเวลา"},
   ];
 
 
   const initExhibitors = {
-    Full_Name: "",
-    Phone: "",
-    Company_Name: "",
-    Cotegory: "",
-    Floor_Area: "",
-    Contact_Back: "",
+    name: "",
+    surname: "",
+    mobile: "",
+    email: "",
+    company: "0",
+    product: "0",
+    space: "0",
+    con_time: "0",
+    campaing: "0",
   };
 
   const [exhibitorData, setExhibitorData] = useState(initExhibitors);
 
+  const handleSubmit = async (e) =>{
+      e.preventDefault();
 
+      const formData = new FormData(e.currentTarget);
+
+      const payload = {
+        name: formData.get("name") || "",
+        surname: formData.get("surname") || "",
+        mobile: formData.get("mobile") || "",
+        email: formData.get("email") || "",
+        company: formData.get("company") || "",
+        product: parseInt(formData.get("product"), 10) || 0, 
+        space: parseInt(formData.get("space"), 10) || 0,     
+        con_time: parseInt(formData.get("con_time"), 10) || 0, 
+        campaing: "HomeMegaShow", 
+      };
+
+      //setExhibitorData(payload);
+
+      try {        
+        const res = await Axios.post(url, payload); 
+
+        if (res.status === 200 || res.status === 201) {
+          alert("บันทึกข้อมูลสำเร็จเรียบร้อย!");
+          setExhibitorData(payload);
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+      }
+  };
+  
+
+  useEffect(() => {
+    console.log(exhibitorData);
+  }, [exhibitorData]);
 
   return (
     <section className="HomeMegaShow w-full flex flex-col items-center justify-center bg-[#100249]">
@@ -61,8 +103,7 @@ export default function HomeMegaShow(props) {
       <div className="w-full flex flex-col items-center justify-center px-8 md:px-8 gap-6">
 
         {/* 1. Hero Banner */}
-        <img
-          src={
+        <img src={
             mobile
               ? require("./img/hero_banner_mb.jpg")
               : require("./img/hero_banner_pc.jpg")
@@ -195,16 +236,28 @@ export default function HomeMegaShow(props) {
           <div className="w-full max-w-[1040px] bg-[#1c0b66] rounded-b-2xl shadow-xl -mt-2 md:-mt-5 overflow-hidden">
 
             {/* ตัวฟอร์ม: ขยายเต็ม 100% ไม่จำกัด max-w */}
-            <form className="w-full flex flex-col gap-5 bg-white p-6 sm:p-10 text-slate-800">
+            <form onSubmit={handleSubmit} className="w-full flex flex-col gap-5 bg-white p-6 sm:p-10 text-slate-800">
 
-              {/* ชื่อ - นามสกุล */}
+              {/* ชื่อ*/}
               <div className="flex flex-col gap-1.5">
-                <label className="text-slate-800 text-sm font-semibold">ชื่อ - นามสกุล <span className="text-red-500">*</span></label>
+                <label className="text-slate-800 text-sm font-semibold">ชื่อ<span className="text-red-500">*</span></label>
                 <input
                   type="text"
-                  name="name"
+                  name="name"   
                   required
-                  placeholder="กรอกชื่อ-นามสกุล"
+                  placeholder="กรอกชื่อ"
+                  className="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+                />
+              </div>
+              
+              {/* นามสกุล */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-slate-800 text-sm font-semibold">นามสกุล<span className="text-red-500">*</span></label>
+                <input
+                  type="text"
+                  name="surname"   
+                  required
+                  placeholder="กรอกนามสกุล"
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
                 />
               </div>
@@ -214,9 +267,21 @@ export default function HomeMegaShow(props) {
                 <label className="text-slate-800 text-sm font-semibold">เบอร์โทรศัพท์ <span className="text-red-500">*</span></label>
                 <input
                   type="tel"
-                  name="phone"
+                  name="mobile"
                   required
                   placeholder="08X-XXX-XXXX"
+                  className="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+                />
+              </div>
+
+              {/* email */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-slate-800 text-sm font-semibold">อีเมล<span className="text-red-500">*</span></label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="example@mail.com"
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
                 />
               </div>
@@ -227,6 +292,7 @@ export default function HomeMegaShow(props) {
                 <input
                   type="text"
                   name="company"
+                  required
                   placeholder="กรอกชื่อบริษัท / ร้านค้า"
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
                 />
@@ -237,15 +303,17 @@ export default function HomeMegaShow(props) {
                   สินค้าหรือบริการของคุณอยู่ในกลุ่มใด <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-1">
-                  {Cotegory.map((item, index) => (
-                    <label key={index} className="flex items-center gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                  {product.map((item) => (
+                    <label key={item.key} className="flex items-center gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                     
                       <input
-                        type="checkbox"
-                        name="category"
-                        value={item}
+                        type="radio"
+                        name="product"
+                        value={item.key}
+                        required
                         className="w-4 h-4 accent-purple-600 rounded cursor-pointer"
                       />
-                      <span className="text-sm text-slate-700">{item}</span>
+                      <span className="text-sm text-slate-700">{item.name}</span>
                     </label>
                   ))}
                 </div>
@@ -255,15 +323,16 @@ export default function HomeMegaShow(props) {
               <div className="flex flex-col gap-2">
                 <label className="text-slate-800 text-sm font-semibold">ขนาดพื้นที่ที่สนใจ <span className="text-red-500">*</span></label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 mt-1">
-                  {Floor_Area.map((item, index) => (
-                    <label key={index} className="flex items-center gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                  {space.map((item) => (
+                    <label key={item.key} className="flex items-center gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
                       <input
-                        type="checkbox"
-                        name="spaceSize"
-                        value={item}
-                        className="w-4 h-4 accent-yellow-500 rounded cursor-pointer"
+                        type="radio"
+                        name="space"
+                        value={item.key}
+                        required
+                        className="w-4 h-4 accent-purple-600 rounded cursor-pointer"
                       />
-                      <span className="text-sm text-slate-700">{item}</span>
+                      <span className="text-sm text-slate-700">{item.name}</span>
                     </label>
                   ))}
                 </div>
@@ -273,15 +342,16 @@ export default function HomeMegaShow(props) {
               <div className="flex flex-col gap-2">
                 <label className="text-slate-800 text-sm font-semibold">ช่วงเวลาที่สะดวกให้ทีมงานติดต่อกลับ <span className="text-red-500">*</span></label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-1">
-                  {Contact_Back.map((item, index) => (
-                    <label key={index} className="flex items-center gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                  {con_time.map((item) => (
+                    <label key={item.key} className="flex items-center gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
                       <input
-                        type="checkbox"
-                        name="contactTime"
-                        value={item}
-                        className="w-4 h-4 accent-yellow-500 rounded cursor-pointer"
+                        type="radio"
+                        name="con_time"
+                        value={item.key}
+                        required
+                        className="w-4 h-4 accent-purple-600 rounded cursor-pointer"
                       />
-                      <span className="text-sm text-slate-700">{item}</span>
+                      <span className="text-sm text-slate-700">{item.name}</span>
                     </label>
                   ))}
                 </div>
@@ -291,13 +361,14 @@ export default function HomeMegaShow(props) {
               <button
                 type="submit"
                 className="w-full mt-4 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-3 text-center leading-5 shadow-lg hover:scale-[1.005] active:scale-[0.995] transition-all duration-200"
+                //onClick={submitData}
               >
                 ลงทะเบียนรับสิทธิพิเศษ
               </button>
 
             </form>
           </div>
-          
+
         </div>
 
 
