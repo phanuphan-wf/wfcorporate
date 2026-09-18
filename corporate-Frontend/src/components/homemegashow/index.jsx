@@ -73,13 +73,13 @@ export default function HomeMegaShow(props) {
         product: parseInt(formData.get("product"), 10) || 0, 
         space: parseInt(formData.get("space"), 10) || 0,     
         con_time: parseInt(formData.get("con_time"), 10) || 0, 
-        campaing: "HomeMegaShow", 
+        campaing: "Home", 
       };
 
       //setExhibitorData(payload);
 
       try {        
-        const res = await Axios.post(url, payload); 
+        const res = await Axios.post(url + "/submit", payload); 
 
         if (res.status === 200 || res.status === 201) {
           alert("บันทึกข้อมูลสำเร็จเรียบร้อย!");
