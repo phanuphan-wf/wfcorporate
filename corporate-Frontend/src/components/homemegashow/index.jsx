@@ -1,9 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import Axios from "axios";
 import useCheckMobile from "../hook/useCheckMobile";
+import { useParams } from "react-router-dom";
 import Footer from "../layout/Footer";
 
 export default function HomeMegaShow(props) {
+
+  const { cp } = useParams();
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_hms;
 
@@ -44,6 +47,7 @@ export default function HomeMegaShow(props) {
     { key: "5", name:"ติดต่อได้ทุกช่วงเวลา"},
   ];
 
+  
 
   const initExhibitors = {
     name: "",
@@ -54,7 +58,7 @@ export default function HomeMegaShow(props) {
     product: "0",
     space: "0",
     con_time: "0",
-    campaing: "0",
+    campaign: "",
   };
 
   const [exhibitorData, setExhibitorData] = useState(initExhibitors);
@@ -72,8 +76,8 @@ export default function HomeMegaShow(props) {
         company: formData.get("company") || "",
         product: parseInt(formData.get("product"), 10) || 0, 
         space: parseInt(formData.get("space"), 10) || 0,     
-        con_time: parseInt(formData.get("con_time"), 10) || 0, 
-        campaing: "Home", 
+        con_time: parseInt(formData.get("con_time"), 10) || 0,         
+        campaign: cp || "0",
       };
 
       //setExhibitorData(payload);
