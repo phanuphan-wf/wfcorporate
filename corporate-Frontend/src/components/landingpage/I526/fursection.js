@@ -28,11 +28,11 @@ export default function FurSection() {
       </div>
 
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#eb008b] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#fbd953] text-[#28326f] px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdLocationOn />
           {t("hall")}
         </div>
-        <div className="bg-[#eb008b] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#fbd953] text-[#28326f] px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdAvTimer />
           {t("time")}
         </div>
@@ -46,7 +46,7 @@ export default function FurSection() {
         </ul>
       </div>
 
-      <div className="xl:container bg-gradient-to-b from-[#ea098b] to-[#ea098b] py-6">
+      <div className="xl:container bg-gradient-to-b from-[#fbd953] to-[#fbd953] py-6">
         <div className="relative mx-5 lg:mx-0 ">
           <div className="grid grid-cols-2 md:grid-cols-3 w-full sm:w-3/4 lg:w-[800px] gap-4 md:gap-7 place-items-center mx-auto">
             <img
@@ -93,7 +93,7 @@ export default function FurSection() {
       </div>
 */}
 
-      <div className="xl:container w-full bg-[#e90d8b] flex items-center justify-evenly py-4 mb-4">
+      <div className="xl:container w-full bg-[#fbd953] flex items-center justify-evenly py-4 mb-4">
         <div className="w-[40%] sm:w-1/3 lg:w-1/4 mb-5">
           <img
             src={require("./img/fur_logo_white.png")}
@@ -102,7 +102,7 @@ export default function FurSection() {
             className="mx-auto"
           />
         </div>
-        <div className="text-white">
+        <div className="text-[#28326f]">
           <div className="flex gap-0.5 items-center md:text-xl lg:text-2xl">
             <MdLocationOn className="drop-shadow-md" />
             <span className="drop-shadow-md">

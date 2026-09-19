@@ -20,7 +20,7 @@ export default function Landingpage(props) {
 
   const { cp } = useParams();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
-  const exId = "b426";
+  const exId = "i526";
 
   useEffect(() => {
     document.title = "Furniture Fair Information";
@@ -74,7 +74,7 @@ export default function Landingpage(props) {
         className="w-full absolute top-0 left-1/2 -translate-x-1/2"
         ref={bannerRef}>
         <img
-          src={require("./img/hero_banner.png")}
+          src={require("./img/hero_banner.jpg")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto w-full h-auto max-w-[1040px] object-contain"
@@ -103,7 +103,7 @@ export default function Landingpage(props) {
       {bannerLoaded && (
         <>
           <FurSection />
-          <ElecSection />
+          {/* <ElecSection /> */}
         </>
       )}
       {/*----------------- ส่วนของ sponsor -----------------*/}
@@ -127,7 +127,7 @@ export default function Landingpage(props) {
         ref={clickBottom}
         className="flex justify-center md:gap-4 md:items-center mx-5 lg:mx-0 mb-4 sm:mb-6 md:mb-10">
         {/*--------แก้ hidden เป็น flex เพื่อเปิด register----*/}
-        <ClickRegist_PB cp={cp} exId={exId} />
+        <ClickRegist cp={cp} exId={exId} />
       </div>
     </section>
   );

@@ -10,16 +10,16 @@ export default function ClickRegist(props) {
   return (
     <div
       className={`flex justify-center items-center gap-2 sm:gap-8 md:gap-2 rounded-full px-3 py-2 w-fit max-w-[800px]
-                  relative z-20 bg-gradient-to-t from-[#eb008b] to-[#eb008b] 
-                  hover:from-pink-600 hover:to-pink-400 
-                  border-[3px] border-[#ea088b]                
+                  relative z-20 bg-gradient-to-t from-[#fbd953] to-[#fbd953] 
+                  hover:from-yellow-600 hover:to-yellow-400 
+                  border-[3px] border-[#fbd953]                
       `}
     >
 
-      <div className="text-3xl md:text-5xl lg:text-6xl bg-[#612366] rounded-full text-white flex justify-center items-center h-fit w-fit p-1">
+      <div className="text-3xl md:text-5xl lg:text-6xl bg-[#28326f] rounded-full text-white flex justify-center items-center h-fit w-fit p-1">
         <IoIosArrowForward />
       </div>
-      <div className="text-center text-lg md:text-start md:text-3xl lg:text-4xl text-white">
+      <div className="text-center text-lg md:text-start md:text-3xl lg:text-4xl text-[#28326f]">
         <a
           href={
             "/" + exId + "/preregistration" + (cp != undefined ? "/" + cp : "")
@@ -27,17 +27,17 @@ export default function ClickRegist(props) {
           {t("regist")}{" "}
           {i18n.language === "th" ? (
             <>
-              <span className="text-[#fff100]">{t("gift")}</span>{" "}
-              <span className="text-xl md:text-5xl lg:text-6xl text-[#fff100]">
+              <span className="text-[#e51f22]">{t("gift")}</span>{" "}
+              <span className="text-xl md:text-5xl lg:text-6xl text-[#e51f22]">
                 {String(t("free"))}
               </span>
             </>
           ) : (
             <>
-              <span className="text-xl md:text-3xl lg:text-5xl text-[#fff100]">
+              <span className="text-xl md:text-3xl lg:text-5xl text-[#e51f22]">
                 {String(t("free"))}
               </span>{" "}
-              <span className="text-[#fff100]">{t("gift")}</span>
+              <span className="text-[#e51f22]">{t("gift")}</span>
             </>
           )}
           {/*

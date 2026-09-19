@@ -8,7 +8,7 @@ export default function PreRegist(props) {
   const navigate = useNavigate();
   const [regDate, setRegDate] = useState([]);
 
-  const exId = "b426";
+  const exId = "i526";
 
   const { cp } = useParams();
 
@@ -41,7 +41,7 @@ export default function PreRegist(props) {
       const today = new Date();
       if (today >= new Date(sDate) && today <= new Date(eDate)) {
       } else {
-        navigate("/" + exId + "/postregister/expire/xfmb");
+        //navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }
   }, [eDate]);
@@ -50,7 +50,7 @@ export default function PreRegist(props) {
     if (cp == "7B2378" || cp == "03772B" || cp == "A878CF") {
       const today = new Date();
 
-      if (today >= new Date("2026-07-18")) {
+      if (today >= new Date("2026-09-11")) {
         navigate("/" + exId + "/postregister/expire/xfmb");
       }
     }

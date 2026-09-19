@@ -21,7 +21,7 @@ export default function Registration(props) {
   const { t, i18n } = useTranslation("landing", { keyPrefix: "regist" });
   const mobile = useCheckMobile();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
-  const exId = "b426";
+  const exId = "i526";
   const navigate = useNavigate();
 
   const [modalShow, setModalShow] = useState(false);
@@ -319,7 +319,7 @@ export default function Registration(props) {
   };
 
   return (
-    <section className="regist_b426 xl:container">
+    <section className="regist_i526 xl:container">
       <div className="lg:container flex justify-end lg:px-5 py-4">
         <div className="mr-2">{t("lng")}</div>
         <div className="flex gap-2">
@@ -346,7 +346,7 @@ export default function Registration(props) {
       </div>
       <div className="w-full flex justify-center my-3">
         <img
-          src={require("../../landingpage/B426/img/fur_logo.png")}
+          src={require("../../landingpage/I526/img/fur_logo.png")}
           alt="landing hero"
           id="hero_banner"
           className="mx-auto w-2/3 md:w-1/3"
@@ -358,11 +358,11 @@ export default function Registration(props) {
         {tr("showdate")}
       </div>
       <div className="flex gap-4 lg:gap-10 w-full justify-center mb-4">
-        <div className="bg-[#eb008b] text-white px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#fbd953] text-[#28326f]  px-4 py-2 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdLocationOn />
           {tr("hall")}
         </div>
-        <div className="bg-[#eb008b] text-white px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
+        <div className="bg-[#fbd953] text-[#28326f]  px-4 py-1 text-sm md:text-2xl lg:text-3xl flex items-center gap-1 rounded-xl">
           <MdAvTimer />
           {tr("time")}
         </div>
@@ -405,7 +405,7 @@ export default function Registration(props) {
           </label>
         </div>
         <div
-          className="mt-3 mx-auto w-full sm:w-3/4 md:w-1/2 bg-gradient-to-r from-pink-600 from-[50%] to-pink-400/75 bg-[size:200%] bg-[position:_0%_0%] hover:bg-[position:_100%_100%] text-white rounded-lg text-center py-1 transition-all duration-300 max-md:text-lg"
+          className="mt-3 mx-auto w-full sm:w-3/4 md:w-1/2 bg-gradient-to-r from-[#fbd953] from-[50%] to-yellow-400/75 bg-[size:200%] bg-[position:_0%_0%] hover:bg-[position:_100%_100%] text-black rounded-lg text-center py-1 transition-all duration-300 max-md:text-lg"
           onClick={submitData}
           disabled={submiting}>
           {!submiting ? t("submit") : t("saving")}
