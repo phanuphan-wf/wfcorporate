@@ -91,6 +91,10 @@ export default function MediaReturnChart(props) {
       col: "BTS",
       id: "bts",
     },
+    {
+      col: "Instagram",
+      id: "instagram",
+    },
   ];
   const [media, setMedia] = useState(initMedia);
   const [cat, setCat] = useState([]);
@@ -123,7 +127,7 @@ export default function MediaReturnChart(props) {
       let qty = d3.sum(pData, (d) => d[m.id]);
       let vol = d3.sum(
         pData.filter((d) => d[m.id] == 1),
-        (d) => d.volume
+        (d) => d.volume,
       );
       let bg = 0;
       if (budget.length > 0) {

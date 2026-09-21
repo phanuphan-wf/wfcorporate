@@ -159,6 +159,15 @@
                 "name": "Other categories",
                 "select": [
                     {
+                        "col": "Food and beverages",
+                        "id": "F_food"
+                    }
+                ]
+            },
+            "other-i526": {
+                "name": "Other categories",
+                "select": [
+                    {
                         "col": "Fashion and accessories",
                         "id": "F_fashion"
                     },

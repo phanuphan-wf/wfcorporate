@@ -10,25 +10,24 @@ export default function Interest(props) {
       name: t("fur.name"),
       select: t("fur.select", { returnObjects: true }),
     },
-
+    /*
     {
       cat: "elec",
       name: t("elec.name"),
       select: t("elec.select", { returnObjects: true }),
     },
-    /*
+    
     {
       cat: "homedecor",
       name: t("homedecor.name"),
       select: t("homedecor.select", { returnObjects: true }),
     },
+    */
     {
       cat: "other",
       name: t("other.name"),
       select: t("other.select", { returnObjects: true }),
-      
     },
-    */
   ];
 
   const initIntr = {
