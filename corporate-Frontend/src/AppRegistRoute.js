@@ -96,6 +96,11 @@ const AppRegistRoutes = [
     path: "homemegashow",
     element: <HomeMegashow />,
   },
+
+  {
+    path: "homemegashow/:cp",
+    element: <HomeMegashow />,
+  },
   
 ];
 

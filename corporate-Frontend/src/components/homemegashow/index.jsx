@@ -85,7 +85,7 @@ export default function HomeMegaShow(props) {
       try {        
         const res = await Axios.post(url + "/submit", payload); 
 
-        if (res.status === 200 || res.status === 201) {
+        if (res.status === 200) {
           alert("บันทึกข้อมูลสำเร็จเรียบร้อย!");
           setExhibitorData(payload);
         }
