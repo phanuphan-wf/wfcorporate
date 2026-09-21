@@ -33,10 +33,17 @@ export default function Media(props) {
     },
     */
     {
-      col_th: "Facebook/Instagram",
-      col_en: "Facebook/Instagram",
+      col_th: "Facebook",
+      col_en: "Facebook",
       id: "facebook",
     },
+
+    {
+      col_th: "Instagram",
+      col_en: "Instagram",
+      id: "instagram",
+    },
+    
     {
       col_th: "โฆษณาบนเว็บไซต์/ค้นหา Google",
       col_en: "Google Search/Website Ads",
@@ -82,6 +89,7 @@ export default function Media(props) {
     billboard: 0,
     newspaper: 0,
     facebook: 0,
+    instagram: 0,
     google: 0,
     youtube: 0,
     line: 0,
