@@ -49,6 +49,7 @@ export default function Media(props) {
       col_en: "Google Search/Website Ads",
       id: "google",
     },
+    // ปิดส่วนนี้
     // {
     //   col_th: "โฆษณาบน Youtube",
     //   col_en: "Youtube Ads",
@@ -57,7 +58,7 @@ export default function Media(props) {
     // {
     //   col_th: "Line",
     //   col_en: "Line",
-    //   id: "line",
+    //   id: "line", 
     // },
     {
       col_th: "tiktok",
