@@ -16,6 +16,7 @@ import PostRedeem from "./components/buyerregist/redeem/postregister";
 import Floorplan from "./components/floorplan/floorplan";
 
 import HomeMegashow from "./components/homemegashow";
+import Submit from "./components/homemegashow/submit";
 import { path } from "d3";
 
 const AppRegistRoutes = [
@@ -100,6 +101,10 @@ const AppRegistRoutes = [
   {
     path: "homemegashow/:cp",
     element: <HomeMegashow />,
+  },
+  {
+    path: "homemegashow/submit",
+    element: <Submit />,
   },
   
 ];

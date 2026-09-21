@@ -82,13 +82,17 @@ export default function HomeMegaShow(props) {
         campaign: cp || "0",
       };
 
-     
+      // setExhibitorData(payload);
+      // navigate("/homemegashow/submit");
+      
+
       try {        
         const res = await Axios.post(url + "/submit", payload); 
 
         if (res.status === 200) {
-          alert("บันทึกข้อมูลสำเร็จเรียบร้อย!");
+          //alert("บันทึกข้อมูลสำเร็จเรียบร้อย!");
           setExhibitorData(payload);
+          navigate("/homemegashow/submit");
         }
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -120,7 +124,9 @@ export default function HomeMegaShow(props) {
         {/* 2. Atmosphere Section */}
         <div className="w-full max-w-[1040px] flex justify-center">
           <img
-            src={require("./img/atmosphere.png")}
+            src={require("./img/atmosphere.png")}  
+            //src="https://worldfair.blob.core.windows.net/hms2026langing/atmosphere.png"   
+            //src={require("https://worldfair.blob.core.windows.net/hms2026langing/atmosphere.png")}  
             alt="atmosphere_event"
             className="w-full h-auto object-contain block"
           />
@@ -269,13 +275,23 @@ export default function HomeMegaShow(props) {
 
               {/* เบอร์โทรศัพท์ */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-slate-800 text-sm font-semibold">เบอร์โทรศัพท์ <span className="text-red-500">*</span></label>
+                <label className="text-slate-800 text-sm font-semibold">
+                  เบอร์โทรศัพท์ <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="tel"
                   name="mobile"
                   required
+                  minLength={9}
+                  maxLength={10}
+                  pattern="^[0-9]{9,10}$"
+                  title="กรุณากรอกเบอร์โทรศัพท์เป็นตัวเลข 9 ถึง 10 หลัก (เช่น 0812345678)"
                   placeholder="08X-XXX-XXXX"
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-50 text-slate-800 placeholder-slate-400 border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
+                  onInput={(e) => {
+                    // ช่วยกรองให้พิมพ์ได้เฉพาะตัวเลข 0-9 เท่านั้น
+                    e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                  }}
                 />
               </div>
 
