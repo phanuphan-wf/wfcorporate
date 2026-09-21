@@ -3,12 +3,20 @@ import * as Plot from "@observablehq/plot";
 import * as d3 from "d3";
 
 export default function Receive(props) {
-  const [regist, setRegist] = useState({});
+  const [regist, setRegist] = useState([]);
   const containerRef = useRef();
 
   useEffect(() => {
     if (regist === undefined) return;
+    const dailyTotals = d3
+      .flatRollup(
+        regist,
+        (visitors) => d3.sum(visitors, (d) => d.count),
+        (d) => d.receive
+      )
+      .map(([receive, count]) => ({ receive, count }));
     const plot = Plot.plot({
+      x: { type: "band" },
       y: { grid: true },
       marginTop: 40,
       marginLeft: 80,
@@ -21,7 +29,16 @@ export default function Receive(props) {
           y: "count",
           sort: "preregist",
           fill: "preregist",
+          title: (d) =>
+            `${d.preregist ? "preregist" : "onsite visitor"}\n${d.receive}\ncount: ${d.count}`,
           tip: true,
+        }),
+        Plot.text(dailyTotals, {
+          x: "receive",
+          y: "count",
+          text: (d) => d.count.toLocaleString(),
+          dy: -12,
+          fontWeight: "bold",
         }),
         Plot.ruleY([0]),
       ],
@@ -31,15 +48,14 @@ export default function Receive(props) {
   }, [regist]);
 
   useEffect(() => {
-    //console.log(props.data);
-    let dat = props.data;
-    let registsum = [];
-    dat.map((d) => {
-      if (d.receive != null) {
-        let day = d.receive.substring(0, d.receive.indexOf("T"));
-        registsum.push({ count: 1, receive: day, preregist: d.preregist });
-      }
-    });
+    const registsum = d3
+      .flatRollup(
+        (props.data ?? []).filter((d) => d.receive != null),
+        (visitors) => visitors.length,
+        (d) => d.receive.split("T")[0],
+        (d) => d.preregist
+      )
+      .map(([receive, preregist, count]) => ({ receive, preregist, count }));
     setRegist(registsum);
   }, [props.data]);
 
