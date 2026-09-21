@@ -112,15 +112,22 @@ export default function HomeMegaShow(props) {
       <div className="w-full flex flex-col items-center justify-center px-8 md:px-8 gap-6">
 
         {/* 1. Hero Banner */}
-        <img
-          src={
-            mobile
-              ? "https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_mb.jpg"
-              : "https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.jpg"
-          }
-          alt="landing_hero"
-          className="mx-auto w-full h-auto max-w-[1040px] object-contain"
-        />
+        <div className=" Hero_Banner w-full max-w-[1040px] flex justify-center">
+          {mobile ? (
+            <img
+              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_mb.jpg"}
+              alt="landing_hero"
+              className="mx-auto w-full h-auto max-w-[1040px] object-contain"
+            />
+          ) : (
+            <img
+              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.jpg"}
+              alt="landing_hero"
+              className="mx-auto w-full h-auto max-w-[1040px] object-contain"
+            />
+          )}
+        </div> 
+          
 
         {/* 2. Atmosphere Section */}
         <div className="w-full max-w-[1040px] flex justify-center">
@@ -144,22 +151,22 @@ export default function HomeMegaShow(props) {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="overflow-hidden rounded-lg aspect-square md:aspect-auto">
-              <img src={require("./img/fur_img1.jpg")} alt="furniture 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              <img src={"https://worldfair.blob.core.windows.net/hms2026landing/fur_img1.jpg"} alt="furniture 1" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="overflow-hidden rounded-lg aspect-square md:aspect-auto">
-              <img src={require("./img/fur_img2.jpg")} alt="furniture 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              <img src={"https://worldfair.blob.core.windows.net/hms2026landing/fur_img2.jpg"} alt="furniture 2" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="overflow-hidden rounded-lg aspect-square md:aspect-auto">
-              <img src={require("./img/fur_img3.jpg")} alt="furniture 3" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              <img src={"https://worldfair.blob.core.windows.net/hms2026landing/fur_img3.jpg"} alt="furniture 3" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="overflow-hidden rounded-lg aspect-square md:aspect-auto">
-              <img src={require("./img/fur_img4.jpg")} alt="furniture 4" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              <img src={"https://worldfair.blob.core.windows.net/hms2026landing/fur_img4.jpg"} alt="furniture 4" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="overflow-hidden rounded-lg aspect-square md:aspect-auto">
-              <img src={require("./img/fur_img5.jpg")} alt="furniture 5" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              <img src={"https://worldfair.blob.core.windows.net/hms2026landing/fur_img5.jpg"} alt="furniture 5" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             </div>
             <div className="overflow-hidden rounded-lg aspect-square md:aspect-auto">
-              <img src={require("./img/fur_img6.jpg")} alt="furniture 6" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+              <img src={"https://worldfair.blob.core.windows.net/hms2026landing/fur_img6.jpg"} alt="furniture 6" className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
             </div>
           </div>
 
@@ -168,7 +175,7 @@ export default function HomeMegaShow(props) {
         {/* 3. Impressions Section */}
         <div className="w-full max-w-[1040px] flex justify-center -mt-3">
           <img
-            src={require("./img/impressions.png")}
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/impressions.png"}
             alt="atmosphere_event"
             className="w-full h-auto object-contain block"
           />
@@ -183,8 +190,8 @@ export default function HomeMegaShow(props) {
             <div className="w-1/2 max-w-[340px] h-[360px] xs:h-[420px] sm:h-[580px] rounded-xl overflow-hidden shadow-lg border border-white/10">
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/ztf13d2TLjs"
-                title="Home MEGA SHOW - Rama 9 Mattress"
+                src="https://www.youtube.com/embed/KP2LqebwgGg"
+                title="Home MEGA SHOW Highlight 1"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               ></iframe>
@@ -207,26 +214,26 @@ export default function HomeMegaShow(props) {
 
         {/* 4. Banner อื่นๆ */}
         <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={require("./img/home.png")} alt="hero" className="w-full h-auto object-contain" />
+          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/home.png"} alt="hero" className="w-full h-auto object-contain" />
         </div>
 
         <div
           className="mx-auto w-full h-auto max-w-[1040px] coursor-pointer"
           onClick={handleScrollToInterested}
         >
-          <img src={require("./img/book.png")} alt="book" className="w-full h-auto object-contain" />
+          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/book.png"} alt="book" className="w-full h-auto object-contain" />
         </div>
 
         <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={require("./img/highlights.png")} alt="highlights" className="w-full h-auto object-contain" />
+          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/highlights.png"} alt="highlights" className="w-full h-auto object-contain" />
         </div>
 
         <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={require("./img/why.png")} alt="why" className="w-full h-auto object-contain" />
+          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/why.png"} alt="why" className="w-full h-auto object-contain" />
         </div>
 
         <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={require("./img/who.png")} alt="who" className="w-full h-auto object-contain" />
+          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/who.png"} alt="who" className="w-full h-auto object-contain" />
         </div>
 
         <div className="w-full flex flex-col items-center">
@@ -236,7 +243,7 @@ export default function HomeMegaShow(props) {
             className="w-full max-w-[1040px] flex justify-center"
           >
             <img
-              src={require("./img/interested.png")}
+              src={"https://worldfair.blob.core.windows.net/hms2026landing/interested.png"}
               alt="interested"
               className="w-full h-auto object-contain block"
             />
@@ -392,9 +399,9 @@ export default function HomeMegaShow(props) {
         </div>
 
 
-        <div className="w-full max-w-[1040px] flex justify-center mb-6">
+        <div className="w-full max-w-[1040px] flex justify-center mb-3">
           <img
-            src={require("./img/exhibitor.png")}
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/exhibitor.png"}
             alt="exhibitor"
             className="w-full h-auto object-contain block"
           />
@@ -404,7 +411,7 @@ export default function HomeMegaShow(props) {
 
 
       {/* Footer ยืดเต็มขอบ โดยใช้ Margin Negative ลบค่า px-8 ออกไป */}
-      <div className="w-full -mx-8 w-[calc(100%+4rem)] mt-6">
+      <div className="w-full -mx-8 w-[calc(100%+4rem)] mt-4">
         <Footer show={1} />
       </div>
 
