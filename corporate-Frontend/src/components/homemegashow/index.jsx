@@ -2,11 +2,13 @@ import React, { useRef, useEffect, useState } from "react";
 import Axios from "axios";
 import useCheckMobile from "../hook/useCheckMobile";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Footer from "../layout/Footer";
 
 export default function HomeMegaShow(props) {
 
   const { cp } = useParams();
+  const navigate = useNavigate();
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_hms;
 
@@ -80,8 +82,7 @@ export default function HomeMegaShow(props) {
         campaign: cp || "0",
       };
 
-      //setExhibitorData(payload);
-
+     
       try {        
         const res = await Axios.post(url + "/submit", payload); 
 
