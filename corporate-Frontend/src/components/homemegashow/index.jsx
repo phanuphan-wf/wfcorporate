@@ -112,10 +112,11 @@ export default function HomeMegaShow(props) {
       <div className="w-full flex flex-col items-center justify-center px-8 md:px-8 gap-6">
 
         {/* 1. Hero Banner */}
-        <img src={
+        <img
+          src={
             mobile
-              ? require("./img/hero_banner_mb.jpg")
-              : require("./img/hero_banner_pc.jpg")
+              ? "https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_mb.jpg"
+              : "https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.jpg"
           }
           alt="landing_hero"
           className="mx-auto w-full h-auto max-w-[1040px] object-contain"
@@ -123,10 +124,8 @@ export default function HomeMegaShow(props) {
 
         {/* 2. Atmosphere Section */}
         <div className="w-full max-w-[1040px] flex justify-center">
-          <img
-            src={require("./img/atmosphere.png")}  
-            //src="https://worldfair.blob.core.windows.net/hms2026langing/atmosphere.png"   
-            //src={require("https://worldfair.blob.core.windows.net/hms2026langing/atmosphere.png")}  
+          <img            
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/atmosphere.png"}  
             alt="atmosphere_event"
             className="w-full h-auto object-contain block"
           />
@@ -136,8 +135,8 @@ export default function HomeMegaShow(props) {
           <div className="w-full aspect-video rounded-xl overflow-hidden shadow-lg">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/bqOwSIhTau0"
-              title="YouTube video player"
+              src="https://www.youtube.com/embed/JcSN2Fr4cR4"
+              title="Home Mega Show"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
             ></iframe>
@@ -195,8 +194,8 @@ export default function HomeMegaShow(props) {
             <div className="w-1/2 max-w-[340px] h-[360px] xs:h-[420px] sm:h-[580px] rounded-xl overflow-hidden shadow-lg border border-white/10">
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/KP2LqebwgGg"
-                title="Home MEGA SHOW Highlight 2"
+                src="https://www.youtube.com/embed/jpuYspzCazw"
+                title="Home MEGA SHOW Impressions 2"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               ></iframe>
