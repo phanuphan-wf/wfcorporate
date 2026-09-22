@@ -190,7 +190,7 @@ export default function HomeMegaShow(props) {
             <div className="w-1/2 max-w-[340px] h-[360px] xs:h-[420px] sm:h-[580px] rounded-xl overflow-hidden shadow-lg border border-white/10">
               <iframe
                 className="w-full h-full"
-                src="https://www.youtube.com/embed/KP2LqebwgGg"
+                src="https://www.youtube.com/embed/thURwQcXd4I"
                 title="Home MEGA SHOW Highlight 1"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
