@@ -1,11 +1,11 @@
 {
     "landing": {
         "lng": "change language",
-        "show": "Furniture Show",
-        "showdate": "18 - 26 กรกฎาคม 2569",
-        "location": "ไบเทค บางนา",
-        "sublocation": "ไบเทค",
-        "hall": "HALL 103-104",
+        "show": "Furniture Grand Sale",
+        "showdate": "3 - 11 ตุลาคม 2569",
+        "location": "อิมแพ็ค เมืองทองธานี",
+        "sublocation": "อิมแพ็ค",
+        "hall": "HALL 9",
         "time": "10.30-20.30 น.",
         "regist": "กรอกข้อมูลรับ",
         "gift": "ของสมนาคุณ",
@@ -31,9 +31,9 @@
     },
     "regist": {
         "lng": "change language",
-        "show": "Furniture Fair",
-        "showdate": "18 - 26 กรกฎาคม 2569",
-        "hall": "HALL 103-104",
+        "show": "Furniture Grand Sale",
+        "showdate": "3 - 11 ต.ค. 2569",
+        "hall": "HALL 9",
         "time": "10.30-20.30 น.",
         "title": "ลงทะเบียนเข้าชมงาน",
         "pre": "ลงทะเบียนเข้าชมงานล่วงหน้า",
@@ -156,6 +156,15 @@
                 ]
             },
             "other": {
+                "name": "หมวดสินค้าอื่นๆ",
+                "select": [
+                    {
+                        "col": "อาหารและเครื่องดื่ม",
+                        "id": "F_food"
+                    }
+                ]
+            },
+            "other-i526": {
                 "name": "หมวดสินค้าอื่นๆ",
                 "select": [
                     {

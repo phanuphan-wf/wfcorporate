@@ -1,11 +1,11 @@
 {
     "landing": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair",
-        "showdate": "July 18 - 26, 2026",
-        "location": "BITEC BANGNA",
-        "sublocation": "BITEC",
-        "hall": "HALL 103-104",
+        "show": "Furniture Grand Sale",
+        "showdate": "October 3 - 11, 2026",
+        "location": "IMPACT , Muang Thong Thani",
+        "sublocation": "IMPACT",
+        "hall": "HALL 9",
         "time": "10.30-20.30 hrs.",
         "regist": "Register to get",
         "gift": "Gift",
@@ -31,9 +31,9 @@
     },
     "regist": {
         "lng": "เปลี่ยนภาษา",
-        "show": "Furniture Fair",
-        "showdate": "July 18 - 26, 2026",
-        "hall": "HALL 103-104",
+        "show": "Furniture Grand Sale",
+        "showdate": "October 3 - 11, 2026",
+        "hall": "HALL 9",
         "time": "10.30-20.30 hrs.",
         "title": "Registration Form",
         "pre": "Preregistration Form",
@@ -156,6 +156,15 @@
                 ]
             },
             "other": {
+                "name": "Other categories",
+                "select": [
+                    {
+                        "col": "Food and beverages",
+                        "id": "F_food"
+                    }
+                ]
+            },
+            "other-i526": {
                 "name": "Other categories",
                 "select": [
                     {
