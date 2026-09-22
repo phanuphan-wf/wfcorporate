@@ -109,19 +109,19 @@ export default function HomeMegaShow(props) {
     <section className="HomeMegaShow w-full flex flex-col items-center justify-center bg-[#100249]">
 
       {/* Container หลักสำหรับควบคุมระยะ Padding ด้านข้างของเนื้อหา */}
-      <div className="w-full flex flex-col items-center justify-center px-8 md:px-8 gap-6">
+      <div className="w-full flex flex-col items-center justify-center px-4 md:px-8 gap-6">
 
         {/* 1. Hero Banner */}
         <div className=" Hero_Banner w-full max-w-[1040px] flex justify-center">
           {mobile ? (
             <img
-              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_mb.jpg"}
+              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_mb.png"}        
               alt="landing_hero"
               className="mx-auto w-full h-auto max-w-[1040px] object-contain"
             />
           ) : (
-            <img
-              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.jpg"}
+            <img            
+              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.png"}              
               alt="landing_hero"
               className="mx-auto w-full h-auto max-w-[1040px] object-contain"
             />
@@ -130,7 +130,7 @@ export default function HomeMegaShow(props) {
           
 
         {/* 2. Atmosphere Section */}
-        <div className="w-full max-w-[1040px] flex justify-center">
+        <div className="w-full max-w-[1040px] flex justify-center -mt-2">
           <img            
             src={"https://worldfair.blob.core.windows.net/hms2026landing/atmosphere.png"}  
             alt="atmosphere_event"
@@ -170,7 +170,7 @@ export default function HomeMegaShow(props) {
             </div>
           </div>
 
-        </div>
+        </div>        
 
         {/* 3. Impressions Section */}
         <div className="w-full max-w-[1040px] flex justify-center -mt-3">
@@ -188,14 +188,14 @@ export default function HomeMegaShow(props) {
 
             {/* วิดีโอที่ 1 */}
             <div className="w-1/2 max-w-[340px] h-[360px] xs:h-[420px] sm:h-[580px] rounded-xl overflow-hidden shadow-lg border border-white/10">
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/thURwQcXd4I"
-                title="Home MEGA SHOW Highlight 1"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/thURwQcXd4I?modestbranding=1&rel=0&controls=1"
+              title="Home MEGA SHOW Highlight 1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
 
             {/* วิดีโอที่ 2 */}
             <div className="w-1/2 max-w-[340px] h-[360px] xs:h-[420px] sm:h-[580px] rounded-xl overflow-hidden shadow-lg border border-white/10">
@@ -212,24 +212,34 @@ export default function HomeMegaShow(props) {
 
         </div>
 
+        <div className="w-full max-w-[1040px] flex justify-center -mt-3">
+          <img            
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/booking.png"}             
+            alt="booking_booth"
+            className="w-full h-auto object-contain block"
+            onClick={handleScrollToInterested}
+          />
+        </div>
+
         {/* 4. Banner อื่นๆ */}
         <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/home.png"} alt="hero" className="w-full h-auto object-contain" />
-        </div>
+          <img 
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/home.png"}           
+            alt="hero" className="w-full h-auto object-contain"
+          />
+        </div>    
 
-        <div
-          className="mx-auto w-full h-auto max-w-[1040px] coursor-pointer"
-          onClick={handleScrollToInterested}
-        >
-          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/book.png"} alt="book" className="w-full h-auto object-contain" />
+        <div className="mx-auto w-full h-auto max-w-[1040px]">
+          <img 
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/highlights.png"}         
+            alt="highlights" className="w-full h-auto object-contain" />
         </div>
 
         <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/highlights.png"} alt="highlights" className="w-full h-auto object-contain" />
-        </div>
-
-        <div className="mx-auto w-full h-auto max-w-[1040px]">
-          <img src={"https://worldfair.blob.core.windows.net/hms2026landing/why.png"} alt="why" className="w-full h-auto object-contain" />
+          <img 
+            //src={require("./img/why.png")}
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/why.png"}
+            alt="why" className="w-full h-auto object-contain" />
         </div>
 
         <div className="mx-auto w-full h-auto max-w-[1040px]">
