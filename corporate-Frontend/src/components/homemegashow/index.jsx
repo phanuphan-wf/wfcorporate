@@ -9,6 +9,10 @@ export default function HomeMegaShow(props) {
   const { cp } = useParams();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("params", cp);
+  }, [cp]);
+
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_hms;
 
   const mobile = useCheckMobile();
@@ -57,7 +61,7 @@ export default function HomeMegaShow(props) {
     product: "0",
     space: "0",
     con_time: "0",
-    campaign: "",
+    campaign: cp,
   };
 
   const [exhibitorData, setExhibitorData] = useState(initExhibitors);
@@ -79,9 +83,6 @@ export default function HomeMegaShow(props) {
       campaign: cp || "0",
     };
 
-    // setExhibitorData(payload);
-    // navigate("/homemegashow/submit");
-
     try {
       const res = await Axios.post(url + "/submit", payload);
 
@@ -95,10 +96,6 @@ export default function HomeMegaShow(props) {
       alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
     }
   };
-
-  useEffect(() => {
-    //console.log(exhibitorData);
-  }, [exhibitorData]);
 
   return (
     <section className="HomeMegaShow w-full flex flex-col items-center justify-center bg-[#100249]">
