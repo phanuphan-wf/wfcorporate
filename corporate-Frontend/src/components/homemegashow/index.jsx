@@ -111,7 +111,7 @@ export default function HomeMegaShow(props) {
         {/* 1. Hero Banner */}
         <div className=" Hero_Banner w-full max-w-[1040px] flex justify-center">          
             <img                 
-              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.png"}              
+              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.jpg"}              
               alt="landing_hero"
               className="mx-auto w-full h-auto max-w-[1040px] object-contain"
             />       
