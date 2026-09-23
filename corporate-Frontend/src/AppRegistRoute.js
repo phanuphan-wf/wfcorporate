@@ -2,9 +2,9 @@ import RegistPage from "./components/registration/I426/registration";
 import PreregistPage from "./components/registration/I426/preregistration";
 import PostPage from "./components/registration/I426/postregister";
 
-import RegistPage_dc from "./components/registration/B426/registration";
-import PreregistPage_dc from "./components/registration/B426/preregistration";
-import PostPage_dc from "./components/registration/B426/postregister";
+import RegistPage_dc from "./components/registration/I526/registration";
+import PreregistPage_dc from "./components/registration/I526/preregistration";
+import PostPage_dc from "./components/registration/I526/postregister";
 
 import Exregist from "./components/exregist/exregist";
 import Exqr from "./components/exregist/exqr";
@@ -15,8 +15,8 @@ import FormRegister from "./components/buyerregist/redeem/registration";
 import PostRedeem from "./components/buyerregist/redeem/postregister";
 import Floorplan from "./components/floorplan/floorplan";
 
-import HomeMegashow from "./components/homemegashow";
-import Submit from "./components/homemegashow/submit";
+import HomeMegashow from "./components/HomeMegaShow/index";
+import Submit from "./components/HomeMegaShow/submit";
 import { path } from "d3";
 
 const AppRegistRoutes = [
@@ -50,19 +50,19 @@ const AppRegistRoutes = [
   },
 
   {
-    path: "b426/preregistration",
+    path: "i526/preregistration",
     element: <PreregistPage_dc />,
   },
   {
-    path: "b426/preregistration/:cp",
+    path: "i526/preregistration/:cp",
     element: <PreregistPage_dc />,
   },
   {
-    path: "b426/registration",
+    path: "i526/registration",
     element: <RegistPage_dc />,
   },
   {
-    path: "b426/postregister/:res/:key",
+    path: "i526/postregister/:res/:key",
     element: <PostPage_dc />,
   },
 
@@ -106,7 +106,6 @@ const AppRegistRoutes = [
     path: "homemegashow/submit",
     element: <Submit />,
   },
-  
 ];
 
 export default AppRegistRoutes;
