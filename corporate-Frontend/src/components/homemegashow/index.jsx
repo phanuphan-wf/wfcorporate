@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
 import Axios from "axios";
-import useCheckMobile from "../hook/useCheckMobile";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Footer from "../layout/Footer";
@@ -11,8 +10,6 @@ export default function HomeMegaShow(props) {
   const navigate = useNavigate();
 
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_hms;
-
-  const mobile = useCheckMobile();
 
   const interestedRef = useRef(null);
 
@@ -112,20 +109,12 @@ export default function HomeMegaShow(props) {
       <div className="w-full flex flex-col items-center justify-center px-4 md:px-8 gap-6">
 
         {/* 1. Hero Banner */}
-        <div className=" Hero_Banner w-full max-w-[1040px] flex justify-center">
-          {mobile ? (
-            <img
-              src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_mb.png"}        
-              alt="landing_hero"
-              className="mx-auto w-full h-auto max-w-[1040px] object-contain"
-            />
-          ) : (
-            <img            
+        <div className=" Hero_Banner w-full max-w-[1040px] flex justify-center">          
+            <img                 
               src={"https://worldfair.blob.core.windows.net/hms2026landing/hero_banner_pc.png"}              
               alt="landing_hero"
               className="mx-auto w-full h-auto max-w-[1040px] object-contain"
-            />
-          )}
+            />       
         </div> 
           
 

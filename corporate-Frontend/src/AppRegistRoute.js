@@ -15,8 +15,8 @@ import FormRegister from "./components/buyerregist/redeem/registration";
 import PostRedeem from "./components/buyerregist/redeem/postregister";
 import Floorplan from "./components/floorplan/floorplan";
 
-import HomeMegashow from "./components/HomeMegaShow/index";
-import Submit from "./components/HomeMegaShow/submit";
+import HomeMegashow from "./components/homemegashow/index";
+import Submit from "./components/homemegashow/submit";
 import { path } from "d3";
 
 const AppRegistRoutes = [
