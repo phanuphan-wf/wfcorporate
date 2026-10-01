@@ -64,10 +64,10 @@ export default function Reservation(props) {
     const res = await Axios.post(url + "/sendReservation", reserveData).then(
       (res) => {
         if (res.status == 200) {
-          alert("Mail sent");
+          alert("Reservation Request Successful");
           setReserveData(initReserveData);
         }
-      }
+      },
     );
   };
 
@@ -170,8 +170,7 @@ export default function Reservation(props) {
               onChange={(e) =>
                 setReserveData({ ...reserveData, product: e.target.value })
               }
-              value={reserveData.product}
-            ></textarea>
+              value={reserveData.product}></textarea>
           </div>
           <div>
             <label for="area">จำนวนพื้นที่ที่ต้องการ (ตร.ม.)</label>
@@ -187,8 +186,7 @@ export default function Reservation(props) {
           <div className="bg-gradient-to-b from-[#FF0000] to-[#640000] p-[2px] cursor-pointer h-fit">
             <div
               className="text-white text-center bg-transparent hover:bg-white hover:text-[#990101] py-2 px-5"
-              onClick={sendMail}
-            >
+              onClick={sendMail}>
               จองพื้นที่แสดงสินค้า
             </div>
           </div>
