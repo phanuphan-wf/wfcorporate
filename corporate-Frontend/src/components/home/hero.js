@@ -6,6 +6,8 @@ import date from "../img/date.svg";
 import time from "../img/time.svg";
 import place from "../img/place.svg";
 
+import Calendar from "./calendar";
+
 export default function Hero(props) {
   const { t, i18n } = useTranslation("common", { keyPrefix: "home" });
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_web;
@@ -82,21 +84,9 @@ export default function Hero(props) {
           </div>
         </div>
         <div className="flex gap-4 sm:gap-8 justify-center">
-          <div
-            id="btnregist"
-            className="w-40 py-3 text-center border bg-white border-white text-[#AE0000] hover:bg-transparent hover:text-white cursor-pointer">
-            {landing == "1" ? (
-              <a href={"/" + data.exID + "/preregistration"}>{t("regist")}</a>
-            ) : (
-              <a
-                href={"/calendar"}
-                className={`after:content-['${t(
-                  "regist"
-                )}'] hover:after:content-['${t("notopen")}']`}>
-                {i18n.language == "en" ? "Registration" : ""}
-              </a>
-            )}
-          </div>
+          
+           <Calendar/>
+
           <div
             id="btnreserve"
             className="w-40 py-3 text-center border border-white bg-black text-white hover:bg-transparent cursor-pointer">
