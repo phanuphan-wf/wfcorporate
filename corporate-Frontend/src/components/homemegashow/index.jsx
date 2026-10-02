@@ -203,7 +203,8 @@ export default function HomeMegaShow(props) {
 
         <div className="w-full max-w-[1040px] flex justify-center -mt-3">
           <img            
-            src={"https://worldfair.blob.core.windows.net/hms2026landing/booking.png"}             
+            src={"https://worldfair.blob.core.windows.net/hms2026landing/booking.png"}  
+            //src={require("./img/booking.png")}        
             alt="booking_booth"
             className="w-full h-auto object-contain block"
             onClick={handleScrollToInterested}
