@@ -68,7 +68,7 @@ export default function ContractInfo() {
     let formattedDate =
       cdate.getDate() +
       " " +
-      smonth[cdate.getMonth()] +
+      tmonth[cdate.getMonth()] +
       " " +
       cdate.getFullYear();
     return formattedDate;
@@ -84,7 +84,7 @@ export default function ContractInfo() {
     let formattedDate =
       cdate.getDate() +
       " " +
-      smonth[cdate.getMonth()] +
+      tmonth[cdate.getMonth()] +
       " " +
       (cdate.getFullYear() + 543);
     return formattedDate;

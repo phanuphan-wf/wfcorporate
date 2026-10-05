@@ -26,6 +26,21 @@ export default function ContractDeco() {
     "ธ.ค.",
   ];
 
+  const tmonth = [
+    "มกราคม",
+    "กุมภาพันธ์",
+    "มีนาคม",
+    "เมษายน",
+    "พฤษภาคม",
+    "มิถุนายน",
+    "กรกฎาคม",
+    "สิงหาคม",
+    "กันยายน",
+    "ตุลาคม",
+    "พฤศจิกายน",
+    "ธันวาคม",
+  ];
+
   const extDay = (d) => {
     let da = d.substring(d.search("-") + 4, d.indexOf("T", d.search("-") + 4));
 
@@ -55,7 +70,7 @@ export default function ContractDeco() {
     let formattedDate =
       cdate.getDate() +
       " " +
-      smonth[cdate.getMonth()] +
+      tmonth[cdate.getMonth()] +
       " " +
       cdate.getFullYear();
     return formattedDate;

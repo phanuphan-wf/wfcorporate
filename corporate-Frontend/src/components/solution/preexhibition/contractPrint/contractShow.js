@@ -66,6 +66,21 @@ export default function ContractShow() {
     "ธ.ค.",
   ];
 
+  const tmonth = [
+    "มกราคม",
+    "กุมภาพันธ์",
+    "มีนาคม",
+    "เมษายน",
+    "พฤษภาคม",
+    "มิถุนายน",
+    "กรกฎาคม",
+    "สิงหาคม",
+    "กันยายน",
+    "ตุลาคม",
+    "พฤศจิกายน",
+    "ธันวาคม",
+  ];
+
   const extDay = (d) => {
     let da = d.substring(d.search("-") + 4, d.indexOf("T", d.search("-") + 4));
 
@@ -75,7 +90,7 @@ export default function ContractShow() {
   const extMonth = (d) => {
     let mo = d.substring(d.indexOf("-") + 1, d.indexOf("-") + 3);
 
-    return smonth[mo - 1];
+    return tmonth[mo - 1];
   };
 
   const extYear = (d) => {
