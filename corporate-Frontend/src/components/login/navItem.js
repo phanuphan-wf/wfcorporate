@@ -208,6 +208,15 @@ const NavItems = [
         ],
       },
       {
+        title: "Customer Data",
+        url: "/solution/datawarehouse/customerdata",
+        show: [
+          { dept: 1, acc: 1 },
+          { dept: 2, acc: 1 },
+          { dept: 3, acc: 1 },         
+        ],
+      },
+      {
         title: "Customer History Data",
         url: "/solution/datawarehouse/customerhistorydata",
         show: [

@@ -10,6 +10,7 @@ import AddNewSign from "./components/solution/datawarehouse/addNewSign";
 import AddNewProduct from "./components/solution/datawarehouse/addNewProduct";
 import EditCustomer from "./components/solution/datawarehouse/editCus";
 import CustomerHistoryData from "./components/solution/datawarehouse/customerHistoryData/customerHistoryData";
+import CustomerData from "./components/solution/datawarehouse/customerData/customerData";
 import VisitorSurvey from "./components/solution/frontdesk/survey/survey";
 import ContractPrint from "./components/solution/preexhibition/contractPrint/contractPrint";
 import CreateExhibition from "./components/solution/datawarehouse/createExhibition/createExhibition";
@@ -151,6 +152,15 @@ const AppProtectRoute = [
       { dept: 2, acc: 2 },
       { dept: 3, acc: 2 },
       { dept: 6, acc: 2 },
+    ],
+  },
+  {
+    path: "datawarehouse/customerdata",
+    element: <CustomerData />,
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 2, acc: 1 },
+      { dept: 3, acc: 1 },       
     ],
   },
   {
