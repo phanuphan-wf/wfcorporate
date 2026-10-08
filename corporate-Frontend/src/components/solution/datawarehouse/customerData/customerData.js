@@ -1,4 +1,4 @@
-import React,{createContext, useState, useEffect} from "react";
+import React,{createContext, useState} from "react";
 
 import CustomerHeader from "./customerHeader";
 import CustomerDataList from "./customerDataList";
@@ -20,9 +20,9 @@ export default function CustomerData(){
    if (!show.some((x) => x.dept === user.Dept && x.acc === user.ALevel)) {
       return (
          <section className="2xl:container">
-         <h1 className="text-xl text-red-500">
-            You are not authorized to view this page
-         </h1>
+            <h1 className="text-xl text-red-500">
+               You are not authorized to view this page
+            </h1>
          </section>
       );
    }

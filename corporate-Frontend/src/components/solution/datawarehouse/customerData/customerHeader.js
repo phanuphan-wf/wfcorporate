@@ -3,7 +3,6 @@ import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 import { dataContext } from "./customerData";
 
-import ModalSeach from "./modalSearch";
 
 export default function CustomerHeader(){
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
@@ -14,91 +13,29 @@ export default function CustomerHeader(){
     };
 
     const { customerC } = useContext(dataContext);
-    const [modalShow, setModalShow] = useState(false);
+    
     const [customer, setCustomer] = customerC;
 
-    const closeModal = () => {
-        setModalShow(false);
-    };
+    const [customerName, setCustomerName] = useState("");  
 
     const pressEnter = (e) => {
         if (e.key == "Enter") {
-            setModalShow(true);
+            setNameClick();
         }
     }
 
-    const fillCustomer = (id, cname) => {
-        setCustomer({ ...customer, customerID: id, Name: cname });
-        setModalShow(false);
+    const setNameClick = () => {
+        setCustomer({ ...customer, customerID: "", Name: customerName });
     }
 
-    const consoleAddr = (data) => {
-        if (data.mainAddr != undefined) {
-        let c = data;
-
-        let ts = "";
-        let td = "";
-        switch (c.mainAddr) {
-            case "กรุงเทพมหานคร":
-            ts = "แขวง";
-            td = "เขต";
-            break;
-            case "กรุงเทพฯ":
-            ts = "แขวง";
-            td = "เขต";
-            break;
-            case "กรุงเทพ":
-            ts = "แขวง";
-            td = "เขต";
-            break;
-            case "กทม":
-            ts = "แขวง";
-            td = "เขต";
-            break;
-            case "กทม.":
-            ts = "แขวง";
-            td = "เขต";
-            break;
-            default:
-            ts = "ตำบล";
-            td = "อำเภอ";
-        }
-
-        return (
-            c.mainAddr.street +
-            " " +
-            ts +
-            c.mainAddr.subDistrict +
-            " " +
-            td +
-            c.mainAddr.district +
-            " " +
-            c.mainAddr.province +
-            " " +
-            c.mainAddr.postal
-        );
-        }
-    };
-
-    const [addr, setAddr] = useState("");
-
-    const getAddr = async () => {
-        const res = await Axios.get(url + "/getCustomerDetail/" + customer.customerID).then((res) => {
-        setAddr(res.data);
-        });
-    };
+    
+    useEffect(() => {
+     // console.log(customerName);
+    }, [customerName]);
 
     useEffect(() => {
-        if (customer.customerID != "") {
-        getAddr();
-        } else {
-        setAddr("");
-        }
-    }, [customer.customerID]);
-
-    useEffect(() => {
-        console.log(addr);
-    }, [addr]);
+     // console.log(customer);
+    }, [customer]);
 
     return (
         <section id="customer-hedaer">
@@ -112,40 +49,24 @@ export default function CustomerHeader(){
                   type="text"
                   id="name"
                   className="w-72"
-                  onChange={(e) =>
-                    setCustomer({ ...customer, Name: e.target.value })
-                  }
-                  onKeyDown={(e) => pressEnter(e)}
-                  value={customer.Name}
+                  onChange={(e) =>setCustomerName(e.target.value)}   
+                  onKeyDown={pressEnter}              
+                  value={customerName}
                 />
                 <div>
                   <button
                     className="btn-green px-3"
-                    onClick={() => setModalShow(true)}
+                    onClick={setNameClick}
                   >
                     search
                   </button>
                 </div>
-              </div>
-    
-              <div className="flex max-md:flex-wrap gap-3 items-start">
-                <label htmlFor="addr" className="">
-                  Main Address:
-                </label>
-                <div>
-                  <span>{consoleAddr(addr)}</span>   
-                </div>
-              </div>
+              </div>    
+             
             </div>
-            {/* <ChdHeaderFilter /> */}
-          </div>
-    
-          <ModalSeach
-            show={modalShow}
-            onHide={closeModal}
-            search={customer.Name}
-            fill={fillCustomer}
-          />
+          
+          </div>    
+       
         </section>
       );
 
