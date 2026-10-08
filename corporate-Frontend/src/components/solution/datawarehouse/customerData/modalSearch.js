@@ -3,7 +3,7 @@ import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 
 export default function ModalSeach(props) {
-  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_chd;
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
   const bearer = useHeader();
 
   Axios.defaults.headers.common = {
@@ -117,7 +117,7 @@ export default function ModalSeach(props) {
               <ul>
                 {customer.map((c) => (
                   <li
-                    onClick={() => nameClick(c.customerID, c.name)}
+                    onClick={() => nameClick(c.id, c.name)}
                     className="cursor-pointer w-fit"
                   >
                     {c.name}

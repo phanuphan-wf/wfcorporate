@@ -5,9 +5,8 @@ import { dataContext } from "./customerData";
 
 import ModalSeach from "./modalSearch";
 
-
 export default function CustomerHeader(){
-    const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_chd;
+    const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
     const bearer = useHeader();
     
     Axios.defaults.headers.common = {
@@ -15,9 +14,7 @@ export default function CustomerHeader(){
     };
 
     const { customerC } = useContext(dataContext);
-
     const [modalShow, setModalShow] = useState(false);
-
     const [customer, setCustomer] = customerC;
 
     const closeModal = () => {
@@ -35,13 +32,13 @@ export default function CustomerHeader(){
         setModalShow(false);
     }
 
-    const consoleAddr = (dat) => {
-        if (dat.province != undefined) {
-        let c = dat;
+    const consoleAddr = (data) => {
+        if (data.mainAddr != undefined) {
+        let c = data;
 
         let ts = "";
         let td = "";
-        switch (c.province) {
+        switch (c.mainAddr) {
             case "กรุงเทพมหานคร":
             ts = "แขวง";
             td = "เขต";
@@ -68,17 +65,17 @@ export default function CustomerHeader(){
         }
 
         return (
-            c.street +
+            c.mainAddr.street +
             " " +
             ts +
-            c.subDistrict +
+            c.mainAddr.subDistrict +
             " " +
             td +
-            c.district +
+            c.mainAddr.district +
             " " +
-            c.province +
+            c.mainAddr.province +
             " " +
-            c.postal
+            c.mainAddr.postal
         );
         }
     };
@@ -86,9 +83,7 @@ export default function CustomerHeader(){
     const [addr, setAddr] = useState("");
 
     const getAddr = async () => {
-        const res = await Axios.get(
-        url + "/getCustomerAddr/" + customer.customerID
-        ).then((res) => {
+        const res = await Axios.get(url + "/getCustomerDetail/" + customer.customerID).then((res) => {
         setAddr(res.data);
         });
     };
@@ -135,12 +130,10 @@ export default function CustomerHeader(){
     
               <div className="flex max-md:flex-wrap gap-3 items-start">
                 <label htmlFor="addr" className="">
-                  Address:
+                  Main Address:
                 </label>
                 <div>
-                  <span>{consoleAddr(addr)}</span>
-                  <br />
-                  <span>โทร. {addr.tel}</span>
+                  <span>{consoleAddr(addr)}</span>   
                 </div>
               </div>
             </div>
