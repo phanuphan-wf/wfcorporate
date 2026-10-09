@@ -3,6 +3,8 @@ import React,{createContext, useState} from "react";
 import CustomerHeader from "./customerHeader";
 import CustomerDataList from "./customerDataList";
 
+import CustomerDetail from "./customerDetail";
+
 import AppProtectRoute from "../../../../AppProtectRoute";
 
 export const dataContext = createContext();
@@ -40,8 +42,10 @@ export default function CustomerData(){
           </div>
 
           <CustomerHeader />
-          <CustomerDataList />
-          
+          <CustomerDataList />    
+
+          {/* <CustomerDetail /> */}
+
 
        </section>
       </dataContext.Provider>

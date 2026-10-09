@@ -3,11 +3,12 @@ import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
 import { dataContext } from "./customerData";
 
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function CustomerDataList() {
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
     const bearer = useHeader();
+    const navigate = useNavigate();
 
     Axios.defaults.headers.common = {
         Authorization: "Bearer " + bearer,
@@ -88,7 +89,9 @@ export default function CustomerDataList() {
 
     const dataEX = (id) => {
         setCustomer({ ...customer, customerID: id});
-        console.log("Customer ID:", id);      
+        console.log("Customer ID:", id);          
+       
+        navigate(`/solution/datawarehouse/customerDetail/${id}`);
     };
 
     useEffect(() => {
