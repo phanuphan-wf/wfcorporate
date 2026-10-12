@@ -109,36 +109,38 @@ export default function CustomerDataList() {
 
     return (
         <section> 
-            <h6 className="mt-4">Customer Data List</h6>
-                <div id="hislist" className="w-full mb-8">
-                    <table className="w-full">
-                        <thead>
-                            <tr>
-                                <th className="bg-zinc-100 rounded-tl-md">no#</th>
-                                <th className="bg-zinc-100 border-l-2 border-gay">Exhibitor Name</th>
-                                <th className="bg-zinc-100 border-l-2 border-gay">Address</th>                               
-                                <th className="bg-zinc-100 border-l-2 border-gay">Tel</th>                                                   
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {hisfilter.map((data, i) => (
-                                <tr key={i} className="last:border-b-2 border-zinc-100">
-                                    <td className="text-center border-t-2 border-zinc-100 p-2">{i + 1}</td>
-                                    <td
-                                        className="text-center border-t-2 border-l-2 border-zinc-100 p-2 cursor-pointer text-blue-600 hover:underline"
-                                        onClick={() => dataEX(data.id)}
-                                    >
-                                    {data.name}
-                                    </td>
-                                    <td className="text-center border-t-2 border-l-2 border-zinc-100 p-2">{formatAddress(data)}</td>
-                                    <td className="border-t-2 border-l-2 border-r-2 border-zinc-100 p-2 whitespace-nowrap text-center">{formatPhone(data.tel)}</td>
-                                                                 
-                                      
+            {hisfilter.length > 0 && (
+                <>
+                    <h6 className="mt-4 font-semibold text-gray-700">Customer Data List</h6>
+                    <div id="hislist" className="w-full mb-8 overflow-x-auto">
+                        <table className="w-full border-collapse">
+                            <thead>
+                                <tr>
+                                    <th className="bg-zinc-100 rounded-tl-md p-2">no#</th>
+                                    <th className="bg-zinc-100 border-l-2 border-gray-200 p-2">Exhibitor Name</th>
+                                    <th className="bg-zinc-100 border-l-2 border-gray-200 p-2">Address</th>                            
+                                    <th className="bg-zinc-100 border-l-2 border-gray-200 p-2">Tel</th>                                                                             
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {hisfilter.map((data, i) => (
+                                    <tr key={data.id || i} className="last:border-b-2 border-zinc-100">
+                                        <td className="text-center border-t-2 border-zinc-100 p-2">{i + 1}</td>
+                                        <td
+                                            className="text-center border-t-2 border-l-2 border-zinc-100 p-2 cursor-pointer text-blue-600 hover:underline"
+                                            onClick={() => dataEX(data.id)}
+                                        >
+                                            {data.name}
+                                        </td>
+                                        <td className="text-center border-t-2 border-l-2 border-zinc-100 p-2">{formatAddress(data)}</td>
+                                        <td className="border-t-2 border-l-2 border-r-2 border-zinc-100 p-2 whitespace-nowrap text-center">{formatPhone(data.tel)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            )}
         </section>
     );
 }

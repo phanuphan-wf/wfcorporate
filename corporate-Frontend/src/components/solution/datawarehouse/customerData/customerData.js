@@ -17,6 +17,8 @@ export default function CustomerData(){
 
    const user = JSON.parse(localStorage.getItem("user"));
 
+
+
    if (!show.some((x) => x.dept === user.Dept && x.acc === user.ALevel)) {
       return (
          <section className="2xl:container">

@@ -53,18 +53,16 @@ export default function CustomerDetail() {
     useEffect(() => {
         console.log(customerData);
     }, [customerData]);
-
    
 
     if (loading) {
         return <div className="p-6 text-center">Loading...</div>;
     }
-    
+        
     const customerName = customerData.customer;
     const sign = customerData.sign;
     const mainAddr = customerData.mainAddr;
     const taxAddr = customerData.taxAddr;
-
   
 
     const editSign = (id) => {

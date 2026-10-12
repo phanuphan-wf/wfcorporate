@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import useHeader from "../../../hook/useHeader";
 
-export default function CustomerDetail({ customerName, onUpdateSuccess }) {
+export default function CustomerDetail({customerName}) {
     const bearer = useHeader();
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
 
@@ -46,38 +46,41 @@ export default function CustomerDetail({ customerName, onUpdateSuccess }) {
     // ปุ่มกด Cancel
     const handleCancel = () => {
         setIsEdit(false);
-        subName(customerName?.name); // คืนค่าเดิม
+        subName(customerName?.name); 
     };
 
-    // ปุ่มกด Save ส่งข้อมูลไปยัง API
+    
     const handleSave = async () => {
         if (!ctName.trim()) {
             alert("กรุณากรอกชื่อลูกค้า");
             return;
-        }
-
-        try {
+        }        
             const payload = {
-                name: ctName.trim(),
-                type: customerType,
+                //name: ctName.trim(),
+               // type: customerType,
+               name : "เครี่ เดอะเดย์ บายจาโฮม",
+               type : "บริษัท",
             };
 
-            await Axios.put(`${url}/editCustomer/${customerName?.id}`, payload);
+            //const id =  customerName.id;
+            const id =  12694;
+            console.log(payload);
+            console.log(id);
 
-            alert("บันทึกข้อมูลสำเร็จ!");
-            setIsEdit(false);
-
-            // แจ้งให้ Component แม่รับรู้เพื่อดึง/อัปเดตข้อมูลใหม่ (ถ้ามี)
-            if (onUpdateSuccess) {
-                onUpdateSuccess();
-            }
+        try {
+            const res = await Axios.put(url + "/editCustomer/" + id,payload);
+            if (res.data == 200) {
+                alert("บันทึกข้อมูลสำเร็จ!");
+                setIsEdit(false);
+            }    
+           
         } catch (error) {
             console.error("Error updating customer name:", error);
-            alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+            alert("Error update customer");
         }
     };
 
-    // เรียก subName แยกประเภท/ชื่อทันทีเมื่อ customerName เปลี่ยนแปลง
+    
     useEffect(() => {
         if (customerName?.name) {
             subName(customerName.name);
@@ -86,8 +89,8 @@ export default function CustomerDetail({ customerName, onUpdateSuccess }) {
 
     // Debug เช็กค่า
     useEffect(() => {
-        console.log("Customer Type:", customerType);
-        console.log("Customer Name Only:", ctName);
+        //console.log("Customer Type:", customerType);
+       // console.log("Customer Name Only:", ctName);
     }, [customerType, ctName]);
 
     return (
@@ -130,14 +133,14 @@ export default function CustomerDetail({ customerName, onUpdateSuccess }) {
                 <>
                     <button
                         type="button"
-                        className="ml-2 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-sm transition"
+                        className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 text-sm transition"
                         onClick={handleSave}
                     >
                         Save
                     </button>
                     <button
                         type="button"
-                        className="ml-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm transition"
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm transition"
                         onClick={handleCancel}
                     >
                         Cancel
