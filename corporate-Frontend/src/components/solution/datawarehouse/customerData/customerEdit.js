@@ -2,37 +2,86 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import useHeader from "../../../hook/useHeader";
 
-export default function CustomerDetail({customerName}) {
+export default function CustomerDetail({customerName, onUpdate}) {   
+    
     const bearer = useHeader();
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
-
+    const urlType = process.env.REACT_APP_API_URI + process.env.REACT_APP_ctm;
     Axios.defaults.headers.common = {
         Authorization: "Bearer " + bearer,
     };
-
+    
     const [isEdit, setIsEdit] = useState(false);
-    const [ctName, setCtName] = useState("");
-    const [customerType, setCustomerType] = useState("");
 
-    // ฟังก์ชันแยกประเภท และชื่อลูกค้า
+    const [ctName, setCtName] = useState("");
+    const [customerType, setCustomerType] = useState(1);
+
+    const [ctype, setCtype] = useState([]);
+ 
+
+
+    const getType = async () => {
+        try {
+            const res = await Axios.get(urlType + "/getCType");
+            setCtype(res.data);
+        } catch (error) {
+            console.error("Error fetching customer types:", error);
+        }
+    };
+     
+
+    
     const subName = (nameStr = "") => {
-        if (!nameStr) {
-            setCustomerType("");
-            setCtName("");
+        if (!nameStr || ctype.length === 0) {
+            setCustomerType(1);
+            setCtName(nameStr || "");
+
             return;
         }
 
-        const prefixes = ["บริษัท", "ห้าง", "ร้าน"];
         const trimmedName = nameStr.trim();
 
-        const matchedPrefix = prefixes.find((prefix) => trimmedName.startsWith(prefix));
+        // 1. เคสพิเศษ: บริษัทจำกัดมหาชน (ID: 7) เช่น "บริษัท เมเจอร์ ซีนีแพล็ก กรุ๊ป (มหาชน) จำกัด"
+        if (trimmedName.startsWith("บริษัท") && trimmedName.includes("มหาชน")) {
+            setCustomerType(7);
+            let remaining = trimmedName.replace(/^บริษัท\s*/, ""); // ตัด "บริษัท " ข้างหน้า
+            remaining = remaining.replace(/\s*\(มหาชน\)\s*จำกัด$/, ""); // ตัด "(มหาชน) จำกัด" ข้างหลัง
+            remaining = remaining.replace(/\s*จำกัด\s*\(มหาชน\)$/, ""); // เผื่อกรณีสลับคำ
+            setCtName(remaining.trim());
+            return;
+        }
 
-        if (matchedPrefix) {
-            const remainingName = trimmedName.slice(matchedPrefix.length).trim();
-            setCustomerType(matchedPrefix);
+        // 2. เคสพิเศษ: บริษัทจำกัดทั่วไป (ID: 2) เช่น "บริษัท เครี่ เดอะเดย์ บายจา จำกัด"
+        if (trimmedName.startsWith("บริษัท") && trimmedName.endsWith("จำกัด")) {
+            setCustomerType(2);
+            let remaining = trimmedName.replace(/^บริษัท\s*/, ""); // ตัด "บริษัท " ข้างหน้า
+            remaining = remaining.replace(/\s*จำกัด$/, "");      // ตัด " จำกัด" ข้างหลัง
+            setCtName(remaining.trim());
+            return;
+        }
+
+        // 3. เคสทั่วไปสำหรับประเภทอื่นๆ (ร้าน, หจก., ฯลฯ)
+        const validTypes = ctype.filter((t) => t.type && t.type.trim() !== "");
+        const sortedCtype = [...validTypes].sort((a, b) => b.type.trim().length - a.type.trim().length);
+
+        let matchedType = sortedCtype.find((t) => trimmedName.startsWith(t.type.trim()));
+        if (!matchedType) {
+            matchedType = sortedCtype.find((t) => {
+                const cleanType = t.type.trim();
+                return trimmedName.endsWith(cleanType) || trimmedName.includes(cleanType);
+            });
+        }
+
+        if (matchedType) {
+            const cleanType = matchedType.type.trim();
+            const regex = new RegExp(cleanType, 'g');
+            const remainingName = trimmedName.replace(regex, "").trim();
+
+            setCustomerType(matchedType.id);
             setCtName(remainingName);
         } else {
-            setCustomerType("");
+            // ถ้าไม่เข้าเงื่อนไขไหนเลย ให้เป็น ID 1 (none)
+            setCustomerType(1); 
             setCtName(trimmedName);
         }
     };
@@ -54,39 +103,54 @@ export default function CustomerDetail({customerName}) {
         if (!ctName.trim()) {
             alert("กรุณากรอกชื่อลูกค้า");
             return;
-        }        
-            const payload = {
-                //name: ctName.trim(),
-               // type: customerType,
-               name : "เครี่ เดอะเดย์ บายจาโฮม",
-               type : "บริษัท",
+        }                   
+            const id =  customerName.id;              
+            const playload = {
+                name: ctName.trim(),
+                type: customerType,              
             };
 
-            //const id =  customerName.id;
-            const id =  12694;
-            console.log(payload);
-            console.log(id);
 
         try {
-            const res = await Axios.put(url + "/editCustomer/" + id,payload);
-            if (res.data == 200) {
-                alert("บันทึกข้อมูลสำเร็จ!");
-                setIsEdit(false);
-            }    
-           
+            await Axios.put(url + "/editCustomer/" + id, playload);
         } catch (error) {
             console.error("Error updating customer name:", error);
             alert("Error update customer");
+            return;
+        }
+
+        alert("บันทึกข้อมูลสำเร็จ!");
+        setIsEdit(false);
+
+        if (onUpdate) {
+            try {
+                await onUpdate();
+            } catch (error) {
+                console.error("Error refreshing customer detail:", error);
+                alert("บันทึกข้อมูลสำเร็จ แต่ไม่สามารถโหลดข้อมูลล่าสุดได้");
+            }
         }
     };
 
-    
     useEffect(() => {
-        if (customerName?.name) {
-            subName(customerName.name);
-        }
+        getType();
     }, [customerName]);
 
+    
+    useEffect(() => {
+        if (customerName?.name && ctype.length > 0) {
+            subName(customerName.name);
+        }
+    }, [customerName, ctype]);
+
+    // 3. useEffect สำหรับ Debug ค่าที่จะแสดงผล (พิมพ์ออกมาเฉพาะตอนค่าเปลี่ยนจริง ๆ)
+    useEffect(() => {
+        console.log("--- Debug State ---");
+        console.log(customerType);
+        console.log(ctName);
+    }, [customerType, ctName]);
+
+    
     // Debug เช็กค่า
     useEffect(() => {
         //console.log("Customer Type:", customerType);
@@ -107,10 +171,11 @@ export default function CustomerDetail({customerName}) {
                         onChange={(e) => setCustomerType(e.target.value)}
                         className="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="">-- ไม่ระบุ --</option>
-                        <option value="ร้าน">ร้าน</option>
-                        <option value="บริษัท">บริษัท</option>
-                        <option value="ห้าง">ห้าง</option>
+                         {ctype.map((t, i) => (
+                            <option value={t.id} key={"customerType-" + i}>
+                            {t.id == 1 ? "none" : t.type}
+                            </option>
+                        ))}
                     </select>
 
                     {/* ช่องแก้ไขชื่อเฉพาะ (ไม่มีคำว่า บริษัท/ห้าง/ร้าน ติดอยู่) */}

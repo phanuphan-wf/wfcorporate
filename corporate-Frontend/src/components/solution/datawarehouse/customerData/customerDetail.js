@@ -65,9 +65,9 @@ export default function CustomerDetail() {
     const taxAddr = customerData.taxAddr;
   
 
-    const editSign = (id) => {
-        console.log("Edit sign with ID:", id);
-    };
+    // const editSign = (id) => {
+    //     console.log("Edit sign with ID:", id);
+    // };
 
     return (
         <section id="customer-detail">
@@ -77,16 +77,19 @@ export default function CustomerDetail() {
 
             <div className="flex flex-row items-start justify-between">
                 <div className="basis-2/3">
-                     <CustomerEdit  customerName={customerName}/>
+                     <CustomerEdit
+                        customerName={customerName}
+                        onUpdate={() => customerDetail(id)}
+                    />
 
                     <div className="flex flex-wrap items-center mt-4">
                         <label htmlFor="sNo" className="mr-2 flex-shrink-0">Sign Name :</label>
                         <label htmlFor="sNo" className="mr-2 flex-shrink-0">
-                            {sign.signperson || "-"}
+                            {sign?.signperson || "-"}
                         </label>
                         <button
                             className="btn-green px-3"
-                            onClick={() => editSign(sign.id)}
+                            // onClick={() => editSign(sign.id)}
                         >
                             Edit Signname
                         </button>
