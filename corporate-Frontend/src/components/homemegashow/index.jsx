@@ -58,9 +58,11 @@ export default function HomeMegaShow(props) {
   };
 
   const [exhibitorData, setExhibitorData] = useState(initExhibitors);
+  const [onSubmit, setOnSubmit] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setOnSubmit(true);
 
     const formData = new FormData(e.currentTarget);
 
@@ -85,16 +87,18 @@ export default function HomeMegaShow(props) {
       if (res.status === 200) {
         //alert("บันทึกข้อมูลสำเร็จเรียบร้อย!");
         setExhibitorData(payload);
+        setOnSubmit(false);
         navigate("/homemegashow/submit");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("เกิดข้อผิดพลาดในการส่งข้อมูล");
+      setOnSubmit(false);
     }
   };
 
   useEffect(() => {
-    console.log(exhibitorData);
+    //console.log(exhibitorData);
   }, [exhibitorData]);
 
   return (
@@ -228,7 +232,6 @@ export default function HomeMegaShow(props) {
         </div>
 
         <div className="w-full max-w-[1040px] flex justify-center -mt-3">
-
           <img
             src={
               "https://worldfair.blob.core.windows.net/hms2026landing/booking.png"
@@ -459,6 +462,7 @@ export default function HomeMegaShow(props) {
               <button
                 type="submit"
                 className="w-full mt-4 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-4 py-3 text-center leading-5 shadow-lg hover:scale-[1.005] active:scale-[0.995] transition-all duration-200"
+                disabled={onSubmit}
                 //onClick={submitData}
               >
                 ลงทะเบียนรับสิทธิพิเศษ
@@ -479,7 +483,7 @@ export default function HomeMegaShow(props) {
       </div>
 
       {/* Footer ยืดเต็มขอบ โดยใช้ Margin Negative ลบค่า px-8 ออกไป */}
-      <div className="w-full -mx-8 w-[calc(100%+4rem)] mt-4">
+      <div className="-mx-8 w-[calc(100%+4rem)] mt-4">
         <Footer show={1} />
       </div>
     </section>
