@@ -18,7 +18,8 @@ export default function CustomerDataList() {
     const [customer, setCustomer] = customerC;
 
     const [hisfilter, setHisfilter] = useState([]);
-
+ 
+    const [isNotFound, setIsNotFound] = useState(false);
 
     const formatAddress = (data) => {
         if (!data) return "-";
@@ -80,7 +81,15 @@ export default function CustomerDataList() {
         try {
             const encodedName = encodeURIComponent(customer.Name.trim());
             const res = await Axios.get(url + "/getCustomer/" + encodedName);
-            setHisfilter(res.data || []);
+            const dataList = res.data || [];
+            setHisfilter(dataList);
+
+            // ถ้าค้นหาแล้วไม่พบข้อมูล (อาเรย์ว่าง) ให้เปิด Modal
+            if (dataList.length === 0) {
+                setIsNotFound(true);
+            } else {
+                setIsNotFound(false);
+            }
         } catch (error) {            
             console.error("Error fetching customer list:", error);
             setHisfilter([]);
@@ -99,11 +108,12 @@ export default function CustomerDataList() {
             CustomerSearch();
         }else {
             setHisfilter([]);
+            
         }
     }, [customer.Name]);
 
     useEffect(() => {
-        //console.log(hisfilter);
+        //console.log(hisfilter);       
     }, [hisfilter]);
     
 
@@ -141,6 +151,25 @@ export default function CustomerDataList() {
                     </div>
                 </>
             )}
+
+            
+            {isNotFound && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-white rounded-lg p-6 w-full max-w-sm text-center shadow-lg">
+                        <h3 className="text-lg font-bold text-gray-800 mb-2">No information found.</h3>
+                        <p className="text-sm text-gray-600 mb-4">Please enter the name again.</p>
+                        <button
+                            type="button"
+                            className="btn-green text-white px-4 py-2 rounded hover:btn-green-600 text-sm"
+                            onClick={() => setIsNotFound(false)}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            
         </section>
     );
 }

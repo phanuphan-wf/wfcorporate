@@ -220,23 +220,28 @@ export default function CustomerDetail() {
                     </div>
                 </div>
 
-                <div className="space-y-6">
-                    {mainProduct && (
+                <div className="space-y-6">                  
                         <div className="border-2 border-emerald-500 bg-emerald-50/60 rounded-md p-5 relative shadow-md mt-5">
                             <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-emerald-500">
                                 Main Product
                             </span>
+                            {mainProduct ? (
+                                <div className="mt-1">
+                                    <span className="text-xl text-emerald-950">
+                                        สินค้าหลัก : {mainProduct.name}
+                                    </span>
+                                    <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+                                        รายละเอียด : {mainProduct.detail || "-"}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="mt-1 text-sm text-gray-500">
+                                    
+                                </div>
+                            )}
 
-                            <div className="mt-1">
-                                <span className="text-xl text-emerald-950">
-                                    สินค้าหลัก : {mainProduct.name}
-                                </span>
-                                <p className="text-sm text-gray-700 mt-2 leading-relaxed">
-                                    รายละเอียด : {mainProduct.detail || "-"}
-                                </p>
-                            </div>
                         </div>
-                    )}
+                   
 
                     <div className="border border-red-500 rounded-md p-4 relative bg-white mt-5">
                         <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">

@@ -25,16 +25,20 @@ export default function CustomerHeader(){
     }
 
     const setNameClick = () => {
+        if (customerName =="") {
+            alert("Please enter a customer to search.");
+            return;
+        }
         setCustomer({ ...customer, customerID: "", Name: customerName });
     }
 
     
     useEffect(() => {
-     // console.log(customerName);
+      //console.log(customerName);
     }, [customerName]);
 
     useEffect(() => {
-     // console.log(customer);
+      //console.log(customer);
     }, [customer]);
 
     return (
