@@ -51,7 +51,7 @@ export default function CustomerDetail() {
     }, [id]);
 
     useEffect(() => {
-        console.log(customerData);
+       // console.log(customerData);
     }, [customerData]);
    
 
