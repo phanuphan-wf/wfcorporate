@@ -25,7 +25,7 @@
 .env.test.local
 .env.production.local
 .env.production
-AGENTS.mdAGENTS.md
+AGENTS.md
 
 
 npm-debug.log*
