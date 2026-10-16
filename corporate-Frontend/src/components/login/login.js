@@ -38,6 +38,7 @@ export default function Login(props) {
       if (result.status === 204) setError("Username หรือ Password ไม่ถูกต้อง หรือไม่มีสิทธิ์เข้าใช้งาน");
       else if (result.data.code === 300) setModalChangeOpen(true);
       else if (result.data.code === 206) setChallenge(result.data);
+      else if (result.data.code === 202 && result.data.accessToken) await finishLogin(result.data);
       else setError("รูปแบบการตอบกลับไม่ถูกต้อง กรุณาติดต่อผู้ดูแลระบบ");
     } catch (error) { requestError(error); }
     finally { setVerify(false); }

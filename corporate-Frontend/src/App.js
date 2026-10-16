@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { useAuth } from "./components/hook/useAuth";
+import UserNavMenu from "./components/login/NavMenu";
 import { useCookies } from "react-cookie";
 
 import "./custom.css";
@@ -20,6 +22,10 @@ import { useLocalStorage } from "./components/hook/useLocalStorage";
 
 export default function App(props) {
   const version = process.env.REACT_APP_VERSION;
+  const { user } = useAuth();
+  const { pathname } = useLocation();
+  const [solutionMenuOpen, setSolutionMenuOpen] = useState(false);
+  const isSolutionPage = pathname === "/solution" || pathname.startsWith("/solution/");
 
   const [cookies, setCookie, removeCookie] = useCookies([]);
   const cVersion = cookies.x_client_version;
@@ -50,6 +56,9 @@ export default function App(props) {
   TagManager.initialize({ gtmId: "GTM-WF82RCBH" }); //BrandStrom
 
   return (
+    <>
+      {user && <UserNavMenu menu={setSolutionMenuOpen} />}
+      <div className={user && !isSolutionPage ? "pt-[75px] print:pt-0" : ""}>
     <Routes>
       <Route element={<Layout />}>
         {AppRoutes.map((route, i) => (
@@ -67,7 +76,7 @@ export default function App(props) {
         ))}
       </Route>
       <Route exact path="/login" element={<Login />} />
-      <Route path="/solution" element={<ProtectedRoute />}>
+      <Route path="/solution" element={<ProtectedRoute menuOpen={solutionMenuOpen} />}>
         {AppProtectRoute.map((route, i) => (
           <Route key={i} path={route.path} element={route.element} />
         ))}
@@ -79,5 +88,7 @@ export default function App(props) {
         ))}
       </Route>
     </Routes>
+      </div>
+    </>
   );
 }

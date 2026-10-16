@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import useCheckMobile from "../hook/useCheckMobile";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { MdArrowForwardIos } from "react-icons/md";
@@ -7,7 +8,7 @@ import { useLocalStorage } from "../hook/useLocalStorage";
 
 import NavItems from "./navItem";
 
-export default function NavMenu(props) {
+export default function NavMenu({ menu }) {
   const [user, setUser] = useState({});
   const { logout } = useAuth();
 
@@ -47,14 +48,14 @@ export default function NavMenu(props) {
   const Acc = useLocalStorage("user")[0].ALevel;
 
   useEffect(() => {
-    props.menu(click);
-  }, [click]);
+    menu(click);
+  }, [click, menu]);
 
   return (
     <div>
-      <div className="relative z-[999] print:hidden">
+      <div className="relative z-[1100] print:hidden">
         <nav>
-          <div className="fixed top-0 z-[997] w-full flex justify-between items-center px-5 p-3 shadow-lg bg-white">
+          <div className="fixed top-0 left-0 z-[997] w-full flex justify-between items-center px-5 p-3 shadow-lg bg-white">
             <div className="flex items-center gap-2">
               <div className="md:hidden" onClick={menuClick}>
                 <div
@@ -116,6 +117,15 @@ export default function NavMenu(props) {
                 }`}
               >
                 <ul>
+                  <li>
+                    <Link
+                      to="/solution/dashboard"
+                      onClick={() => { setDrop(false); setClick(false); }}
+                      className="block py-2 px-4 hover:bg-slate-400 hover:text-white"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
                   <li className="py-2 px-4 hover:bg-slate-400 hover:text-white">
                     Profile
                   </li>
