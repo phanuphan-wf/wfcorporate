@@ -98,7 +98,7 @@ export default function CustomerDataList() {
 
     const dataEX = (id) => {
         setCustomer({ ...customer, customerID: id});
-        console.log("Customer ID:", id);          
+        //console.log("Customer ID:", id);          
        
         navigate(`/solution/datawarehouse/customerDetail/${id}`);
     };

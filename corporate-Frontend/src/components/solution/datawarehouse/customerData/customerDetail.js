@@ -6,16 +6,20 @@ import useHeader from "../../../hook/useHeader";
 import CustomerEdit from "./customerEdit";
 import ModalEditSign from "../../preexhibition/contractReceive/modalEditSign";
 import ModalEditAddr from "../../preexhibition/contractReceive/modalEditAddr";
-import ModalEditProduct  from "../../preexhibition/contractReceive/modalEditProduct";
+//import ModalEditProduct from "./modalEditProduct";
+import ModalEditProduct from "../../preexhibition/contractReceive/modalEditProduct";
+
 
 import { HiArrowLeft } from "react-icons/hi2";
-import { GoHome } from "react-icons/go";
+
 
 export default function CustomerDetail() {
-    const { id } = useParams();
+    const { id } = useParams();    
     const navigate = useNavigate();
     const bearer = useHeader();
     const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
+    const urlctm = process.env.REACT_APP_API_URI + process.env.REACT_APP_ctm;
+
     Axios.defaults.headers.common = {
         Authorization: "Bearer " + bearer,
     };
@@ -23,8 +27,12 @@ export default function CustomerDetail() {
     const [customerData, setCustomerData] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [mainProduct, setmainProduct] = useState("");
+    const [products, setProducts] = useState([]);
+
     const [modalSign, setModalSign] = useState(false);
     const closeModalSign = () => {
+        customerDetail(id);
         setModalSign(false);
     };
     const editSign = () => {
@@ -32,25 +40,25 @@ export default function CustomerDetail() {
         setModalSign(false);
     };
 
-
     const [modalAddr, setModalAddr] = useState(false);
     const closeModalAddr = () => {
+        customerDetail(id);
         setModalAddr(false);
     };
     const editAddr = () => {
         customerDetail(id);
         setModalAddr(false);
-    };
-   
-
-    const [mainProduct, setmainProduct] = useState("");
-    const [products, setProducts] = useState([]);
+    };    
 
     const [modalProduct, setModalProduct] = useState(false);
-
     const closeModalProduct = () => {
+        customerDetail(id);
         setModalProduct(false);
     };
+    const editProducts = () => {
+        customerDetail(id);
+        setModalProduct(false);
+    }
 
     const customerDetail = async (id) => {
         try {
@@ -77,7 +85,7 @@ export default function CustomerDetail() {
     }, [id]);
 
     useEffect(() => {
-        // console.log(customerData);
+        //console.log(customerData);
     }, [customerData]);
 
 
@@ -90,7 +98,24 @@ export default function CustomerDetail() {
     const mainAddr = customerData.mainAddr;
     const taxAddr = customerData.taxAddr;
 
+    
+    const ProductDefault = async (productID) => {
 
+        const isConfirmed = window.confirm("Do you want to set this as the primary product?");
+        if (!isConfirmed) return;
+
+        const cid = id;
+        const pid = productID;      
+
+        try {
+            const res = await Axios.put(urlctm + "/updateProductDefault/" + cid + "/" + pid);
+            customerDetail(id);   
+
+        } catch (error) {
+            console.error("Error updating default product:", error);
+            alert(error);
+        }
+    };
 
 
     return (
@@ -155,7 +180,7 @@ export default function CustomerDetail() {
                             Edit data
                         </button>
                     </div>
-                    
+
                     <div className="border border-gray-300 rounded-md p-4 relative bg-white">
                         <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
                             Main Address
@@ -302,29 +327,42 @@ export default function CustomerDetail() {
                         <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
                             Other Products ({products.length} รายการ)
                         </span>
-                        <div className="mt-1">
+                        <div className="mt-1 space-y-3">
                             {products.map((item) => (
                                 <div
                                     key={item.productID}
                                     className="border border-gray-200 bg-white rounded-lg p-4 hover:border-gray-300 transition-shadow shadow-sm"
                                 >
-                                    <div className="flex justify-between items-start">
-                                        <h6 className="font-medium text-gray-800 text-base">
-                                            สินค้าอื่นๆ : {item.name}
-                                        </h6>
-                                        {item.brand && (
-                                            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
-                                                {item.brand}
-                                            </span>
-                                        )}
+                                    {/* จัดกลุ่มหัวข้อให้อยู่ซ้าย และปุ่มชิดขวา */}
+                                    <div className="flex justify-between items-start gap-4">
+                                        {/* ฝั่งซ้าย: ชื่อสินค้า และ Brand */}
+                                        <div className="space-y-1">
+                                            <h6 className="font-medium text-gray-800 text-base">
+                                                สินค้าอื่นๆ : {item.name}
+                                            </h6>
+                                            {item.brand && (
+                                                <span className="inline-block text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                                                    {item.brand}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                   
+                                        <button
+                                            type="button"
+                                            className="btn-green px-2  text-sm whitespace-nowrap disabled:opacity-50 disabled:hover:bg-[green] disabled:hover:text-white"
+                                            onClick={() => ProductDefault(item.productID)}
+                                        >
+                                            Set Product
+                                        </button>
                                     </div>
+
                                     <p className="text-sm text-gray-600 mt-2 line-clamp-3">
                                         รายละเอียด : {item.detail || "-"}
                                     </p>
                                 </div>
                             ))}
                         </div>
-
                     </div>
 
                     <ModalEditSign
@@ -334,7 +372,7 @@ export default function CustomerDetail() {
                         aftEditSign={editSign}
                     />
 
-                      <ModalEditAddr
+                    <ModalEditAddr
                         show={modalAddr}
                         onHide={closeModalAddr}
                         cid={id}
@@ -344,6 +382,7 @@ export default function CustomerDetail() {
                         show={modalProduct}
                         onHide={closeModalProduct}
                         cid={id}
+                        aftProducts={editProducts}
                     />
 
                 </div>
