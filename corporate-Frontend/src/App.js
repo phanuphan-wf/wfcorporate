@@ -3,6 +3,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { useAuth } from "./components/hook/useAuth";
 import UserNavMenu from "./components/login/NavMenu";
 import { useCookies } from "react-cookie";
+import CookieConsent from "./components/layout/CookieConsent";
+import { startVersionMonitor } from "./config/versionMonitor";
 
 import "./custom.css";
 
@@ -18,7 +20,6 @@ import AppRouteFinance from "./AppRouteFinance";
 import AppRouteManagement from "./AppRouteManagement";
 
 import TagManager from "react-gtm-module";
-import { useLocalStorage } from "./components/hook/useLocalStorage";
 
 export default function App(props) {
   const version = process.env.REACT_APP_VERSION;
@@ -27,8 +28,7 @@ export default function App(props) {
   const [solutionMenuOpen, setSolutionMenuOpen] = useState(false);
   const isSolutionPage = pathname === "/solution" || pathname.startsWith("/solution/");
 
-  const [cookies, setCookie, removeCookie] = useCookies([]);
-  const cVersion = cookies.x_client_version;
+  const [, setCookie] = useCookies(["x_client_version"]);
 
   useEffect(() => {
     document.title = "Thailand's Leading Consumer Show Organizer | World Fair";
@@ -36,19 +36,10 @@ export default function App(props) {
   }, []);
 
   useEffect(() => {
-    if ("caches" in window) {
-      if (cVersion !== version) {
-        caches.keys().then((names) => {
-          // Delete all the cache files
-          names.forEach((name) => {
-            caches.delete(name);
-          });
-        });
-        setCookie("x_client_version", version);
-        window.location.reload(true);
-      }
-    }
-  }, [cookies]);
+    // Record the version actually running; another tab's cookie is not its version.
+    if (version) setCookie("x_client_version", version, { path: "/", sameSite: "lax" });
+    return startVersionMonitor(version);
+  }, [version, setCookie]);
 
   TagManager.initialize({ gtmId: "GTM-TNXV5QG" });
   TagManager.initialize({ gtmId: "GTM-KNX9WC4" });
@@ -89,6 +80,7 @@ export default function App(props) {
       </Route>
     </Routes>
       </div>
+      {!isSolutionPage && <CookieConsent />}
     </>
   );
 }
