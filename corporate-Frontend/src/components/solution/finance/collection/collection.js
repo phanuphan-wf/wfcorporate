@@ -179,6 +179,32 @@ export default function Collection(props) {
               <button className="btn-primary px-4">Print Summary</button>
             )}
             content={() => PrintSummary.current}
+            pageStyle={`
+              @page {
+                size: 355mm 216mm;
+                margin: 7.5mm;
+              }
+              @media print {
+                html, body {
+                  margin: 0 !important;
+                  padding: 0 !important;
+                }
+                #pagePrint {
+                  display: flex;
+                  flex-direction: column;
+                  break-inside: avoid;
+                  page-break-inside: avoid;
+                }
+                #pagePrint > table {
+                  flex-shrink: 0;
+                }
+                #pagePrint #print-footer {
+                  flex-shrink: 0;
+                  margin-top: auto;
+                  margin-bottom: 0;
+                }
+              }
+            `}
           />
         </div>
         <div className="hidden print:block" ref={PrintSummary}>
