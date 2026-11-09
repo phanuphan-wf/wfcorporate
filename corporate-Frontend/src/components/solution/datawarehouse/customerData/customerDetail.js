@@ -9,385 +9,359 @@ import ModalEditAddr from "../../preexhibition/contractReceive/modalEditAddr";
 //import ModalEditProduct from "./modalEditProduct";
 import ModalEditProduct from "../../preexhibition/contractReceive/modalEditProduct";
 
-
 import { HiArrowLeft } from "react-icons/hi2";
 
-
 export default function CustomerDetail() {
-    const { id } = useParams();    
-    const navigate = useNavigate();
-    const bearer = useHeader();
-    const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
-    const urlctm = process.env.REACT_APP_API_URI + process.env.REACT_APP_ctm;
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const bearer = useHeader();
+  const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_cdp;
+  const urlctm = process.env.REACT_APP_API_URI + process.env.REACT_APP_ctm;
 
-    Axios.defaults.headers.common = {
-        Authorization: "Bearer " + bearer,
-    };
+  Axios.defaults.headers.common = {
+    Authorization: "Bearer " + bearer,
+  };
 
-    const [customerData, setCustomerData] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [customerData, setCustomerData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const [mainProduct, setmainProduct] = useState("");
-    const [products, setProducts] = useState([]);
+  const [mainProduct, setmainProduct] = useState("");
+  const [products, setProducts] = useState([]);
 
-    const [modalSign, setModalSign] = useState(false);
-    const closeModalSign = () => {
-        customerDetail(id);
-        setModalSign(false);
-    };
-    const editSign = () => {
-        customerDetail(id);
-        setModalSign(false);
-    };
+  const [modalSign, setModalSign] = useState(false);
+  const closeModalSign = () => {
+    customerDetail(id);
+    setModalSign(false);
+  };
+  const editSign = () => {
+    customerDetail(id);
+    setModalSign(false);
+  };
 
-    const [modalAddr, setModalAddr] = useState(false);
-    const closeModalAddr = () => {
-        customerDetail(id);
-        setModalAddr(false);
-    };
-    const editAddr = () => {
-        customerDetail(id);
-        setModalAddr(false);
-    };    
+  const [modalAddr, setModalAddr] = useState(false);
+  const closeModalAddr = () => {
+    customerDetail(id);
+    setModalAddr(false);
+  };
+  const editAddr = () => {
+    customerDetail(id);
+    setModalAddr(false);
+  };
 
-    const [modalProduct, setModalProduct] = useState(false);
-    const closeModalProduct = () => {
-        customerDetail(id);
-        setModalProduct(false);
-    };
-    const editProducts = () => {
-        customerDetail(id);
-        setModalProduct(false);
+  const [modalProduct, setModalProduct] = useState(false);
+  const closeModalProduct = () => {
+    customerDetail(id);
+    setModalProduct(false);
+  };
+
+  const customerDetail = async (id) => {
+    try {
+      const res = await Axios.get(url + "/getCustomerDetail/" + id);
+      setCustomerData(res.data);
+      setLoading(false);
+
+      const allProducts = res.data?.product || [];
+      const main = allProducts.find((p) => p.pro_def === true) || null;
+      const subList = allProducts.filter((p) => p.pro_def !== true);
+
+      setmainProduct(main);
+      setProducts(subList);
+    } catch (error) {
+      console.error("Error fetching customer detail:", error);
+      setLoading(false);
+      throw error;
     }
+  };
 
-    const customerDetail = async (id) => {
-        try {
-            const res = await Axios.get(url + "/getCustomerDetail/" + id);
-            setCustomerData(res.data);
-            setLoading(false);
+  useEffect(() => {
+    customerDetail(id);
+  }, [id]);
 
-            const allProducts = res.data?.product || [];
-            const main = allProducts.find((p) => p.pro_def === true) || null;
-            const subList = allProducts.filter((p) => p.pro_def !== true);
+  useEffect(() => {
+    //console.log(customerData);
+  }, [customerData]);
 
-            setmainProduct(main);
-            setProducts(subList);
+  if (loading) {
+    return <div className="p-6 text-center">Loading...</div>;
+  }
 
-        } catch (error) {
-            console.error("Error fetching customer detail:", error);
-            setLoading(false);
-            throw error;
-        }
-    };
+  const customerName = customerData.customer;
+  const sign = customerData.sign;
+  const mainAddr = customerData.mainAddr;
+  const taxAddr = customerData.taxAddr;
 
-    useEffect(() => {
-        customerDetail(id);
-    }, [id]);
-
-    useEffect(() => {
-        //console.log(customerData);
-    }, [customerData]);
-
-
-    if (loading) {
-        return <div className="p-6 text-center">Loading...</div>;
-    }
-
-    const customerName = customerData.customer;
-    const sign = customerData.sign;
-    const mainAddr = customerData.mainAddr;
-    const taxAddr = customerData.taxAddr;
-
-    
-    const ProductDefault = async (productID) => {
-
-        const isConfirmed = window.confirm("Do you want to set this as the primary product?");
-        if (!isConfirmed) return;
-
-        const cid = id;
-        const pid = productID;      
-
-        try {
-            const res = await Axios.put(urlctm + "/updateProductDefault/" + cid + "/" + pid);
-            customerDetail(id);   
-
-        } catch (error) {
-            console.error("Error updating default product:", error);
-            alert(error);
-        }
-    };
-
-
-    return (
-        <section id="customer-detail">
-            <div>
-                <h1 className="text-2xl">Customer Detail</h1>
-            </div>
-
-            <div className="flex flex-row items-start justify-between">
-                <div className="basis-2/3">
-                    <CustomerEdit
-                        customerName={customerName}
-                        onUpdate={() => customerDetail(id)}
-                    />
-
-                    <div className="flex flex-wrap items-center mt-4">
-                        <label htmlFor="sNo" className="mr-2 flex-shrink-0">Sign Name :</label>
-                        <label htmlFor="sNo" className="mr-2 flex-shrink-0">
-                            {sign?.signperson || "-"}
-                        </label>
-
-                        {sign ? (
-                            <button
-                                className="btn-primary px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
-                                onClick={() => setModalSign(true)}
-                            >
-                                Edit Signname
-                            </button>
-                        ) : (
-                            <button
-                                className="btn-green px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
-                                onClick={() => setModalSign(true)}
-                            >
-                                Add Signname
-                            </button>
-
-                        )}
-                    </div>
-                </div>
-
-
-                <div className="basis-1/3 flex justify-end mt-4">
-                    <button
-                        type="button"
-                        onClick={() => navigate(-1)} // สั่งย้อนกลับหน้าเดิม
-                        className="bg-gray-500 hover:bg-gray-300 text-white font-medium px-4 py-2 rounded shadow-sm flex items-center gap-2 transition-colors"
-                    >
-                        <HiArrowLeft className="text-lg" />
-                        <span>Back</span>
-                    </button>
-                </div>
-            </div>
-
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                    <div className="flex justify-end gap-2">
-                        <button
-                            className="btn-primary px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
-                            onClick={() => setModalAddr(true)}
-                        >
-                            Edit data
-                        </button>
-                    </div>
-
-                    <div className="border border-gray-300 rounded-md p-4 relative bg-white">
-                        <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
-                            Main Address
-                        </span>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-4 text-sm mt-2">
-                            <div className="md:col-span-2 flex gap-2">
-                                <span className="font-semibold w-24">ที่อยู่ :</span>
-                                <span>{mainAddr?.street || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">แขวง/ตำบล :</span>
-                                <span>{mainAddr?.subDistrict || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">เขต/อำเภอ :</span>
-                                <span>{mainAddr?.district || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">จังหวัด :</span>
-                                <span>{mainAddr?.province || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">รหัสไปรษณีย์ :</span>
-                                <span>{mainAddr?.postal || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">โทรศัพท์ :</span>
-                                <span>{mainAddr?.tel || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">โทรสาร :</span>
-                                <span>{mainAddr?.fax || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">เว็บไซต์ :</span>
-                                <span>{mainAddr?.web || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">อีเมล :</span>
-                                <span>{mainAddr?.email || "-"}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="border border-gray-300 rounded-md p-4 relative bg-white mt-5">
-                        <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
-                            Tax Address
-                        </span>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-4 text-sm mt-2">
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-26">เลขทะเบียนภาษี :</span>
-                                <span>{taxAddr?.taxID || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-26">ชื่อตาม ภ.พ.20 :</span>
-                                <span>{taxAddr?.taxName || "-"}</span>
-                            </div>
-
-                            <div className="md:col-span-2 flex gap-2">
-                                <span className="font-semibold w-24">ที่อยู่ :</span>
-                                <span>{taxAddr?.street || "-"}</span>
-                            </div>
-
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">แขวง/ตำบล :</span>
-                                <span>{taxAddr?.subDistrict || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">เขต/อำเภอ :</span>
-                                <span>{taxAddr?.district || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">จังหวัด :</span>
-                                <span>{taxAddr?.province || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">รหัสไปรษณีย์ :</span>
-                                <span>{taxAddr?.postal || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">โทรศัพท์ :</span>
-                                <span>{taxAddr?.tel || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">โทรสาร :</span>
-                                <span>{taxAddr?.fax || "-"}</span>
-                            </div>
-
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">เว็บไซต์ :</span>
-                                <span>{taxAddr?.web || "-"}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <span className="font-semibold w-24">อีเมล :</span>
-                                <span>{taxAddr?.email || "-"}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="space-y-4">
-
-                    <div className="flex justify-end gap-2">
-                        <button
-                            className="btn-primary px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
-                            onClick={() => setModalProduct(true)}
-                        >
-                            Edit products
-                        </button>
-                    </div>
-
-                    <div className="border-2 border-emerald-500 bg-emerald-50/60 rounded-md p-5 relative shadow-md mt-5">
-                        <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-emerald-500">
-                            Main Product
-                        </span>
-                        {mainProduct ? (
-                            <div className="mt-1">
-                                <span className="text-xl text-emerald-950">
-                                    สินค้าหลัก : {mainProduct.name}
-                                </span>
-                                <p className="text-sm text-gray-700 mt-2 leading-relaxed">
-                                    รายละเอียด : {mainProduct.detail || "-"}
-                                </p>
-                            </div>
-                        ) : (
-                            <div className="mt-1 text-sm text-gray-500">
-
-                            </div>
-                        )}
-
-                    </div>
-
-
-                    <div className="border border-red-500 rounded-md p-4 relative bg-white mt-5">
-                        <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
-                            Other Products ({products.length} รายการ)
-                        </span>
-                        <div className="mt-1 space-y-3">
-                            {products.map((item) => (
-                                <div
-                                    key={item.productID}
-                                    className="border border-gray-200 bg-white rounded-lg p-4 hover:border-gray-300 transition-shadow shadow-sm"
-                                >
-                                    {/* จัดกลุ่มหัวข้อให้อยู่ซ้าย และปุ่มชิดขวา */}
-                                    <div className="flex justify-between items-start gap-4">
-                                        {/* ฝั่งซ้าย: ชื่อสินค้า และ Brand */}
-                                        <div className="space-y-1">
-                                            <h6 className="font-medium text-gray-800 text-base">
-                                                สินค้าอื่นๆ : {item.name}
-                                            </h6>
-                                            {item.brand && (
-                                                <span className="inline-block text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
-                                                    {item.brand}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                   
-                                        <button
-                                            type="button"
-                                            className="btn-green px-2  text-sm whitespace-nowrap disabled:opacity-50 disabled:hover:bg-[green] disabled:hover:text-white"
-                                            onClick={() => ProductDefault(item.productID)}
-                                        >
-                                            Set Product
-                                        </button>
-                                    </div>
-
-                                    <p className="text-sm text-gray-600 mt-2 line-clamp-3">
-                                        รายละเอียด : {item.detail || "-"}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <ModalEditSign
-                        show={modalSign}
-                        onHide={closeModalSign}
-                        cid={id}
-                        aftEditSign={editSign}
-                    />
-
-                    <ModalEditAddr
-                        show={modalAddr}
-                        onHide={closeModalAddr}
-                        cid={id}
-                        aftEditSign={editAddr}
-                    />
-                    <ModalEditProduct
-                        show={modalProduct}
-                        onHide={closeModalProduct}
-                        cid={id}
-                        aftProducts={editProducts}
-                    />
-
-                </div>
-            </div>
-
-        </section>
+  const ProductDefault = async (productID) => {
+    const isConfirmed = window.confirm(
+      "Do you want to set this as the primary product?",
     );
+    if (!isConfirmed) return;
+
+    const cid = id;
+    const pid = productID;
+
+    try {
+      const res = await Axios.put(
+        urlctm + "/updateProductDefault/" + cid + "/" + pid,
+      );
+      customerDetail(id);
+    } catch (error) {
+      console.error("Error updating default product:", error);
+      alert(error);
+    }
+  };
+
+  return (
+    <section id="customer-detail">
+      <div>
+        <h1 className="text-2xl">Customer Detail</h1>
+      </div>
+
+      <div className="flex flex-row items-start justify-between">
+        <div className="basis-2/3">
+          <CustomerEdit
+            customerName={customerName}
+            onUpdate={() => customerDetail(id)}
+          />
+
+          <div className="flex flex-wrap items-center mt-4">
+            <label htmlFor="sNo" className="mr-2 flex-shrink-0">
+              Sign Name :
+            </label>
+            <label htmlFor="sNo" className="mr-2 flex-shrink-0">
+              {sign?.signperson || "-"}
+            </label>
+
+            {sign ? (
+              <button
+                className="btn-primary px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
+                onClick={() => setModalSign(true)}>
+                Edit Signname
+              </button>
+            ) : (
+              <button
+                className="btn-green px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
+                onClick={() => setModalSign(true)}>
+                Add Signname
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="basis-1/3 flex justify-end mt-4">
+          <button
+            type="button"
+            onClick={() => navigate(-1)} // สั่งย้อนกลับหน้าเดิม
+            className="bg-gray-500 hover:bg-gray-300 text-white font-medium px-4 py-2 rounded shadow-sm flex items-center gap-2 transition-colors">
+            <HiArrowLeft className="text-lg" />
+            <span>Back</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div className="flex justify-end gap-2">
+            <button
+              className="btn-primary px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
+              onClick={() => setModalAddr(true)}>
+              Edit data
+            </button>
+          </div>
+
+          <div className="border border-gray-300 rounded-md p-4 relative bg-white">
+            <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
+              Main Address
+            </span>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-4 text-sm mt-2">
+              <div className="md:col-span-2 flex gap-2">
+                <span className="font-semibold w-24">ที่อยู่ :</span>
+                <span>{mainAddr?.street || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">แขวง/ตำบล :</span>
+                <span>{mainAddr?.subDistrict || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">เขต/อำเภอ :</span>
+                <span>{mainAddr?.district || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">จังหวัด :</span>
+                <span>{mainAddr?.province || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">รหัสไปรษณีย์ :</span>
+                <span>{mainAddr?.postal || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">โทรศัพท์ :</span>
+                <span>{mainAddr?.tel || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">โทรสาร :</span>
+                <span>{mainAddr?.fax || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">เว็บไซต์ :</span>
+                <span>{mainAddr?.web || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">อีเมล :</span>
+                <span>{mainAddr?.email || "-"}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-gray-300 rounded-md p-4 relative bg-white mt-5">
+            <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
+              Tax Address
+            </span>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-4 text-sm mt-2">
+              <div className="flex gap-2">
+                <span className="font-semibold w-26">เลขทะเบียนภาษี :</span>
+                <span>{taxAddr?.taxID || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-26">ชื่อตาม ภ.พ.20 :</span>
+                <span>{taxAddr?.taxName || "-"}</span>
+              </div>
+
+              <div className="md:col-span-2 flex gap-2">
+                <span className="font-semibold w-24">ที่อยู่ :</span>
+                <span>{taxAddr?.street || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">แขวง/ตำบล :</span>
+                <span>{taxAddr?.subDistrict || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">เขต/อำเภอ :</span>
+                <span>{taxAddr?.district || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">จังหวัด :</span>
+                <span>{taxAddr?.province || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">รหัสไปรษณีย์ :</span>
+                <span>{taxAddr?.postal || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">โทรศัพท์ :</span>
+                <span>{taxAddr?.tel || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">โทรสาร :</span>
+                <span>{taxAddr?.fax || "-"}</span>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">เว็บไซต์ :</span>
+                <span>{taxAddr?.web || "-"}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="font-semibold w-24">อีเมล :</span>
+                <span>{taxAddr?.email || "-"}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex justify-end gap-2">
+            <button
+              className="btn-primary px-2 disabled:opacity-50 disabled:hover:bg-[red] disabled:hover:text-white"
+              onClick={() => setModalProduct(true)}>
+              Edit products
+            </button>
+          </div>
+
+          <div className="border-2 border-emerald-500 bg-emerald-50/60 rounded-md p-5 relative shadow-md mt-5">
+            <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-emerald-500">
+              Main Product
+            </span>
+            {mainProduct ? (
+              <div className="mt-1">
+                <span className="text-xl text-emerald-950">
+                  สินค้าหลัก : {mainProduct.name}
+                </span>
+                <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+                  รายละเอียด : {mainProduct.detail || "-"}
+                </p>
+              </div>
+            ) : (
+              <div className="mt-1 text-sm text-gray-500"></div>
+            )}
+          </div>
+
+          <div className="border border-red-500 rounded-md p-4 relative bg-white mt-5">
+            <span className="absolute -top-3 left-4 bg-white px-2 text-base font-semibold text-red-500">
+              Other Products ({products.length} รายการ)
+            </span>
+            <div className="mt-1 space-y-3">
+              {products.map((item) => (
+                <div
+                  key={item.productID}
+                  className="border border-gray-200 bg-white rounded-lg p-4 hover:border-gray-300 transition-shadow shadow-sm">
+                  {/* จัดกลุ่มหัวข้อให้อยู่ซ้าย และปุ่มชิดขวา */}
+                  <div className="flex justify-between items-start gap-4">
+                    {/* ฝั่งซ้าย: ชื่อสินค้า และ Brand */}
+                    <div className="space-y-1">
+                      <h6 className="font-medium text-gray-800 text-base">
+                        สินค้าอื่นๆ : {item.name}
+                      </h6>
+                      {item.brand && (
+                        <span className="inline-block text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                          {item.brand}
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="btn-green px-2  text-sm whitespace-nowrap disabled:opacity-50 disabled:hover:bg-[green] disabled:hover:text-white"
+                      onClick={() => ProductDefault(item.productID)}>
+                      Set Product
+                    </button>
+                  </div>
+
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-3">
+                    รายละเอียด : {item.detail || "-"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <ModalEditSign
+            show={modalSign}
+            onHide={closeModalSign}
+            cid={id}
+            aftEditSign={editSign}
+          />
+
+          <ModalEditAddr
+            show={modalAddr}
+            onHide={closeModalAddr}
+            cid={id}
+            aftEditSign={editAddr}
+          />
+          <ModalEditProduct
+            show={modalProduct}
+            onHide={closeModalProduct}
+            cid={id}
+          />
+        </div>
+      </div>
+    </section>
+  );
 }

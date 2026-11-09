@@ -1,3 +1,6 @@
+import TaxInvoice from "./components/solution/finance/taxinvoice/TaxInvoice";
+import Invoice from "./components/solution/finance/invoice/Invoice";
+import { documentAccess } from "./components/solution/finance/documentAccess";
 import Collection from "./components/solution/finance/collection/collection";
 import CommReport from "./components/solution/finance/commReport/CommReport";
 import CollectionHistory from "./components/solution/finance/collectionHistory/collectionHistory";
@@ -7,6 +10,8 @@ import CollectionReport from "./components/solution/finance/collectionReport/rep
 import SaleReport from "./components/solution/finance/saleReport/salereport";
 
 const AppRouteFinance = [
+  { path: "finance/taxinvoice", element: <TaxInvoice />, show: documentAccess },
+  { path: "finance/invoice", element: <Invoice />, show: documentAccess },
   {
     path: "finance/collection",
     element: <Collection />,

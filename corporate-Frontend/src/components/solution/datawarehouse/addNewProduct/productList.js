@@ -18,17 +18,36 @@ export default function ProductList(props) {
 
   const [product, setProduct] = productC;
   const [productlist, setProductlist] = useState([]);
-  const getList = async () => {
-    const res = await Axios.get(url + "/getProduct/" + cusID).then((r) =>
-      setProductlist(r.data)
-    );
-  };
-
   const [cusID, setcusID] = cusIDC;
 
   useEffect(() => {
+    let active = true;
+
+    if (!cusID || cusID === "0") {
+      setProductlist([]);
+      return;
+    }
+
+    const getList = async () => {
+      try {
+        const res = await Axios.get(url + "/getProduct/" + cusID);
+        if (active) {
+          setProductlist(res.data);
+        }
+      } catch (error) {
+        if (active) {
+          console.error("Unable to load customer products:", error);
+        }
+      }
+    };
+
+    setProductlist([]);
     getList();
-  }, [cusID, upload]);
+
+    return () => {
+      active = false;
+    };
+  }, [cusID, upload, url]);
 
   const [delId, setDelId] = useState("");
 
@@ -47,7 +66,7 @@ export default function ProductList(props) {
     let key = process.env.REACT_APP_sol_product;
 
     const blobService = new BlobServiceClient(
-      `https://worldfair.blob.core.windows.net/?${key}`
+      `https://worldfair.blob.core.windows.net/?${key}`,
     );
 
     const containerClient = blobService.getContainerClient(containerName);
@@ -94,8 +113,7 @@ export default function ProductList(props) {
             </div>
             <div
               id="product-data"
-              className="flex gap-x-4 max-lg:gap-y-2 max-lg:flex-wrap w-full min-h-fit px-2 pb-1"
-            >
+              className="flex gap-x-4 max-lg:gap-y-2 max-lg:flex-wrap w-full min-h-fit px-2 pb-1">
               <div className="lg:basis-1/4 flex flex-col justify-between h-fit">
                 <div>
                   <div className="flex gap-2">
@@ -135,16 +153,14 @@ export default function ProductList(props) {
             <div className="w-fit">
               <button
                 className="bg-yellow-500 px-3 text-white flex h-full"
-                onClick={() => editProduct(s.productID)}
-              >
+                onClick={() => editProduct(s.productID)}>
                 Edit
               </button>
             </div>
             <div className="w-fit">
               <button
                 className="bg-red-500 px-1 text-white flex h-full"
-                onClick={() => delProduct(s.productID, s.name, s.picture)}
-              >
+                onClick={() => delProduct(s.productID, s.name, s.picture)}>
                 Delete
               </button>
             </div>
