@@ -1,0 +1,87 @@
+.form_group {
+  position: relative;
+  padding: 10px 0 0;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.form_field {
+  width: 100%;
+  outline: 0;
+  padding: 12px 5px 7px;
+  transition: border-color 0.2s;
+  border-radius: 10px;
+}
+
+.form_field:placeholder-shown {
+  width: 100%;
+  outline: 0;
+  padding: 12px 5px 7px;
+  transition: border-color 0.2s;
+  border-radius: 10px;
+}
+
+.beforeselect{
+  width: 100%;
+    outline: 0;
+    padding: 12px 5px 7px;
+    transition: border-color 0.2s;
+    border-radius: 10px;
+}
+
+.form_field::placeholder {
+  color: transparent;
+}
+
+.form_field:placeholder-shown ~ .form_label {
+  cursor: text;
+  top: 20px;
+}
+
+select ~ .form_label  {
+  cursor: text;
+  top: 20px;
+}
+
+.form_label {
+  position: absolute;
+  top: -15px;
+  display: block;
+  transition: 0.2s;
+  color: gray;
+  padding-left: 10px;
+}
+
+.selected_label {
+  position: absolute;
+  top: -15px;
+  display: block;
+  transition: 0.2s;
+  color: gray;
+  padding-left: 10px;
+}
+
+.form_field:focus ~ .form_label {
+  position: absolute;
+  top: -15px;
+  display: block;
+  transition: 0.2s;
+  color: red;
+  font-weight: 400;
+}
+
+.form_field:focus {
+  border: 0;
+  padding-bottom: 6px;
+  font-weight: 500;
+  border: 3px solid;
+  border-radius: 10px;
+  border-image: linear-gradient(to right, rgb(153 27 27), rgb(239 68 68));
+  border-image-slice: 1;
+  box-shadow: none;
+  background-color: white;
+}
+/* reset input */
+.form_field {
+  box-shadow: none;
+}
