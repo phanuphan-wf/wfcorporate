@@ -28,8 +28,7 @@ export default function Hero(props) {
       setData(res.data);
     }); 
   };
-
-  
+    
   useEffect(() => {   
     getHero();
   }, []);
