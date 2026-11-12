@@ -22,25 +22,18 @@ export default function Hero(props) {
   };
 
   const [data, setData] = useState(initData);
-
-  const [landing, setLanding] = useState("0");
-
-  const getLandingOpen = async () => {
-    const res = await Axios.get(url + "/landingOpen").then((res) =>
-      setLanding(res.data.val)
-    );
-  };
-
+ 
   const getHero = async () => {
     const res = await Axios.get(url + "/getHero").then((res) => {
       setData(res.data);
-    });
+    }); 
   };
 
-  useEffect(() => {
-    getLandingOpen();
+  
+  useEffect(() => {   
     getHero();
   }, []);
+ 
 
   return (
     <section className="home_hero bg-gradient-to-b from-[#FF0000] to-[#640000] overflow-hidde relative">
@@ -85,7 +78,7 @@ export default function Hero(props) {
         </div>
         <div className="flex gap-4 sm:gap-8 justify-center">
           
-           <Calendar/>
+           <Calendar data={data.exID}/>
 
           <div
             id="btnreserve"

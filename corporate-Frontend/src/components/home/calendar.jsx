@@ -10,16 +10,18 @@ export default function Calendar({ data }) {
 
   const getLandingOpen = async () => {
     try {
-      const res = await Axios.get(url + "/landingOpen");
+      const res = await Axios.get(url + "/landingOpen");      
       setLanding(res.data.val);
     } catch (error) {
       console.error("Failed to fetch landing status:", error);
     }
+    //setLanding("1");
   };
 
   useEffect(() => {
     getLandingOpen();
   }, []);
+
 
   return (
     <div
@@ -27,12 +29,15 @@ export default function Calendar({ data }) {
       className="w-40 py-3 text-center border bg-white border-white text-[#AE0000] hover:bg-transparent hover:text-white cursor-pointer group"
     >
       {landing === "1" ? (
-        <a href={"/" + (data?.exID || "") + "/preregistration"}>
+        <a
+          href={`/${data}/preregistration`}
+          className="block w-full h-full"
+        >
           {t("regist")}
         </a>
       ) : (
-        <a href="/calendar" className="block w-full h-full">       
-          <span className="group-hover:hidden">{t("regist")}</span>       
+        <a href="/calendar" className="block w-full h-full">
+          <span className="group-hover:hidden">{t("regist")}</span>
           <span className="hidden group-hover:inline">{t("notopen")}</span>
         </a>
       )}
