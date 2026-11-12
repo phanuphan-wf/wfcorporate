@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useHeader from "../../../hook/useHeader";
 import Axios from "axios";
-import { useLocalStorage } from "../../../hook/useLocalStorage";
+import { useAuth } from "../../../hook/useAuth";
+import { canManageEmployees } from "../employeePermissions";
 import { FaUserEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -35,22 +36,8 @@ function EmployeeList() {
     getData();
   }, [bearer]);
 
-  const acc = useLocalStorage("user")[0].ALevel;
-  const dept = useLocalStorage("user")[0].Dept;
-
-  const [auth, setAuth] = useState(false);
-
-  useEffect(() => {
-    if (dept == 7) {
-      setAuth(true);
-    } else if (dept == 1 || dept == 6) {
-      if (acc == 1) {
-        setAuth(true);
-      }
-    } else {
-      setAuth(false);
-    }
-  }, [acc, dept]);
+  const { user } = useAuth();
+  const auth = canManageEmployees(user);
 
   const nav = useNavigate();
 
