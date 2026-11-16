@@ -1,3 +1,4 @@
+import { documentAccess } from "../solution/finance/documentAccess";
 const NavItems = [
   {
     title: "Dashboard",
@@ -92,6 +93,16 @@ const NavItems = [
       { dept: 6, acc: 2 },
     ],
     sub: [
+      {
+        title: "Invoice",
+        url: "/solution/finance/invoice",
+        show: documentAccess,
+      },
+      {
+        title: "Tax Invoice",
+        url: "/solution/finance/taxinvoice",
+        show: documentAccess,
+      },
       {
         title: "Collection Record",
         url: "/solution/finance/collection",

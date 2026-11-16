@@ -5,6 +5,8 @@ import { AuthProvider } from "./components/hook/useAuth";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import Axios from "axios";
+import { attachInternalApiToken } from "./config/internalApiAuthorization";
 
 import "./i18n";
 
@@ -13,6 +15,8 @@ import { CookiesProvider } from "react-cookie";
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
+
+Axios.interceptors.request.use(attachInternalApiToken);
 
 root.render(
   <React.StrictMode>

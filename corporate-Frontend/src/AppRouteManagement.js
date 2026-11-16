@@ -3,6 +3,22 @@ import NewEmployee from "./components/solution/Employee/newEmployee/newemployee"
 import EditEmployee from "./components/solution/Employee/editEmployee/editemployee";
 import JobApplication from "./components/solution/Employee/Jobapplication/ApplyList";
 import Jobform  from "./components/solution/Employee/Jobapplication/jobform";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "./components/hook/useAuth";
+import {
+  canManageEmployees,
+  employeeManagementAccess,
+} from "./components/solution/Employee/employeePermissions";
+
+function EmployeeManagementRoute({ children }) {
+  const { user } = useAuth();
+
+  if (!canManageEmployees(user)) {
+    return <Navigate to="/solution/datawarehouse/employeelist" replace />;
+  }
+
+  return children;
+}
 
 const AppRouteManagement = [
   {
@@ -12,23 +28,21 @@ const AppRouteManagement = [
   },
   {
     path: "management/newemployee",
-    element: <NewEmployee />,
-    show: [
-      { dept: 1, acc: 1 },
-      { dept: 6, acc: 1 },
-      { dept: 7, acc: 1 },
-      { dept: 7, acc: 2 },
-    ],
+    element: (
+      <EmployeeManagementRoute>
+        <NewEmployee />
+      </EmployeeManagementRoute>
+    ),
+    show: employeeManagementAccess,
   },
   {
     path: "management/editemployee/:eid",
-    element: <EditEmployee />,
-    show: [
-      { dept: 1, acc: 1 },
-      { dept: 6, acc: 1 },
-      { dept: 7, acc: 1 },
-      { dept: 7, acc: 2 },
-    ],
+    element: (
+      <EmployeeManagementRoute>
+        <EditEmployee />
+      </EmployeeManagementRoute>
+    ),
+    show: employeeManagementAccess,
   },
   {
     path: "management/jobapplication",
