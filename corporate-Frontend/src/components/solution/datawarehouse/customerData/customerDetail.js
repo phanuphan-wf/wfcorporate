@@ -73,10 +73,12 @@ export default function CustomerDetail() {
             setmainProduct(main);
             setProducts(subList);
 
+            
+
         } catch (error) {
             console.error("Error fetching customer detail:", error);
             setLoading(false);
-            throw error;
+            throw error;          
         }
     };
 
@@ -92,6 +94,15 @@ export default function CustomerDetail() {
     if (loading) {
         return <div className="p-6 text-center">Loading...</div>;
     }
+
+    if (!customerData || Object.keys(customerData).length === 0) {
+        return (
+            <div className="p-6 text-center text-gray-500">
+                ไม่พบข้อมูล ชื่อในระบบถูกเปลี่ยน
+            </div>
+        );
+    }
+    
 
     const customerName = customerData.customer;
     const sign = customerData.sign;

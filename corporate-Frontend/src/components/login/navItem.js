@@ -155,6 +155,26 @@ const NavItems = [
       },
     ],
   },
+
+  {
+    title: "Accounting",
+    url: "",
+    show: [
+      { dept: 1, acc: 1 },
+      { dept: 11, acc: 2 },  
+    ],
+    sub: [
+      {
+        title: "Print Cheque",
+        url: "/solution/accounting/printcheque",
+        show: [
+          { dept: 1, acc: 1 },        
+          { dept: 11, acc: 2 },
+        ],
+      },      
+    ],
+  },
+
   {
     title: "Report",
     url: "",
