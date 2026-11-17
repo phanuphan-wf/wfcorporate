@@ -76,7 +76,7 @@ export default function Landingpage() {
 
           <div className="mt-8 flex flex-col items-center md:mt-12">
         
-            <div class="flex flex-col mt-6 md:-mt-6 lg:-mt-5">
+            <div class="flex flex-col mt-2 md:-mt-6 lg:-mt-5">
                 <h1 className="mt-0 md:mt-4 lg:mt-20">
                 <img
                   src={require("./img/hero.png")}
@@ -156,7 +156,7 @@ export default function Landingpage() {
             </div>
 
             {/* กล่องครอป: ซ่อนขอบขาวรอบรูป */}
-            <div className="mx-auto mt-3 aspect-[5/4] w-[90%] overflow-hidden lg:w-full">
+            <div className="mx-auto aspect-[5/4] w-[90%] overflow-hidden lg:w-full">
               <img
                 src={require("./img/gift_B526.jpg")}
                 alt="premium bag"
