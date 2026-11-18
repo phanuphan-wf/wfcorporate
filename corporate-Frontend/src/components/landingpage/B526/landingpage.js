@@ -88,8 +88,8 @@ export default function Landingpage() {
 
             {/* ข้อความ: มือถืออยู่กลาง เว้นช่องให้เห็นโซฟา / PC ชิดซ้ายใต้ชื่องาน */}
             <div className="mt-[6.5rem] text-center text-sm leading-relaxed sm:mt-[9.5rem] md:mt-5 md:self-start md:text-left md:text-base [text-shadow:0_1px_6px_rgba(0,0,0,0.6)]">
-              <p>ที่สุดของงานแสดงเฟอร์นิเจอร์</p>
-              <p>มหกรรมสินค้าเพื่อบ้าน จัดใหญ่ส่งท้ายปี</p>
+              <p>ที่สุดของงานแสดงสินค้า</p>
+              <p>เพื่อบ้าน และไลฟ์สไตล์</p>
               <p>5 - 13 ธ.ค. นี้ ที่ไบเทค บางนา</p>
               <p>Hall 101-104 &nbsp;10.30-20.30 น.</p>
 
@@ -113,13 +113,13 @@ export default function Landingpage() {
       <main>
         {/* ================= ZONES ================= */}
         <section className="relative -mt-16 rounded-t-[2rem] bg-[#0a3578] px-4 pt-3 pb-6 md:-mt-10 md:rounded-t-[2.5rem] md:pb-8">
-          <div className="mx-auto max-w-6xl px-5 pt-5 pb-4 md:pb-6">
+          <div className="mx-auto max-w-6xl px-5 pt-2 pb-4 md:pb-6">
             <p className="mx-auto max-w-2xl text-center text-sm leading-relaxed text-white sm:text-base">
-              มหกรรมเพื่อบ้านที่ยิ่งใหญ่ที่สุด รวบรวมทุกความต้องการเรื่องบ้านไว้ ครบจบที่งานเดียว! <br />
-              จัดเต็มทุกโซนสินค้าดีลพิเศษเฉพาะภายในงาน ที่จะทำให้การแต่งบ้านเป็นเรื่องง่ายและสนุกกว่าเดิม!
+              มหกรรมสินค้าเพื่อบ้าน <br />
+              และไลฟ์สไตล์ จัดยิ่งใหญ่ที่สุด 
             </p>
 
-            <div className="mt-10 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
+            <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
               {ZONES.map((z, i) => (
                 <ZoneCard key={i} z={z} />
               ))}
