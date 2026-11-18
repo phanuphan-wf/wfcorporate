@@ -16,7 +16,7 @@ export default function Interest(props) {
       name: t("elec.name"),
       select: t("elec.select", { returnObjects: true }),
     },
-    /*
+
     {
       cat: "homedecor",
       name: t("homedecor.name"),
@@ -26,9 +26,7 @@ export default function Interest(props) {
       cat: "other",
       name: t("other.name"),
       select: t("other.select", { returnObjects: true }),
-      
     },
-    */
   ];
 
   const initIntr = {

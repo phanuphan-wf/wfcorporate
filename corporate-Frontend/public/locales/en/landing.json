@@ -135,6 +135,23 @@
                 ]
             },
             "homedecor": {
+                "name": "Home Products category",
+                "select": [
+                    {
+                        "col": "Home Decor/Gifts/Craft Products",
+                        "id": "H_decor"
+                    },
+                    {
+                        "col": "Solar Cell and Smart Home Solutions",
+                        "id": "H_homeproduct"
+                    },
+                    {
+                        "col": "Home Builder",
+                        "id": "H_material"
+                    }
+                ]
+            },
+            "homedecor-real": {
                 "name": "Home Decor category",
                 "select": [
                     {
@@ -148,16 +165,16 @@
                     {
                         "col": "Tools",
                         "id": "H_material"
-                    },
-                    {
-                        "col": "Plants and gardening",
-                        "id": "G_garden"
                     }
                 ]
             },
             "other": {
                 "name": "Other categories",
                 "select": [
+                    {
+                        "col": "Plants and gardening",
+                        "id": "G_garden"
+                    },
                     {
                         "col": "Food and beverages",
                         "id": "F_food"
@@ -258,7 +275,6 @@
             "Washer-Dryers, Vacuum Cleaners, Air Purifiers, Water Heaters — All at Special Prices!",
             "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
         ],
-
         "hero1": "The Ultimate Home & Lifestyle Expo",
         "hero2": "Home Furnishings & Lifestyle",
         "herodate": "5 - 13 Dec at BITEC Bangna",
