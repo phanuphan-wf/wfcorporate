@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
+
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 
@@ -15,6 +17,8 @@ const EVENT_IMAGES = [
 ];
 
 export default function Landingpage() {
+  const { t, i18n } = useTranslation("landing", { keyPrefix: "landing2" });
+
   const { cp } = useParams();
   const url = process.env.REACT_APP_API_URI + process.env.REACT_APP_reg;
   const exId = "b526";
@@ -88,10 +92,10 @@ export default function Landingpage() {
 
             {/* ข้อความ: มือถืออยู่กลาง เว้นช่องให้เห็นโซฟา / PC ชิดซ้ายใต้ชื่องาน */}
             <div className="mt-[6.5rem] text-center text-sm leading-relaxed sm:mt-[9.5rem] md:mt-5 md:self-start md:text-left md:text-base [text-shadow:0_1px_6px_rgba(0,0,0,0.6)]">
-              <p>ที่สุดของงานแสดงสินค้า</p>
-              <p>เพื่อบ้าน และไลฟ์สไตล์</p>
-              <p>5 - 13 ธ.ค. นี้ ที่ไบเทค บางนา</p>
-              <p>Hall 101-104 &nbsp;10.30-20.30 น.</p>
+              <p>{t("hero1")}</p>
+              <p>{t("hero2")}</p>
+              <p>{t("herodate")}</p>
+              <p>{t("herohall")} &nbsp;{t("herotime")}</p>
 
               <div ref={clickPos} className="mt-6 flex justify-center md:justify-start">
                 <ClickRegist cp={cp} exId={exId} />
@@ -115,8 +119,8 @@ export default function Landingpage() {
         <section className="relative -mt-16 rounded-t-[2rem] bg-[#0a3578] px-4 pt-3 pb-6 md:-mt-10 md:rounded-t-[2.5rem] md:pb-8">
           <div className="mx-auto max-w-6xl px-5 pt-2 pb-4 md:pb-6">
             <p className="mx-auto max-w-2xl text-center text-sm leading-relaxed text-white sm:text-base">
-              มหกรรมสินค้าเพื่อบ้าน <br />
-              และไลฟ์สไตล์ จัดยิ่งใหญ่ที่สุด 
+                {t("intro1")} <br />
+                {t("intro2")}
             </p>
 
             <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-5">
@@ -145,9 +149,9 @@ export default function Landingpage() {
         <section id="register" className="bg-white px-4 py-4 md:py-3">
           <div className="mx-auto max-w-4xl text-center">
             <p className="text-slate-700">
-              ลงทะเบียนเข้าชมงาน
+              {t("regist1")}
               <br />
-              เพื่อรับของสมนาคุณ และสิทธิพิเศษมากมาย
+              {t("regist2")}
             </p>
 
             {/* ปุ่มลงทะเบียนด้านล่าง: ใช้เป็นจุดอ้างอิงให้ปุ่มลอยซ่อนตัว */}

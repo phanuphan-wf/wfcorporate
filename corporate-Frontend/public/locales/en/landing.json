@@ -257,7 +257,51 @@
             "Featuring must-have home appliances: TVs, Refrigerators, Air Conditioners and more",
             "Washer-Dryers, Vacuum Cleaners, Air Purifiers, Water Heaters — All at Special Prices!",
             "Irons, Microwaves, Rice Cookers, Coffee Machines, Air Fryers — Everything You Need at Unbeatable Deals!"
-        ]
+        ],
+
+        "hero1": "The Ultimate Home & Lifestyle Expo",
+        "hero2": "Home Furnishings & Lifestyle",
+        "herodate": "5 - 13 Dec at BITEC Bangna",
+        "herohall": "HALL 101-104",
+        "herotime": "10:30 AM - 8:30 PM",
+        "intro1": "The Biggest Home & Lifestyle",
+        "intro2": "Expo of the Year",
+        "regist1": "Register to attend the event",
+        "regist2": "and receive a free gift and exclusive privileges",
+        "zones": {
+            "z1": {
+                "caption": "Furniture & Home Décor Products",
+                "desc": "Furniture and home décor at big discounts. Shop to your heart's content with quality products brought together for special deals, with beautiful designs at the best value."
+            },
+            "z2": {
+                "caption": "Solar Cells & Smart Home Products",
+                "desc": "Save on electricity, stay safe, and keep your budget happy with alternative energy. Enjoy special prices on smart home devices and solar cells, with all the cutting-edge home technology you need in one event."
+            },
+            "z3": {
+                "caption": "Home Building & Design Services",
+                "desc": "Home-building and prefab packages at attractive prices, with exclusive promotions and freebies available only at this event. No more worries about budget overruns. Close the deal easily and get your home with confidence."
+            },
+            "z4": {
+                "caption": "Electronics & Home Conveniences",
+                "desc": "A big year-end sale on electrical appliances, with special discounts on top brands. Make housework easy. There's no better value than this, so don't miss out!"
+            },
+            "z5": {
+                "caption": "Plants, Gardening & Outdoor Products",
+                "desc": "Great promotions on plants and garden décor. Shop to your heart's content with special discounts on gardening supplies and create a beautiful garden on a budget."
+            },
+            "z6": {
+                "caption": "Lifestyle Product, Art & Craft",
+                "desc": "Enjoy browsing home accents and art pieces at friendly prices, with special promotions exclusive to the event. Find items you love at easy-to-pay prices, all in one place."
+            },
+            "z7": {
+                "caption": "Food, Beverage & Lounge Zone",
+                "desc": "Enjoy moments of happiness and delicious food. Stop by for your favorite dishes and a cozy seating area, and recharge before you continue shopping."
+            },
+            "z8": {
+                "caption": "Power Buy EXPO",
+                "desc": "Unbeatable deals! Up to 50% off, plus top-up discounts and 0% installments for up to 24 months with participating cards. Great value on home appliances, only at this event!"
+            }
+        }
     },
     "regist2": {
         "lng": "เปลี่ยนภาษา",

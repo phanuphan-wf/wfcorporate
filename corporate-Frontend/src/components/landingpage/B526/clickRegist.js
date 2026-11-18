@@ -12,7 +12,7 @@ export default function ClickRegist(props) {
     <a
       href={href}
       className="relative z-20 inline-block w-fit max-w-[800px] rounded-md bg-[#1f2a8a] px-7 py-2.5 text-center text-sm font-semibold text-white shadow-lg transition hover:bg-blue-700">
-      {t("regist")}{""}
+      {t("regist")}{" "}
       {i18n.language === "th" ? (
         <>
           {t("gift")}{" "}{String(t("free"))}
