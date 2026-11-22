@@ -41,7 +41,7 @@ export default function Media(props) {
     {
       col_th: "Instagram",
       col_en: "Instagram",
-      id: "Instagram",
+      id: "instagram",
     },
     {
       col_th: "โฆษณาบนเว็ปไซต์/ค้นหา Google",
