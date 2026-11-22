@@ -23,23 +23,28 @@ export default function Media(props) {
       id: "cutout",
     },
 
+    // {
+    //   col_th: "วิทยุ",
+    //   col_en: "Radio",
+    //   id: "radio",
+    // },
+    // {
+    //   col_th: "สื่อบนรถไฟฟ้า",
+    //   col_en: "Sky Train Media",
+    //   id: "bts",
+    // },
     {
-      col_th: "วิทยุ",
-      col_en: "Radio",
-      id: "radio",
-    },
-    {
-      col_th: "สื่อบนรถไฟฟ้า",
-      col_en: "Sky Train Media",
-      id: "bts",
-    },
-    {
-      col_th: "Facebook/Instagram",
-      col_en: "Facebook/Instagram",
+      col_th: "Facebook",
+      col_en: "Facebook",
       id: "facebook",
     },
     {
-      col_th: "โฆษณาบนเวปไซต์/ค้นหา Google",
+      col_th: "Instagram",
+      col_en: "Instagram",
+      id: "Instagram",
+    },
+    {
+      col_th: "โฆษณาบนเว็ปไซต์/ค้นหา Google",
       col_en: "Google Search/Website Ads",
       id: "google",
     },
@@ -83,6 +88,7 @@ export default function Media(props) {
     billboard: 0,
     newspaper: 0,
     facebook: 0,
+    instagram:0,
     google: 0,
     youtube: 0,
     line: 0,
