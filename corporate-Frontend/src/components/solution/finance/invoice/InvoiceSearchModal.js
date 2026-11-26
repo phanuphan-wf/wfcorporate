@@ -91,7 +91,7 @@ export default function InvoiceSearchModal({ url, token, close, openInvoice, bus
         }}>
           <label className="block">
             Invoice Number
-            <input className="block" maxLength={12} value={number} placeholder="20261100123"
+            <input className="block" maxLength={12} value={number} placeholder="2026110001"
               onChange={event => setNumber(event.target.value.replace(/^IV[-\s]*/i, ""))} />
           </label>
           <button type="submit" className="btn-primary px-3 py-1" disabled={loading || !number.trim()}>
@@ -112,7 +112,7 @@ export default function InvoiceSearchModal({ url, token, close, openInvoice, bus
             <select className="cmb block max-w-xs" value={filters.exhibitionId}
               onChange={event => setFilters({ ...filters, exhibitionId: event.target.value })}>
               <option value="">All Exhibitions</option>
-              {exhibitions.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+              {exhibitions.map(item => <option key={item.id} value={item.id}>{item.name} ({item.id})</option>)}
             </select>
           </label>
           <fieldset className="flex flex-wrap items-end gap-3">

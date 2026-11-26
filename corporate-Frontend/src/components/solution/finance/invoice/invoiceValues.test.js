@@ -29,6 +29,18 @@ test("rejects empty or invalid service amounts", () => {
   expect(validateInvoice({ ...doc, items: [] })).not.toBe("");
   expect(validateInvoice({ ...doc, items: [{ ...doc.items[0], unitPrice: Infinity }] })).not.toBe("");
 });
+test("the stored amount limit applies to the VAT-inclusive total before withholding", () => {
+  const invoice = {
+    ...doc, priceIncludesVat: false, withholdingRate: 3,
+    items: [{ ...doc.items[0], quantity: 1, unitPrice: 95000000 }],
+  };
+  const sum = totals(invoice);
+  expect(sum.subtotal).toBe(95000000);
+  expect(sum.total).toBe(101650000);
+  expect(sum.net).toBe(98800000);
+  expect(validateInvoice({ ...invoice, terms: [{ date: doc.date, amount: sum.net }] }))
+    .toContain("exceeds the supported limit");
+});
 test("only agreed department/access combinations can issue documents", () => {
   for (let dept = 0; dept <= 8; dept++) for (let access = 0; access <= 4; access++) {
     expect(canIssueDocuments({ Dept: String(dept), ALevel: String(access) }))

@@ -25,7 +25,7 @@ export function validateInvoice(doc) {
   if (doc.items.length < 1 || doc.items.length > 6 || doc.items.some(i => !i.description.trim() || !i.unit.trim() || Number(i.quantity) <= 0 || Number(i.unitPrice) < 0 || !Number.isFinite(Number(i.quantity) * Number(i.unitPrice)))) return "Please check the items, quantities and prices.";
   if ([doc.vatRate, doc.withholdingRate].some(r => !Number.isFinite(Number(r)) || Number(r) < 0 || Number(r) > 100)) return "Invalid tax rate.";
   const amount = totals(doc);
-  if (amount.subtotal <= 0 || amount.subtotal > 99999999.99 || amount.net <= 0) return "The invoice amount is invalid or exceeds the supported limit.";
+  if (amount.subtotal <= 0 || amount.total > 99999999.99 || amount.net <= 0) return "The invoice amount is invalid or exceeds the supported limit.";
   if (doc.terms.length < 1 || doc.terms.length > 3 || doc.terms.some(t => !t.date || Number(t.amount) <= 0 || !Number.isFinite(Number(t.amount)) || Number(t.amount) !== roundMoney(t.amount)) || roundMoney(doc.terms.reduce((sum, t) => sum + Number(t.amount), 0)) !== amount.net) return "Please check the due dates. Installments must equal the net payable amount.";
   if (doc.cheque && !doc.chequeReceiveBy) return "Please enter the cheque receipt deadline.";
   return "";

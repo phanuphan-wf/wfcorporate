@@ -184,7 +184,7 @@ function TaxInvoiceEditor({ user }) {
       if (original.kind === "exhibition" && !event) return "This exhibition is outside the Tax Invoice issuance window.";
 
       let address = record.taxAddress || original.manualCustomer;
-      if (!address && !usesManualCustomer(original) && registered) {
+      if (registered) {
         const response = await Axios.get(url + `/customers/${original.customerId}/tax-address`, {
           ...options, params: { exhibitionId: original.exhibitionId, addressId: original.addressId },
         });
@@ -242,7 +242,7 @@ function TaxInvoiceEditor({ user }) {
     if (!effectiveTax?.name?.trim() || !effectiveTax.street?.trim() || !doc.date || !doc.project.trim() ||
         !doc.heading.trim() || !doc.description.trim() || !Number.isFinite(sum.total) || sum.total <= 0 ||
         selectedPayments.some(row => Number(row.amount) < 0 ||
-          (paymentStatus === "manual" && Number(row.amount) === 0))) {
+          (row.id == null && Number(row.amount) === 0))) {
       return "Check the customer, project, description and payment amounts.";
     }
     return "";
@@ -347,10 +347,10 @@ function TaxInvoiceEditor({ user }) {
           ...details, startDate: doc.startDate || null, endDate: doc.endDate || null,
         },
         tax: { ...effectiveTax, taxId },
-        payments: paymentStatus === "manual" ? selectedPayments.map(row => ({
+        payments: selectedPayments.map(row => row.id != null ? row : ({
           ...row, amount: Number(row.amount),
           date: row.date || null, receivedDate: row.receivedDate || null,
-        })) : selectedPayments,
+        })),
       };
       const signature = JSON.stringify(payload);
       if (issueRequest.current?.signature !== signature) {
@@ -443,7 +443,7 @@ function TaxInvoiceEditor({ user }) {
         (doc.kind === "other" || doc.customerInputMode === "manual"))) &&
         <button type="button" className="mt-4 rounded border px-3 py-1" onClick={() => setPaymentStatus("missing")}>Enter Payment Details</button>}
       {(paymentStatus === "found" || paymentStatus === "manual") &&
-        <TaxInvoicePayments payments={payments} setPayments={setPayments} manual={paymentStatus === "manual" && !issued}
+        <TaxInvoicePayments payments={payments} setPayments={setPayments} editable={!issued}
           selectedPayments={selectedPayments} selectedIds={selectedPaymentIds} setSelectedIds={setSelectedPaymentIds}
           includesVat={doc.includesVat} setIncludesVat={value => update({ includesVat: value })}
           busy={busy || Boolean(issued)} />}

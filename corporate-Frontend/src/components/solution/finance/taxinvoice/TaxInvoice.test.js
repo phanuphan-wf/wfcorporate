@@ -18,7 +18,7 @@ const tax = { name: "Customer", street: "Address", taxId: "1-2345-67890-12 3", b
 const source = {
   id: 9, book: "202611", number: "12F34", taxAddress: tax,
   document: {
-    kind: "exhibition", exhibitionId: exhibition.id, customerId: 7, vatRate: 7,
+    kind: "exhibition", exhibitionId: exhibition.id, customerId: 7, addressId: 12, vatRate: 7,
     items: [{ description: "Booth rental" }],
   },
 };
@@ -62,6 +62,11 @@ beforeEach(() => {
     if (url.endsWith("/tax-invoice/exhibitions")) return Promise.resolve({ data: { active: [exhibition], finished: [], issuanceVersion } });
     if (url.endsWith("/defaults")) return Promise.resolve({ data: { authorizedBy: "Signatory" } });
     if (url.endsWith("/records/9")) return Promise.resolve({ data: source });
+    if (url.endsWith("/customers/7/tax-address")) return Promise.resolve({ data: {
+      ...tax, addressId: 12, booths: [
+        { booth: "A1", sales: "Sales One" }, { booth: "A2", sales: "Sales Two" },
+      ],
+    } });
     if (url.endsWith("/payments")) return paymentResponse();
     if (url.includes("/tax-invoice/records")) return historyResponse(url, options);
     return Promise.reject(new Error("Unexpected request"));
@@ -80,6 +85,10 @@ afterEach(() => {
 
 test("uses the invoice customer and exhibition, showing every payment but totaling the unreceipted ones", async () => {
   await loadInvoice();
+  expect(Axios.get).toHaveBeenCalledWith(expect.stringContaining("/customers/7/tax-address"),
+    expect.objectContaining({ params: { exhibitionId: "X1", addressId: 12 } }));
+  expect(container.textContent).toContain("Booths: A1, A2");
+  expect(container.textContent).toContain("Sales: Sales One, Sales Two");
   expect(Axios.get).toHaveBeenCalledWith(expect.stringContaining("/tax-invoice/payments"),
     expect.objectContaining({ params: { exhibitionId: "X1", customerId: "7" } }));
   expect(container.textContent).toContain("IV-20261112F34");
@@ -139,7 +148,7 @@ test("issuance sends the normalized Tax ID and only unreceipted payments, and re
   jest.spyOn(window, "confirm").mockReturnValue(true);
   printInvoiceMarkup.mockResolvedValue(undefined);
   Axios.post.mockRejectedValueOnce(new Error("timeout")).mockImplementationOnce((url, payload) => Promise.resolve({
-    data: { id: 13, book: "202611", number: "00001", document: payload.document, payments: payload.payments, tax },
+    data: { id: 13, book: "202611", number: "0001", document: payload.document, payments: payload.payments, tax },
   }));
   await loadInvoice();
   act(() => Simulate.change(field("Received By"), { target: { value: "Cashier" } }));
@@ -150,13 +159,15 @@ test("issuance sends the normalized Tax ID and only unreceipted payments, and re
   expect(first.tax.taxId).toBe("1234567890123");
   expect(first.document.receivedBy).toBe("Cashier");
   expect(first.sourceInvoiceId).toBe(9);
+  expect(first.customerId).toBe(7);
+  expect(first.exhibitionId).toBe("X1");
   expect(first.document.includesVat).toBe(true);
   expect(first.payments.map(payment => payment.id)).toEqual([1, 3]);
   expect(Axios.post.mock.calls[1][1]).toEqual(first);
-  expect(container.textContent).toContain("Issued RT-20261100001");
+  expect(container.textContent).toContain("Issued RT-2026110001");
   expect(button("Issue Tax Invoice").disabled).toBe(true);
   expect(printInvoiceMarkup).toHaveBeenCalledTimes(1);
-  expect(printInvoiceMarkup).toHaveBeenCalledWith(expect.stringContaining("RT-20261100001"));
+  expect(printInvoiceMarkup).toHaveBeenCalledWith(expect.stringContaining("RT-2026110001"));
 });
 
 
@@ -337,4 +348,61 @@ test("a rejected issue shows the server validation error and does not print", as
   await click("Issue Tax Invoice");
   expect(container.querySelector('[role="alert"]').textContent).toContain("Enter a valid issue date.");
   expect(printInvoiceMarkup).not.toHaveBeenCalled();
+});
+
+test("additional manual payments combine with selected collections and retry the same issuance", async () => {
+  jest.spyOn(window, "confirm").mockReturnValue(true);
+  printInvoiceMarkup.mockResolvedValue(undefined);
+  Axios.post.mockRejectedValueOnce(new Error("timeout"))
+    .mockImplementationOnce((url, payload) => Promise.resolve({ data: {
+      id: 13, book: "202611", number: "0001", document: payload.document, payments: payload.payments, tax,
+    } }));
+  await loadInvoice();
+  act(() => Simulate.change(container.querySelector('[aria-label="Select payment 1"]'), { target: { checked: false } }));
+  await click("Add Payment");
+  act(() => Simulate.change(field("Amount Received"), { target: { value: "50" } }));
+  act(() => Simulate.change(field("Received Date"), { target: { value: "2026-11-25" } }));
+  expect(container.textContent).toContain("250.00 THB");
+  expect(container.querySelectorAll("tbody tr")).toHaveLength(3);
+
+  await click("Issue Tax Invoice");
+  await click("Issue Tax Invoice");
+  expect(Axios.post).toHaveBeenCalledTimes(2);
+  const payload = Axios.post.mock.calls[0][1];
+  expect(payload.payments).toEqual([
+    payments[2],
+    expect.objectContaining({ method: "cash", amount: 50, receivedDate: "2026-11-25", date: null }),
+  ]);
+  expect(payload.payments[1].id).toBeUndefined();
+  expect(Axios.post.mock.calls[1][1]).toEqual(payload);
+  const printed = new DOMParser().parseFromString(printInvoiceMarkup.mock.calls[0][0], "text/html");
+  expect(printed.querySelector(".summary .total b").textContent).toBe("250.00");
+  expect(printed.querySelectorAll("section")[0].querySelectorAll(".payment-entry")).toHaveLength(2);
+});
+
+test("an added payment must have a positive amount and can be removed without changing collections", async () => {
+  await loadInvoice();
+  await click("Add Payment");
+  await click("Issue Tax Invoice");
+  expect(container.querySelector('[role="alert"]').textContent).toContain("payment amounts");
+  expect(Axios.post).not.toHaveBeenCalled();
+  await click("Remove Payment 4");
+  expect(button("Remove Payment 4")).toBeUndefined();
+  expect(container.querySelectorAll("tbody tr")).toHaveLength(3);
+  expect(container.textContent).toContain("1,200.00 THB");
+});
+
+test("manual payments remain available when every collection has already been receipted", async () => {
+  paymentResponse = () => Promise.resolve({ data: payments.map(row => ({ ...row, receipted: true })) });
+  jest.spyOn(window, "confirm").mockReturnValue(true);
+  Axios.post.mockImplementationOnce((url, payload) => Promise.resolve({ data: {
+    id: 13, book: "202611", number: "0001", document: payload.document, payments: payload.payments, tax,
+  } }));
+  await loadInvoice();
+  await click("Add Payment");
+  act(() => Simulate.change(field("Amount Received"), { target: { value: "100" } }));
+  await click("Issue Tax Invoice");
+  expect(Axios.post.mock.calls[0][1].payments).toEqual([
+    expect.objectContaining({ method: "cash", amount: 100 }),
+  ]);
 });

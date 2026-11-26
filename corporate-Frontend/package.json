@@ -1,6 +1,6 @@
 {
   "name": "coporateweb",
-  "version": "4.9.2026.2",
+  "version": "4.9.2026.4",
   "private": true,
   "dependencies": {
     "@azure/storage-blob": "^12.17.0",

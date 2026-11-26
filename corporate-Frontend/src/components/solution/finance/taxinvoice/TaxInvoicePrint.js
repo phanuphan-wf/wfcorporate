@@ -164,7 +164,7 @@ export function taxInvoiceMarkup(doc, tax, payments, source, issued = null, repl
         <label>วิธีการชำระเงิน / PAYMENT METHOD</label>
         {pagePayments.map((payment, index) => {
           const details = printedPaymentDetails(payment).filter(Boolean).join(" · ");
-          return <div className="payment-entry" key={payment.id ?? index}>
+          return <div className="payment-entry" key={payment.id != null ? "collection-" + payment.id : "manual-" + index}>
             <p><span>{paymentMethods.find(method => method.value === payment.method)?.thai || "—"}</span>
               <b>{money(payment.amount)} บาท</b></p>
             {details && <small>{details}</small>}

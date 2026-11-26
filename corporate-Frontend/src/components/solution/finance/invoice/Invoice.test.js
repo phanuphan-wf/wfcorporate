@@ -107,11 +107,12 @@ test("closing the customer address editor reloads the tax branch without resetti
   expect(price.value).toBe("10,700");
   expect(container.querySelector('[aria-label="Installment Amount 1"]').value).toBe(amount);
   expect(Axios.post).not.toHaveBeenCalled();
-  Axios.post.mockResolvedValue({ data: { id: 9, book: "202611", number: "00009", taxAddress: { name: "Issued Tax Customer" } } });
+  Axios.post.mockResolvedValue({ data: { id: 9, book: "202611", number: "0009", taxAddress: { name: "Issued Tax Customer" } } });
   await act(async () => Simulate.click(button("Issue Invoice")));
   expect(Axios.post).toHaveBeenCalledWith(expect.stringContaining("/records"),
     expect.objectContaining({ customerId: 7, addressId: 34 }), expect.any(Object));
-  expect(invoiceMarkup).toHaveBeenCalledWith(expect.any(Object), { name: "Issued Tax Customer" }, expect.any(Object));
+  expect(invoiceMarkup).toHaveBeenCalledWith(expect.any(Object), { name: "Issued Tax Customer" },
+    expect.objectContaining({ book: "202611", number: "0009" }));
 });
 
 test.each([false, true])("reprinting uses the saved address, snapshot available: %s", async useSnapshot => {

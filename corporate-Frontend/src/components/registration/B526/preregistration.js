@@ -8,7 +8,7 @@ export default function PreRegist(props) {
   const navigate = useNavigate();
   const [regDate, setRegDate] = useState([]);
 
-  const exId = "B526";
+  const exId = "b526";
 
   const { cp } = useParams();
 
